@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Medications Tracker</string>
+    <string name="sign_in_screen_title">Sign in</string>
+    <string name="button_default_text">FUCK ME</string>
 </resources>
