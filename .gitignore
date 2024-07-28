@@ -80,3 +80,11 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+gradle.properties
+
+.idea/highlightedFiles.xml
+
+.idea/ktfmt.xml
+
+.idea/google-java-format.xml

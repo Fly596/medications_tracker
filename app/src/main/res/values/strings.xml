@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Speech Recognition App</string>
+    <string name="title_activity_arpart">ARpart</string>
+    <string name="title_activity_tutorials">TutorialsActivity</string>
+    <string name="title_activity_dose_main">DoseMainActivity</string>
+    <string name="button_default_text">Fuck Me</string>
+
+    <string name="button_text_skipped">Skip</string>
+    <string name="button_text_taken">Confirm</string>
+    <string name="top_bar_title_summary">Summary</string>
+    <string name="username">Eugen Thomas</string>
+    <string name="button_add_medication">Add Medication</string>
+    <string name="button_update_medication">Update Medication</string>
+    <string name="sign_in_button">Sign in</string>
+    <string name="sign_up_button">Click here to Sign Up!</string>
+
+</resources>
