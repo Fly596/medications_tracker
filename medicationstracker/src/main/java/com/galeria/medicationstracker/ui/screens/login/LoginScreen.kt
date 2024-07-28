@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.galeria.medicationstracker.R
 
 @Composable
 fun LoginScreen(
@@ -34,9 +35,11 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(stringResource(R.), style = MaterialTheme.typography.headlineMedium)
+        Text(stringResource(R.string.sign_in_screen_title), style = MaterialTheme.typography.headlineMedium)
 
         Spacer(modifier = Modifier.height(20.dp))
+
+
 
         TextField(
             value = email,
@@ -90,10 +93,11 @@ fun LoginScreen(
     }
 }
 
+// TODO: Textfields; Buttons
 
 @Composable
 fun InputFields(modifier: Modifier = Modifier) {
-
+TextField
 }
 
 

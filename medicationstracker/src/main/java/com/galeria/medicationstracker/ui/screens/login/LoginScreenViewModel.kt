@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class LoginScreenViewModel: ViewModel() {
+class LoginScreenViewModel : ViewModel() {
 
     private val _email = MutableStateFlow("")
     val username = _email.asStateFlow()
