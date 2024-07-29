@@ -24,6 +24,7 @@ import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
 
 @Composable
 fun LoginScreen(
+    onLoginClick: () -> Unit,
     viewModel: LoginScreenViewModel,
     modifier: Modifier = Modifier
 ) {
@@ -66,7 +67,16 @@ fun LoginScreen(
 
         HIGButton(
             text = "Sign In",
-            onClick = { viewModel.onSignInClick(email.value, password.value, context) },
+            onClick = {
+                viewModel.onSignInClick(email.value, password.value, context, onLoginClick)
+                // onLoginClick
+                // Navigate to Summary screen.
+                /*                 navController.navigate(
+                                    Summary(
+                                        userEmail = email.value
+                                    )
+                                ) */
+            },
             enabled = true,
             style = HIGButtonStyle.Filled
         )
@@ -83,19 +93,21 @@ fun LoginScreen(
 
         HIGButton(
             text = "Forgot Password?",
-            onClick = {  /* TODO: Forgot password action */ },
+            onClick = { viewModel.resetPassword(email.value, context) },
             enabled = true,
             style = HIGButtonStyle.Borderless
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
+        // region not ready yet.
         HIGButton(
             text = "Sign-in with Google account",
             onClick = { /* TODO: Sign-in with Google action */ },
-            enabled = true,
+            enabled = false,
             style = HIGButtonStyle.Filled
         )
+        // endregion
     }
 }
 

@@ -1,41 +1,6 @@
 package com.galeria.medicationstracker.ui.shared.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text2.BasicTextField2
-import androidx.compose.foundation.text2.input.TextFieldLineLimits
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.galeria.medicationstracker.ui.theme.SpeechRecognitionAppTheme
-
+/*
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoIconTextFieldDecorator(
@@ -47,7 +12,7 @@ fun NoIconTextFieldDecorator(
     label: String = "",
     placeholder: String = ""
 ) {
-    BasicTextField2(
+    BasicTextField(
         value = text,
         onValueChange = onValueChange,
         modifier = modifier
@@ -90,15 +55,17 @@ fun IconTextFieldDecorator(
     isFocused: Boolean = false,
     isTyping: Boolean = false,
 ) {
-    BasicTextField2(
+    BasicTextField(
         value = text,
         textStyle = MaterialTheme.typography.bodyMedium,
         onValueChange = onValueChange, // Color(0xFF007AFF) else Color(0x4d3c3c43)
-        cursorBrush = SolidColor(Color(0xFF007AFF))/* if (isFocused || isTyping) SolidColor(Color(0xFF007AFF)) else SolidColor(
+        cursorBrush = SolidColor(Color(0xFF007AFF))*/
+/* if (isFocused || isTyping) SolidColor(Color(0xFF007AFF)) else SolidColor(
             Color(
                 0x4d3c3c43
             )
-        ) */,
+        ) *//*
+,
         modifier = modifier
 
             .drawBehind {
@@ -125,12 +92,14 @@ fun IconTextFieldDecorator(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start,
                 ) {
+*/
 /*                     if (text.isEmpty()) {
                         Text(
                             text = if (isFocused || isTyping) label else placeholder,
                             color = Color(0xff3c3c43)
                         )
-                    } */
+                    } *//*
+
                     if (text.isEmpty()) {
                         Text(
                             text = label,
@@ -177,7 +146,8 @@ fun HIGOutlinedTextField(
             ) {
                 innerTextField()
             }
-            /*             Row(
+            */
+/*             Row(
                 Modifier
                     .background(Color.LightGray, RoundedCornerShape(percent = 30))
                     .padding(16.dp)
@@ -185,7 +155,8 @@ fun HIGOutlinedTextField(
                 Icon(Icons.Default.MailOutline, contentDescription = "Mail Icon")
                 Spacer(Modifier.width(16.dp))
                 innerTextField()
-            } */
+            } *//*
+
         },
         modifier = modifier
             .padding(start = 12.dp, end = 12.dp, bottom = 8.dp)
@@ -217,12 +188,14 @@ private fun PreviewTextFields() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+*/
 /*             HIGOutlinedTextField(
                 value = "HIGOutlinedTextField",
                 onValueChange = {},
                 label = "Email",
                 modifier = Modifier.fillMaxWidth()
-            ) */
+            ) *//*
+
             IconTextFieldDecorator(
                 // text = "IconTextFieldDecorator",
                 text = "passwonaosn",
@@ -234,21 +207,29 @@ private fun PreviewTextFields() {
                 isTyping = true,
             )
 
-            /*             NoIconTextFieldDecorator(
+            */
+/*             NoIconTextFieldDecorator(
                             text = "NoIconTextFieldDecorator",
                             onValueChange = {},
                             label = "Email",
                             placeholder = "Enter your email"
-                        ) */
-            /*             IconTextFieldDecorator(
+                        ) *//*
+
+            */
+/*             IconTextFieldDecorator(
                             text = "IconTextFieldDecorator",
                             onValueChange = {},
                             icon = Icons.Default.MailOutline,
-                             *//* isFocused = true, *//*
+                             *//*
+*/
+/* isFocused = true, *//*
+*/
+/*
                 isTyping = false,
                 label = "Email",
                 placeholder = "Placeholder"
-            ) */
+            ) *//*
+
         }
     }
-}
+}*/
