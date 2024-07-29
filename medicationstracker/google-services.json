@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "21493280138",
+    "firebase_url": "https://carlibraryapp-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "carlibraryapp",
+    "storage_bucket": "carlibraryapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21493280138:android:82d484c42e5418ea5eec73",
+        "android_client_info": {
+          "package_name": "com.example.speechrecognitionapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBslKALsNzrqOjWFejxi46bDwSwpQT6sJ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21493280138:android:1cfb04c5147cd6dc5eec73",
+        "android_client_info": {
+          "package_name": "com.galeria.medicationstracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBslKALsNzrqOjWFejxi46bDwSwpQT6sJ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
