@@ -15,6 +15,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.galeria.medicationstracker.model.navigation.Routes
+import com.galeria.medicationstracker.ui.screens.create_account.SignupScreen
+import com.galeria.medicationstracker.ui.screens.create_account.SignupScreenViewModel
 import com.galeria.medicationstracker.ui.screens.login.LoginScreen
 import com.galeria.medicationstracker.ui.screens.login.LoginScreenViewModel
 import com.galeria.medicationstracker.ui.screens.start.StartScreen
@@ -28,6 +30,7 @@ class HeadActivity : ComponentActivity() {
         FirebaseApp.initializeApp(this)
 
         val viewModel = LoginScreenViewModel()
+        val registerViewModel = SignupScreenViewModel()
 
         enableEdgeToEdge()
         setContent {
@@ -47,6 +50,11 @@ class HeadActivity : ComponentActivity() {
                                     )
                                 )
                             },
+                            onSignupClick = {
+                                navController.navigate(
+                                    Routes.Registration
+                                )
+                            },
                             viewModel = viewModel,
                             modifier = Modifier
                                 .fillMaxSize()
@@ -64,6 +72,27 @@ class HeadActivity : ComponentActivity() {
                             }
                         )
                     }
+                    composable<Routes.Registration> {
+                        SignupScreen(
+                            onRegisterClick = {
+                                navController.navigate(
+                                    Routes.Summary(
+                                        userEmail = "test"
+                                    )
+                                )
+                            },
+                            onLoginClick = {
+                                navController.navigate(
+                                    Routes.Summary(
+                                        userEmail = "test"
+                                    )
+                                )
+                            },
+                            viewModel = registerViewModel,
+                            viewModelLogin = viewModel,
+                        )
+                    }
+
                 }
 
                 /*                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

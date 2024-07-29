@@ -13,6 +13,11 @@ fun StartScreen(
     onNavigationBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    /*     val user = Firebase.auth.currentUser
+        user?.let {
+            val name = it.displayName
+        } */
+
     Column(modifier) {
         Button(
             onClick = onNavigationBack

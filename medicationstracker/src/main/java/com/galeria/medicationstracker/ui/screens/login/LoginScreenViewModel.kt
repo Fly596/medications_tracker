@@ -29,7 +29,7 @@ class LoginScreenViewModel : ViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Login success
-                    onLoginClick.invoke()
+                    // onLoginClick.invoke()
                     Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
                 } else {
                     // If sign in fails, display a message to the user.
@@ -42,12 +42,18 @@ class LoginScreenViewModel : ViewModel() {
             }
     }
 
-    fun onSignUpClick(email: String, password: String, context: Context) {
+    fun onSignUpClick(
+        email: String,
+        password: String,
+        context: Context,
+        onSignupClick: () -> Unit
+    ) {
         val auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign up success
+                    onSignupClick.invoke()
                     Toast.makeText(context, "Account Created", Toast.LENGTH_SHORT).show()
                 } else {
                     // If sign up fails, display a message to the user.
