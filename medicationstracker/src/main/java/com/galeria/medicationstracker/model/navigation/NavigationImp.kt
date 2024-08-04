@@ -8,9 +8,10 @@ sealed class Routes {
     @Serializable
     data object Home : Routes()
 
-
     @Serializable
-    data object Summary : Routes() /*TODO: добавить ввод имени.*/
+    data object Summary : Routes()
+
+//    data class Summary(val userEmail: String) : Routes() /*TODO: добавить ввод имени.*/
 
     @Serializable
     data object Registration : Routes()

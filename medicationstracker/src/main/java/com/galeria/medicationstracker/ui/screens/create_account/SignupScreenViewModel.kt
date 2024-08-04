@@ -45,26 +45,6 @@ class SignupScreenViewModel : ViewModel() {
     fun getUserId(user: FirebaseUser?) {
     }
 
-    fun onSignInClick(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Login success
-                    Log.d(TAG, "Login Successful")
-
-
-                    val curUserId = auth.currentUser?.uid
-                    if (curUserId != null) {
-                        addUserInfo(curUserId)
-                    }
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.d(TAG, "Authentication Failed: ${task.exception?.message}")
-
-                }
-            }
-    }
-
     fun onRegisterClick(
         email: String,
         password: String,

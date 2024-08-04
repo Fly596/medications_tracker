@@ -19,7 +19,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.ui.screens.login.LoginScreenViewModel
 import com.galeria.medicationstracker.ui.screens.login.MyTextField
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
@@ -28,7 +27,6 @@ import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
 fun SignupScreen(
     onCreateAccountClick: () -> Unit,
     viewModel: SignupScreenViewModel,
-    viewModelLogin: LoginScreenViewModel,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current

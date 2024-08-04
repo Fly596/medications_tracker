@@ -50,7 +50,9 @@ class HeadActivity : ComponentActivity() {
                             LoginScreen(
                                 onLoginClick = {
                                     navController.navigate(
-                                        Routes.Summary
+                                        Routes.Summary/* (
+                                            userEmail = "test"
+                                        ) */
                                     )
                                 },
                                 onSignupClick = {
@@ -64,7 +66,7 @@ class HeadActivity : ComponentActivity() {
                                     .padding(24.dp)
                             )
                         }
-                        composable<Routes.Summary> { backStackEntry ->
+                        composable<Routes.Summary> { /* backStackEntry -> */
                             // val args = backStackEntry.toRoute<Routes.Summary>()
                             StartScreen(
                                 // args.userEmail,
@@ -83,7 +85,7 @@ class HeadActivity : ComponentActivity() {
                                     )
                                 },
                                 viewModel = registerViewModel,
-                                viewModelLogin = viewModel,
+                                // viewModelLogin = viewModel,
                             )
                         }
 
