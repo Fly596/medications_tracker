@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.create_account
+package com.galeria.medicationstracker.ui.screens.autentification.create_account
 
 import android.content.Context
 import android.util.Log
@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,13 +41,9 @@ class SignupScreenViewModel : ViewModel() {
         _userName.value = newUserName
     }
 
-    fun getUserId(user: FirebaseUser?) {
-    }
-
     fun onRegisterClick(
         email: String,
         password: String,
-        userName: String,
         context: Context,
         onSignupClick: () -> Unit
     ) {

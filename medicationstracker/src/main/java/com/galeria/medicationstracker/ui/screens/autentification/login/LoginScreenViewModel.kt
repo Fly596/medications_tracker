@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.login
+package com.galeria.medicationstracker.ui.screens.autentification.login
 
 import android.content.Context
 import android.widget.Toast
