@@ -169,13 +169,7 @@ class HeadActivity : ComponentActivity() {
                         }
 
                         composable<Routes.Profile> {
-                            ProfileScreen(
-                                onNavigateToCalendar = {
-                                    navController.navigate(
-                                        Routes.Calendar
-                                    )
-                                }
-                            )
+                            ProfileScreen()
                         }
 
                         composable<Routes.Calendar> {
