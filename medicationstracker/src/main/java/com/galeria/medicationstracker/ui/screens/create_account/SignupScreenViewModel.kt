@@ -83,6 +83,7 @@ class SignupScreenViewModel : ViewModel() {
                     // onSignupClick.invoke()
                     // TODO: Add user info to database.
                     Toast.makeText(context, "Account Created", Toast.LENGTH_SHORT).show()
+                    onSignupClick.invoke()
                 } else {
                     // If sign up fails, display a message to the user.
                     Toast.makeText(

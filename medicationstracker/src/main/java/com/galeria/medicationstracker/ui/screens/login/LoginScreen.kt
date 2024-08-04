@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,7 +52,8 @@ fun LoginScreen(
             onValueChange = { viewModel.updateEmail(it) },
             label = "Email",
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -61,9 +64,11 @@ fun LoginScreen(
             label = "Password",
             modifier = Modifier
                 .fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
 
+        // region Buttons
         Spacer(modifier = Modifier.height(16.dp))
 
         HIGButton(
@@ -95,6 +100,7 @@ fun LoginScreen(
         )
 
         Spacer(modifier = Modifier.height(32.dp))
+        // endregion
 
         // region not ready yet.
         HIGButton(
@@ -114,11 +120,13 @@ fun MyTextField(
     label: String,
     modifier: Modifier = Modifier,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
 ) {
     TextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
+        keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
         modifier = modifier
     )

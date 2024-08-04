@@ -31,6 +31,7 @@ class LoginScreenViewModel : ViewModel() {
                     // Login success
                     // onLoginClick.invoke()
                     Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+                    onLoginClick.invoke()
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(

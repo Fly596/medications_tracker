@@ -1,7 +1,6 @@
 package com.galeria.medicationstracker.ui.screens.start
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,8 +8,8 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun StartScreen(
-    userEmail: String,
-    onNavigationBack: () -> Unit,
+    // userEmail: String,
+    onNavigationSomewhere: () -> Unit, // TODO сделать навигацию.
     modifier: Modifier = Modifier
 ) {
     /*     val user = Firebase.auth.currentUser
@@ -19,12 +18,13 @@ fun StartScreen(
         } */
 
     Column(modifier) {
-        Button(
-            onClick = onNavigationBack
-        ) {
-            Text(text = userEmail)
+        Text(text = "userEmail")
 
-        }
+        /*         Button(
+                    onClick = onNavigationBack
+                ) {
+
+                } */
     }
 }
 

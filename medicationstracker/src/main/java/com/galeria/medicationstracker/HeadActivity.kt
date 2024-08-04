@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.screens.create_account.SignupScreen
 import com.galeria.medicationstracker.ui.screens.create_account.SignupScreenViewModel
@@ -37,63 +38,58 @@ class HeadActivity : ComponentActivity() {
             SpeechRecognitionAppTheme {
                 val navController = rememberNavController()
 
-                NavHost(
-                    navController = navController,
-                    startDestination = Routes.Home
-                ) {
-                    composable<Routes.Home> {
-                        LoginScreen(
-                            onLoginClick = {
-                                navController.navigate(
-                                    Routes.Summary(
-                                        userEmail = "test"
+                Scaffold(
+                    bottomBar = { BottomAppBar() {} }
+                ) { innerPadding ->
+                    NavHost(
+                        navController = navController,
+                        startDestination = Routes.Home,
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        composable<Routes.Home> {
+                            LoginScreen(
+                                onLoginClick = {
+                                    navController.navigate(
+                                        Routes.Summary
                                     )
-                                )
-                            },
-                            onSignupClick = {
-                                navController.navigate(
-                                    Routes.Registration
-                                )
-                            },
-                            viewModel = viewModel,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(24.dp)
-                        )
-                    }
-                    composable<Routes.Summary> { backStackEntry ->
-                        val args = backStackEntry.toRoute<Routes.Summary>()
-                        StartScreen(
-                            args.userEmail,
-                            onNavigationBack = {
-                                navController.navigate(
-                                    Routes.Home
-                                )
-                            }
-                        )
-                    }
-                    composable<Routes.Registration> {
-                        SignupScreen(
-                            onRegisterClick = {
-                                navController.navigate(
-                                    Routes.Summary(
-                                        userEmail = "test"
+                                },
+                                onSignupClick = {
+                                    navController.navigate(
+                                        Routes.Registration
                                     )
-                                )
-                            },
-                            onLoginClick = {
-                                navController.navigate(
-                                    Routes.Summary(
-                                        userEmail = "test"
+                                },
+                                viewModel = viewModel,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(24.dp)
+                            )
+                        }
+                        composable<Routes.Summary> { backStackEntry ->
+                            // val args = backStackEntry.toRoute<Routes.Summary>()
+                            StartScreen(
+                                // args.userEmail,
+                                onNavigationSomewhere = {
+                                    navController.navigate(
+                                        Routes.Home
                                     )
-                                )
-                            },
-                            viewModel = registerViewModel,
-                            viewModelLogin = viewModel,
-                        )
-                    }
+                                }
+                            )
+                        }
+                        composable<Routes.Registration> {
+                            SignupScreen(
+                                onCreateAccountClick = {
+                                    navController.navigate(
+                                        Routes.Home
+                                    )
+                                },
+                                viewModel = registerViewModel,
+                                viewModelLogin = viewModel,
+                            )
+                        }
 
+                    }
                 }
+
 
                 /*                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                                    LoginScreen(
