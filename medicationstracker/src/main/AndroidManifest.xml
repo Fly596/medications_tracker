@@ -9,6 +9,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpeechRecognitionApp">
         <activity
+            android:name=".ApplicationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_application"
+            android:theme="@style/Theme.SpeechRecognitionApp" />
+        <activity
             android:name=".HeadActivity"
             android:exported="true"
             android:label="@string/app_name"

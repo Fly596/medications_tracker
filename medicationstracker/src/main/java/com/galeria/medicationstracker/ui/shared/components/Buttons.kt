@@ -16,7 +16,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.ui.theme.SpeechRecognitionAppTheme
+import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 // TODO: вынести цвета в тему.
 @Composable
@@ -69,7 +69,7 @@ enum class HIGButtonStyle {
 )
 @Composable
 private fun PreviewButtons() {
-    SpeechRecognitionAppTheme {
+    MedicationsTrackerAppTheme {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,

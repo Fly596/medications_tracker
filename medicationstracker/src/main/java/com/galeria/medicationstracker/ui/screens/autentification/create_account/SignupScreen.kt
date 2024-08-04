@@ -74,14 +74,14 @@ fun SignupScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        MyTextField(
-            value = userName.value,
-            onValueChange = { viewModel.updateUserName(it) },
-            label = "User name",
-            modifier = Modifier
-                .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-        )
+        /*         MyTextField(
+                    value = userName.value,
+                    onValueChange = { viewModel.updateUserName(it) },
+                    label = "User name",
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                ) */
 
         Spacer(modifier = Modifier.height(16.dp))
 
