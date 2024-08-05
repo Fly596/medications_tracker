@@ -8,4 +8,7 @@
     <dimen name="corner_radius_large">40dp</dimen>
 
     <dimen name="list_corner_radius_default">10dp</dimen>
+
+    <dimen name="card_padding_horizontal">12dp</dimen>
+    <dimen name="card_padding_vertical">8dp</dimen>
 </resources>

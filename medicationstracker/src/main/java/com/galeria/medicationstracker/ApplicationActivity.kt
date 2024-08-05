@@ -33,6 +33,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
+import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
+import com.galeria.medicationstracker.ui.screens.medications.MedicationsViewModel
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.shared.components.HeadViewModel
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
@@ -55,6 +57,7 @@ class ApplicationActivity : ComponentActivity() {
         FirebaseApp.initializeApp(this)
 
         val headViewModel = HeadViewModel()
+        val medicationsScreenViewModel = MedicationsViewModel()
 
         enableEdgeToEdge()
         setContent {
@@ -100,7 +103,6 @@ class ApplicationActivity : ComponentActivity() {
                     bottomBar = {
                         BottomNavBar(items, /* selectedItemIndex,  */navController, headViewModel)
                     },
-                    // containerColor = MedicationsTrackerAppTheme.systemColors.backgroundLightPrimary
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
@@ -109,9 +111,10 @@ class ApplicationActivity : ComponentActivity() {
                             .padding(innerPadding)
                             .padding(start = 24.dp, end = 24.dp, top = 16.dp)
                     ) {
-                        // region Application
+
                         composable<Routes.Dashboard> {
                             DashboardScreen(
+                                // TODO: почистить.
                                 onProfileNavigate = {
                                     navController.navigate(
                                         Routes.Profile
@@ -125,15 +128,17 @@ class ApplicationActivity : ComponentActivity() {
                             )
                         }
 
-                        composable<Routes.Profile> {
-                            ProfileScreen()
-                        }
-
                         composable<Routes.Calendar> {
                             // TODO: Calendar
                         }
 
-                        // endregion
+                        composable<Routes.Medications> {
+                            MedicationsScreen(medicationsScreenViewModel)
+                        }
+
+                        composable<Routes.Profile> {
+                            ProfileScreen()
+                        }
                     }
                 }
             }

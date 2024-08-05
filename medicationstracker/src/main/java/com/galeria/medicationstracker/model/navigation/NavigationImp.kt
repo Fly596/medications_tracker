@@ -25,7 +25,6 @@ sealed class Routes {
     @Serializable
     data object Calendar : Routes()
 
-
     @Serializable
     data object Medications : Routes()
 

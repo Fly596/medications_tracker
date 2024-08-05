@@ -40,6 +40,11 @@ data class Medication(
     val strength: Map<Int, String> = mapOf()
 )
 
+data class DELETEMedication(
+    val name: String = "",
+    val type: String = "",
+)
+
 /*TODO: Symptoms, mood..*/
 data class MoodLog(
     val date: LocalDateTime = LocalDateTime.now()
