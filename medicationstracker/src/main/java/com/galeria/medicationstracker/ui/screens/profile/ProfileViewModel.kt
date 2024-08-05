@@ -5,7 +5,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
-class ProfileViewModel: ViewModel() {
+class ProfileViewModel : ViewModel() {
 
     private lateinit var auth: FirebaseAuth
 
@@ -15,7 +15,6 @@ class ProfileViewModel: ViewModel() {
     fun onLogoutClick() {
         auth = FirebaseAuth.getInstance()
 
-        //auth.signOut()
+        // auth.signOut()
     }
-
 }

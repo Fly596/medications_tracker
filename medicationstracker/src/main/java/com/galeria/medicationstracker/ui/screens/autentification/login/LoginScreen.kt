@@ -39,98 +39,70 @@ fun LoginScreen(
     val context = LocalContext.current
     val email = viewModel.username.collectAsState()
     val password = viewModel.password.collectAsState()
+    var checked by remember { mutableStateOf(true) }
 
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            stringResource(R.string.sign_in_screen_title),
-            style = MaterialTheme.typography.headlineMedium
-        )
+        horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                stringResource(R.string.sign_in_screen_title),
+                style = MaterialTheme.typography.headlineMedium)
 
-        Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-        MyTextField(
-            value = email.value,
-            onValueChange = { viewModel.updateEmail(it) },
-            label = "Email",
-            modifier = Modifier
-                .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-        )
+            MyTextField(
+                value = email.value,
+                onValueChange = { viewModel.updateEmail(it) },
+                label = "Email",
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        MyTextField(
-            value = password.value,
-            onValueChange = { viewModel.updatePassword(it) },
-            label = "Password",
-            modifier = Modifier
-                .fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-        )
+            MyTextField(
+                value = password.value,
+                onValueChange = { viewModel.updatePassword(it) },
+                label = "Password",
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
 
-        // region Buttons
-        Spacer(modifier = Modifier.height(16.dp))
+            // region Buttons
+            Spacer(modifier = Modifier.height(16.dp))
 
-        var checked by remember { mutableStateOf(true) }
-        Switch(
+            RememberMeSwitch(checked = checked, onCheckedChange = { checked = it })
+            // Switch(checked = checked, onCheckedChange = { checked = it })
 
-            checked = checked,
-            onCheckedChange = {
-                checked = it
-            }
-        )
+            HIGButton(
+                text = "Sign In",
+                onClick = {
+                    // ! TEMP: для простого входа
+                    if (email.value == "sex") {
+                        viewModel.onSignInClick(
+                            "ggsell@gmail.com", "password", context, onLoginClick)
+                    } else {
+                        viewModel.onSignInClick(email.value, password.value, context, onLoginClick)
+                    }
+                },
+                enabled = true,
+                style = HIGButtonStyle.Filled)
 
-        HIGButton(
-            text = "Sign In",
-            onClick = {
-                // ! TEMP: для простого входа
-                if (email.value == "sex") {
-                    viewModel.onSignInClick("ggsell@gmail.com", "password", context, onLoginClick)
-                } else {
-                    viewModel.onSignInClick(email.value, password.value, context, onLoginClick)
-                }
+            Spacer(modifier = Modifier.height(16.dp))
 
-            },
-            enabled = true,
-            style = HIGButtonStyle.Filled
-        )
+            HIGButton(
+                text = "Create Account",
+                onClick = { onSignupClick.invoke() },
+                enabled = true,
+                style = HIGButtonStyle.Bezeled)
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-
-        HIGButton(
-            text = "Create Account",
-            onClick = {
-                onSignupClick.invoke()
-            },
-            enabled = true,
-            style = HIGButtonStyle.Bezeled
-        )
-
-        HIGButton(
-            text = "Forgot Password?",
-            onClick = { viewModel.resetPassword(email.value, context) },
-            enabled = true,
-            style = HIGButtonStyle.Borderless
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-        // endregion
-
-        // region not ready yet.
-        HIGButton(
-            text = "Sign-in with Google account",
-            onClick = { /* TODO: Sign-in with Google action */ },
-            enabled = false,
-            style = HIGButtonStyle.Filled
-        )
-        // endregion
-    }
+            HIGButton(
+                text = "Forgot Password?",
+                onClick = { viewModel.resetPassword(email.value, context) },
+                enabled = true,
+                style = HIGButtonStyle.Borderless)
+            // endregion
+        }
 }
 
 @Composable
@@ -148,17 +120,15 @@ fun MyTextField(
         label = { Text(label) },
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
-        modifier = modifier
-    )
+        modifier = modifier)
 }
 
 // TODO: Textfields; Buttons
 
 @Composable
-fun InputFields(modifier: Modifier = Modifier) {
-
+fun RememberMeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    Switch(checked = checked, onCheckedChange = onCheckedChange)
 }
-
 
 @Preview(name = "LoginScreen")
 @Composable

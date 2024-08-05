@@ -25,63 +25,35 @@ class LoginScreenViewModel : ViewModel() {
 
     fun onSignInClick(email: String, password: String, context: Context, onLoginClick: () -> Unit) {
         val auth = FirebaseAuth.getInstance()
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Login success
-                    // onLoginClick.invoke()
-                    Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
-                    onLoginClick.invoke()
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Login success
+                // onLoginClick.invoke()
+                Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+                onLoginClick.invoke()
+            } else {
+                // If sign in fails, display a message to the user.
+                Toast.makeText(
                         context,
                         "Authentication Failed: ${task.exception?.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                        Toast.LENGTH_SHORT)
+                    .show()
             }
-    }
-
-    /*
-        fun onSignUpClick(
-            email: String,
-            password: String,
-            context: Context,
-            onSignupClick: () -> Unit
-        ) {
-            val auth = FirebaseAuth.getInstance()
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        // Sign up success
-                        onSignupClick.invoke()
-                        Toast.makeText(context, "Account Created", Toast.LENGTH_SHORT).show()
-                    } else {
-                        // If sign up fails, display a message to the user.
-                        Toast.makeText(
-                            context,
-                            "Sign Up Failed: ${task.exception?.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
         }
-    */
+    }
 
     fun resetPassword(email: String, context: Context) {
         val auth = FirebaseAuth.getInstance()
-        auth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(context, "Password reset email sent!", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(
+        auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(context, "Password reset email sent!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
                         context,
                         "Error sending password reset email: ${task.exception?.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                        Toast.LENGTH_SHORT)
+                    .show()
             }
+        }
     }
 }

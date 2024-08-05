@@ -1,6 +1,5 @@
 package com.galeria.medicationstracker.ui.screens.profile
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,110 +27,73 @@ import com.galeria.medicationstracker.ui.shared.components.HIGListButton
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 @Composable
-fun ProfileScreen(
-    modifier: Modifier = Modifier
-) {
+fun ProfileScreen(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Heading.
-        Text(text = "Profile", style = MedicationsTrackerAppTheme.typography.title1)
+        horizontalAlignment = Alignment.CenterHorizontally) {
+            // Heading.
+            Text(text = "Profile", style = MedicationsTrackerAppTheme.typography.title1)
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        PfpWithName(
-            painter = R.drawable.img_1543, // TODO: get and set using firebase.
-            userName = "User Name", // TODO: get from firebase.
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.Start,
-        ) {
-            ProfileOptionItem("Details") {
-                // TODO: navigate to details screen.
-            }
-            ProfileOptionItem("Notifications") {
-                // TODO: navigate to notifications screen.
-            }
-
-            HIGButton(
-                onClick = {},
-                text = "Logout",
-                style = HIGButtonStyle.Bezeled
+            PfpWithName(
+                painter = R.drawable.img_1543, // TODO: get and set using firebase.
+                userName = "User Name", // TODO: get from firebase.
             )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Start,
+            ) {
+                ProfileOptionItem("Details") {
+                    // TODO: navigate to details screen.
+                }
+                ProfileOptionItem("Notifications") {
+                    // TODO: navigate to notifications screen.
+                }
+
+                HIGButton(onClick = {}, text = "Logout", style = HIGButtonStyle.Bezeled)
+            }
         }
-
-
-    }
 }
 
 @Composable
-fun PfpWithName(
-    painter: Int,
-    userName: String,
-    modifier: Modifier = Modifier
-) {
+fun PfpWithName(painter: Int, userName: String, modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
-        modifier = modifier
-    ) {
-        Image(
-            painter = painterResource(painter),
-            contentDescription = "pfp",
-            contentScale = ContentScale.Crop,
-            modifier = modifier
-                .clip(CircleShape)
-                .size(128.dp)
-        )
+        modifier = modifier) {
+            Image(
+                painter = painterResource(painter),
+                contentDescription = "pfp",
+                contentScale = ContentScale.Crop,
+                modifier = modifier.clip(CircleShape).size(128.dp))
 
-        Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-        Text(text = userName, style = MedicationsTrackerAppTheme.typography.title2)
-    }
+            Text(text = userName, style = MedicationsTrackerAppTheme.typography.title2)
+        }
 }
 
 @Composable
 fun ProfileOptionItem(title: String, onClick: () -> Unit) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            //.background(color = MedicationsTrackerAppTheme.systemColors.backgroundLightSecondary)
-            .clickable(onClick = onClick),
+        modifier =
+            Modifier.fillMaxWidth()
+                // .background(color =
+                // MedicationsTrackerAppTheme.systemColors.backgroundLightSecondary)
+                .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        HIGListButton(
-            onClick = onClick,
-            text = title,
-        )
-        /*
-            colors = ButtonDefaults.buttonColors()
-            ) {
-            Text(
+        verticalAlignment = Alignment.CenterVertically) {
+            HIGListButton(
+                onClick = onClick,
                 text = title,
-                style = MedicationsTrackerAppTheme.typography.body,
             )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Icon(
-                Icons.AutoMirrored.Filled.ArrowForwardIos,
-                contentDescription = "Show options",
-                tint = MedicationsTrackerAppTheme.defaultColors.extGray.defaultLight
-            )
-        }*/
-    }
+        }
 }
-
 
 @Preview(name = "ProfileScreen", showSystemUi = true, device = "id:pixel_8")
 @Composable

@@ -19,26 +19,20 @@ class MedicationsViewModel : ViewModel() {
     private var db = Firebase.firestore
 
     fun getMedsList() {
-        db.collection("medication")
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    return@addSnapshotListener
-                }
-
-                if (value != null) {
-                    _userMedications.value = value.toObjects()
-                }
-
+        db.collection("medication").addSnapshotListener { value, error ->
+            if (error != null) {
+                return@addSnapshotListener
             }
+
+            if (value != null) {
+                _userMedications.value = value.toObjects()
+            }
+        }
     }
 
     fun addMedication(medication: Medication) {
-        db.collection("medication")
-            .add(medication)
-            .addOnSuccessListener {
-                Log.d(TAG, "DocumentSnapshot added with ID: ${it.id}")
-            }
+        db.collection("medication").add(medication).addOnSuccessListener {
+            Log.d(TAG, "DocumentSnapshot added with ID: ${it.id}")
+        }
     }
-
-
 }

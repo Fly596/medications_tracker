@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -51,15 +52,16 @@ data class BottomNavigationItem(
 
 class ApplicationActivity : ComponentActivity() {
 
+    private val headViewModel: HeadViewModel by viewModels()
+    private val medicationsScreenViewModel: MedicationsViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         FirebaseApp.initializeApp(this)
 
-        val headViewModel = HeadViewModel()
-        val medicationsScreenViewModel = MedicationsViewModel()
-
         enableEdgeToEdge()
+
         setContent {
             MedicationsTrackerAppTheme {
                 val navController = rememberNavController()
@@ -101,7 +103,7 @@ class ApplicationActivity : ComponentActivity() {
 
                 Scaffold(
                     bottomBar = {
-                        BottomNavBar(items, /* selectedItemIndex,  */navController, headViewModel)
+                        BottomNavBar(items, navController, headViewModel)
                     },
                 ) { innerPadding ->
                     NavHost(
@@ -149,11 +151,9 @@ class ApplicationActivity : ComponentActivity() {
     @Composable
     private fun BottomNavBar(
         items: List<BottomNavigationItem>,
-        // selectedItemIndex: Int,
         navController: NavHostController,
         viewModel: HeadViewModel
     ) {
-        // var selectedItemIndex1 = viewModel.selectedItemIndex.value
         val selectedItemIndex = viewModel.selectedItemIndex.collectAsState().value
 
         NavigationBar(
@@ -164,35 +164,58 @@ class ApplicationActivity : ComponentActivity() {
                     selected = selectedItemIndex == index,
                     onClick = {
                         viewModel.updateSelectedItemIndex(index)
-                        // selectedItemIndex = index
                         navController.navigate(item.route)
                     },
                     label = { Text(text = item.title) },
                     icon = {
-                        BadgedBox(
-                            badge = {
-                                if (item.badgeCount != null) {
-                                    Badge {
-                                        Text(text = item.badgeCount.toString())
-                                    }
-                                } else if (item.hasNews) {
-                                    Badge()
-                                }
-                            }
-                        ) {
-                            Icon(
-                                imageVector = if (index == selectedItemIndex) {
-                                    item.selectedIcon
-                                } else {
-                                    item.unselectedIcon
-                                },
-                                contentDescription = item.title
-                            )
-                        }
+                        IconWithBadge(
+                            icon = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon,
+                            badgeCount = item.badgeCount,
+                            hasNews = item.hasNews,
+                            contentDescription = item.title
+                        )
+                        /*                        BadgedBox(
+                                                    badge = {
+                                                        if (item.badgeCount != null) {
+                                                            Badge {
+                                                                Text(text = item.badgeCount.toString())
+                                                            }
+                                                        } else if (item.hasNews) {
+                                                            Badge()
+                                                        }
+                                                    }
+                                                ) {
+                                                    Icon(
+                                                        imageVector = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon,
+                                                        contentDescription = item.title
+                                                    )
+                                                }*/
                     }
 
                 )
             }
+        }
+    }
+
+    @Composable
+    fun IconWithBadge(
+        icon: ImageVector,
+        badgeCount: Int?,
+        hasNews: Boolean,
+        contentDescription: String?
+    ) {
+        BadgedBox(
+            badge = {
+                when {
+                    badgeCount != null -> Badge { Text(text = badgeCount.toString()) }
+                    hasNews -> Badge()
+                }
+            }
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = contentDescription
+            )
         }
     }
 }

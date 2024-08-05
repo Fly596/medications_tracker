@@ -15,19 +15,11 @@ fun DashboardScreen(
     modifier: Modifier = Modifier
 ) {
     /*     val user = Firebase.auth.currentUser
-        user?.let {
-            val name = it.displayName
-        } */
+    user?.let {
+        val name = it.displayName
+    } */
 
-    Column(modifier) {
-
-        Button(
-            onClick = onProfileNavigate
-        ) {
-            Text(text = "Profile")
-
-        }
-    }
+    Column(modifier) { Button(onClick = onProfileNavigate) { Text(text = "Profile") } }
 }
 
 @Preview(name = "StartScreen")

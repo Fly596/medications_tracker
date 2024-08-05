@@ -19,11 +19,11 @@ data class NotificationPreferences(
 
 data class UserMedication(
     /*    val name: String = "",
-        val description: String = "",
-        val form: String = "",
-        val strength: Map<Int, String> = mapOf(
-            0 to ""
-        ),*/
+    val description: String = "",
+    val form: String = "",
+    val strength: Map<Int, String> = mapOf(
+        0 to ""
+    ),*/
     val medication: Medication = Medication(),
     val notes: String = "",
     val startDate: LocalDate = LocalDate.now(),
@@ -50,4 +50,3 @@ data class MoodLog(
     val date: LocalDateTime = LocalDateTime.now()
     // TODO
 )
-

@@ -49,42 +49,33 @@ class SignupScreenViewModel : ViewModel() {
     ) {
         auth = FirebaseAuth.getInstance()
 
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // onSignInClick(email, password)
-
-                    // Sign up success
-                    // onSignupClick.invoke()
-                    // TODO: Add user info to database.
-                    Toast.makeText(context, "Account Created", Toast.LENGTH_SHORT).show()
-                    onSignupClick.invoke()
-                } else {
-                    // If sign up fails, display a message to the user.
-                    Toast.makeText(
-                        context,
-                        "Sign Up Failed: ${task.exception?.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // TODO: Add user info to database.
+                Toast.makeText(context, "Account Created", Toast.LENGTH_SHORT).show()
+                onSignupClick.invoke()
+            } else {
+                Toast.makeText(
+                        context, "Sign Up Failed: ${task.exception?.message}", Toast.LENGTH_SHORT)
+                    .show()
             }
+        }
     }
 
     fun addUserInfo(userId: String) {
 
-        val user = hashMapOf(
-            "name" to _userName.value,
-            "email" to _email.value,
-            "password" to _password.value
-        )
+        val user =
+            hashMapOf(
+                "name" to _userName.value, "email" to _email.value, "password" to _password.value)
 
-        db.collection("users").document(userId).set(user).addOnSuccessListener {
-            Log.d(TAG, "User with ID ${userId} successfully added to database.")
-        }
+        db.collection("users")
+            .document(userId)
+            .set(user)
+            .addOnSuccessListener {
+                Log.d(TAG, "User with ID ${userId} successfully added to database.")
+            }
             .addOnFailureListener {
                 Log.d(TAG, "Failed to add user with ID ${userId} to database.")
             }
-
     }
-
 }
