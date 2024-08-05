@@ -100,6 +100,7 @@ class ApplicationActivity : ComponentActivity() {
                     bottomBar = {
                         BottomNavBar(items, /* selectedItemIndex,  */navController, headViewModel)
                     },
+                    // containerColor = MedicationsTrackerAppTheme.systemColors.backgroundLightPrimary
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,

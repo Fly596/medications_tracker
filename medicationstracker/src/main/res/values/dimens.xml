@@ -6,4 +6,6 @@
 
     <dimen name="corner_radius_small">12dp</dimen>
     <dimen name="corner_radius_large">40dp</dimen>
+
+    <dimen name="list_corner_radius_default">10dp</dimen>
 </resources>

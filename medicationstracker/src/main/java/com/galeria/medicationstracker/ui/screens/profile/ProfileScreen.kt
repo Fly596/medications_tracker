@@ -7,31 +7,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
-import com.galeria.medicationstracker.ui.theme.ExtendedColors
+import com.galeria.medicationstracker.ui.shared.components.HIGListButton
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 @Composable
@@ -39,12 +32,13 @@ fun ProfileScreen(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Heading.
-        Text(text = "Profile", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Profile", style = MedicationsTrackerAppTheme.typography.title1)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -55,18 +49,26 @@ fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        ProfileOptionItem("Details") {
-            // TODO: navigate to details screen.
-        }
-        ProfileOptionItem("Notifications") {
-            // TODO: navigate to notifications screen.
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            ProfileOptionItem("Details") {
+                // TODO: navigate to details screen.
+            }
+            ProfileOptionItem("Notifications") {
+                // TODO: navigate to notifications screen.
+            }
+
+            HIGButton(
+                onClick = {},
+                text = "Logout",
+                style = HIGButtonStyle.Bezeled
+            )
         }
 
-        HIGButton(
-            onClick = {},
-            text = "Logout",
-            style = HIGButtonStyle.Bezeled
-            )
 
     }
 }
@@ -93,7 +95,7 @@ fun PfpWithName(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Text(text = userName, style = MaterialTheme.typography.headlineLarge)
+        Text(text = userName, style = MedicationsTrackerAppTheme.typography.title2)
     }
 }
 
@@ -102,14 +104,21 @@ fun ProfileOptionItem(title: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            //.background(color = MedicationsTrackerAppTheme.systemColors.backgroundLightSecondary)
             .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        TextButton(onClick = onClick) {
+        HIGListButton(
+            onClick = onClick,
+            text = title,
+        )
+        /*
+            colors = ButtonDefaults.buttonColors()
+            ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium
+                style = MedicationsTrackerAppTheme.typography.body,
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -117,9 +126,9 @@ fun ProfileOptionItem(title: String, onClick: () -> Unit) {
             Icon(
                 Icons.AutoMirrored.Filled.ArrowForwardIos,
                 contentDescription = "Show options",
-                tint = MedicationsTrackerAppTheme.colors.extGray.defaultLight
+                tint = MedicationsTrackerAppTheme.defaultColors.extGray.defaultLight
             )
-        }
+        }*/
     }
 }
 

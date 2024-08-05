@@ -8,35 +8,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-
-@Immutable
-data class ColorSpecs(
-    val defaultLight: Color,
-    val defaultDark: Color,
-)
-
-@Immutable
-data class ExtendedColors(
-    val extRed: ColorSpecs,
-    val extOrange: ColorSpecs,
-    val extYellow: ColorSpecs,
-    val extGreen: ColorSpecs,
-    val extMint: ColorSpecs,
-    val extCyan: ColorSpecs,
-    val extBlue: ColorSpecs,
-    val extIndigo: ColorSpecs,
-    val extPink: ColorSpecs,
-    val extGray: ColorSpecs,
-    val extGray2: ColorSpecs,
-    val extGray3: ColorSpecs,
-    val extGray4: ColorSpecs,
-    val extGray5: ColorSpecs,
-    val extGray6: ColorSpecs,
-)
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -61,71 +33,6 @@ private val LightColorScheme = lightColorScheme(
 )
 
 
-val LocalCustomExtColors = staticCompositionLocalOf {
-    ExtendedColors(
-        extRed = ColorSpecs(
-            systemLightRed,
-            systemDarkRed,
-        ),
-        extOrange = ColorSpecs(
-            systemLightOrange,
-            systemDarkOrange,
-        ),
-        extYellow = ColorSpecs(
-            systemLightYellow,
-            systemDarkYellow,
-        ),
-        extGreen = ColorSpecs(
-            systemLightGreen,
-            systemDarkGreen,
-        ),
-        extMint = ColorSpecs(
-            systemLightMint,
-            systemDarkMint,
-        ),
-        extCyan = ColorSpecs(
-            systemLightCyan,
-            systemDarkCyan,
-        ),
-        extBlue = ColorSpecs(
-            systemLightBlue,
-            systemDarkBlue,
-        ),
-        extIndigo = ColorSpecs(
-            systemLightIndigo,
-            systemDarkIndigo,
-        ),
-        extPink = ColorSpecs(
-            systemLightPink,
-            systemDarkPink,
-        ),
-        extGray = ColorSpecs(
-            systemLightGray,
-            systemDarkGray,
-        ),
-        extGray2 = ColorSpecs(
-            systemLightGray2,
-            systemDarkGray2,
-        ),
-        extGray3 = ColorSpecs(
-            systemLightGray3,
-            systemDarkGray3,
-        ),
-        extGray4 = ColorSpecs(
-            systemLightGray4,
-            systemDarkGray4,
-        ),
-        extGray5 = ColorSpecs(
-            systemLightGray5,
-            systemDarkGray5,
-        ),
-        extGray6 = ColorSpecs(
-            systemLightGray6,
-            systemDarkGray6,
-        ),
-    )
-}
-
 @Composable
 fun MedicationsTrackerAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -135,68 +42,68 @@ fun MedicationsTrackerAppTheme(
 ) {
 
     // region Extended colors.
-    val extendedColors = ExtendedColors(
-        extRed = ColorSpecs(
-            systemLightRed,
-            systemDarkRed,
-        ),
-        extOrange = ColorSpecs(
-            systemLightOrange,
-            systemDarkOrange,
-        ),
-        extYellow = ColorSpecs(
-            systemLightYellow,
-            systemDarkYellow,
-        ),
-        extGreen = ColorSpecs(
-            systemLightGreen,
-            systemDarkGreen,
-        ),
-        extMint = ColorSpecs(
-            systemLightMint,
-            systemDarkMint,
-        ),
-        extCyan = ColorSpecs(
-            systemLightCyan,
-            systemDarkCyan,
-        ),
-        extBlue = ColorSpecs(
-            systemLightBlue,
-            systemDarkBlue,
-        ),
-        extIndigo = ColorSpecs(
-            systemLightIndigo,
-            systemDarkIndigo,
-        ),
-        extPink = ColorSpecs(
-            systemLightPink,
-            systemDarkPink,
-        ),
-        extGray = ColorSpecs(
-            systemLightGray,
-            systemDarkGray,
-        ),
-        extGray2 = ColorSpecs(
-            systemLightGray2,
-            systemDarkGray2,
-        ),
-        extGray3 = ColorSpecs(
-            systemLightGray3,
-            systemDarkGray3,
-        ),
-        extGray4 = ColorSpecs(
-            systemLightGray4,
-            systemDarkGray4,
-        ),
-        extGray5 = ColorSpecs(
-            systemLightGray5,
-            systemDarkGray5,
-        ),
-        extGray6 = ColorSpecs(
-            systemLightGray6,
-            systemDarkGray6,
-        ),
-    )
+    /*     val extendedColors = ExtendedColors(
+            extRed = ColorSpecs(
+                systemLightRed,
+                systemDarkRed,
+            ),
+            extOrange = ColorSpecs(
+                systemLightOrange,
+                systemDarkOrange,
+            ),
+            extYellow = ColorSpecs(
+                systemLightYellow,
+                systemDarkYellow,
+            ),
+            extGreen = ColorSpecs(
+                systemLightGreen,
+                systemDarkGreen,
+            ),
+            extMint = ColorSpecs(
+                systemLightMint,
+                systemDarkMint,
+            ),
+            extCyan = ColorSpecs(
+                systemLightCyan,
+                systemDarkCyan,
+            ),
+            extBlue = ColorSpecs(
+                systemLightBlue,
+                systemDarkBlue,
+            ),
+            extIndigo = ColorSpecs(
+                systemLightIndigo,
+                systemDarkIndigo,
+            ),
+            extPink = ColorSpecs(
+                systemLightPink,
+                systemDarkPink,
+            ),
+            extGray = ColorSpecs(
+                systemLightGray,
+                systemDarkGray,
+            ),
+            extGray2 = ColorSpecs(
+                systemLightGray2,
+                systemDarkGray2,
+            ),
+            extGray3 = ColorSpecs(
+                systemLightGray3,
+                systemDarkGray3,
+            ),
+            extGray4 = ColorSpecs(
+                systemLightGray4,
+                systemDarkGray4,
+            ),
+            extGray5 = ColorSpecs(
+                systemLightGray5,
+                systemDarkGray5,
+            ),
+            extGray6 = ColorSpecs(
+                systemLightGray6,
+                systemDarkGray6,
+            ),
+        ) */
     // endregion
 
     val colorScheme = when {
@@ -219,8 +126,17 @@ fun MedicationsTrackerAppTheme(
 
 object MedicationsTrackerAppTheme {
 
-    val colors: ExtendedColors
+    val typography: RepTypography
+        @Composable
+        get() = RepAppTypography.current
+
+    val defaultColors: ExtendedColors
         @Composable
         get() = LocalCustomExtColors.current
+
+    val systemColors: RepExtendedColors
+        @Composable
+        get() = LightRepCustomColors.current
+
 
 }
