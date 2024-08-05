@@ -108,7 +108,7 @@ class ApplicationActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = Routes.Profile,
+                        startDestination = Routes.Dashboard,
                         modifier = Modifier
                             .padding(innerPadding)
                             .padding(start = 24.dp, end = 24.dp, top = 16.dp)

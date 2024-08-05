@@ -46,7 +46,7 @@ fun HIGButton(
         when (style) {
             HIGButtonStyle.Filled ->
                 ButtonDefaults.buttonColors(
-                    containerColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue.defaultLight,
+                    containerColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
                     contentColor = Color.White,
                     disabledContainerColor = Color(0x1f787880),
                     disabledContentColor = Color(0x4d3c3c43))
@@ -56,13 +56,13 @@ fun HIGButton(
                     containerColor = Color(0x26007aff), /*Fills, tertiary*/
                     contentColor =
                         MedicationsTrackerAppTheme.extendedColorsLight.extBlue
-                            .defaultLight, /*Labels, tertiary*/
+                            /*.defaultLight*/, /*Labels, tertiary*/
                     disabledContainerColor = Color(0x1f787880),
                     disabledContentColor = Color(0x4d3c3c43))
 
             HIGButtonStyle.Borderless ->
                 ButtonDefaults.textButtonColors(
-                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue.defaultLight,
+                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
                     disabledContentColor = Color(0x4d3c3c43))
         }
 
@@ -91,8 +91,7 @@ fun HIGListButton(
             HIGButtonStyle.Filled ->
                 ButtonDefaults.elevatedButtonColors(
                     containerColor =
-                        MedicationsTrackerAppTheme.systemColorsLight
-                            .backgroundLightPrimaryGrouped, /*Fills, tertiary*/
+                        MedicationsTrackerAppTheme.systemColorsLight.backgroundPrimaryGrouped, /*Fills, tertiary*/
                     contentColor = Color.White,
                     disabledContainerColor = Color(0x1f787880),
                     disabledContentColor = Color(0x4d3c3c43))
@@ -101,14 +100,14 @@ fun HIGListButton(
                 ButtonDefaults.elevatedButtonColors(
                     containerColor =
                         MedicationsTrackerAppTheme.systemColorsLight
-                            .backgroundLightPrimaryGrouped, /*Fills, tertiary*/
-                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlack.defaultLight,
+                            .backgroundPrimaryGrouped, /*Fills, tertiary*/
+                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlack,
                     disabledContainerColor = Color(0x1f787880),
                     disabledContentColor = Color(0x4d3c3c43))
 
             HIGButtonStyle.Borderless ->
                 ButtonDefaults.elevatedButtonColors(
-                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue.defaultLight,
+                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
                     disabledContentColor = Color(0x4d3c3c43))
         }
 
@@ -128,7 +127,7 @@ fun HIGListButton(
             Icon(
                 imageVector = icon,
                 contentDescription = "Show options",
-                tint = MedicationsTrackerAppTheme.extendedColorsLight.extGray.defaultLight,
+                tint = MedicationsTrackerAppTheme.extendedColorsLight.extGray,
                 modifier = Modifier.size(16.dp))
         }
 }
