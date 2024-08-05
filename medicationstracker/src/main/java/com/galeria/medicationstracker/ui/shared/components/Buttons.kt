@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.ui.theme.ExtendedColors
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 // TODO: вынести цвета в тему.
@@ -28,7 +30,7 @@ fun HIGButton(
 ) {
     val buttonColors = when (style) {
         HIGButtonStyle.Filled -> ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF007AFF),
+            containerColor = MedicationsTrackerAppTheme.colors.extBlue.defaultLight,
             contentColor = Color.White,
             disabledContainerColor = Color(0x1f787880),
             disabledContentColor = Color(0x4d3c3c43)
@@ -36,13 +38,13 @@ fun HIGButton(
 
         HIGButtonStyle.Bezeled -> ButtonDefaults.buttonColors(
             containerColor = Color(0x26007aff),  /*Fills, tertiary*/
-            contentColor = Color(0xFF007AFF), /*Labels, tertiary*/
+            contentColor = MedicationsTrackerAppTheme.colors.extBlue.defaultLight, /*Labels, tertiary*/
             disabledContainerColor = Color(0x1f787880),
             disabledContentColor = Color(0x4d3c3c43)
         )
 
         HIGButtonStyle.Borderless -> ButtonDefaults.textButtonColors(
-            contentColor = Color(0xFF007AFF),
+            contentColor =MedicationsTrackerAppTheme.colors.extBlue.defaultLight,
             disabledContentColor = Color(0x4d3c3c43)
         )
     }
@@ -50,7 +52,7 @@ fun HIGButton(
     Button(
         onClick = onClick,
         enabled = enabled,
-        shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius_small)),
+        shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius_large)),
         colors = buttonColors
     ) {
         Text(text = text)

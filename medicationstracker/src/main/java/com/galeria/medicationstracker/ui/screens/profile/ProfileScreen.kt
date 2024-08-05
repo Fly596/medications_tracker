@@ -17,6 +17,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +29,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.ui.shared.components.HIGButton
+import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
+import com.galeria.medicationstracker.ui.theme.ExtendedColors
+import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 @Composable
 fun ProfileScreen(
@@ -39,7 +44,7 @@ fun ProfileScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Heading.
-        Text(text = "Profile", style = MaterialTheme.typography.displayLarge)
+        Text(text = "Profile", style = MaterialTheme.typography.headlineMedium)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -50,8 +55,18 @@ fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        ProfileOptionItem("Details") {}
-        ProfileOptionItem("Notifications") {}
+        ProfileOptionItem("Details") {
+            // TODO: navigate to details screen.
+        }
+        ProfileOptionItem("Notifications") {
+            // TODO: navigate to notifications screen.
+        }
+
+        HIGButton(
+            onClick = {},
+            text = "Logout",
+            style = HIGButtonStyle.Bezeled
+            )
 
     }
 }
@@ -78,9 +93,8 @@ fun PfpWithName(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Text(text = userName, style = MaterialTheme.typography.displaySmall)
+        Text(text = userName, style = MaterialTheme.typography.headlineLarge)
     }
-
 }
 
 @Composable
@@ -88,26 +102,29 @@ fun ProfileOptionItem(title: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(vertical = 16.dp),
+            .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = title,
-            fontSize = 18.sp,
-            color = Color.Black
-        )
-        Icon(
-            Icons.AutoMirrored.Filled.ArrowForwardIos,
-            contentDescription = null,
-            tint = Color.Gray
-        )
+        TextButton(onClick = onClick) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowForwardIos,
+                contentDescription = "Show options",
+                tint = MedicationsTrackerAppTheme.colors.extGray.defaultLight
+            )
+        }
     }
 }
 
 
-@Preview(name = "ProfileScreen")
+@Preview(name = "ProfileScreen", showSystemUi = true, device = "id:pixel_8")
 @Composable
 private fun PreviewProfileScreen() {
     ProfileScreen()
