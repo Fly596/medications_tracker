@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -28,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
+import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 @Composable
 fun LoginScreen(
@@ -47,7 +47,7 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 stringResource(R.string.sign_in_screen_title),
-                style = MaterialTheme.typography.headlineMedium)
+                style = MedicationsTrackerAppTheme.extendedTypography.body)
 
             Spacer(modifier = Modifier.height(20.dp))
 

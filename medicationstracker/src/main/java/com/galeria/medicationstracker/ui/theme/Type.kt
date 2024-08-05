@@ -27,87 +27,101 @@ data class RepTypography(
     val caption2: TextStyle, // Smaller caption text, used for additional details or metadata related to an image or graphic.
 )
 
-val RepAppTypography = staticCompositionLocalOf {
+val LocalRepAppTypography = staticCompositionLocalOf{
     RepTypography(
-        largeTitle = TextStyle(
-            fontSize = 34.sp,
-            fontWeight = FontWeight.Medium,
-            fontFamily = FontFamily.Default,
-            lineHeight = 41.sp,
-            // color = Color.Black
-        ),
-        title1 = TextStyle(
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontFamily.Default,
-            lineHeight = 34.sp,
-            // color = Color.Black
-        ),
-        title2 = TextStyle(
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontFamily.Default,
-            lineHeight = 28.sp,
-            // color = Color.Black
-        ),
-        title3 = TextStyle(
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontFamily.Default,
-            lineHeight = 25.sp,
-            // color = Color.Black
-        ),
-        headline = TextStyle(
-            fontSize = 17.sp,
-            fontWeight = FontWeight.SemiBold,
-            fontFamily = FontFamily.Default,
-            lineHeight = 22.sp,
-            // color = Color.Black
-        ),
-        body = TextStyle(
-            fontSize = 17.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontFamily.Default,
-            lineHeight = 22.sp,
-            // color = Color.Black
-        ),
-        callout = TextStyle(
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontFamily.Default,
-            lineHeight = 21.sp,
-            // color = Color.Black
-        ),
-        subhead = TextStyle(
-            fontSize = 15.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontFamily.Default,
-            lineHeight = 20.sp,
-            // color = Color.Black
-        ),
-        footnote = TextStyle(
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontFamily.Default,
-            lineHeight = 18.sp,
-            // color = Color.Black
-        ),
-        caption1 = TextStyle(
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontFamily.Default,
-            lineHeight = 16.sp,
-            // color = Color.Black
-        ),
-        caption2 = TextStyle(
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = FontFamily.Default,
-            lineHeight = 13.sp,
-            // color = Color.Black
-        )
+        largeTitle = TextStyle.Default,
+        title1 = TextStyle.Default,
+        title2 = TextStyle.Default,
+        title3 = TextStyle.Default,
+        headline = TextStyle.Default,
+        body = TextStyle.Default,
+        callout = TextStyle.Default,
+        subhead = TextStyle.Default,
+        footnote = TextStyle.Default,
+        caption1 = TextStyle.Default,
+        caption2 = TextStyle.Default
     )
 }
+
+val RepAppTypography = RepTypography(
+    largeTitle = TextStyle(
+        fontSize = 34.sp,
+        fontWeight = FontWeight.Medium,
+        fontFamily = FontFamily.Default,
+        lineHeight = 41.sp,
+        // color = Color.Black
+    ),
+    title1 = TextStyle(
+        fontSize = 28.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = FontFamily.Default,
+        lineHeight = 34.sp,
+        // color = Color.Black
+    ),
+    title2 = TextStyle(
+        fontSize = 22.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = FontFamily.Default,
+        lineHeight = 28.sp,
+        // color = Color.Black
+    ),
+    title3 = TextStyle(
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = FontFamily.Default,
+        lineHeight = 25.sp,
+        // color = Color.Black
+    ),
+    headline = TextStyle(
+        fontSize = 17.sp,
+        fontWeight = FontWeight.SemiBold,
+        fontFamily = FontFamily.Default,
+        lineHeight = 22.sp,
+        // color = Color.Black
+    ),
+    body = TextStyle(
+        fontSize = 17.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = FontFamily.Default,
+        lineHeight = 22.sp,
+        // color = Color.Black
+    ),
+    callout = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = FontFamily.Default,
+        lineHeight = 21.sp,
+        // color = Color.Black
+    ),
+    subhead = TextStyle(
+        fontSize = 15.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = FontFamily.Default,
+        lineHeight = 20.sp,
+        // color = Color.Black
+    ),
+    footnote = TextStyle(
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = FontFamily.Default,
+        lineHeight = 18.sp,
+        // color = Color.Black
+    ),
+    caption1 = TextStyle(
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = FontFamily.Default,
+        lineHeight = 16.sp,
+        // color = Color.Black
+    ),
+    caption2 = TextStyle(
+        fontSize = 11.sp,
+        fontWeight = FontWeight.Normal,
+        fontFamily = FontFamily.Default,
+        lineHeight = 13.sp,
+        // color = Color.Black
+    )
+)
 
 // Set of Material typography styles to start with
 val AppTypography = Typography(

@@ -46,7 +46,7 @@ fun HIGButton(
         when (style) {
             HIGButtonStyle.Filled ->
                 ButtonDefaults.buttonColors(
-                    containerColor = MedicationsTrackerAppTheme.defaultColors.extBlue.defaultLight,
+                    containerColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue.defaultLight,
                     contentColor = Color.White,
                     disabledContainerColor = Color(0x1f787880),
                     disabledContentColor = Color(0x4d3c3c43))
@@ -55,14 +55,14 @@ fun HIGButton(
                 ButtonDefaults.buttonColors(
                     containerColor = Color(0x26007aff), /*Fills, tertiary*/
                     contentColor =
-                        MedicationsTrackerAppTheme.defaultColors.extBlue
+                        MedicationsTrackerAppTheme.extendedColorsLight.extBlue
                             .defaultLight, /*Labels, tertiary*/
                     disabledContainerColor = Color(0x1f787880),
                     disabledContentColor = Color(0x4d3c3c43))
 
             HIGButtonStyle.Borderless ->
                 ButtonDefaults.textButtonColors(
-                    contentColor = MedicationsTrackerAppTheme.defaultColors.extBlue.defaultLight,
+                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue.defaultLight,
                     disabledContentColor = Color(0x4d3c3c43))
         }
 
@@ -73,7 +73,7 @@ fun HIGButton(
         colors = buttonColors) {
             Text(
                 text = text,
-                style = MedicationsTrackerAppTheme.typography.body,
+                style = MedicationsTrackerAppTheme.extendedTypography.body,
             )
         }
 }
@@ -91,7 +91,7 @@ fun HIGListButton(
             HIGButtonStyle.Filled ->
                 ButtonDefaults.elevatedButtonColors(
                     containerColor =
-                        MedicationsTrackerAppTheme.systemColors
+                        MedicationsTrackerAppTheme.systemColorsLight
                             .backgroundLightPrimaryGrouped, /*Fills, tertiary*/
                     contentColor = Color.White,
                     disabledContainerColor = Color(0x1f787880),
@@ -100,15 +100,15 @@ fun HIGListButton(
             HIGButtonStyle.Bezeled ->
                 ButtonDefaults.elevatedButtonColors(
                     containerColor =
-                        MedicationsTrackerAppTheme.systemColors
+                        MedicationsTrackerAppTheme.systemColorsLight
                             .backgroundLightPrimaryGrouped, /*Fills, tertiary*/
-                    contentColor = MedicationsTrackerAppTheme.defaultColors.extBlack.defaultLight,
+                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlack.defaultLight,
                     disabledContainerColor = Color(0x1f787880),
                     disabledContentColor = Color(0x4d3c3c43))
 
             HIGButtonStyle.Borderless ->
                 ButtonDefaults.elevatedButtonColors(
-                    contentColor = MedicationsTrackerAppTheme.defaultColors.extBlue.defaultLight,
+                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue.defaultLight,
                     disabledContentColor = Color(0x4d3c3c43))
         }
 
@@ -120,7 +120,7 @@ fun HIGListButton(
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
             Text(
                 text = text,
-                style = MedicationsTrackerAppTheme.typography.body,
+                style = MedicationsTrackerAppTheme.extendedTypography.body,
                 modifier = Modifier.padding(vertical = 8.dp))
 
             Spacer(modifier = Modifier.weight(1f))
@@ -128,7 +128,7 @@ fun HIGListButton(
             Icon(
                 imageVector = icon,
                 contentDescription = "Show options",
-                tint = MedicationsTrackerAppTheme.defaultColors.extGray.defaultLight,
+                tint = MedicationsTrackerAppTheme.extendedColorsLight.extGray.defaultLight,
                 modifier = Modifier.size(16.dp))
         }
 }

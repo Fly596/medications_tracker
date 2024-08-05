@@ -45,45 +45,74 @@ val systemDarkGray4 = Color(0xFF3a3a3c)
 val systemDarkGray5 = Color(0xFF2c2c2e)
 val systemDarkGray6 = Color(0xFF1c1c1e)
 
-val backgroundLightPrimary = Color(0xFFFFFFFF)
-val backgroundLightSecondary = Color(0xFFF2F2F7)
-val backgroundLightTertiary = Color(0xFFFFFFFF)
-
+val backgroundPrimaryLight = Color(0xFFFFFFFF)
+val backgroundSecondaryLight = Color(0xFFF2F2F7)
+val backgroundTertiaryLight = Color(0xFFFFFFFF)
 // Containers.
-val backgroundLightPrimaryGrouped = Color(0xFFf2f2f7)
-val backgroundLightSecondaryGrouped = Color(0xFFffffff)
-val backgroundLightTertiaryGrouped = Color(0xFFf2f2f7)
+val backgroundPrimaryGroupedLight = Color(0xFFf2f2f7)
+val backgroundSecondaryGroupedLight = Color(0xFFffffff)
+val backgroundTertiaryGroupedLight = Color(0xFFf2f2f7)
 
 // Separators.
 val separatorOpaque = Color(0xFFC6C6C8)
 val separatorNonOpaque = Color(0x57545456)
 
+// Typography.
+val labelPrimary = Color(0xFF000000)
+val labelSecondary = Color(0x993C3C43)
+val labelTertiary = Color(0x4D3C3C43)
+val labelQuaternary = Color(0x2E3C3C43)
+
 
 @Immutable
-data class RepExtendedColors(
-    val backgroundLightPrimary: Color,
-    val backgroundLightSecondary: Color,
-    val backgroundLightTertiary: Color,
-    val backgroundLightPrimaryGrouped: Color,
-    val backgroundLightSecondaryGrouped: Color,
-    val backgroundLightTertiaryGrouped: Color,
+data class AppSystemColors(
+    val backgroundPrimary: Color,
+    val backgroundSecondary: Color,
+    val backgroundTertiary: Color,
+    val backgroundPrimaryGrouped: Color,
+    val backgroundSecondaryGrouped: Color,
+    val backgroundTertiaryGrouped: Color,
     val separatorOpaque: Color,
     val separatorNonOpaque: Color,
+    val labelPrimary: Color,
+    val labelSecondary: Color,
+    val labelTertiary: Color,
+    val labelQuaternary: Color,
 )
 
-val LightRepCustomColors = staticCompositionLocalOf {
-    RepExtendedColors(
-        backgroundLightPrimary = backgroundLightPrimary,
-        backgroundLightSecondary = backgroundLightSecondary,
-        backgroundLightTertiary = backgroundLightTertiary,
-        backgroundLightPrimaryGrouped = backgroundLightPrimaryGrouped,
-        backgroundLightSecondaryGrouped = backgroundLightSecondaryGrouped,
-        backgroundLightTertiaryGrouped = backgroundLightTertiaryGrouped,
+/*val LocalLightRepCustomColors = staticCompositionLocalOf {
+    AppSystemColors(
+        backgroundPrimary = backgroundPrimaryLight,
+        backgroundSecondary = backgroundSecondaryLight,
+        backgroundTertiary = backgroundTertiaryLight,
+        backgroundPrimaryGrouped = backgroundPrimaryGroupedLight,
+        backgroundSecondaryGrouped = backgroundSecondaryGroupedLight,
+        backgroundTertiaryGrouped = backgroundTertiaryGroupedLight,
         separatorOpaque = separatorOpaque,
         separatorNonOpaque = separatorNonOpaque,
+        labelPrimary = labelPrimary,
+        labelSecondary = labelSecondary,
+        labelTertiary = labelTertiary,
+        labelQuaternary = labelQuaternary,
+    )
+}*/
+
+val LocalLightSystemColors = staticCompositionLocalOf {
+    AppSystemColors(
+        backgroundPrimary = Color.Unspecified,
+        backgroundSecondary = Color.Unspecified,
+        backgroundTertiary = Color.Unspecified,
+        backgroundPrimaryGrouped = Color.Unspecified,
+        backgroundSecondaryGrouped = Color.Unspecified,
+        backgroundTertiaryGrouped = Color.Unspecified,
+        separatorOpaque = Color.Unspecified,
+        separatorNonOpaque = Color.Unspecified,
+        labelPrimary = Color.Unspecified,
+        labelSecondary = Color.Unspecified,
+        labelTertiary = Color.Unspecified,
+        labelQuaternary = Color.Unspecified,
     )
 }
-
 
 @Immutable
 data class ColorSpecs(
@@ -91,7 +120,7 @@ data class ColorSpecs(
     val defaultDark: Color,
 )
 
-@Immutable
+/*@Immutable
 data class ExtendedColors(
     val extRed: ColorSpecs,
     val extOrange: ColorSpecs,
@@ -110,79 +139,69 @@ data class ExtendedColors(
     val extGray6: ColorSpecs,
     val extWhite: ColorSpecs,
     val extBlack: ColorSpecs,
+)*/
+@Immutable
+data class ExtendedColors(
+    val extRed: Color,
+    val extOrange: Color,
+    val extYellow: Color,
+    val extGreen: Color,
+    val extMint: Color,
+    val extCyan: Color,
+    val extBlue: Color,
+    val extIndigo: Color,
+    val extPink: Color,
+    val extGray: Color,
+    val extGray2: Color,
+    val extGray3: Color,
+    val extGray4: Color,
+    val extGray5: Color,
+    val extGray6: Color,
+    val extWhite: Color,
+    val extBlack: Color,
 )
 
-
-val LocalCustomExtColors = staticCompositionLocalOf {
+val LocalExtColorsLight = staticCompositionLocalOf {
     ExtendedColors(
-        extRed = ColorSpecs(
-            systemLightRed,
-            systemDarkRed,
-        ),
-        extOrange = ColorSpecs(
-            systemLightOrange,
-            systemDarkOrange,
-        ),
-        extYellow = ColorSpecs(
-            systemLightYellow,
-            systemDarkYellow,
-        ),
-        extGreen = ColorSpecs(
-            systemLightGreen,
-            systemDarkGreen,
-        ),
-        extMint = ColorSpecs(
-            systemLightMint,
-            systemDarkMint,
-        ),
-        extCyan = ColorSpecs(
-            systemLightCyan,
-            systemDarkCyan,
-        ),
-        extBlue = ColorSpecs(
-            systemLightBlue,
-            systemDarkBlue,
-        ),
-        extIndigo = ColorSpecs(
-            systemLightIndigo,
-            systemDarkIndigo,
-        ),
-        extPink = ColorSpecs(
-            systemLightPink,
-            systemDarkPink,
-        ),
-        extGray = ColorSpecs(
-            systemLightGray,
-            systemDarkGray,
-        ),
-        extGray2 = ColorSpecs(
-            systemLightGray2,
-            systemDarkGray2,
-        ),
-        extGray3 = ColorSpecs(
-            systemLightGray3,
-            systemDarkGray3,
-        ),
-        extGray4 = ColorSpecs(
-            systemLightGray4,
-            systemDarkGray4,
-        ),
-        extGray5 = ColorSpecs(
-            systemLightGray5,
-            systemDarkGray5,
-        ),
-        extGray6 = ColorSpecs(
-            systemLightGray6,
-            systemDarkGray6,
-        ),
-        extWhite = ColorSpecs(
-            Color.White,
-            Color.White,
-        ),
-        extBlack = ColorSpecs(
-            Color.Black,
-            Color.Black,
-        ),
+        extRed = Color.Unspecified,
+        extOrange = Color.Unspecified,
+        extYellow = Color.Unspecified,
+        extGreen = Color.Unspecified,
+        extMint = Color.Unspecified,
+        extCyan = Color.Unspecified,
+        extBlue = Color.Unspecified,
+        extIndigo = Color.Unspecified,
+        extPink = Color.Unspecified,
+        extGray = Color.Unspecified,
+        extGray2 = Color.Unspecified,
+        extGray3 = Color.Unspecified,
+        extGray4 = Color.Unspecified,
+        extGray5 = Color.Unspecified,
+        extGray6 = Color.Unspecified,
+        extWhite = Color.Unspecified,
+        extBlack = Color.Unspecified,
+    )
+}
+
+val LocalExtColorsDark = staticCompositionLocalOf {
+    ExtendedColors(
+        extRed = systemDarkRed,
+        extOrange = systemDarkOrange,
+        extYellow = systemDarkYellow,
+        extGreen = systemDarkGreen,
+        extMint = systemDarkMint,
+        extCyan = systemDarkCyan,
+        extBlue = systemDarkBlue,
+        extIndigo = systemDarkIndigo,
+        extPink = systemDarkPink,
+        extGray = systemDarkGray,
+        extGray2 = systemDarkGray2,
+        extGray3 = systemDarkGray3,
+        extGray4 = systemDarkGray4,
+        extGray5 = systemDarkGray5,
+        extGray6 = systemDarkGray6,
+        extWhite = Color.White,
+        extBlack = Color.Black,
     )
 }
 

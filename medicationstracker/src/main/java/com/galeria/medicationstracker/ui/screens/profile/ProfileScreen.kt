@@ -33,7 +33,7 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally) {
             // Heading.
-            Text(text = "Profile", style = MedicationsTrackerAppTheme.typography.title1)
+            Text(text = "Profile", style = MedicationsTrackerAppTheme.extendedTypography.title1)
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -74,7 +74,7 @@ fun PfpWithName(painter: Int, userName: String, modifier: Modifier = Modifier) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Text(text = userName, style = MedicationsTrackerAppTheme.typography.title2)
+            Text(text = userName, style = MedicationsTrackerAppTheme.extendedTypography.title2)
         }
 }
 
