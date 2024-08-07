@@ -5,22 +5,37 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class LoginScreenViewModel : ViewModel() {
 
-    private val _email = MutableStateFlow("")
-    val username = _email.asStateFlow()
+    private val _uiState = MutableStateFlow(LoginScreenUiState())
+    val uiState: StateFlow<LoginScreenUiState> = _uiState.asStateFlow()
 
-    private val _password = MutableStateFlow("")
-    val password = _password.asStateFlow()
+    //private lateinit var email: String
+    //private lateinit var password: String
+
+    /*     private val _email = MutableStateFlow("")
+        val username = _email.asStateFlow()
+
+        private val _password = MutableStateFlow("")
+        val password = _password.asStateFlow() */
 
     fun updateEmail(newEmail: String) {
-        _email.value = newEmail
+        _uiState.update { currentState ->
+            currentState.copy(email = newEmail)
+        }
+        //_email.value = newEmail
     }
 
     fun updatePassword(newPassword: String) {
-        _password.value = newPassword
+        // password = newPassword
+        _uiState.update { currentState ->
+            currentState.copy(password = newPassword)
+        }
+        //_password.value = newPassword
     }
 
     fun onSignInClick(email: String, password: String, context: Context, onLoginClick: () -> Unit) {
@@ -34,9 +49,10 @@ class LoginScreenViewModel : ViewModel() {
             } else {
                 // If sign in fails, display a message to the user.
                 Toast.makeText(
-                        context,
-                        "Authentication Failed: ${task.exception?.message}",
-                        Toast.LENGTH_SHORT)
+                    context,
+                    "Authentication Failed: ${task.exception?.message}",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
@@ -49,11 +65,17 @@ class LoginScreenViewModel : ViewModel() {
                 Toast.makeText(context, "Password reset email sent!", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(
-                        context,
-                        "Error sending password reset email: ${task.exception?.message}",
-                        Toast.LENGTH_SHORT)
+                    context,
+                    "Error sending password reset email: ${task.exception?.message}",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
     }
 }
+
+data class LoginScreenUiState(
+    val email: String = "",
+    val password: String = "",
+)

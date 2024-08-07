@@ -31,8 +31,14 @@ class MedicationsViewModel : ViewModel() {
     }
 
     fun addMedication(medication: Medication) {
-        db.collection("medication").add(medication).addOnSuccessListener {
+        db.collection("medication")
+            .document("${medication.name}-${medication.dosage.strength}")
+            .set(medication).addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot Created")
+            }
+
+        /* db.collection("medication").add(medication).addOnSuccessListener {
             Log.d(TAG, "DocumentSnapshot added with ID: ${it.id}")
-        }
+        } */
     }
 }

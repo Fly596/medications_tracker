@@ -36,9 +36,9 @@ fun LoginScreen(
     viewModel: LoginScreenViewModel,
     modifier: Modifier = Modifier
 ) {
+    val loginUiState by viewModel.uiState.collectAsState()
+
     val context = LocalContext.current
-    val email = viewModel.username.collectAsState()
-    val password = viewModel.password.collectAsState()
     var checked by remember { mutableStateOf(true) }
 
     Column(
@@ -52,7 +52,8 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             MyTextField(
-                value = email.value,
+                //value = email.value,
+                value = loginUiState.email,
                 onValueChange = { viewModel.updateEmail(it) },
                 label = "Email",
                 modifier = Modifier.fillMaxWidth(),
@@ -61,7 +62,8 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             MyTextField(
-                value = password.value,
+                //value = password.value,
+                value = loginUiState.password,
                 onValueChange = { viewModel.updatePassword(it) },
                 label = "Password",
                 modifier = Modifier.fillMaxWidth(),
@@ -78,11 +80,11 @@ fun LoginScreen(
                 text = "Sign In",
                 onClick = {
                     // ! TEMP: для простого входа
-                    if (email.value == "sex") {
+                    if (loginUiState.email == "sex") {
                         viewModel.onSignInClick(
                             "ggsell@gmail.com", "password", context, onLoginClick)
                     } else {
-                        viewModel.onSignInClick(email.value, password.value, context, onLoginClick)
+                        viewModel.onSignInClick(loginUiState.email, loginUiState.password, context, onLoginClick)
                     }
                 },
                 enabled = true,
@@ -91,14 +93,14 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             HIGButton(
-                text = "Create Account",
+                text = stringResource(R.string.button_create_account),
                 onClick = { onSignupClick.invoke() },
                 enabled = true,
                 style = HIGButtonStyle.Bezeled)
 
             HIGButton(
-                text = "Forgot Password?",
-                onClick = { viewModel.resetPassword(email.value, context) },
+                text = stringResource(R.string.button_forgot_password),
+                onClick = { viewModel.resetPassword(loginUiState.email, context) },
                 enabled = true,
                 style = HIGButtonStyle.Borderless)
             // endregion
@@ -120,6 +122,7 @@ fun MyTextField(
         label = { Text(label) },
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
+        singleLine = true,
         modifier = modifier)
 }
 

@@ -3,4 +3,6 @@
     <string name="sign_in_screen_title">Sign in</string>
     <string name="button_default_text">FUCK ME</string>
     <string name="title_activity_application">ApplicationActivity</string>
+    <string name="button_create_account">Create Account</string>
+    <string name="button_forgot_password">Forgot Password?</string>
 </resources>

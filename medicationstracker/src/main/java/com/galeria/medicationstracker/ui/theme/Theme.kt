@@ -8,6 +8,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -27,7 +28,7 @@ private val LightColorScheme =
         onBackground = Color(0xFF1C1B1F),
         onSurface = Color(0xFF1C1B1F),
         */
-        )
+    )
 
 @Composable
 fun MedicationsTrackerAppTheme(
@@ -39,94 +40,241 @@ fun MedicationsTrackerAppTheme(
 
     val replacementTypography =
         RepTypography(
-            largeTitle =
-                TextStyle(
-                    fontSize = 34.sp,
-                    fontWeight = FontWeight.Medium,
-                    fontFamily = FontFamily.Default,
-                    lineHeight = 41.sp,
-                    // color = Color.Black
-                ),
-            title1 =
-                TextStyle(
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = FontFamily.Default,
-                    lineHeight = 34.sp,
-                    // color = Color.Black
-                ),
-            title2 =
-                TextStyle(
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = FontFamily.Default,
-                    lineHeight = 28.sp,
-                    // color = Color.Black
-                ),
-            title3 =
-                TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = FontFamily.Default,
-                    lineHeight = 25.sp,
-                    // color = Color.Black
-                ),
-            headline =
-                TextStyle(
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    fontFamily = FontFamily.Default,
-                    lineHeight = 22.sp,
-                    // color = Color.Black
-                ),
-            body =
-                TextStyle(
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = FontFamily.Default,
-                    lineHeight = 22.sp,
-                    // color = Color.Black
-                ),
-            callout =
-                TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = FontFamily.Default,
-                    lineHeight = 21.sp,
-                    // color = Color.Black
-                ),
-            subhead =
-                TextStyle(
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = FontFamily.Default,
-                    lineHeight = 20.sp,
-                    // color = Color.Black
-                ),
-            footnote =
-                TextStyle(
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = FontFamily.Default,
-                    lineHeight = 18.sp,
-                    // color = Color.Black
-                ),
-            caption1 =
-                TextStyle(
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = FontFamily.Default,
-                    lineHeight = 16.sp,
-                    // color = Color.Black
-                ),
-            caption2 =
-                TextStyle(
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = FontFamily.Default,
-                    lineHeight = 13.sp,
-                    // color = Color.Black
-                ))
+            largeTitle = TextStyle(
+                fontSize = 34.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 41.sp,
+                // color = Color.Black
+            ),
+            largeTitleEmphasized = TextStyle(
+                fontSize = 34.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 41.sp
+            ),
+            title1 = TextStyle(
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 34.sp,
+                // color = Color.Black
+            ),
+            title1Emphasized = TextStyle(
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 34.sp
+            ),
+
+            title2 = TextStyle(
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 28.sp,
+                // color = Color.Black
+            ),
+            title2Emphasized = TextStyle(
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 28.sp
+            ),
+
+            title3 = TextStyle(
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 25.sp,
+                // color = Color.Black
+            ),
+            title3Emphasized = TextStyle(
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 25.sp
+            ),
+
+            headline = TextStyle(
+                fontSize = 17.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 22.sp,
+                // color = Color.Black
+            ),
+            headlineItalic = TextStyle(
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic,
+                lineHeight = 22.sp,
+                // color = Color.Black
+            ),
+
+            body = TextStyle(
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 22.sp,
+                // color = Color.Black
+            ),
+            bodyEmphasized = TextStyle(
+                fontSize = 17.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 22.sp
+            ),
+            bodyItalic = TextStyle(
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic,
+                lineHeight = 22.sp,
+            ),
+            bodyEmphasizedItalic = TextStyle(
+                fontSize = 17.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic
+            ),
+
+            callout = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 21.sp,
+                // color = Color.Black
+            ),
+            calloutEmphasized = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 21.sp
+            ),
+            calloutItalic = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic,
+            ),
+            calloutEmphasizedItalic = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic
+            ),
+
+
+            subhead = TextStyle(
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 20.sp,
+                // color = Color.Black
+            ),
+            subheadEmphasized = TextStyle(
+                fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 20.sp
+            ),
+            subheadItalic = TextStyle(
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic,
+                lineHeight = 20.sp,
+            ),
+            subheadEmphasizedItalic = TextStyle(
+                fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic,
+            ),
+
+
+            footnote = TextStyle(
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 18.sp,
+                // color = Color.Black
+            ),
+            footnoteEmphasized = TextStyle(
+                fontSize = 13.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 18.sp
+            ),
+            footnoteItalic = TextStyle(
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic,
+                lineHeight = 18.sp,
+            ),
+            footnoteEmphasizedItalic = TextStyle(
+                fontSize = 13.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic,
+            ),
+
+
+            caption1 = TextStyle(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 16.sp,
+                // color = Color.Black
+            ),
+            caption1Emphasized = TextStyle(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 16.sp
+            ),
+            caption1Italic = TextStyle(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic,
+                lineHeight = 16.sp,
+            ),
+            caption1EmphasizedItalic = TextStyle(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic,
+            ),
+
+            caption2 = TextStyle(
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 13.sp,
+                // color = Color.Black
+            ),
+            caption2Emphasized = TextStyle(
+                fontSize = 11.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 13.sp
+            ),
+            caption2Italic = TextStyle(
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic,
+                lineHeight = 13.sp,
+            ),
+            caption2EmphasizedItalic = TextStyle(
+                fontSize = 11.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Default,
+                fontStyle = FontStyle.Italic,
+            )
+        )
 
     val replacementSystemColors =
         AppSystemColors(
@@ -169,7 +317,8 @@ fun MedicationsTrackerAppTheme(
         LocalRepAppTypography provides replacementTypography,
         LocalLightSystemColors provides replacementSystemColors,
         LocalExtColorsLight provides extendedColorsLight,
-        content = content)
+        content = content
+    )
     /*    val colorScheme =
     when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {

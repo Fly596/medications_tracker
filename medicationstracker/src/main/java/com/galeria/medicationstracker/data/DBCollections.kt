@@ -18,13 +18,10 @@ data class NotificationPreferences(
 )
 
 data class UserMedication(
-    /*    val name: String = "",
-    val description: String = "",
+    val name: String = "",
     val form: String = "",
-    val strength: Map<Int, String> = mapOf(
-        0 to ""
-    ),*/
-    val medication: Medication = Medication(),
+    val strength: Float = 0f,
+    val unit: String = "",
     val notes: String = "",
     val startDate: LocalDate = LocalDate.now(),
     val endDate: LocalDate? = null,
@@ -35,9 +32,14 @@ data class UserMedication(
 // Contains data from firestore db.
 data class Medication(
     val name: String = "",
-    val description: String = "",
+    val medicationClass: String = "",
     val form: String = "",
-    val strength: Map<Int, String> = mapOf()
+    val dosage: MedicationDosage = MedicationDosage(),
+)
+
+data class MedicationDosage(
+    val strength: Float = 0f,
+    val unit: String = "",
 )
 
 data class DELETEMedication(

@@ -233,3 +233,61 @@ private fun PreviewTextFields() {
         }
     }
 }*/
+
+
+/*             Row(
+                Modifier
+                    .background(Color.LightGray, RoundedCornerShape(percent = 30))
+                    .padding(16.dp)
+            ) {
+                Icon(Icons.Default.MailOutline, contentDescription = "Mail Icon")
+                Spacer(Modifier.width(16.dp))
+                innerTextField()
+            } *//*
+
+        },
+        modifier = modifier
+            .padding(start = 12.dp, end = 12.dp, bottom = 8.dp)
+            .border(
+                width = 1.dp,
+                color = Color.Gray, // Adjust color to match HIG
+                shape = RoundedCornerShape(8.dp)
+            )
+    )
+    Text(
+        text = label,
+        modifier = Modifier.padding(start = 12.dp, bottom = 4.dp),
+        color = Color.Gray // Adjust color to match HIG
+    )
+}
+*/
+
+/*
+
+@Composable
+fun HIGOutlinedTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    modifier: Modifier = Modifier,
+    isPassword: Boolean = false,
+    textStyle: TextStyle = TextStyle.Default
+) {
+    Column(modifier = modifier) {
+        Text(text = label, style = MedicationsTrackerAppTheme.extendedTypography.body)
+        BasicTextField(
+            value = value,
+            onValueChange = onValueChange,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Text
+            ),
+            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+            textStyle = textStyle,
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, MaterialTheme.colors.onSurface.copy(alpha = 0.5f), RoundedCornerShape(4.dp))
+                .padding(16.dp)
+        )
+    }
+}
+*/

@@ -27,6 +27,8 @@ import com.galeria.medicationstracker.ui.screens.autentification.create_account.
 import com.galeria.medicationstracker.ui.screens.autentification.create_account.SignupScreenViewModel
 import com.galeria.medicationstracker.ui.screens.autentification.login.LoginScreen
 import com.galeria.medicationstracker.ui.screens.autentification.login.LoginScreenViewModel
+import com.galeria.medicationstracker.ui.screens.new_medication.NewMedicationScreen
+import com.galeria.medicationstracker.ui.screens.new_medication.NewMedicationViewModel
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 import com.google.firebase.FirebaseApp
 
@@ -35,6 +37,7 @@ class HeadActivity : ComponentActivity() {
 
     private val loginViewModel: LoginScreenViewModel by viewModels()
     private val registerViewModel: SignupScreenViewModel by viewModels()
+    val newMedViewModel: NewMedicationViewModel = NewMedicationViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,51 +47,56 @@ class HeadActivity : ComponentActivity() {
 
         setContent {
             MedicationsTrackerAppTheme {
-                val navController = rememberNavController()
-                val context: Context = LocalContext.current
 
-                Scaffold(
-                ) { innerPadding ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = Routes.Home,
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
+                                 val navController = rememberNavController()
+                                val context: Context = LocalContext.current
 
-                        // region Autehntication
-                        composable<Routes.Home> {
-                            LoginScreen(
-                                onLoginClick = {
-                                    val intent = Intent(context, ApplicationActivity::class.java)
-                                    startActivity(intent)
-                                },
-                                onSignupClick = {
-                                    navController.navigate(
-                                        Routes.Registration
+                                Scaffold(
+                                ) { innerPadding ->
+                                    NewMedicationScreen(
+                                        newMedViewModel,
+                                        modifier = Modifier.padding(innerPadding)
                                     )
-                                },
-                                viewModel = loginViewModel,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(24.dp)
-                            )
-                        }
+                                    /*NavHost(
+                                        navController = navController,
+                                        startDestination = Routes.Home,
+                                        modifier = Modifier.padding(innerPadding)
+                                    ) {
 
-                        composable<Routes.Registration> {
-                            SignupScreen(
-                                onCreateAccountClick = {
-                                    navController.navigate(
-                                        Routes.Home
-                                    )
-                                },
-                                viewModel = registerViewModel,
-                            )
-                        }
-                        // endregion
+                                        // region Autehntication
+                                        composable<Routes.Home> {
+                                            LoginScreen(
+                                                onLoginClick = {
+                                                    val intent = Intent(context, ApplicationActivity::class.java)
+                                                    startActivity(intent)
+                                                },
+                                                onSignupClick = {
+                                                    navController.navigate(
+                                                        Routes.Registration
+                                                    )
+                                                },
+                                                viewModel = loginViewModel,
+                                                modifier = Modifier
+                                                    .fillMaxSize()
+                                                    .padding(24.dp)
+                                            )
+                                        }
+
+                                        composable<Routes.Registration> {
+                                            SignupScreen(
+                                                onCreateAccountClick = {
+                                                    navController.navigate(
+                                                        Routes.Home
+                                                    )
+                                                },
+                                                viewModel = registerViewModel,
+                                            )
+                                        }
+                                        // endregion
 
 
-                    }
-                }
+                                    }
+                                } */
             }
         }
     }
@@ -101,4 +109,4 @@ fun GreetingPreview() {
     MedicationsTrackerAppTheme {
         // Greeting("Android")
     }
-}
+}}

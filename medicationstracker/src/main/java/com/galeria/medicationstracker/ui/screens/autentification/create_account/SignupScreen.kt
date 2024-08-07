@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,9 +30,12 @@ fun SignupScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+
+    //val state = viewModel.uiState.collectAsState()
+
     val email = viewModel.username.collectAsState()
     val password = viewModel.password.collectAsState()
-    // val userName = viewModel.userName.collectAsState()
+     val userName = viewModel.userName.collectAsState()
 
     Column(
         modifier = modifier,
@@ -44,7 +48,7 @@ fun SignupScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             MyTextField(
-                value = email.value,
+                value =   email.value,
                 onValueChange = { viewModel.updateEmail(it) },
                 label = "Email",
                 modifier = Modifier.fillMaxWidth(),
@@ -53,7 +57,7 @@ fun SignupScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             MyTextField(
-                value = password.value,
+                value =password.value ,
                 onValueChange = { viewModel.updatePassword(it) },
                 label = "Password",
                 modifier = Modifier.fillMaxWidth(),
@@ -76,7 +80,7 @@ fun SignupScreen(
             HIGButton(
                 text = "Create Account",
                 onClick = {
-                    viewModel.onRegisterClick(
+                    viewModel.registrateUser(
                         email.value, password.value, context, onSignupClick = onCreateAccountClick)
                     // Вход в только что созданный аккаунт
                     /*                 viewModelLogin.onSignInClick(
