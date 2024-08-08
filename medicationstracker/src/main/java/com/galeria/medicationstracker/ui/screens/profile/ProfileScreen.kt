@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -26,7 +27,7 @@ import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
 import com.galeria.medicationstracker.ui.shared.components.HIGListButton
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
-@Composable
+/* @Composable
 fun ProfileScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -93,10 +94,102 @@ fun ProfileOptionItem(title: String, onClick: () -> Unit) {
                 text = title,
             )
         }
+} */
+
+// region test
+@Composable
+fun ProfileScreen(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Heading
+        Text(
+            text = "Profile",
+            style = MedicationsTrackerAppTheme.extendedTypography.title1,
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
+
+        PfpWithName(
+            painter = R.drawable.img_1543, // TODO: get and set using firebase.
+            userName = "User Name" // TODO: get from firebase.
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.Start
+        ) {
+            ProfileOptionItem("Details") {
+                // TODO: navigate to details screen.
+            }
+            ProfileOptionItem("Notifications") {
+                // TODO: navigate to notifications screen.
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            HIGButton(
+                onClick = { /* TODO: handle logout */ },
+                text = "Logout",
+                style = HIGButtonStyle.Bezeled,
+                //modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
+    }
 }
+
+@Composable
+fun PfpWithName(painter: Int, userName: String, modifier: Modifier = Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+        modifier = modifier.padding(vertical = 16.dp)
+    ) {
+        Image(
+            painter = painterResource(painter),
+            contentDescription = "Profile Picture",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(128.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = userName,
+            style = MedicationsTrackerAppTheme.extendedTypography.title2
+        )
+    }
+}
+
+@Composable
+fun ProfileOptionItem(title: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        HIGListButton(
+            onClick = onClick,
+            text = title
+        )
+    }
+}
+// endregion
 
 @Preview(name = "ProfileScreen", showSystemUi = true, device = "id:pixel_8")
 @Composable
 private fun PreviewProfileScreen() {
-    ProfileScreen()
+    MedicationsTrackerAppTheme{
+        ProfileScreen()
+    }
 }

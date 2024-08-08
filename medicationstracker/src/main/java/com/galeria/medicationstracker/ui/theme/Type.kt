@@ -184,7 +184,7 @@ val RepAppTypography = RepTypography(
     ),
 
     body = TextStyle(
-        fontSize = 17.sp,
+        fontSize = 16.sp,
         fontWeight = FontWeight.Normal,
         fontFamily = FontFamily.Default,
         lineHeight = 22.sp,

@@ -23,8 +23,8 @@ data class UserMedication(
     val strength: Float = 0f,
     val unit: String = "",
     val notes: String = "",
-    val startDate: LocalDate = LocalDate.now(),
-    val endDate: LocalDate? = null,
+    //val startDate: LocalDate = LocalDate.now(),
+    //val endDate: LocalDate? = null,
     val frequency: String = "",
     val time: LocalTime = LocalTime.now(),
 )

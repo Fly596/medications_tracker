@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 @Composable
@@ -33,9 +34,17 @@ fun MedicationsScreen(viewModel: MedicationsViewModel, modifier: Modifier = Modi
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.Start,
+        modifier = modifier.fillMaxWidth(),
     ) {
+        item{
+
+            HIGButton(
+                text = "Add medication",
+                onClick = { },
+            )
+
+        }
         item { Card { Text(text = "Medications") } }
 
         // TODO: get medications from firebase.
