@@ -2,9 +2,11 @@ package com.galeria.medicationstracker.ui.screens.autentification.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -38,12 +40,12 @@ fun LoginScreen(
 ) {
   val email = viewModel.username.collectAsState()
   val password = viewModel.password.collectAsState()
-  var checked by remember { mutableStateOf(true) }
+  var checked by remember { mutableStateOf(false) }
 
   Column(
     modifier = modifier,
     verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally
+    horizontalAlignment = Alignment.Start
   ) {
     Text(
       stringResource(R.string.sign_in_screen_title),
@@ -62,51 +64,62 @@ fun LoginScreen(
 
     Spacer(modifier = Modifier.height(16.dp))
 
+    var passwordVisibility by remember { mutableStateOf(false) }
     MyTextField(
       value = password.value,
       onValueChange = { viewModel.updatePassword(it) },
       label = "Password",
       modifier = Modifier.fillMaxWidth(),
-      visualTransformation = PasswordVisualTransformation(),
+      visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
       keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+    )
+
+    // Show password switch.
+    RememberMeSwitch(
+      checked = passwordVisibility,
+      onCheckedChange = {
+        passwordVisibility = it
+      }
     )
 
     // region Buttons
     Spacer(modifier = Modifier.height(16.dp))
 
-    RememberMeSwitch(checked = checked, onCheckedChange = { checked = it })
-    // Switch(checked = checked, onCheckedChange = { checked = it })
 
     val context = LocalContext.current
-    HIGButton(
-      text = "Sign In",
-      onClick = {
-        // ! TEMP: для простого входа
-        if (email.value == "sex") {
-          viewModel.onSignInClick(
-            "ggsell@gmail.com", "password", context, onLoginClick
-          )
-        } else {
-          viewModel.onSignInClick(
-            email.value,
-            password.value,
-            context,
-            onLoginClick
-          )
-        }
-      },
-      enabled = true,
-      style = HIGButtonStyle.Filled
-    )
+    Row(verticalAlignment = Alignment.CenterVertically) {
+      HIGButton(
+        text = "Sign In",
+        onClick = {
+          // ! TEMP: для простого входа.
+          if (email.value == "sex") {
+            viewModel.onSignInClick(
+              "ggsell@gmail.com", "password", context, onLoginClick
+            )
+          } else {
+            viewModel.onSignInClick(
+              email.value,
+              password.value,
+              context,
+              onLoginClick
+            )
+          }
+        },
+        enabled = true,
+        style = HIGButtonStyle.Filled
+      )
 
-    Spacer(modifier = Modifier.height(16.dp))
+      Spacer(modifier = Modifier.weight(1f))
 
-    HIGButton(
-      text = "Create Account",
-      onClick = { onSignupClick() },
-      enabled = true,
-      style = HIGButtonStyle.Bezeled
-    )
+      HIGButton(
+        text = "Create Account",
+        onClick = { onSignupClick() },
+        enabled = true,
+        style = HIGButtonStyle.Bezeled
+      )
+    }
+
+    //Spacer(modifier = Modifier.weight(1f))
 
     HIGButton(
       text = "Forgot Password?",
@@ -141,7 +154,11 @@ fun MyTextField(
 
 @Composable
 fun RememberMeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
-  Switch(checked = checked, onCheckedChange = onCheckedChange)
+  Row(verticalAlignment = Alignment.CenterVertically) {
+    Text("Show password")
+    Spacer(modifier = Modifier.width(12.dp))
+    Switch(checked = checked, onCheckedChange = onCheckedChange)
+  }
 }
 
 @Preview(name = "LoginScreen")

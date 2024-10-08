@@ -33,72 +33,73 @@ import com.google.firebase.FirebaseApp
 
 class HeadActivity : ComponentActivity() {
 
-    private val loginViewModel: LoginScreenViewModel by viewModels()
-    private val registerViewModel: SignupScreenViewModel by viewModels()
+  private val loginViewModel: LoginScreenViewModel by viewModels()
+  private val registerViewModel: SignupScreenViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(this)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    FirebaseApp.initializeApp(this)
 
-        enableEdgeToEdge()
+    enableEdgeToEdge()
 
-        setContent {
-            MedicationsTrackerAppTheme {
-                val navController = rememberNavController()
-                val context: Context = LocalContext.current
+    setContent {
+      MedicationsTrackerAppTheme {
+        val navController = rememberNavController()
+        val context: Context = LocalContext.current
 
-                Scaffold(
-                ) { innerPadding ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = Routes.Home,
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
+        Scaffold(
+        ) { innerPadding ->
+          NavHost(
+            navController = navController,
+            startDestination = Routes.Home,
+            modifier = Modifier.padding(innerPadding)
+          ) {
 
-                        // region Autehntication
-                        composable<Routes.Home> {
-                            LoginScreen(
-                                onLoginClick = {
-                                    val intent = Intent(context, ApplicationActivity::class.java)
-                                    startActivity(intent)
-                                },
-                                onSignupClick = {
-                                    navController.navigate(
-                                        Routes.Registration
-                                    )
-                                },
-                                viewModel = loginViewModel,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(24.dp)
-                            )
-                        }
-
-                        composable<Routes.Registration> {
-                            SignupScreen(
-                                onCreateAccountClick = {
-                                    navController.navigate(
-                                        Routes.Home
-                                    )
-                                },
-                                viewModel = registerViewModel,
-                            )
-                        }
-                        // endregion
-
-
-                    }
-                }
+            // region Autehntication
+            composable<Routes.Home> {
+              LoginScreen(
+                onLoginClick = {
+                  val intent = Intent(context, ApplicationActivity::class.java)
+                  startActivity(intent)
+                },
+                onSignupClick = {
+                  navController.navigate(
+                    Routes.Registration
+                  )
+                },
+                viewModel = loginViewModel,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp)
+              )
             }
+
+            composable<Routes.Registration> {
+              SignupScreen(
+                onCreateAccountClick = {
+                  navController.navigate(
+                    Routes.Home
+                  )
+                },
+                viewModel = registerViewModel,
+                modifier = Modifier
+                  .fillMaxSize()
+                  .padding(24.dp)
+              )
+            }
+            // endregion
+          }
         }
+      }
     }
+  }
 }
 
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    MedicationsTrackerAppTheme {
-        // Greeting("Android")
-    }
+  MedicationsTrackerAppTheme {
+    // Greeting("Android")
+  }
 }
