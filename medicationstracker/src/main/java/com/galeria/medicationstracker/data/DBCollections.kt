@@ -41,6 +41,7 @@ data class Medication(
 )
 
 data class TEMP_Medication(
+    val uid: String = "",
     val name: String = "",
     val type: String = "",
 )

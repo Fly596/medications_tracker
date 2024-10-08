@@ -134,7 +134,11 @@ class ApplicationActivity : ComponentActivity() {
             }
 
             composable<Routes.Medications> {
-              MedicationsScreen(medicationsScreenViewModel)
+              MedicationsScreen(
+                onSubmitMedClick = {
+                  // TODO: Add medication to firebase.
+                },
+                viewModel =  medicationsScreenViewModel)
             }
 
             composable<Routes.Profile> {
