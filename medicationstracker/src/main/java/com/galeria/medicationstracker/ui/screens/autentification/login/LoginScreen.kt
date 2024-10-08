@@ -31,107 +31,121 @@ import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 @Composable
 fun LoginScreen(
-    onLoginClick: () -> Unit,
-    onSignupClick: () -> Unit,
-    viewModel: LoginScreenViewModel,
-    modifier: Modifier = Modifier
+  onLoginClick: () -> Unit,
+  onSignupClick: () -> Unit,
+  viewModel: LoginScreenViewModel,
+  modifier: Modifier = Modifier
 ) {
+  val email = viewModel.username.collectAsState()
+  val password = viewModel.password.collectAsState()
+  var checked by remember { mutableStateOf(true) }
+
+  Column(
+    modifier = modifier,
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally
+  ) {
+    Text(
+      stringResource(R.string.sign_in_screen_title),
+      style = MedicationsTrackerAppTheme.extendedTypography.body
+    )
+
+    Spacer(modifier = Modifier.height(20.dp))
+
+    MyTextField(
+      value = email.value,
+      onValueChange = { viewModel.updateEmail(it) },
+      label = "Email",
+      modifier = Modifier.fillMaxWidth(),
+      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    MyTextField(
+      value = password.value,
+      onValueChange = { viewModel.updatePassword(it) },
+      label = "Password",
+      modifier = Modifier.fillMaxWidth(),
+      visualTransformation = PasswordVisualTransformation(),
+      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+    )
+
+    // region Buttons
+    Spacer(modifier = Modifier.height(16.dp))
+
+    RememberMeSwitch(checked = checked, onCheckedChange = { checked = it })
+    // Switch(checked = checked, onCheckedChange = { checked = it })
+
     val context = LocalContext.current
-    val email = viewModel.username.collectAsState()
-    val password = viewModel.password.collectAsState()
-    var checked by remember { mutableStateOf(true) }
-
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                stringResource(R.string.sign_in_screen_title),
-                style = MedicationsTrackerAppTheme.extendedTypography.body)
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            MyTextField(
-                value = email.value,
-                onValueChange = { viewModel.updateEmail(it) },
-                label = "Email",
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            MyTextField(
-                value = password.value,
-                onValueChange = { viewModel.updatePassword(it) },
-                label = "Password",
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
-
-            // region Buttons
-            Spacer(modifier = Modifier.height(16.dp))
-
-            RememberMeSwitch(checked = checked, onCheckedChange = { checked = it })
-            // Switch(checked = checked, onCheckedChange = { checked = it })
-
-            HIGButton(
-                text = "Sign In",
-                onClick = {
-                    // ! TEMP: для простого входа
-                    if (email.value == "sex") {
-                        viewModel.onSignInClick(
-                            "ggsell@gmail.com", "password", context, onLoginClick)
-                    } else {
-                        viewModel.onSignInClick(email.value, password.value, context, onLoginClick)
-                    }
-                },
-                enabled = true,
-                style = HIGButtonStyle.Filled)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            HIGButton(
-                text = "Create Account",
-                onClick = { onSignupClick.invoke() },
-                enabled = true,
-                style = HIGButtonStyle.Bezeled)
-
-            HIGButton(
-                text = "Forgot Password?",
-                onClick = { viewModel.resetPassword(email.value, context) },
-                enabled = true,
-                style = HIGButtonStyle.Borderless)
-            // endregion
+    HIGButton(
+      text = "Sign In",
+      onClick = {
+        // ! TEMP: для простого входа
+        if (email.value == "sex") {
+          viewModel.onSignInClick(
+            "ggsell@gmail.com", "password", context, onLoginClick
+          )
+        } else {
+          viewModel.onSignInClick(
+            email.value,
+            password.value,
+            context,
+            onLoginClick
+          )
         }
+      },
+      enabled = true,
+      style = HIGButtonStyle.Filled
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    HIGButton(
+      text = "Create Account",
+      onClick = { onSignupClick() },
+      enabled = true,
+      style = HIGButtonStyle.Bezeled
+    )
+
+    HIGButton(
+      text = "Forgot Password?",
+      onClick = { viewModel.resetPassword(email.value, context) },
+      enabled = true,
+      style = HIGButtonStyle.Borderless
+    )
+    // endregion
+  }
 }
 
 @Composable
 fun MyTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String,
-    modifier: Modifier = Modifier,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+  value: String,
+  onValueChange: (String) -> Unit,
+  label: String,
+  modifier: Modifier = Modifier,
+  visualTransformation: VisualTransformation = VisualTransformation.None,
+  keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
 ) {
-    TextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(label) },
-        keyboardOptions = keyboardOptions,
-        visualTransformation = visualTransformation,
-        modifier = modifier)
+  TextField(
+    value = value,
+    onValueChange = onValueChange,
+    label = { Text(label) },
+    keyboardOptions = keyboardOptions,
+    visualTransformation = visualTransformation,
+    modifier = modifier
+  )
 }
 
 // TODO: Textfields; Buttons
 
 @Composable
 fun RememberMeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
-    Switch(checked = checked, onCheckedChange = onCheckedChange)
+  Switch(checked = checked, onCheckedChange = onCheckedChange)
 }
 
 @Preview(name = "LoginScreen")
 @Composable
 private fun PreviewLoginScreen() {
-    // LoginScreen()
+  // LoginScreen()
 }

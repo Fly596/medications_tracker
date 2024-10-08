@@ -24,73 +24,80 @@ import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
 
 @Composable
 fun SignupScreen(
-    onCreateAccountClick: () -> Unit,
-    viewModel: SignupScreenViewModel,
-    modifier: Modifier = Modifier
+  onCreateAccountClick: () -> Unit,
+  viewModel: SignupScreenViewModel,
+  modifier: Modifier = Modifier,
 ) {
+  val email = viewModel.username.collectAsState()
+  val password = viewModel.password.collectAsState()
+  // val userName = viewModel.userName.collectAsState()
+
+  Column(
+    modifier = modifier,
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Text(
+      stringResource(R.string.sign_in_screen_title),
+      style = MaterialTheme.typography.headlineMedium,
+    )
+
+    Spacer(modifier = Modifier.height(20.dp))
+
+    MyTextField(
+      value = email.value,
+      onValueChange = { viewModel.updateEmail(it) },
+      label = "Email",
+      modifier = Modifier.fillMaxWidth(),
+      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    MyTextField(
+      value = password.value,
+      onValueChange = { viewModel.updatePassword(it) },
+      label = "Password",
+      modifier = Modifier.fillMaxWidth(),
+      visualTransformation = PasswordVisualTransformation(),
+      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    /*         MyTextField(
+        value = userName.value,
+        onValueChange = { viewModel.updateUserName(it) },
+        label = "User name",
+        modifier = Modifier
+            .fillMaxWidth(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+    ) */
+
     val context = LocalContext.current
-    val email = viewModel.username.collectAsState()
-    val password = viewModel.password.collectAsState()
-    // val userName = viewModel.userName.collectAsState()
-
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                stringResource(R.string.sign_in_screen_title),
-                style = MaterialTheme.typography.headlineMedium)
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            MyTextField(
-                value = email.value,
-                onValueChange = { viewModel.updateEmail(it) },
-                label = "Email",
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            MyTextField(
-                value = password.value,
-                onValueChange = { viewModel.updatePassword(it) },
-                label = "Password",
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password))
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            /*         MyTextField(
-                value = userName.value,
-                onValueChange = { viewModel.updateUserName(it) },
-                label = "User name",
-                modifier = Modifier
-                    .fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-            ) */
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            HIGButton(
-                text = "Create Account",
-                onClick = {
-                    viewModel.onRegisterClick(
-                        email.value, password.value, context, onSignupClick = onCreateAccountClick)
-                    // Вход в только что созданный аккаунт
-                    /*                 viewModelLogin.onSignInClick(
-                        email.value,
-                        password.value,
-                        context,
-                        onLoginClick
-                    )
-                    // Добавление информации о текущем пользователе в базу данных.
-                    viewModel.addUserInfo(
-                        Firebase.auth.currentUser?.uid.toString()
-                    ) */
-                },
-                enabled = true,
-                style = HIGButtonStyle.Bezeled)
-        }
+    HIGButton(
+      text = "Create Account",
+      onClick = {
+        viewModel.onRegisterClick(
+          email.value,
+          password.value,
+          context,
+          onSignupClick = onCreateAccountClick,
+        )
+        // Вход в только что созданный аккаунт
+        /*                 viewModelLogin.onSignInClick(
+            email.value,
+            password.value,
+            context,
+            onLoginClick
+        )
+        // Добавление информации о текущем пользователе в базу данных.
+        viewModel.addUserInfo(
+            Firebase.auth.currentUser?.uid.toString()
+        ) */
+      },
+      enabled = true,
+      style = HIGButtonStyle.Bezeled,
+    )
+  }
 }

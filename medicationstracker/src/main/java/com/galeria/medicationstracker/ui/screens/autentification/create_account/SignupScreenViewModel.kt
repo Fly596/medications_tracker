@@ -41,6 +41,22 @@ class SignupScreenViewModel : ViewModel() {
         _userName.value = newUserName
     }
 
+    /**
+     * Handles the registration process when the "Register" button is clicked.
+     *
+     * This function attempts to create a new user account using Firebase Authentication
+     * with the provided email and password. If successful, it displays a success message
+     * and invokes the `onSignupClick` callback. If registration fails, it displays
+     * an error message with the exception details.
+     *
+     * **Note:** Currently, user information is not added to the database after successful registration.
+     * This is marked as a TODO and should be implemented in the future.
+     *
+     * @param email The email address of the new user.
+     * @param password The password for the new user.
+     * @param context The application context used for displaying Toast messages.
+     * @param onSignupClick A callback function to be invoked after successful registration.
+     *///
     fun onRegisterClick(
         email: String,
         password: String,
@@ -62,8 +78,8 @@ class SignupScreenViewModel : ViewModel() {
         }
     }
 
+    // TODO: check if it works
     fun addUserInfo(userId: String) {
-
         val user =
             hashMapOf(
                 "name" to _userName.value, "email" to _email.value, "password" to _password.value)
@@ -72,10 +88,10 @@ class SignupScreenViewModel : ViewModel() {
             .document(userId)
             .set(user)
             .addOnSuccessListener {
-                Log.d(TAG, "User with ID ${userId} successfully added to database.")
+                Log.d(TAG, "User with ID $userId successfully added to database.")
             }
             .addOnFailureListener {
-                Log.d(TAG, "Failed to add user with ID ${userId} to database.")
+                Log.d(TAG, "Failed to add user with ID $userId to database.")
             }
     }
 }
