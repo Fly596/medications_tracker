@@ -40,7 +40,7 @@ data class Medication(
     val strength: Map<Int, String> = mapOf()
 )
 
-data class DELETEMedication(
+data class TEMP_Medication(
     val name: String = "",
     val type: String = "",
 )

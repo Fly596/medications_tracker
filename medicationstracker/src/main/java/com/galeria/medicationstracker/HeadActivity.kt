@@ -13,6 +13,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -28,7 +30,10 @@ import com.galeria.medicationstracker.ui.screens.autentification.create_account.
 import com.galeria.medicationstracker.ui.screens.autentification.login.LoginScreen
 import com.galeria.medicationstracker.ui.screens.autentification.login.LoginScreenViewModel
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
+import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 
 class HeadActivity : ComponentActivity() {
@@ -46,6 +51,18 @@ class HeadActivity : ComponentActivity() {
       MedicationsTrackerAppTheme {
         val navController = rememberNavController()
         val context: Context = LocalContext.current
+
+        // TODO: remember current user.
+        /*        var startDestination by remember { mutableStateOf("Routes.Home") }
+
+                Firebase.auth.addAuthStateListener { firebaseAuth ->
+                  val user = firebaseAuth.currentUser
+                  if (user != null) {
+                    startDestination = "mainScreen"
+                  } else {
+                    startDestination = "loginScreen"
+                  }
+                }*/
 
         Scaffold(
         ) { innerPadding ->
@@ -69,8 +86,8 @@ class HeadActivity : ComponentActivity() {
                 },
                 viewModel = loginViewModel,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(24.dp)
+                  .fillMaxSize()
+                  .padding(24.dp)
               )
             }
 

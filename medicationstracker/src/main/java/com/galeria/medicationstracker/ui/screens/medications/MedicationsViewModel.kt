@@ -2,7 +2,7 @@ package com.galeria.medicationstracker.ui.screens.medications
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.galeria.medicationstracker.data.DELETEMedication
+import com.galeria.medicationstracker.data.TEMP_Medication
 import com.galeria.medicationstracker.data.Medication
 import com.google.firebase.Firebase
 import com.google.firebase.appcheck.internal.util.Logger.TAG
@@ -13,13 +13,14 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class MedicationsViewModel : ViewModel() {
 
-    private val _userMedications = MutableStateFlow<List<DELETEMedication>>(emptyList())
+    private val _userMedications = MutableStateFlow<List<TEMP_Medication>>(emptyList())
     val userMedications = _userMedications.asStateFlow()
 
     private var db = Firebase.firestore
 
     fun getMedsList() {
-        db.collection("medication").addSnapshotListener { value, error ->
+        // TODO: get meds from firebase.
+        db.collection("med_temp").addSnapshotListener { value, error ->
             if (error != null) {
                 return@addSnapshotListener
             }

@@ -23,37 +23,52 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.R
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun MedicationsScreen(viewModel: MedicationsViewModel, modifier: Modifier = Modifier) {
+    runBlocking {
+        viewModel.getMedsList()
+    }
+
     val medications by viewModel.userMedications.collectAsStateWithLifecycle()
 
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.fillMaxSize(),
-    ) {
-        item {
-            Card {
-                Text(text = "Medications")
+    Column {
+        Text(
+            stringResource(R.string.meds_screen_title),
+            style = MaterialTheme.typography.headlineMedium,
+        )
+
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier.fillMaxSize(),
+        ) {
+            item {
+                Card {
+                    Text(text = medications[0].name)
+                }
+            }
+
+            // TODO: get medications from firebase.
+            items(medications) { medication ->
+                CardComponent(
+                    header = medication.name,
+                    topEndText = "Edit",
+                    content = medication.type,
+                    onClick = {
+                        // TODO: Реализовать открытие экрана с выбранным medication.
+                    }
+                )
             }
         }
-
-        // TODO: get medications from firebase.
-        items(medications) { medication ->
-            CardComponent(
-                header = medication.name,
-                topEndText = "Edit",
-                content = medication.type,
-                onClick = {
-                    // TODO: Реализовать открытие экрана с выбранным medication.
-                }
-            )
-        }
     }
+
+
 }
 
 @Composable
