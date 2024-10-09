@@ -1,5 +1,6 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,28 +14,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
-import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.TEMP_Medication
 import com.galeria.medicationstracker.ui.screens.autentification.login.MyTextField
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
-import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
-import kotlinx.coroutines.runBlocking
+import com.google.firebase.appcheck.internal.util.Logger.TAG
 
 @Composable
 fun MedicationsScreen(
@@ -47,6 +43,11 @@ fun MedicationsScreen(
   val medName = viewModel.medName.collectAsState()
   val medType = viewModel.medType.collectAsState()
   val uid = viewModel.userId
+
+  val medications = viewModel.medications.collectAsState().value
+  Log.d(TAG, "meds: ${medications.size}")
+
+
 
   Column {
     Text(
@@ -71,13 +72,13 @@ fun MedicationsScreen(
         .fillMaxWidth(),
     )
 
-
     val context = LocalContext.current
 
     HIGButton(
       text = "Submit",
       onClick = {
-        val newMed = TEMP_Medication(uid = uid, name = medName.value, type = medType.value)
+        val newMed =
+          TEMP_Medication(uid = uid, name = medName.value, type = medType.value)
 
         viewModel.addMedication(
           newMed,
@@ -92,12 +93,15 @@ fun MedicationsScreen(
       horizontalAlignment = Alignment.CenterHorizontally,
       modifier = modifier.fillMaxSize(),
     ) {
-      item {
-        Card {
-          // Text(text = medications[0].name)
-        }
-      }
 
+      items(medications) { medication ->
+        CardComponent(
+          header = medication.type,
+          topEndText = "Edit",
+          content = medication.name,
+          onClick = {}
+        )
+      }
       // TODO: get medications from firebase.
       /*       items(medications) { medication ->
               CardComponent(
