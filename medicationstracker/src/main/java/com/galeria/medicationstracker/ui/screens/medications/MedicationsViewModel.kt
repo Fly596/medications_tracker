@@ -17,7 +17,8 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class MedicationsViewModel : ViewModel() {
 
-  private val _userMedications = MutableStateFlow<List<TEMP_Medication>>(emptyList())
+  private val _userMedications =
+    MutableStateFlow<List<TEMP_Medication>>(emptyList())
   val userMedications = _userMedications.asStateFlow()
 
   private var db = Firebase.firestore
@@ -38,18 +39,34 @@ class MedicationsViewModel : ViewModel() {
     _medType.value = newType
   }
 
+  val docRef = db.collection("med_temp")
+
   fun getMedsList() {
     // TODO: get meds from firebase.
-    db.collection("med_temp").addSnapshotListener { value, error ->
-      if (error != null) {
-        return@addSnapshotListener
+    docRef
+      .get()
+      .addOnSuccessListener { docs ->
+        for (doc in docs) {
+          Log.d(TAG, "${doc.id} => ${doc.data}")
+        }
       }
-
-      if (value != null) {
-        _userMedications.value = value.toObjects()
+      .addOnFailureListener { exception ->
+        Log.w(TAG, "Error getting documents.", exception)
       }
-    }
   }
+
+  /*  fun getMedsList() {
+      
+      // TODO: get meds from firebase.
+      db.collection("med_temp").addSnapshotListener { value, error ->
+        if (error != null) {
+          return@addSnapshotListener
+        }
+  
+        if (value != null) {
+          _userMedications.value = value.toObjects()
+        }
+      }*/
 
   fun addMedication(
     medication: TEMP_Medication,
@@ -57,7 +74,11 @@ class MedicationsViewModel : ViewModel() {
   ) {
     db.collection("med_temp").add(medication)
       .addOnSuccessListener {
-        Toast.makeText(context, "DocumentSnapshot added successfully!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+          context,
+          "DocumentSnapshot added successfully!",
+          Toast.LENGTH_SHORT
+        ).show()
 
         Log.d(TAG, "DocumentSnapshot added with ID: ${it.id}")
       }

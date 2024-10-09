@@ -41,7 +41,6 @@ fun MedicationsScreen(
   onSubmitMedClick: () -> Unit,
   viewModel: MedicationsViewModel,
   modifier: Modifier = Modifier
-
 ) {
 
   // val medications by viewModel.userMedications.collectAsStateWithLifecycle()
@@ -72,20 +71,20 @@ fun MedicationsScreen(
         .fillMaxWidth(),
     )
 
-    val newMed = TEMP_Medication(uid = uid, name = medName.value, type = medType.value)
 
     val context = LocalContext.current
 
     HIGButton(
       text = "Submit",
       onClick = {
+        val newMed = TEMP_Medication(uid = uid, name = medName.value, type = medType.value)
+
         viewModel.addMedication(
           newMed,
           context
         )
       },
       enabled = true,
-      style = HIGButtonStyle.Borderless
     )
 
     LazyColumn(
