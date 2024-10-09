@@ -53,12 +53,14 @@ data class BottomNavigationItem(
 class ApplicationActivity : ComponentActivity() {
 
   private val headViewModel: HeadViewModel by viewModels()
-  private val medicationsScreenViewModel: MedicationsViewModel by viewModels()
+  private val medicationsViewModel: MedicationsViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     FirebaseApp.initializeApp(this)
+
+    medicationsViewModel.getMedsList()
 
     enableEdgeToEdge()
 
@@ -138,7 +140,8 @@ class ApplicationActivity : ComponentActivity() {
                 onSubmitMedClick = {
                   // TODO: Add medication to firebase.
                 },
-                viewModel =  medicationsScreenViewModel)
+                viewModel =  medicationsViewModel
+              )
             }
 
             composable<Routes.Profile> {

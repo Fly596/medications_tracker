@@ -1,5 +1,6 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,7 @@ import com.galeria.medicationstracker.data.TEMP_Medication
 import com.galeria.medicationstracker.ui.screens.autentification.login.MyTextField
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
+import com.google.firebase.appcheck.internal.util.Logger.TAG
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -47,6 +49,9 @@ fun MedicationsScreen(
   val medName = viewModel.medName.collectAsState()
   val medType = viewModel.medType.collectAsState()
   val uid = viewModel.userId
+
+  val meds = viewModel.userMedications.collectAsState().value
+  Log.d(TAG, "${meds.size}")
 
   Column {
     Text(
@@ -71,7 +76,6 @@ fun MedicationsScreen(
         .fillMaxWidth(),
     )
 
-
     val context = LocalContext.current
 
     HIGButton(
@@ -87,28 +91,34 @@ fun MedicationsScreen(
       enabled = true,
     )
 
+    HIGButton(
+      text = "Get Data",
+      onClick = {
+
+        //val newMed = TEMP_Medication(uid = uid, name = medName.value, type = medType.value)
+        viewModel.getMedsList()
+      },
+      enabled = true,
+    )
+
     LazyColumn(
       verticalArrangement = Arrangement.spacedBy(8.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
       modifier = modifier.fillMaxSize(),
     ) {
-      item {
-        Card {
-          // Text(text = medications[0].name)
-        }
-      }
 
       // TODO: get medications from firebase.
-      /*       items(medications) { medication ->
+             items(meds) { medication ->
               CardComponent(
-                header = medication.name,
+                header = medication.type,
                 topEndText = "Edit",
-                content = medication.type,
+                content = medication.name,
+
                 onClick = {
                   // TODO: Реализовать открытие экрана с выбранным medication.
                 }
               )
-            } */
+            }
     }
   }
 
