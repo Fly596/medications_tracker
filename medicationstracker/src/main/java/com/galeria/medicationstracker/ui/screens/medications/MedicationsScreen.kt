@@ -14,12 +14,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
-import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,28 +27,28 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.data.Medication
 import com.galeria.medicationstracker.data.TEMP_Medication
 import com.galeria.medicationstracker.ui.screens.autentification.login.MyTextField
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
-import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
 import com.google.firebase.appcheck.internal.util.Logger.TAG
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Composable
 fun MedicationsScreen(
   onSubmitMedClick: () -> Unit,
-  viewModel: MedicationsViewModel,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  medicationsViewModel: MedicationsViewModel = viewModel(),
 ) {
 
-  // val medications by viewModel.userMedications.collectAsStateWithLifecycle()
-  val medName = viewModel.medName.collectAsState()
-  val medType = viewModel.medType.collectAsState()
-  val uid = viewModel.userId
+  val medicationsUiState by medicationsViewModel.medicationState.collectAsState()
 
-  val meds = viewModel.userMedications.collectAsState().value
+  val uid = medicationsViewModel.userId
+
+  val meds = medicationsViewModel.userMedications.collectAsState().value
   Log.d(TAG, "${meds.size}")
 
   Column {
@@ -62,28 +60,52 @@ fun MedicationsScreen(
     Spacer(modifier = Modifier.padding(8.dp))
 
     MyTextField(
-      value = medName.value,
-      onValueChange = { viewModel.updateMedName(it) },
+      value = medicationsUiState.name,
+      onValueChange = { medicationsViewModel.updateMedName(it) },
       label = "Medication name",
       modifier = Modifier
         .fillMaxWidth(),
     )
     MyTextField(
-      value = medType.value,
-      onValueChange = { viewModel.updateMedType(it) },
+      value = medicationsUiState.type,
+      onValueChange = { medicationsViewModel.updateMedType(it) },
       label = "Medication type",
       modifier = Modifier
         .fillMaxWidth(),
     )
-
+    MyTextField(
+      value = medicationsUiState.strength.toString(),
+      onValueChange = { medicationsViewModel.updateMedStrength(it.toFloat()) },
+      label = "Strength",
+      modifier = Modifier
+        .fillMaxWidth(),
+    )
+    MyTextField(
+      value = medicationsUiState.notes,
+      onValueChange = { medicationsViewModel.updateMedNotes(it) },
+      label = "Notes",
+      modifier = Modifier
+        .fillMaxWidth(),
+    )
+    /*     MyTextField(
+          value = medState.unit.name,
+          onValueChange = { viewModel.updateMedUnit(it.toString()) },
+          label = "Units",
+          modifier = Modifier
+            .fillMaxWidth(),
+        ) */
     val context = LocalContext.current
 
     HIGButton(
       text = "Submit",
       onClick = {
-        val newMed = TEMP_Medication(uid = uid, name = medName.value, type = medType.value)
+        val newMed = TEMP_Medication(
+          uid = uid,
+          name = medicationsUiState.name,
+          type = medicationsUiState.type,
+        )
 
-        viewModel.addMedication(
+        medicationsViewModel.addMedication(
           newMed,
           context
         )
@@ -95,8 +117,13 @@ fun MedicationsScreen(
       text = "Get Data",
       onClick = {
 
-        //val newMed = TEMP_Medication(uid = uid, name = medName.value, type = medType.value)
-        viewModel.getMedsList()
+        // val newMed = TEMP_Medication(uid = uid, name = medName.value, type = medType.value)
+        runBlocking {
+          launch {
+            medicationsViewModel.getMedsList()
+          }
+        }
+
       },
       enabled = true,
     )
@@ -108,17 +135,17 @@ fun MedicationsScreen(
     ) {
 
       // TODO: get medications from firebase.
-             items(meds) { medication ->
-              CardComponent(
-                header = medication.type,
-                topEndText = "Edit",
-                content = medication.name,
+      items(meds) { medication ->
+        CardComponent(
+          header = medication.type,
+          topEndText = "Edit",
+          content = medication.name,
 
-                onClick = {
-                  // TODO: Реализовать открытие экрана с выбранным medication.
-                }
-              )
-            }
+          onClick = {
+            // TODO: Реализовать открытие экрана с выбранным medication.
+          }
+        )
+      }
     }
   }
 

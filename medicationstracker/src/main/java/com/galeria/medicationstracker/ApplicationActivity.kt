@@ -35,7 +35,6 @@ import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
-import com.galeria.medicationstracker.ui.screens.medications.MedicationsViewModel
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.shared.components.HeadViewModel
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
@@ -53,14 +52,14 @@ data class BottomNavigationItem(
 class ApplicationActivity : ComponentActivity() {
 
   private val headViewModel: HeadViewModel by viewModels()
-  private val medicationsViewModel: MedicationsViewModel by viewModels()
+  //private val medicationsViewModel: MedicationsViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     FirebaseApp.initializeApp(this)
 
-    medicationsViewModel.getMedsList()
+    //medicationsViewModel.getMedsList()
 
     enableEdgeToEdge()
 
@@ -140,7 +139,7 @@ class ApplicationActivity : ComponentActivity() {
                 onSubmitMedClick = {
                   // TODO: Add medication to firebase.
                 },
-                viewModel =  medicationsViewModel
+                //medicationsViewModel =  medicationsViewModel
               )
             }
 
