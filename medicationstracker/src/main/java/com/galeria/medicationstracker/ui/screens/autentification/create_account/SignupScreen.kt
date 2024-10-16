@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.screens.autentification.login.MyTextField
 import com.galeria.medicationstracker.ui.screens.autentification.login.RememberMeSwitch
@@ -32,8 +33,8 @@ import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
 @Composable
 fun SignupScreen(
   onCreateAccountClick: () -> Unit,
-  viewModel: SignupScreenViewModel,
   modifier: Modifier = Modifier,
+  viewModel: SignupScreenViewModel = viewModel(),
 ) {
   val email = viewModel.username.collectAsState()
   val password = viewModel.password.collectAsState()

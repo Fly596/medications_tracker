@@ -12,11 +12,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +21,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
@@ -35,12 +31,9 @@ import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 fun LoginScreen(
   onLoginClick: () -> Unit,
   onSignupClick: () -> Unit,
-  viewModel: LoginScreenViewModel,
-  modifier: Modifier = Modifier
+  modifier: Modifier = Modifier,
+  viewModel: LoginScreenViewModel = viewModel(),
 ) {
-  val email = viewModel.username.collectAsState()
-  val password = viewModel.password.collectAsState()
-  var checked by remember { mutableStateOf(false) }
 
   Column(
     modifier = modifier,
@@ -55,7 +48,7 @@ fun LoginScreen(
     Spacer(modifier = Modifier.height(20.dp))
 
     MyTextField(
-      value = email.value,
+      value = viewModel.email,
       onValueChange = { viewModel.updateEmail(it) },
       label = "Email",
       modifier = Modifier.fillMaxWidth(),
@@ -64,27 +57,27 @@ fun LoginScreen(
 
     Spacer(modifier = Modifier.height(16.dp))
 
-    var passwordVisibility by remember { mutableStateOf(false) }
+    // var passwordVisibility by remember { mutableStateOf(false) }
     MyTextField(
-      value = password.value,
+      value = viewModel.password,
       onValueChange = { viewModel.updatePassword(it) },
       label = "Password",
       modifier = Modifier.fillMaxWidth(),
-      visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+      visualTransformation = if (viewModel.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
       keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
     )
 
     // Show password switch.
     RememberMeSwitch(
-      checked = passwordVisibility,
+      checked = viewModel.showPassword,
       onCheckedChange = {
-        passwordVisibility = it
+        viewModel.showPassword = it
       }
     )
 
-    // region Buttons
     Spacer(modifier = Modifier.height(16.dp))
 
+    // region Buttons
 
     val context = LocalContext.current
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -92,14 +85,14 @@ fun LoginScreen(
         text = "Sign In",
         onClick = {
           // ! TEMP: для простого входа.
-          if (email.value == "sex") {
+          if (viewModel.email == "sex") {
             viewModel.onSignInClick(
               "ggsell@gmail.com", "password", context, onLoginClick
             )
           } else {
             viewModel.onSignInClick(
-              email.value,
-              password.value,
+              viewModel.email,
+              viewModel.password,
               context,
               onLoginClick
             )
@@ -119,11 +112,11 @@ fun LoginScreen(
       )
     }
 
-    //Spacer(modifier = Modifier.weight(1f))
+    // Spacer(modifier = Modifier.weight(1f))
 
     HIGButton(
       text = "Forgot Password?",
-      onClick = { viewModel.resetPassword(email.value, context) },
+      onClick = { viewModel.resetPassword(viewModel.email, context) },
       enabled = true,
       style = HIGButtonStyle.Borderless
     )

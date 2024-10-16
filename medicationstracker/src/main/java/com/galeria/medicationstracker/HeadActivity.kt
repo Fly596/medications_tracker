@@ -38,9 +38,6 @@ import com.google.firebase.auth.auth
 
 class HeadActivity : ComponentActivity() {
 
-  private val loginViewModel: LoginScreenViewModel by viewModels()
-  private val registerViewModel: SignupScreenViewModel by viewModels()
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     FirebaseApp.initializeApp(this)
@@ -84,7 +81,6 @@ class HeadActivity : ComponentActivity() {
                     Routes.Registration
                   )
                 },
-                viewModel = loginViewModel,
                 modifier = Modifier
                   .fillMaxSize()
                   .padding(24.dp)
@@ -98,7 +94,6 @@ class HeadActivity : ComponentActivity() {
                     Routes.Home
                   )
                 },
-                viewModel = registerViewModel,
                 modifier = Modifier
                   .fillMaxSize()
                   .padding(24.dp)

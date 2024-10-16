@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.Frequency
-import com.galeria.medicationstracker.data.Medication
 import com.galeria.medicationstracker.data.MedicationForm
 import com.galeria.medicationstracker.data.MedicationUnit
 import com.galeria.medicationstracker.data.TEMP_Medication
@@ -14,7 +13,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +22,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
 
-data class MedicationInputState(
+data class MedicationsUiState(
   val uid: String = "",
   val name: String = "",
   val type: String = "",
@@ -40,8 +38,8 @@ data class MedicationInputState(
 
 class MedicationsViewModel : ViewModel() {
 
-  private val _medicationState = MutableStateFlow(MedicationInputState())
-  val medicationState: StateFlow<MedicationInputState> = _medicationState.asStateFlow()
+  private val _medicationState = MutableStateFlow(MedicationsUiState())
+  val medicationState: StateFlow<MedicationsUiState> = _medicationState.asStateFlow()
 
 
   private val _userMedications =
@@ -76,7 +74,7 @@ class MedicationsViewModel : ViewModel() {
 
   }
 
-  fun updateMedicationField(field: (MedicationInputState) -> MedicationInputState) {
+  fun updateMedicationField(field: (MedicationsUiState) -> MedicationsUiState) {
     _medicationState.update { currentMedication ->
       field(currentMedication)
     }

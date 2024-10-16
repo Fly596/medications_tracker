@@ -1,34 +1,36 @@
 package com.galeria.medicationstracker.ui.screens.autentification.login
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-import com.google.firebase.auth.ktx.auth
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 class LoginScreenViewModel : ViewModel() {
+  var showPassword by mutableStateOf(false)
 
-  private val _email = MutableStateFlow("")
-  val username = _email.asStateFlow()
+  var email by mutableStateOf("")
+    private set
 
-  private val _password = MutableStateFlow("")
-  val password = _password.asStateFlow()
+  var password by mutableStateOf("")
+    private set
 
-  fun updateEmail(newEmail: String) {
-    _email.value = newEmail
+
+
+  fun updateEmail(input: String) {
+    email = input
   }
 
-  fun updatePassword(newPassword: String) {
-    _password.value = newPassword
+  fun updatePassword(input: String) {
+    password = input
   }
 
   fun onSignInClick(
-    email: String,
+     email: String,
     password: String,
     context: Context,
     onLoginClick: () -> Unit
