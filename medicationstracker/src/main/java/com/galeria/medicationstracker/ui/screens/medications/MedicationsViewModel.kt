@@ -18,9 +18,6 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
@@ -32,8 +29,8 @@ data class MedicationsUiState(
   val form: MedicationForm = MedicationForm.TABLET, // f
   val strength: Float = 0.0f,
   val unit: MedicationUnit = MedicationUnit.MG, // f
-  val startDate: LocalDate = LocalDate.now(),// f
-  val endDate: LocalDate? = null,// f
+  val startDate: String = "",// f
+  val endDate: String= "",// f
   val frequency: Frequency = Frequency.AtRegularIntervals(0),// f
   val intakeTime: LocalTime = LocalTime.now(),// f
   val notes: String = "",
@@ -44,9 +41,19 @@ class MedicationsViewModel : ViewModel() {
   var uiState by mutableStateOf(MedicationsUiState())
     private set
 
-  private val _userMedications =
-    MutableStateFlow<List<TEMP_Medication>>(emptyList())
-  val userMedications = _userMedications.asStateFlow()
+  var userMedications =
+    mutableStateOf<List<TEMP_Medication>>(emptyList())
+    private set
+  //val userMedications = _userMedications.asStateFlow()
+
+  var showDatePicker by mutableStateOf(false)
+
+  var selectedDate by mutableStateOf("")
+    private set
+
+  fun updateSelectedDate(input: String) {
+    selectedDate = input
+  }
 
   private val db = Firebase.firestore
   private val user = Firebase.auth.currentUser
@@ -66,7 +73,7 @@ class MedicationsViewModel : ViewModel() {
               return@addSnapshotListener
             }
             if (snapshot != null) {
-              _userMedications.value = snapshot.toObjects()
+              userMedications.value = snapshot.toObjects()
             }
           }
       } catch (e: Exception) {
