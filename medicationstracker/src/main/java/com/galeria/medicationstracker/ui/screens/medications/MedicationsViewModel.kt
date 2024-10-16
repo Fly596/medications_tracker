@@ -3,6 +3,9 @@ package com.galeria.medicationstracker.ui.screens.medications
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.Frequency
@@ -38,9 +41,8 @@ data class MedicationsUiState(
 
 class MedicationsViewModel : ViewModel() {
 
-  private val _medicationState = MutableStateFlow(MedicationsUiState())
-  val medicationState: StateFlow<MedicationsUiState> = _medicationState.asStateFlow()
-
+  var uiState by mutableStateOf(MedicationsUiState())
+    private set
 
   private val _userMedications =
     MutableStateFlow<List<TEMP_Medication>>(emptyList())
@@ -71,132 +73,9 @@ class MedicationsViewModel : ViewModel() {
         Log.d(TAG, "Error getting documents: ", e)
       }
     }
-
   }
 
-  fun updateMedicationField(field: (MedicationsUiState) -> MedicationsUiState) {
-    _medicationState.update { currentMedication ->
-      field(currentMedication)
-    }
-  }
-
-
-  fun updateMedName(newName: String) {
-    updateMedicationField {
-      it.copy(name = newName)
-    }
-  }
-
-  fun updateMedType(newType: String) {
-    updateMedicationField { it.copy(type = newType) }
-  }
-
-  fun updateMedForm(newForm: MedicationForm) {
-    updateMedicationField { it.copy(form = newForm) }
-  }
-
-  fun updateMedStrength(newStrength: Float) {
-    updateMedicationField { it.copy(strength = newStrength) }
-  }
-
-  fun updateMedUnit(newUnit: MedicationUnit) {
-    updateMedicationField { it.copy(unit = newUnit) }
-  }
-
-  fun updateStartDate(newStartDate: LocalDate) {
-    updateMedicationField { it.copy(startDate = newStartDate) }
-  }
-
-  fun updateEndDate(newEndDate: LocalDate) {
-    updateMedicationField { it.copy(endDate = newEndDate) }
-  }
-
-  fun updateMedFrequency(newFrequency: Frequency) {
-    updateMedicationField { it.copy(frequency = newFrequency) }
-  }
-
-  fun updateIntakeTime(newTime: LocalTime) {
-    updateMedicationField { it.copy(intakeTime = newTime) }
-  }
-
-  fun updateMedNotes(newNotes: String) {
-    updateMedicationField { it.copy(notes = newNotes) }
-  }
-
-  /*     private val _medType = MutableStateFlow("")
-      val medType = _medType.asStateFlow()
-      private val _medForm = MutableStateFlow(MedicationForm.TABLET)
-      val medForm = _medForm.asStateFlow()
-      private val _medStrength = MutableStateFlow(0.0f)
-      val medStrength = _medStrength.asStateFlow()
-      private val _medUnit = MutableStateFlow(MedicationUnit.MG)
-      val medUnit = _medUnit.asStateFlow()
-
-
-      fun updateMedStrength(newStrength: Float) {
-        _medStrength.value = newStrength
-      }
-
-
-      fun updateMedUnit(newUnit: MedicationUnit) {
-        _medUnit.value = newUnit
-      }
-
-      private val _startDate = MutableStateFlow(LocalDate.now())
-      val startDate = _startDate.asStateFlow()
-      fun updateStartDate(newStartDate: LocalDate) {
-        _startDate.value = newStartDate
-      }
-
-      private val _endDate = MutableStateFlow(LocalDate.now())
-      val endDate = _endDate.asStateFlow()
-      fun updateEndDate(newEndDate: LocalDate) {
-        _endDate.value = newEndDate
-      }
-
-       *//*   private val _medFrequency = MutableStateFlow(Frequency.AtRegularIntervals(0))
-      val medFrequency = _medFrequency.asStateFlow()
-      fun updateMedFrequency(newFrequency: Frequency) {
-        _medFrequency.value = newFrequency
-      } *//*
-
-    private val _intakeTime = MutableStateFlow(LocalTime.now())
-    val intakeTime = _intakeTime.asStateFlow()
-    fun updateIntakeTime(newTime: LocalTime) {
-      _intakeTime.value = newTime
-    }
-
-    private val _medNotes = MutableStateFlow("")
-    val medNotes = _medNotes.asStateFlow()
-    fun updateMedNotes(newNotes: String) {
-      _medNotes.value = newNotes
-    } */
-
-
-  // TODO: get meds from firebase.
-
-  /*         .get()
-    .addOnSuccessListener { docs ->
-      for (doc in docs) {
-
-        doc.data["name"]
-        doc.data["type"]
-        doc.data["uid"]
-
-        val medication = doc.toObject<Medication>()
-        _userMedications.value += medication
-
-        // Log.d(TAG, "${doc.id} => ${doc.data}")
-        Log.d(TAG, "${doc.id} => ${medication.name}, ${medication.form}, ${medication.uid}")
-        Log.d(TAG, "${doc.id} => ${doc.data["name"]}, ${doc.data["form"]}, ${doc.data["uid"]}")
-      }
-    }
-
-    .addOnFailureListener { exception ->
-      Log.w(TAG, "Error getting documents.", exception)
-    } */
-
-
+  // TODO: Check for dublicates.
   fun addMedication(
     medication: TEMP_Medication,
     context: Context,
@@ -212,9 +91,56 @@ class MedicationsViewModel : ViewModel() {
         Log.d(TAG, "DocumentSnapshot added with ID: ${it.id}")
       }
       .addOnFailureListener { e ->
+        Toast.makeText(context, "Error adding medication", Toast.LENGTH_SHORT).show()
+
         Log.w(TAG, "Error adding document", e)
       }
   }
+
+  // region fields data
+
+  fun updateMedName(newName: String) {
+    uiState = uiState.copy(name = newName)
+  }
+
+  fun updateMedType(newType: String) {
+    uiState = uiState.copy(type = newType)
+  }
+
+  fun updateMedForm(newForm: MedicationForm) {
+    uiState = uiState.copy(form = newForm)
+  }
+
+  fun updateMedStrength(newStrength: Float) {
+    uiState = uiState.copy(strength = newStrength)
+  }
+
+  fun updateMedUnit(newUnit: MedicationUnit) {
+    uiState = uiState.copy(unit = newUnit)
+  }
+
+  fun updateStartDate(newStartDate: LocalDate) {
+    uiState = uiState.copy(startDate = newStartDate)
+  }
+
+  fun updateEndDate(newEndDate: LocalDate) {
+    uiState = uiState.copy(endDate = newEndDate)
+  }
+
+  fun updateMedFrequency(newFrequency: Frequency) {
+    uiState = uiState.copy(frequency = newFrequency)
+  }
+
+  fun updateIntakeTime(newTime: LocalTime) {
+    uiState = uiState.copy(intakeTime = newTime)
+  }
+
+  fun updateMedNotes(newNotes: String) {
+    uiState = uiState.copy(notes = newNotes)
+  }
+  // endregion
+
+
 }
 
 

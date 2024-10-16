@@ -38,16 +38,12 @@ import kotlinx.coroutines.runBlocking
 
 @Composable
 fun MedicationsScreen(
-  onSubmitMedClick: () -> Unit,
   modifier: Modifier = Modifier,
-  medicationsViewModel: MedicationsViewModel = viewModel(),
+  viewModel: MedicationsViewModel = viewModel(),
 ) {
+  val uid = viewModel.userId
 
-  val medicationsUiState by medicationsViewModel.medicationState.collectAsState()
-
-  val uid = medicationsViewModel.userId
-
-  val meds = medicationsViewModel.userMedications.collectAsState().value
+  val meds = viewModel.userMedications.collectAsState().value
   Log.d(TAG, "${meds.size}")
 
   Column {
@@ -59,40 +55,34 @@ fun MedicationsScreen(
     Spacer(modifier = Modifier.padding(8.dp))
 
     MyTextField(
-      value = medicationsUiState.name,
-      onValueChange = { medicationsViewModel.updateMedName(it) },
+      value = viewModel.uiState.name,
+      onValueChange = { viewModel.updateMedName(it) },
       label = "Medication name",
       modifier = Modifier
         .fillMaxWidth(),
     )
     MyTextField(
-      value = medicationsUiState.type,
-      onValueChange = { medicationsViewModel.updateMedType(it) },
+      value = viewModel.uiState.type,
+      onValueChange = { viewModel.updateMedType(it) },
       label = "Medication type",
       modifier = Modifier
         .fillMaxWidth(),
     )
     MyTextField(
-      value = medicationsUiState.strength.toString(),
-      onValueChange = { medicationsViewModel.updateMedStrength(it.toFloat()) },
+      value = viewModel.uiState.strength.toString(),
+      onValueChange = { viewModel.updateMedStrength(it.toFloat()) },
       label = "Strength",
       modifier = Modifier
         .fillMaxWidth(),
     )
     MyTextField(
-      value = medicationsUiState.notes,
-      onValueChange = { medicationsViewModel.updateMedNotes(it) },
+      value = viewModel.uiState.notes,
+      onValueChange = { viewModel.updateMedNotes(it) },
       label = "Notes",
       modifier = Modifier
         .fillMaxWidth(),
     )
-    /*     MyTextField(
-          value = medState.unit.name,
-          onValueChange = { viewModel.updateMedUnit(it.toString()) },
-          label = "Units",
-          modifier = Modifier
-            .fillMaxWidth(),
-        ) */
+
     val context = LocalContext.current
 
     HIGButton(
@@ -100,14 +90,11 @@ fun MedicationsScreen(
       onClick = {
         val newMed = TEMP_Medication(
           uid = uid,
-          name = medicationsUiState.name,
-          type = medicationsUiState.type,
+          name = viewModel.uiState.name,
+          type = viewModel.uiState.type,
         )
 
-        medicationsViewModel.addMedication(
-          newMed,
-          context
-        )
+        viewModel.addMedication(newMed,context)
       },
       enabled = true,
     )
@@ -119,7 +106,7 @@ fun MedicationsScreen(
         // val newMed = TEMP_Medication(uid = uid, name = medName.value, type = medType.value)
         runBlocking {
           launch {
-            medicationsViewModel.getMedsList()
+            viewModel.getMedsList()
           }
         }
 
