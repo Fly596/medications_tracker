@@ -17,9 +17,7 @@ import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObjects
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.LocalTime
 
 data class MedicationsUiState(
@@ -46,14 +44,21 @@ class MedicationsViewModel : ViewModel() {
     private set
   //val userMedications = _userMedications.asStateFlow()
 
-  var showDatePicker by mutableStateOf(false)
+  var showDatePicker by mutableStateOf(true)
 
-  var selectedDate by mutableStateOf("")
-    private set
+  var selectedStartDate by mutableStateOf<Long?>(null)
+  // private set
 
-  fun updateSelectedDate(input: String) {
-    selectedDate = input
-  }
+  var selectedEndDate by mutableStateOf<Long?>(null)
+  // private set
+
+  var combinedDates = Pair<Long?, Long?>(selectedStartDate, selectedEndDate)
+
+  // private set
+
+  /*   fun updateSelectedDate(input: String) {
+      selectedDate = input
+    } */
 
   private val db = Firebase.firestore
   private val user = Firebase.auth.currentUser
@@ -106,6 +111,14 @@ class MedicationsViewModel : ViewModel() {
 
   // region fields data
 
+  fun updateStartDate(input: String) {
+    uiState = uiState.copy(startDate = input)
+  }
+
+  fun updateEndDate(input: String) {
+    uiState = uiState.copy(endDate = input)
+  }
+
   fun updateMedName(newName: String) {
     uiState = uiState.copy(name = newName)
   }
@@ -126,13 +139,13 @@ class MedicationsViewModel : ViewModel() {
     uiState = uiState.copy(unit = newUnit)
   }
 
-  fun updateStartDate(newStartDate: LocalDate) {
-    uiState = uiState.copy(startDate = newStartDate)
-  }
+  /*   fun updateStartDate(newStartDate: LocalDate) {
+      uiState = uiState.copy(startDate = newStartDate.toString())
+    }
 
-  fun updateEndDate(newEndDate: LocalDate) {
-    uiState = uiState.copy(endDate = newEndDate)
-  }
+    fun updateEndDate(newEndDate: LocalDate) {
+      uiState = uiState.copy(endDate = newEndDate.toString())
+    } */
 
   fun updateMedFrequency(newFrequency: Frequency) {
     uiState = uiState.copy(frequency = newFrequency)
