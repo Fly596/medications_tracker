@@ -34,6 +34,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
+import com.galeria.medicationstracker.ui.screens.medications.AddNewMed.AddNewMedFormScreen
+import com.galeria.medicationstracker.ui.screens.medications.AddNewMed.AddNewMedNameScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.shared.components.HeadViewModel
@@ -104,8 +106,8 @@ class ApplicationActivity : ComponentActivity() {
             navController = navController,
             startDestination = Routes.Dashboard,
             modifier = Modifier
-                .padding(innerPadding)
-                .padding(start = 24.dp, end = 24.dp, top = 16.dp)
+              .padding(innerPadding)
+              .padding(start = 24.dp, end = 24.dp, top = 16.dp)
           ) {
 
             composable<Routes.Dashboard> {
@@ -128,12 +130,28 @@ class ApplicationActivity : ComponentActivity() {
             }
 
             composable<Routes.Medications> {
-              MedicationsScreen(
+              MedicationsScreen(onNewMedClick = {
+                navController.navigate(
+                  Routes.NewMedicationName
+                )
+              }
               )
             }
 
             composable<Routes.Profile> {
               ProfileScreen()
+            }
+
+            composable<Routes.NewMedicationName> {
+              AddNewMedNameScreen(onNextClick = {
+                navController.navigate(
+                  Routes.NewMedicationForm
+                )
+              })
+            }
+
+            composable<Routes.NewMedicationForm> {
+              AddNewMedFormScreen()
             }
           }
         }

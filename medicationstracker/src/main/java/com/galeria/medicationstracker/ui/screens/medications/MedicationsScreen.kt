@@ -28,15 +28,12 @@ import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.data.TEMP_Medication
-import com.galeria.medicationstracker.ui.screens.autentification.login.MyTextField
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
@@ -46,11 +43,9 @@ import java.util.Locale
 @Composable
 fun MedicationsScreen(
   modifier: Modifier = Modifier,
+  onNewMedClick: () -> Unit,
   viewModel: MedicationsViewModel = viewModel(),
 ) {
-  val uid = viewModel.userId
-
-  val state = viewModel.uiState
 
   Column {
     // Header.
@@ -62,66 +57,14 @@ fun MedicationsScreen(
     Spacer(modifier = Modifier.padding(8.dp))
 
     HIGButton(
-      text = "Add Medication",
-      onClick = { /* TODO: Open Form */ },
+      text = "+ Add Medication",
+      onClick = { onNewMedClick.invoke() },
       enabled = true,
       style = HIGButtonStyle.Bezeled,
       Modifier.fillMaxWidth(),
     )
 
-    MyTextField(
-      value = state.name,
-      onValueChange = { viewModel.updateMedName(it) },
-      label = "Medication name",
-      modifier = Modifier.fillMaxWidth(),
-    )
-    MyTextField(
-      value = state.type,
-      onValueChange = { viewModel.updateMedType(it) },
-      label = "Medication type",
-      modifier = Modifier.fillMaxWidth(),
-    )
-    MyTextField(
-      value = if (state.strength != 0.0f) state.strength.toString() else "",
-      onValueChange = { viewModel.updateMedStrength(it.toFloat()) },
-      label = "Strength",
-      modifier = Modifier.fillMaxWidth(),
-    )
-    MyTextField(
-      value = state.notes,
-      onValueChange = { viewModel.updateMedNotes(it) },
-      label = "Notes",
-      modifier = Modifier.fillMaxWidth(),
-    )
-
-    val context = LocalContext.current
-
-    HIGButton(
-      text = "Submit",
-      onClick = {
-        val newMed = TEMP_Medication(uid = uid, name = state.name, type = state.type)
-
-        viewModel.addMedication(newMed, context)
-      },
-      enabled = true,
-    )
-
-    /*     if (viewModel.showDatePicker){
-      DateRangePickerModal({},{})
-    } */
-    // Start end selection.
-
-    // Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-    HIGButton(
-      text = "Start Date",
-      onClick = { viewModel.showDatePicker = !viewModel.showDatePicker },
-      enabled = true,
-    )
-    // ModalDatePicker(viewModel, updateDate = { viewModel.updateEndDate(it) })
-
-    ModalDatePicker(viewModel)
-
-    // }
+    Spacer(modifier = Modifier.padding(24.dp))
 
     LazyColumn(
       verticalArrangement = Arrangement.spacedBy(8.dp),

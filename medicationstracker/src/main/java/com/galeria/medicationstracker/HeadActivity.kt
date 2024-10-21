@@ -6,17 +6,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,14 +19,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.screens.autentification.create_account.SignupScreen
-import com.galeria.medicationstracker.ui.screens.autentification.create_account.SignupScreenViewModel
 import com.galeria.medicationstracker.ui.screens.autentification.login.LoginScreen
-import com.galeria.medicationstracker.ui.screens.autentification.login.LoginScreenViewModel
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
-import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 
 
 class HeadActivity : ComponentActivity() {
@@ -47,6 +35,7 @@ class HeadActivity : ComponentActivity() {
     setContent {
       MedicationsTrackerAppTheme {
         val navController = rememberNavController()
+        // private val db = Firebase.firestore
         val context: Context = LocalContext.current
 
         // TODO: remember current user.

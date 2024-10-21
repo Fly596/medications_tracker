@@ -16,5 +16,16 @@ sealed class Routes {
     @Serializable data object Profile : Routes()
     @Serializable data object Calendar : Routes()
     @Serializable data object Medications : Routes()
+
+  @Serializable
+  data object NewMedicationName : Routes()
+  @Serializable
+  data object NewMedicationForm : Routes()
+  @Serializable
+  data object NewMedicationStrength : Routes()
+  @Serializable
+  data object NewMedicationFrequency : Routes()
+  @Serializable
+  data object NewMedicationReminder : Routes()
     // endregion
 }

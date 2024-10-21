@@ -75,7 +75,7 @@ fun HIGButton(
         colors = buttonColors) {
             Text(
                 text = text,
-                style = MedicationsTrackerAppTheme.extendedTypography.body,
+              style = MedicationsTrackerAppTheme.extendedTypography.title3,
             )
         }
 }

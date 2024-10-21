@@ -3,6 +3,8 @@
     <string name="sign_in_screen_title">Sign in</string>
     <string name="sign_up_screen_title">Create Your Account</string>
     <string name="meds_screen_title">My Meds</string>
+    <string name="add_new_med_name_screen_title">Add Medication Name</string>
+    <string name="add_new_med_form_screen_title">Select Form</string>
     <string name="button_default_text">FUCK ME</string>
     <string name="title_activity_application">ApplicationActivity</string>
 </resources>
