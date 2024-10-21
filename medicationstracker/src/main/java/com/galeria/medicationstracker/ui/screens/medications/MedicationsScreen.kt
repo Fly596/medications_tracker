@@ -35,8 +35,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.data.TEMP_Medication
 import com.galeria.medicationstracker.ui.screens.autentification.login.MyTextField
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
+import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
+import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 import java.util.Date
 import java.util.Locale
 
@@ -47,39 +50,45 @@ fun MedicationsScreen(
 ) {
   val uid = viewModel.userId
 
-  val meds = viewModel.userMedications
-  // Log.d(TAG, "${meds.size}")
+  val state = viewModel.uiState
 
   Column {
-
     // Header.
     Text(
       stringResource(R.string.meds_screen_title),
-      style = MaterialTheme.typography.headlineMedium,
+      style = MedicationsTrackerAppTheme.extendedTypography.largeTitle,
     )
 
     Spacer(modifier = Modifier.padding(8.dp))
 
+    HIGButton(
+      text = "Add Medication",
+      onClick = { /* TODO: Open Form */ },
+      enabled = true,
+      style = HIGButtonStyle.Bezeled,
+      Modifier.fillMaxWidth(),
+    )
+
     MyTextField(
-      value = viewModel.uiState.name,
+      value = state.name,
       onValueChange = { viewModel.updateMedName(it) },
       label = "Medication name",
       modifier = Modifier.fillMaxWidth(),
     )
     MyTextField(
-      value = viewModel.uiState.type,
+      value = state.type,
       onValueChange = { viewModel.updateMedType(it) },
       label = "Medication type",
       modifier = Modifier.fillMaxWidth(),
     )
     MyTextField(
-      value = viewModel.uiState.strength.toString(),
+      value = if (state.strength != 0.0f) state.strength.toString() else "",
       onValueChange = { viewModel.updateMedStrength(it.toFloat()) },
       label = "Strength",
       modifier = Modifier.fillMaxWidth(),
     )
     MyTextField(
-      value = viewModel.uiState.notes,
+      value = state.notes,
       onValueChange = { viewModel.updateMedNotes(it) },
       label = "Notes",
       modifier = Modifier.fillMaxWidth(),
@@ -87,36 +96,32 @@ fun MedicationsScreen(
 
     val context = LocalContext.current
 
-    /*     HIGButton(
-          text = "Submit",
-          onClick = {
-            val newMed =
-              TEMP_Medication(uid = uid, name = viewModel.uiState.name, type = viewModel.uiState.type)
+    HIGButton(
+      text = "Submit",
+      onClick = {
+        val newMed = TEMP_Medication(uid = uid, name = state.name, type = state.type)
 
-            viewModel.addMedication(newMed, context)
-          },
-          enabled = true,
-        ) */
+        viewModel.addMedication(newMed, context)
+      },
+      enabled = true,
+    )
 
     /*     if (viewModel.showDatePicker){
       DateRangePickerModal({},{})
     } */
     // Start end selection.
 
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-      HIGButton(
-        text = "Start Date",
-        onClick = { viewModel.showDatePicker = !viewModel.showDatePicker },
-        enabled = true,
-      )
-      // ModalDatePicker(viewModel, updateDate = { viewModel.updateEndDate(it) })
+    // Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+    HIGButton(
+      text = "Start Date",
+      onClick = { viewModel.showDatePicker = !viewModel.showDatePicker },
+      enabled = true,
+    )
+    // ModalDatePicker(viewModel, updateDate = { viewModel.updateEndDate(it) })
 
-      ModalDatePicker(viewModel)
+    ModalDatePicker(viewModel)
 
-      /*       if (viewModel.showDatePicker) {
-            } */
-
-    }
+    // }
 
     LazyColumn(
       verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -125,17 +130,56 @@ fun MedicationsScreen(
     ) {
 
       // TODO: get medications from firebase.
-      /*       items(meds.value) { medication ->
-              CardComponent(
-                header = medication.type,
-                topEndText = "Edit",
-                content = medication.name,
-                onClick = {
-                  // TODO: Реализовать открытие экрана с выбранным medication.
-                },
-              )
-            } */
+
+      viewModel.userMedications.value.forEach { medication ->
+        item {
+          CardComponent(
+            header = medication.type,
+            topEndText = "Edit",
+            content = medication.name,
+            onClick = {
+              // TODO: Реализовать открытие экрана с выбранным medication.
+            },
+          )
+        }
+      }
     }
+  }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ModalDatePicker(viewModel: MedicationsViewModel) {
+  var selectedDate = viewModel.selectedStartDate
+  var selectEndDate = viewModel.selectedEndDate
+
+  if (
+  /* viewModel.selectedStartDate != null &&
+  viewModel.selectedEndDate != null && */
+    viewModel.showDatePicker
+  ) {
+    DateRangePickerModal(
+      onDateRangeSelected = {
+        selectedDate = it.first
+        selectEndDate = it.second
+      },
+      onDismiss = { viewModel.showDatePicker = !viewModel.showDatePicker },
+    )
+
+    /*  val dateS = Date(selectedDate!!)
+    val dateE = Date(selectEndDate!!)
+    val formatedDateS = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateS)
+    val formatedDateE = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateE)
+    Text("Selected date: $formatedDateS to $formatedDateE") */
+  } else {
+    Text("No data selected.")
+
+    // val dateS = Date(selectedDate!!)
+    // val dateE = Date(selectEndDate!!)
+    // val formatedDateS = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateS)
+    // val formatedDateE = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateE)
+
+    // Text("Selected date: $formatedDateS to $formatedDateE")
   }
 }
 
@@ -183,34 +227,7 @@ fun CardComponent(
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ModalDatePicker(
-  viewModel: MedicationsViewModel,
-) {
-  var selectedDate = viewModel.selectedStartDate
-  var selectEndDate = viewModel.selectedEndDate
-
-  if (viewModel.selectedStartDate != null && viewModel.selectedEndDate != null && !viewModel.showDatePicker) {
-    val dateS = Date(selectedDate!!)
-    val dateE = Date(selectEndDate!!)
-    val formatedDateS = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateS)
-    val formatedDateE = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateE)
-
-    Text("Selected date: $formatedDateS to $formatedDateE")
-
-  } else {
-    Text("No date selected yet")
-    DateRangePickerModal(
-      onDateRangeSelected = {
-        viewModel.selectedStartDate = it.first; viewModel.selectedEndDate = it.second
-      },
-      onDismiss = { viewModel.showDatePicker = !viewModel.showDatePicker },
-    )
-  }
-
-
-  /*   Column(modifier = modifier.fillMaxWidth().padding(12.dp), horizontalAlignment = Alignment.Start) {
+/*   Column(modifier = modifier.fillMaxWidth().padding(12.dp), horizontalAlignment = Alignment.Start) {
     OutlinedTextField(
       value = datePick,
       onValueChange = { updateDate(it) },
@@ -237,8 +254,8 @@ fun ModalDatePicker(
         viewModel.showDatePicker = false
       }
     }
-  } */
-}
+  }
+}*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -275,7 +292,6 @@ fun DateRangePickerModal(onDateRangeSelected: (Pair<Long?, Long?>) -> Unit, onDi
     )
   }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

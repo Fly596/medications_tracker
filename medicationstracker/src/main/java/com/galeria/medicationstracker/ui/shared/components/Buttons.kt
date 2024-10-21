@@ -40,7 +40,8 @@ fun HIGButton(
     text: String,
     onClick: () -> Unit,
     enabled: Boolean = true,
-    style: HIGButtonStyle = HIGButtonStyle.Filled
+    style: HIGButtonStyle = HIGButtonStyle.Filled,
+    modifier: Modifier = Modifier
 ) {
     val buttonColors =
         when (style) {
@@ -69,7 +70,8 @@ fun HIGButton(
     Button(
         onClick = onClick,
         enabled = enabled,
-        shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius_large)),
+      shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius_small)),
+      modifier = modifier,
         colors = buttonColors) {
             Text(
                 text = text,
@@ -116,7 +118,9 @@ fun HIGListButton(
         enabled = enabled,
         shape = RoundedCornerShape(dimensionResource(R.dimen.list_corner_radius_default)),
         colors = buttonColors,
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(vertical = 8.dp)) {
             Text(
                 text = text,
                 style = MedicationsTrackerAppTheme.extendedTypography.body,

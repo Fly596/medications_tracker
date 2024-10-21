@@ -38,7 +38,6 @@ import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.shared.components.HeadViewModel
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
-import com.google.firebase.FirebaseApp
 
 data class BottomNavigationItem(
   val title: String,
@@ -52,15 +51,9 @@ data class BottomNavigationItem(
 class ApplicationActivity : ComponentActivity() {
 
   private val headViewModel: HeadViewModel by viewModels()
-  //private val medicationsViewModel: MedicationsViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
-    FirebaseApp.initializeApp(this)
-
-    //medicationsViewModel.getMedsList()
-
     enableEdgeToEdge()
 
     setContent {
@@ -136,8 +129,6 @@ class ApplicationActivity : ComponentActivity() {
 
             composable<Routes.Medications> {
               MedicationsScreen(
-
-                //medicationsViewModel =  medicationsViewModel
               )
             }
 

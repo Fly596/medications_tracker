@@ -10,6 +10,7 @@ sealed class Routes {
     @Serializable data object Registration : Routes()
     // endregion
 
+  // import com.google.firebase.firestore.ktx.toObjects
     // region Application
     @Serializable data object Dashboard : Routes()
     @Serializable data object Profile : Routes()

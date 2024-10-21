@@ -44,7 +44,7 @@ class MedicationsViewModel : ViewModel() {
     private set
   //val userMedications = _userMedications.asStateFlow()
 
-  var showDatePicker by mutableStateOf(true)
+  var showDatePicker by mutableStateOf(false)
 
   var selectedStartDate by mutableStateOf<Long?>(null)
   // private set
@@ -53,12 +53,6 @@ class MedicationsViewModel : ViewModel() {
   // private set
 
   var combinedDates = Pair<Long?, Long?>(selectedStartDate, selectedEndDate)
-
-  // private set
-
-  /*   fun updateSelectedDate(input: String) {
-      selectedDate = input
-    } */
 
   private val db = Firebase.firestore
   private val user = Firebase.auth.currentUser
