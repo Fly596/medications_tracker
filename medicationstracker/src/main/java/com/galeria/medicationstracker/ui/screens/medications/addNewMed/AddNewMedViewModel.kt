@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.medications.AddNewMed
+package com.galeria.medicationstracker.ui.screens.medications.addNewMed
 
 import android.content.Context
 import android.util.Log
@@ -26,7 +26,7 @@ data class NewMedicationUiState(
   val unit: MedicationUnit = MedicationUnit.MG, // f
   val startDate: String = "",// f
   val endDate: String = "",// f
-  val frequency: Frequency = Frequency.AtRegularIntervals(0),// f
+  val frequency: Frequency = Frequency.AtRegularIntervals(),// f
   val intakeTime: LocalTime = LocalTime.now(),// f
   val notes: String = "",
 )

@@ -24,9 +24,9 @@ data class Medication(
 )
 
 sealed class Frequency {
-  data class AtRegularIntervals(val interval: Int) : Frequency()
+  data class AtRegularIntervals(val interval: Int = 0) : Frequency()
 
-  data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek>) : Frequency()
+  data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek> = DayOfWeek.entries) : Frequency()
 }
 
 enum class MedicationForm {

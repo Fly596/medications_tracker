@@ -34,10 +34,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
-import com.galeria.medicationstracker.ui.screens.medications.AddNewMed.AddNewMedNameScreen
-import com.galeria.medicationstracker.ui.screens.medications.AddNewMed.NewMedFormScreen
-import com.galeria.medicationstracker.ui.screens.medications.AddNewMed.NewMedStrengthScreen
+import com.galeria.medicationstracker.ui.screens.medications.addNewMed.NewMedNameScreen
+import com.galeria.medicationstracker.ui.screens.medications.addNewMed.NewMedFormScreen
+import com.galeria.medicationstracker.ui.screens.medications.addNewMed.NewMedStrengthScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
+import com.galeria.medicationstracker.ui.screens.medications.addNewMed.NewMedFrequencyScreen
+import com.galeria.medicationstracker.ui.screens.medications.addNewMed.NewMedReminderScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.shared.components.HeadViewModel
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
@@ -124,7 +126,7 @@ class ApplicationActivity : ComponentActivity() {
             }
 
             composable<Routes.NewMedicationName> {
-              AddNewMedNameScreen(
+              NewMedNameScreen(
                 onNextClick = { navController.navigate(Routes.NewMedicationForm) }
               )
             }
@@ -136,7 +138,27 @@ class ApplicationActivity : ComponentActivity() {
             }
 
             composable<Routes.NewMedicationStrength> {
-              NewMedStrengthScreen(onNextClick = {})
+              NewMedStrengthScreen(onNextClick = {
+                navController.navigate(Routes.NewMedicationFrequency)
+              })
+            }
+
+            composable<Routes.NewMedicationFrequency> {
+              NewMedFrequencyScreen(onNextClick = {
+                navController.navigate(Routes.NewMedicationReminder)
+              })
+            }
+
+            composable<Routes.NewMedicationReminder> {
+              NewMedReminderScreen(onNextClick = {
+                navController.navigate(Routes.NewMedicationReview)
+              })
+            }
+
+            composable<Routes.NewMedicationReview> {
+              /*NewMedReviewScreen(onNextClick = {
+                navController.navigate(Routes.Medications)
+              })*/
             }
 
             composable<Routes.Profile> { ProfileScreen() }

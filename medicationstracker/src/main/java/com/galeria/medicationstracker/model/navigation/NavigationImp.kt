@@ -27,5 +27,7 @@ sealed class Routes {
   data object NewMedicationFrequency : Routes()
   @Serializable
   data object NewMedicationReminder : Routes()
+  @Serializable
+  data object NewMedicationReview : Routes()
     // endregion
 }
