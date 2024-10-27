@@ -8,40 +8,31 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 
+data class LoginScreenState(
+  val email: String = "",
+  val password: String = "",
+  var showPassword: Boolean = false
+)
+
 class LoginScreenViewModel : ViewModel() {
-  var showPassword by mutableStateOf(false)
 
-  var email by mutableStateOf("")
-    private set
-
-  var password by mutableStateOf("")
-    private set
+  var loginScreenState by mutableStateOf(LoginScreenState())
 
   fun updateEmail(input: String) {
-    email = input
+    loginScreenState = loginScreenState.copy(email = input)
   }
 
   fun updatePassword(input: String) {
-    password = input
+    loginScreenState = loginScreenState.copy(password = input)
   }
+
 
   fun onSignInClick(email: String, password: String, context: Context, onLoginClick: () -> Unit) {
     val auth = FirebaseAuth.getInstance()
 
-    /*    auth.addAuthStateListener { firebaseAuth ->
-      val user = firebaseAuth.currentUser
-      if (user != null) {
-        Log.d("Auth", "User is signed in")
-        //onLoginClick.invoke()
-      } else {
-        Log.d("Auth", "No user is signed in")
-      }
-    }*/
-
     auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
       if (task.isSuccessful) {
         // Login success
-        // onLoginClick.invoke()
         Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
         onLoginClick.invoke()
       } else {

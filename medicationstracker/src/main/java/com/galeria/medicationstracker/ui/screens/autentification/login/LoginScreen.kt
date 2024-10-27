@@ -34,6 +34,7 @@ fun LoginScreen(
   modifier: Modifier = Modifier,
   viewModel: LoginScreenViewModel = viewModel(),
 ) {
+  val state = viewModel.loginScreenState
 
   Column(
     modifier = modifier,
@@ -48,7 +49,7 @@ fun LoginScreen(
     Spacer(modifier = Modifier.height(20.dp))
 
     MyTextField(
-      value = viewModel.email,
+      value = state.email,
       onValueChange = { viewModel.updateEmail(it) },
       label = "Email",
       modifier = Modifier.fillMaxWidth(),
@@ -59,40 +60,39 @@ fun LoginScreen(
 
     // var passwordVisibility by remember { mutableStateOf(false) }
     MyTextField(
-      value = viewModel.password,
+      value = state.password,
       onValueChange = { viewModel.updatePassword(it) },
       label = "Password",
       modifier = Modifier.fillMaxWidth(),
-      visualTransformation = if (viewModel.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+      visualTransformation = if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
       keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
     )
 
     // Show password switch.
     RememberMeSwitch(
-      checked = viewModel.showPassword,
+      checked = state.showPassword,
       onCheckedChange = {
-        viewModel.showPassword = it
+        state.showPassword = it
       }
     )
 
     Spacer(modifier = Modifier.height(16.dp))
 
     // region Buttons
-
     val context = LocalContext.current
     Row(verticalAlignment = Alignment.CenterVertically) {
       HIGButton(
         text = "Sign In",
         onClick = {
           // ! TEMP: для простого входа.
-          if (viewModel.email == "sex") {
+          if (state.email == "sex") {
             viewModel.onSignInClick(
               "ggsell@gmail.com", "password", context, onLoginClick
             )
           } else {
             viewModel.onSignInClick(
-              viewModel.email,
-              viewModel.password,
+              state.email,
+              state.password,
               context,
               onLoginClick
             )
@@ -116,7 +116,7 @@ fun LoginScreen(
 
     HIGButton(
       text = "Forgot Password?",
-      onClick = { viewModel.resetPassword(viewModel.email, context) },
+      onClick = { viewModel.resetPassword(state.email, context) },
       enabled = true,
       style = HIGButtonStyle.Borderless
     )
@@ -142,8 +142,6 @@ fun MyTextField(
     modifier = modifier
   )
 }
-
-// TODO: Textfields; Buttons
 
 @Composable
 fun RememberMeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
