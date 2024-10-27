@@ -83,8 +83,8 @@ class AddNewMedViewModel : ViewModel() {
     uiState = uiState.copy(form = newForm)
   }
 
-  fun updateMedStrength(newStrength: Float) {
-    uiState = uiState.copy(strength = newStrength)
+  fun updateMedStrength(newStrength: String) {
+    uiState = uiState.copy(strength = newStrength.toFloat())
   }
 
   fun updateMedUnit(newUnit: MedicationUnit) {

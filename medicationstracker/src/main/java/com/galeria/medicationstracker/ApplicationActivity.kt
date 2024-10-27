@@ -34,8 +34,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
-import com.galeria.medicationstracker.ui.screens.medications.AddNewMed.AddNewMedFormScreen
 import com.galeria.medicationstracker.ui.screens.medications.AddNewMed.AddNewMedNameScreen
+import com.galeria.medicationstracker.ui.screens.medications.AddNewMed.NewMedFormScreen
+import com.galeria.medicationstracker.ui.screens.medications.AddNewMed.NewMedStrengthScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.shared.components.HeadViewModel
@@ -47,7 +48,7 @@ data class BottomNavigationItem(
   val selectedIcon: ImageVector,
   val unselectedIcon: ImageVector,
   val hasNews: Boolean,
-  val badgeCount: Int? = null
+  val badgeCount: Int? = null,
 )
 
 class ApplicationActivity : ComponentActivity() {
@@ -62,66 +63,53 @@ class ApplicationActivity : ComponentActivity() {
       MedicationsTrackerAppTheme {
         val navController = rememberNavController()
 
-        val items = listOf(
-          BottomNavigationItem(
-            title = "Dashboard",
-            route = Routes.Dashboard,
-            selectedIcon = Icons.Filled.Dashboard,
-            unselectedIcon = Icons.Outlined.Dashboard,
-            hasNews = false
-          ),
-
-          BottomNavigationItem(
-            title = "Calendar",
-            route = Routes.Calendar,
-            selectedIcon = Icons.Filled.CalendarMonth,
-            unselectedIcon = Icons.Outlined.CalendarMonth,
-            hasNews = false
-          ),
-
-          BottomNavigationItem(
-            title = "Medications",
-            route = Routes.Medications,
-            selectedIcon = Icons.Filled.Medication,
-            unselectedIcon = Icons.Outlined.Medication,
-            hasNews = false,
-            badgeCount = 16
-          ),
-
-          BottomNavigationItem(
-            title = "Profile",
-            route = Routes.Profile,
-            selectedIcon = Icons.Filled.AccountCircle,
-            unselectedIcon = Icons.Outlined.AccountCircle,
-            hasNews = true
+        val items =
+          listOf(
+            BottomNavigationItem(
+              title = "Dashboard",
+              route = Routes.Dashboard,
+              selectedIcon = Icons.Filled.Dashboard,
+              unselectedIcon = Icons.Outlined.Dashboard,
+              hasNews = false,
+            ),
+            BottomNavigationItem(
+              title = "Calendar",
+              route = Routes.Calendar,
+              selectedIcon = Icons.Filled.CalendarMonth,
+              unselectedIcon = Icons.Outlined.CalendarMonth,
+              hasNews = false,
+            ),
+            BottomNavigationItem(
+              title = "Medications",
+              route = Routes.Medications,
+              selectedIcon = Icons.Filled.Medication,
+              unselectedIcon = Icons.Outlined.Medication,
+              hasNews = false,
+              badgeCount = 16,
+            ),
+            BottomNavigationItem(
+              title = "Profile",
+              route = Routes.Profile,
+              selectedIcon = Icons.Filled.AccountCircle,
+              unselectedIcon = Icons.Outlined.AccountCircle,
+              hasNews = true,
+            ),
           )
-        )
 
-        Scaffold(
-          bottomBar = {
-            BottomNavBar(items, navController, headViewModel)
-          },
-        ) { innerPadding ->
+        Scaffold(bottomBar = { BottomNavBar(items, navController, headViewModel) }) { innerPadding
+          ->
           NavHost(
             navController = navController,
-            startDestination = Routes.Dashboard,
-            modifier = Modifier
+            startDestination = Routes.Medications,
+            modifier =
+            Modifier
               .padding(innerPadding)
-              .padding(start = 24.dp, end = 24.dp, top = 16.dp)
+              .padding(start = 24.dp, end = 24.dp, top = 16.dp),
           ) {
-
             composable<Routes.Dashboard> {
               DashboardScreen(
-                onProfileNavigate = {
-                  navController.navigate(
-                    Routes.Profile
-                  )
-                },
-                onCalendarNavigate = {
-                  navController.navigate(
-                    Routes.Calendar
-                  )
-                }
+                onProfileNavigate = { navController.navigate(Routes.Profile) },
+                onCalendarNavigate = { navController.navigate(Routes.Calendar) },
               )
             }
 
@@ -130,47 +118,44 @@ class ApplicationActivity : ComponentActivity() {
             }
 
             composable<Routes.Medications> {
-              MedicationsScreen(onNewMedClick = {
-                navController.navigate(
-                  Routes.NewMedicationName
-                )
-              }
+              MedicationsScreen(
+                onNewMedClick = { navController.navigate(Routes.NewMedicationName) }
               )
             }
 
-            composable<Routes.Profile> {
-              ProfileScreen()
-            }
-
             composable<Routes.NewMedicationName> {
-              AddNewMedNameScreen(onNextClick = {
-                navController.navigate(
-                  Routes.NewMedicationForm
-                )
-              })
+              AddNewMedNameScreen(
+                onNextClick = { navController.navigate(Routes.NewMedicationForm) }
+              )
             }
 
             composable<Routes.NewMedicationForm> {
-              AddNewMedFormScreen()
+              NewMedFormScreen(
+                onNextClick = { navController.navigate(Routes.NewMedicationStrength) }
+              )
             }
+
+            composable<Routes.NewMedicationStrength> {
+              NewMedStrengthScreen(onNextClick = {})
+            }
+
+            composable<Routes.Profile> { ProfileScreen() }
+
           }
         }
       }
     }
   }
 
-
   @Composable
   private fun BottomNavBar(
     items: List<BottomNavigationItem>,
     navController: NavHostController,
-    viewModel: HeadViewModel
+    viewModel: HeadViewModel,
   ) {
     val selectedItemIndex = viewModel.selectedItemIndex.collectAsState().value
 
-    NavigationBar(
-      modifier = Modifier.fillMaxWidth()
-    ) {
+    NavigationBar(modifier = Modifier.fillMaxWidth()) {
       items.forEachIndexed { index, item ->
         NavigationBarItem(
           selected = selectedItemIndex == index,
@@ -184,26 +169,25 @@ class ApplicationActivity : ComponentActivity() {
               icon = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon,
               badgeCount = item.badgeCount,
               hasNews = item.hasNews,
-              contentDescription = item.title
+              contentDescription = item.title,
             )
             /*                        BadgedBox(
-                                        badge = {
-                                            if (item.badgeCount != null) {
-                                                Badge {
-                                                    Text(text = item.badgeCount.toString())
-                                                }
-                                            } else if (item.hasNews) {
-                                                Badge()
-                                            }
-                                        }
-                                    ) {
-                                        Icon(
-                                            imageVector = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon,
-                                            contentDescription = item.title
-                                        )
-                                    }*/
-          }
-
+                badge = {
+                    if (item.badgeCount != null) {
+                        Badge {
+                            Text(text = item.badgeCount.toString())
+                        }
+                    } else if (item.hasNews) {
+                        Badge()
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon,
+                    contentDescription = item.title
+                )
+            }*/
+          },
         )
       }
     }
@@ -214,7 +198,7 @@ class ApplicationActivity : ComponentActivity() {
     icon: ImageVector,
     badgeCount: Int?,
     hasNews: Boolean,
-    contentDescription: String?
+    contentDescription: String?,
   ) {
     BadgedBox(
       badge = {
@@ -224,10 +208,7 @@ class ApplicationActivity : ComponentActivity() {
         }
       }
     ) {
-      Icon(
-        imageVector = icon,
-        contentDescription = contentDescription
-      )
+      Icon(imageVector = icon, contentDescription = contentDescription)
     }
   }
 }

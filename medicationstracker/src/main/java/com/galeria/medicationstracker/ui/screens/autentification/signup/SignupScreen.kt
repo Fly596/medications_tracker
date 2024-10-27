@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.autentification.create_account
+package com.galeria.medicationstracker.ui.screens.autentification.signup
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +10,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,13 +31,14 @@ import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
 
 @Composable
 fun SignupScreen(
-  onCreateAccountClick: () -> Unit,
+  navigateHome: () -> Unit,
   modifier: Modifier = Modifier,
   viewModel: SignupScreenViewModel = viewModel(),
 ) {
-  val email = viewModel.username.collectAsState()
-  val password = viewModel.password.collectAsState()
-  // val userName = viewModel.userName.collectAsState()
+  val state = viewModel.signupScreenState
+
+  val email = state.email
+  val password = state.password
 
   Column(
     modifier = modifier,
@@ -53,7 +53,7 @@ fun SignupScreen(
     Spacer(modifier = Modifier.height(20.dp))
 
     MyTextField(
-      value = email.value,
+      value = email,
       onValueChange = { viewModel.updateEmail(it) },
       label = "Email",
       modifier = Modifier.fillMaxWidth(),
@@ -64,69 +64,37 @@ fun SignupScreen(
     var passwordVisibility by remember { mutableStateOf(false) }
 
     MyTextField(
-      value = password.value,
+      value = password,
       onValueChange = { viewModel.updatePassword(it) },
       label = "Password",
       modifier = Modifier.fillMaxWidth(),
-      visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+      visualTransformation =
+      if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
       keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
     )
     // Show password switch.
-    RememberMeSwitch(
-      checked = passwordVisibility,
-      onCheckedChange = {
-        passwordVisibility = it
-      }
-    )
+    RememberMeSwitch(checked = passwordVisibility, onCheckedChange = { passwordVisibility = it })
 
     Spacer(modifier = Modifier.height(16.dp))
 
-    /*         MyTextField(
-        value = userName.value,
-        onValueChange = { viewModel.updateUserName(it) },
-        label = "User name",
-        modifier = Modifier
-            .fillMaxWidth(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-    ) */
-
     val context = LocalContext.current
 
-    Row(verticalAlignment = Alignment.CenterVertically){
+    Row(verticalAlignment = Alignment.CenterVertically) {
       HIGButton(
         text = "Cancel",
-        onClick = onCreateAccountClick,
+        onClick = navigateHome,
         enabled = true,
-        style = HIGButtonStyle.Borderless
+        style = HIGButtonStyle.Borderless,
       )
 
       Spacer(modifier = Modifier.weight(1f))
 
       HIGButton(
         text = "Create Account",
-        onClick = {
-          viewModel.onRegisterClick(
-            email.value,
-            password.value,
-            context,
-            onSignupClick = onCreateAccountClick,
-          )
-          // Вход в только что созданный аккаунт
-          /*                 viewModelLogin.onSignInClick(
-              email.value,
-              password.value,
-              context,
-              onLoginClick
-          )
-          // Добавление информации о текущем пользователе в базу данных.
-          viewModel.addUserInfo(
-              Firebase.auth.currentUser?.uid.toString()
-          ) */
-        },
+        onClick = { viewModel.onRegisterClick(context, onSignupSuccess = navigateHome) },
         enabled = true,
         style = HIGButtonStyle.Bezeled,
       )
     }
-
   }
 }

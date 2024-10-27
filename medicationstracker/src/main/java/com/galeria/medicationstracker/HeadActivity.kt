@@ -18,8 +18,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.navigation.Routes
-import com.galeria.medicationstracker.ui.screens.autentification.create_account.SignupScreen
 import com.galeria.medicationstracker.ui.screens.autentification.login.LoginScreen
+import com.galeria.medicationstracker.ui.screens.autentification.signup.SignupScreen
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 import com.google.firebase.FirebaseApp
 
@@ -35,7 +35,6 @@ class HeadActivity : ComponentActivity() {
     setContent {
       MedicationsTrackerAppTheme {
         val navController = rememberNavController()
-        // private val db = Firebase.firestore
         val context: Context = LocalContext.current
 
         // TODO: remember current user.
@@ -78,7 +77,7 @@ class HeadActivity : ComponentActivity() {
 
             composable<Routes.Registration> {
               SignupScreen(
-                onCreateAccountClick = {
+                navigateHome = {
                   navController.navigate(
                     Routes.Home
                   )
