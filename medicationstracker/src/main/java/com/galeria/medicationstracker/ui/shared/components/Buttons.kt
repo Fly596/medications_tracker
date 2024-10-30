@@ -29,173 +29,190 @@ import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 enum class HIGButtonStyle {
-    Filled,
-    Bezeled,
-    Borderless,
+  Filled,
+  Bezeled,
+  Borderless,
 }
 
 // TODO: вынести цвета в тему.
 @Composable
 fun HIGButton(
-    text: String,
-    onClick: () -> Unit,
-    enabled: Boolean = true,
-    style: HIGButtonStyle = HIGButtonStyle.Filled,
-    modifier: Modifier = Modifier
+  text: String,
+  onClick: () -> Unit,
+  enabled: Boolean = true,
+  style: HIGButtonStyle = HIGButtonStyle.Filled,
+  modifier: Modifier = Modifier,
 ) {
-    val buttonColors =
-        when (style) {
-            HIGButtonStyle.Filled ->
-                ButtonDefaults.buttonColors(
-                    containerColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
-                    contentColor = Color.White,
-                    disabledContainerColor = Color(0x1f787880),
-                    disabledContentColor = Color(0x4d3c3c43))
+  val buttonColors =
+    when (style) {
+      HIGButtonStyle.Filled ->
+        ButtonDefaults.buttonColors(
+          containerColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
+          contentColor = Color.White,
+          disabledContainerColor = Color(0x1f787880),
+          disabledContentColor = Color(0x4d3c3c43),
+        )
 
-            HIGButtonStyle.Bezeled ->
-                ButtonDefaults.buttonColors(
-                    containerColor = Color(0x26007aff), /*Fills, tertiary*/
-                    contentColor =
-                        MedicationsTrackerAppTheme.extendedColorsLight.extBlue
-                            /*.defaultLight*/, /*Labels, tertiary*/
-                    disabledContainerColor = Color(0x1f787880),
-                    disabledContentColor = Color(0x4d3c3c43))
+      HIGButtonStyle.Bezeled ->
+        ButtonDefaults.buttonColors(
+          containerColor = Color(0x26007aff), /*Fills, tertiary*/
+          contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
+          /*.defaultLight*/ /*Labels, tertiary*/
+          disabledContainerColor = Color(0x1f787880),
+          disabledContentColor = Color(0x4d3c3c43),
+        )
 
-            HIGButtonStyle.Borderless ->
-                ButtonDefaults.textButtonColors(
-                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
-                    disabledContentColor = Color(0x4d3c3c43))
-        }
+      HIGButtonStyle.Borderless ->
+        ButtonDefaults.textButtonColors(
+          contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
+          disabledContentColor = Color(0x4d3c3c43),
+        )
+    }
 
-    Button(
-        onClick = onClick,
-        enabled = enabled,
-      shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius_small)),
-      modifier = modifier,
-        colors = buttonColors) {
-            Text(
-                text = text,
-              style = MedicationsTrackerAppTheme.extendedTypography.title3,
-            )
-        }
+  Button(
+    onClick = onClick,
+    enabled = enabled,
+    shape = RoundedCornerShape(dimensionResource(R.dimen.corner_radius_small)),
+    modifier = modifier,
+    colors = buttonColors,
+  ) {
+    Text(text = text, style = MedicationsTrackerAppTheme.extendedTypography.body)
+  }
 }
 
 @Composable
 fun HIGListButton(
-    text: String,
-    onClick: () -> Unit,
-    enabled: Boolean = true,
-    style: HIGButtonStyle = HIGButtonStyle.Bezeled,
-    icon: ImageVector = Icons.AutoMirrored.Filled.ArrowForwardIos
+  text: String,
+  onClick: () -> Unit,
+  enabled: Boolean = true,
+  style: HIGButtonStyle = HIGButtonStyle.Bezeled,
+  icon: ImageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
 ) {
-    val buttonColors =
-        when (style) {
-            HIGButtonStyle.Filled ->
-                ButtonDefaults.elevatedButtonColors(
-                    containerColor =
-                        MedicationsTrackerAppTheme.systemColorsLight.backgroundPrimaryGrouped, /*Fills, tertiary*/
-                    contentColor = Color.White,
-                    disabledContainerColor = Color(0x1f787880),
-                    disabledContentColor = Color(0x4d3c3c43))
+  val buttonColors =
+    when (style) {
+      HIGButtonStyle.Filled ->
+        ButtonDefaults.elevatedButtonColors(
+          containerColor =
+          MedicationsTrackerAppTheme.systemColorsLight
+            .backgroundPrimaryGrouped,
+          /*Fills, tertiary*/
+          contentColor = Color.White,
+          disabledContainerColor = Color(0x1f787880),
+          disabledContentColor = Color(0x4d3c3c43),
+        )
 
-            HIGButtonStyle.Bezeled ->
-                ButtonDefaults.elevatedButtonColors(
-                    containerColor =
-                        MedicationsTrackerAppTheme.systemColorsLight
-                            .backgroundPrimaryGrouped, /*Fills, tertiary*/
-                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlack,
-                    disabledContainerColor = Color(0x1f787880),
-                    disabledContentColor = Color(0x4d3c3c43))
+      HIGButtonStyle.Bezeled ->
+        ButtonDefaults.elevatedButtonColors(
+          containerColor =
+          MedicationsTrackerAppTheme.systemColorsLight
+            .backgroundPrimaryGrouped,
+          /*Fills, tertiary*/
+          contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlack,
+          disabledContainerColor = Color(0x1f787880),
+          disabledContentColor = Color(0x4d3c3c43),
+        )
 
-            HIGButtonStyle.Borderless ->
-                ButtonDefaults.elevatedButtonColors(
-                    contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
-                    disabledContentColor = Color(0x4d3c3c43))
-        }
+      HIGButtonStyle.Borderless ->
+        ButtonDefaults.elevatedButtonColors(
+          contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
+          disabledContentColor = Color(0x4d3c3c43),
+        )
+    }
 
-    ElevatedButton(
-        onClick = onClick,
-        enabled = enabled,
-        shape = RoundedCornerShape(dimensionResource(R.dimen.list_corner_radius_default)),
-        colors = buttonColors,
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(vertical = 8.dp)) {
-            Text(
-                text = text,
-                style = MedicationsTrackerAppTheme.extendedTypography.body,
-                modifier = Modifier.padding(vertical = 8.dp))
+  ElevatedButton(
+    onClick = onClick,
+    enabled = enabled,
+    shape = RoundedCornerShape(dimensionResource(R.dimen.list_corner_radius_default)),
+    colors = buttonColors,
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(vertical = 8.dp),
+  ) {
+    Text(
+      text = text,
+      style = MedicationsTrackerAppTheme.extendedTypography.body,
+      modifier = Modifier.padding(vertical = 8.dp),
+    )
 
-            Spacer(modifier = Modifier.weight(1f))
+    Spacer(modifier = Modifier.weight(1f))
 
-            Icon(
-                imageVector = icon,
-                contentDescription = "Show options",
-                tint = MedicationsTrackerAppTheme.extendedColorsLight.extGray,
-                modifier = Modifier.size(16.dp))
-        }
+    Icon(
+      imageVector = icon,
+      contentDescription = "Show options",
+      tint = MedicationsTrackerAppTheme.extendedColorsLight.extGray,
+      modifier = Modifier.size(16.dp),
+    )
+  }
 }
 
 @Preview(
-    name = "Buttons",
-    showBackground = false,
-    showSystemUi = true,
-    device = "spec:parent=pixel_8,navigation=buttons")
+  name = "Buttons",
+  showBackground = false,
+  showSystemUi = true,
+  device = "spec:parent=pixel_8,navigation=buttons",
+)
 @Composable
 private fun PreviewButtons() {
-    MedicationsTrackerAppTheme {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top) {
-                Row {
-                    HIGListButton(
-                        stringResource(R.string.button_default_text),
-                        {},
-                        enabled = true,
-                        // style = HIGButtonStyle.Filled
-                    )
-                }
+  MedicationsTrackerAppTheme {
+    Column(
+      modifier = Modifier.fillMaxSize(),
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.Top,
+    ) {
+      Row {
+        HIGListButton(
+          stringResource(R.string.button_default_text),
+          {},
+          enabled = true,
+          // style = HIGButtonStyle.Filled
+        )
+      }
 
-                Row {
-                    HIGButton(
-                        stringResource(R.string.button_default_text),
-                        {},
-                        enabled = true,
-                        style = HIGButtonStyle.Filled)
-                    HIGButton(
-                        stringResource(R.string.button_default_text),
-                        {},
-                        enabled = false,
-                        style = HIGButtonStyle.Filled)
-                }
+      Row {
+        HIGButton(
+          stringResource(R.string.button_default_text),
+          {},
+          enabled = true,
+          style = HIGButtonStyle.Filled,
+        )
+        HIGButton(
+          stringResource(R.string.button_default_text),
+          {},
+          enabled = false,
+          style = HIGButtonStyle.Filled,
+        )
+      }
 
-                Row {
-                    HIGButton(
-                        stringResource(R.string.button_default_text),
-                        {},
-                        enabled = true,
-                        style = HIGButtonStyle.Bezeled)
+      Row {
+        HIGButton(
+          stringResource(R.string.button_default_text),
+          {},
+          enabled = true,
+          style = HIGButtonStyle.Bezeled,
+        )
 
-                    HIGButton(
-                        stringResource(R.string.button_default_text),
-                        {},
-                        enabled = false,
-                        style = HIGButtonStyle.Bezeled)
-                }
-                Row {
-                    HIGButton(
-                        stringResource(R.string.button_default_text),
-                        {},
-                        enabled = true,
-                        style = HIGButtonStyle.Borderless)
+        HIGButton(
+          stringResource(R.string.button_default_text),
+          {},
+          enabled = false,
+          style = HIGButtonStyle.Bezeled,
+        )
+      }
+      Row {
+        HIGButton(
+          stringResource(R.string.button_default_text),
+          {},
+          enabled = true,
+          style = HIGButtonStyle.Borderless,
+        )
 
-                    HIGButton(
-                        stringResource(R.string.button_default_text),
-                        {},
-                        enabled = false,
-                        style = HIGButtonStyle.Borderless)
-                }
-            }
+        HIGButton(
+          stringResource(R.string.button_default_text),
+          {},
+          enabled = false,
+          style = HIGButtonStyle.Borderless,
+        )
+      }
     }
+  }
 }

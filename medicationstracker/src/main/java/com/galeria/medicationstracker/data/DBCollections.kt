@@ -16,6 +16,7 @@ data class Medication(
     val form: MedicationForm = MedicationForm.TABLET,
     val strength: Float = 0.0f,
     val unit: MedicationUnit = MedicationUnit.MG,
+
     val startDate: LocalDate = LocalDate.now(),
     val endDate: LocalDate? = null,
     val frequency: Frequency = Frequency.AtRegularIntervals(0), // TODO: enum?

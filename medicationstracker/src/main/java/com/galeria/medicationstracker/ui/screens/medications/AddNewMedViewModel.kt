@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.medications.addNewMed
+package com.galeria.medicationstracker.ui.screens.medications
 
 import android.content.Context
 import android.util.Log
@@ -8,9 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.galeria.medicationstracker.data.Frequency
+import com.galeria.medicationstracker.data.Medication
 import com.galeria.medicationstracker.data.MedicationForm
 import com.galeria.medicationstracker.data.MedicationUnit
-import com.galeria.medicationstracker.data.TEMP_Medication
 import com.google.firebase.Firebase
 import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.auth
@@ -42,10 +42,13 @@ class AddNewMedViewModel : ViewModel() {
 
   // TODO: Check for dublicates.
   fun addMedication(
-    medication: TEMP_Medication,
+    /* medication: Medication, */
     context: Context,
   ) {
-    db.collection("med_temp").add(medication)
+    val newUserMedication =
+      Medication(userId, uiState.name, uiState.type, uiState.form, uiState.strength, uiState.unit)
+
+    db.collection("med_temp").add(newUserMedication)
       .addOnSuccessListener {
         Toast.makeText(
           context,

@@ -9,4 +9,5 @@
     <string name="add_new_med_frequency_screen_title">Select Frequency</string>
     <string name="button_default_text">FUCK ME</string>
     <string name="title_activity_application">ApplicationActivity</string>
+    <string name="enter_med_values">Enter med values</string>
 </resources>

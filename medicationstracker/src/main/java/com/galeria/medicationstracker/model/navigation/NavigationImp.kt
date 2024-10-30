@@ -18,6 +18,10 @@ sealed class Routes {
     @Serializable data object Medications : Routes()
 
   @Serializable
+  data object NewMedication : Routes()
+
+  // region later
+  @Serializable
   data object NewMedicationName : Routes()
   @Serializable
   data object NewMedicationForm : Routes()

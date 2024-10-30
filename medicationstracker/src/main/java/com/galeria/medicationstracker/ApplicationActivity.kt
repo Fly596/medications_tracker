@@ -34,12 +34,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
-import com.galeria.medicationstracker.ui.screens.medications.addNewMed.NewMedNameScreen
-import com.galeria.medicationstracker.ui.screens.medications.addNewMed.NewMedFormScreen
-import com.galeria.medicationstracker.ui.screens.medications.addNewMed.NewMedStrengthScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
-import com.galeria.medicationstracker.ui.screens.medications.addNewMed.NewMedFrequencyScreen
-import com.galeria.medicationstracker.ui.screens.medications.addNewMed.NewMedReminderScreen
+import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.shared.components.HeadViewModel
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
@@ -120,49 +116,15 @@ class ApplicationActivity : ComponentActivity() {
             }
 
             composable<Routes.Medications> {
-              MedicationsScreen(
-                onNewMedClick = { navController.navigate(Routes.NewMedicationName) }
+              MedicationsScreen(onNewMedClick = { navController.navigate(Routes.NewMedication) })
+            }
+
+            composable<Routes.NewMedication> {
+              NewMedicationDataScreen(
+                onConfirmClick = { navController.navigate(Routes.Medications) }
               )
             }
-
-            composable<Routes.NewMedicationName> {
-              NewMedNameScreen(
-                onNextClick = { navController.navigate(Routes.NewMedicationForm) }
-              )
-            }
-
-            composable<Routes.NewMedicationForm> {
-              NewMedFormScreen(
-                onNextClick = { navController.navigate(Routes.NewMedicationStrength) }
-              )
-            }
-
-            composable<Routes.NewMedicationStrength> {
-              NewMedStrengthScreen(onNextClick = {
-                navController.navigate(Routes.NewMedicationFrequency)
-              })
-            }
-
-            composable<Routes.NewMedicationFrequency> {
-              NewMedFrequencyScreen(onNextClick = {
-                navController.navigate(Routes.NewMedicationReminder)
-              })
-            }
-
-            composable<Routes.NewMedicationReminder> {
-              NewMedReminderScreen(onNextClick = {
-                navController.navigate(Routes.NewMedicationReview)
-              })
-            }
-
-            composable<Routes.NewMedicationReview> {
-              /*NewMedReviewScreen(onNextClick = {
-                navController.navigate(Routes.Medications)
-              })*/
-            }
-
             composable<Routes.Profile> { ProfileScreen() }
-
           }
         }
       }
