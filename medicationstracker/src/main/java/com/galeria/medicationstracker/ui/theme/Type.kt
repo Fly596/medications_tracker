@@ -80,10 +80,10 @@ val RepAppTypography = RepTypography(
         // color = Color.Black
     ),
     body = TextStyle(
-        fontSize = 16.sp,
+      fontSize = 14.sp,
         fontWeight = FontWeight.Normal,
         fontFamily = FontFamily.Default,
-        lineHeight = 22.sp,
+      lineHeight = 20.sp,
         // color = Color.Black
     ),
     callout = TextStyle(
