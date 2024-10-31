@@ -1,6 +1,5 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
-import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,23 +7,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DatePickerState
-import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,8 +28,6 @@ import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import java.util.Date
-import java.util.Locale
 
 @Composable
 fun MedicationsScreen(
@@ -90,41 +79,6 @@ fun MedicationsScreen(
   }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ModalDatePicker(viewModel: MedicationsViewModel) {
-  var selectedDate = viewModel.selectedStartDate
-  var selectEndDate = viewModel.selectedEndDate
-
-  if (
-  /* viewModel.selectedStartDate != null &&
-  viewModel.selectedEndDate != null && */
-    viewModel.showDatePicker
-  ) {
-    DateRangePickerModal(
-      onDateRangeSelected = {
-        selectedDate = it.first
-        selectEndDate = it.second
-      },
-      onDismiss = { viewModel.showDatePicker = !viewModel.showDatePicker },
-    )
-
-    /*  val dateS = Date(selectedDate!!)
-    val dateE = Date(selectEndDate!!)
-    val formatedDateS = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateS)
-    val formatedDateE = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateE)
-    Text("Selected date: $formatedDateS to $formatedDateE") */
-  } else {
-    Text("No data selected.")
-
-    // val dateS = Date(selectedDate!!)
-    // val dateE = Date(selectEndDate!!)
-    // val formatedDateS = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateS)
-    // val formatedDateE = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateE)
-
-    // Text("Selected date: $formatedDateS to $formatedDateE")
-  }
-}
 
 @Composable
 fun NavigationRow(onClick: () -> Unit, label: String) {
@@ -203,71 +157,6 @@ fun CardComponent(
   }
 }*/
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DateRangePickerModal(onDateRangeSelected: (Pair<Long?, Long?>) -> Unit, onDismiss: () -> Unit) {
-  val dateRangePickerState = rememberDateRangePickerState()
-
-  DatePickerDialog(
-    onDismissRequest = onDismiss,
-    confirmButton = {
-      TextButton(
-        onClick = {
-          onDateRangeSelected(
-            Pair(
-              dateRangePickerState.selectedStartDateMillis,
-              dateRangePickerState.selectedEndDateMillis,
-            )
-          )
-          onDismiss()
-        }
-      ) {
-        Text("OK")
-      }
-    },
-    dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
-  ) {
-    DateRangePicker(
-      state = dateRangePickerState,
-      title = { Text(text = "Select date range") },
-      showModeToggle = false,
-      modifier = Modifier
-        .fillMaxWidth()
-        .height(500.dp)
-        .padding(16.dp),
-    )
-  }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DatePickerModal(
-  datePickerState: DatePickerState,
-  onDateSelected: (Long?) -> Unit,
-  onDismiss: () -> Unit,
-) {
-  DatePickerDialog(
-    onDismissRequest = onDismiss,
-    confirmButton = {
-      TextButton(
-        onClick = {
-          onDateSelected(datePickerState.selectedDateMillis)
-          onDismiss()
-        }
-      ) {
-        Text("OK")
-      }
-    },
-    dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } },
-  ) {
-    DatePicker(state = datePickerState)
-  }
-}
-
-fun convertMillisToDate(millis: Long): String {
-  val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-  return formatter.format(Date(millis))
-}
 
 @Preview
 @Composable

@@ -44,13 +44,7 @@ class MedicationsViewModel : ViewModel() {
 
   var showDatePicker by mutableStateOf(false)
 
-  var selectedStartDate by mutableStateOf<Long?>(null)
-  // private set
 
-  var selectedEndDate by mutableStateOf<Long?>(null)
-  // private set
-
-  var combinedDates = Pair<Long?, Long?>(selectedStartDate, selectedEndDate)
 
   private val db = Firebase.firestore
   private val user = Firebase.auth.currentUser
@@ -59,6 +53,7 @@ class MedicationsViewModel : ViewModel() {
   init {
     getMedsList()
   }
+
 
   fun getMedsList() {
     viewModelScope.launch {

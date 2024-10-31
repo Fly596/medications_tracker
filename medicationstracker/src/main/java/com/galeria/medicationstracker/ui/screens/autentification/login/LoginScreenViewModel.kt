@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 data class LoginScreenState(
-  val email: String = "",
-  val password: String = "",
+  val email: String = "ggsell@gmail.com",
+  val password: String = "password",
   val showPassword: Boolean = false
 )
 
@@ -28,7 +28,7 @@ class LoginScreenViewModel : ViewModel() {
   }
 
   fun isShowPasswordChecked(input: Boolean) {
-    loginScreenState = loginScreenState.copy(showPassword = !input)
+    loginScreenState = loginScreenState.copy(showPassword = input)
   }
 
 

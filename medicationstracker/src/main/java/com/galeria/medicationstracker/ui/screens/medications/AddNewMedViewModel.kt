@@ -29,6 +29,7 @@ data class NewMedicationUiState(
   val frequency: Frequency = Frequency.AtRegularIntervals(),// f
   val intakeTime: LocalTime = LocalTime.now(),// f
   val notes: String = "",
+  val showDatePicker: Boolean = false
 )
 
 class AddNewMedViewModel : ViewModel() {
@@ -39,6 +40,14 @@ class AddNewMedViewModel : ViewModel() {
   private val db = Firebase.firestore
   private val user = Firebase.auth.currentUser
   val userId = user?.uid ?: ""
+
+  var selectedStartDate by mutableStateOf<Long?>(null)
+  // private set
+
+  var selectedEndDate by mutableStateOf<Long?>(null)
+
+  // private set
+  var combinedDates = Pair<Long?, Long?>(selectedStartDate, selectedEndDate)
 
   // TODO: Check for dublicates.
   fun addMedication(
@@ -70,6 +79,11 @@ class AddNewMedViewModel : ViewModel() {
 
         Log.w(TAG, "Error adding document", e)
       }
+  }
+
+
+  fun isShowDateChecked(input: Boolean) {
+    uiState.copy(showDatePicker = !input)
   }
 
   // region fields data
