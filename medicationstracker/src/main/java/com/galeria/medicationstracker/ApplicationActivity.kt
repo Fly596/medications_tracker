@@ -38,7 +38,7 @@ import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.shared.components.HeadViewModel
-import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 data class BottomNavigationItem(
   val title: String,
@@ -58,7 +58,7 @@ class ApplicationActivity : ComponentActivity() {
     enableEdgeToEdge()
 
     setContent {
-      MedicationsTrackerAppTheme {
+      MedTrackerTheme {
         val navController = rememberNavController()
 
         val items =

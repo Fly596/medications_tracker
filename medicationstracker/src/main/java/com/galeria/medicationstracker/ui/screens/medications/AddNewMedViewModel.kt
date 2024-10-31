@@ -22,7 +22,7 @@ data class NewMedicationUiState(
   val name: String = "",
   val type: String = "",
   var form: MedicationForm = MedicationForm.TABLET, // f
-  val strength: Float = 0f,
+  val strength: String = "",
   val unit: MedicationUnit = MedicationUnit.MG, // f
   val startDate: String = "",// f
   val endDate: String = "",// f
@@ -46,7 +46,14 @@ class AddNewMedViewModel : ViewModel() {
     context: Context,
   ) {
     val newUserMedication =
-      Medication(userId, uiState.name, uiState.type, uiState.form, uiState.strength, uiState.unit)
+      Medication(
+        userId,
+        uiState.name,
+        uiState.type,
+        uiState.form,
+        uiState.strength.toFloat(),
+        uiState.unit
+      )
 
     db.collection("med_temp").add(newUserMedication)
       .addOnSuccessListener {
@@ -87,7 +94,7 @@ class AddNewMedViewModel : ViewModel() {
   }
 
   fun updateMedStrength(newStrength: String) {
-    uiState = uiState.copy(strength = newStrength.toFloat())
+    uiState = uiState.copy(strength = newStrength)
   }
 
   fun updateMedUnit(newUnit: MedicationUnit) {

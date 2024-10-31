@@ -36,7 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
-import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import java.util.Date
 import java.util.Locale
 
@@ -51,7 +51,7 @@ fun MedicationsScreen(
     // Header.
     Text(
       stringResource(R.string.meds_screen_title),
-      style = MedicationsTrackerAppTheme.extendedTypography.largeTitle,
+      style = MedTrackerTheme.typography.largeTitle,
     )
 
     Spacer(modifier = Modifier.padding(8.dp))
@@ -133,7 +133,7 @@ fun NavigationRow(onClick: () -> Unit, label: String) {
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(4.dp),
   ) {
-    Text(label, style = MaterialTheme.typography.labelSmall)
+    Text(label, style = MedTrackerTheme.typography.caption1)
     Icon(
       imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
       contentDescription = null,
@@ -161,11 +161,14 @@ fun CardComponent(
       verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
     ) {
       Row(modifier = Modifier.fillMaxWidth()) {
-        Text(header)
+        Text(
+          header,
+          style = MedTrackerTheme.typography.subhead
+        )
         Spacer(modifier.weight(1f))
         NavigationRow({ onClick() }, topEndText ?: "")
       }
-      Text(content, style = MaterialTheme.typography.headlineMedium)
+      Text(content, style = MedTrackerTheme.typography.title3)
     }
   }
 }

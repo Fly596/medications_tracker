@@ -13,9 +13,6 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 
 @Immutable
 data class MedTrackerColors(
@@ -63,8 +60,9 @@ data class MedTrackerColors(
 
 @Immutable
 data class MedTrackerTypography(
-  val largeTitle: TextStyle,
   // Used for titles and headings that need to make a strong visual impact.
+  val largeTitle: TextStyle, // Used for titles and headings that need to make a strong visual impact.
+
   val title1: TextStyle,
   // A major section heading, often used for top-level content within a page or screen.
   val title2: TextStyle,
@@ -137,7 +135,9 @@ val LocalMedTrackerColors = staticCompositionLocalOf {
 
 val LocalMedTrackerTypography = staticCompositionLocalOf {
   MedTrackerTypography(
-    largeTitle = TextStyle.Default,
+    // Used for titles and headings that need to make a strong visual impact.
+    largeTitle = TextStyle.Default, // Used for titles and headings that need to make a strong visual impact.
+
     title1 = TextStyle.Default,
     title2 = TextStyle.Default,
     title3 = TextStyle.Default,
@@ -196,94 +196,19 @@ fun MedTrackerTheme(
 
   val medTrackerTypography =
     MedTrackerTypography(
-      largeTitle =
-      TextStyle(
-        fontSize = 34.sp,
-        fontWeight = FontWeight.Normal,
-        fontFamily = FontFamily.Default,
-        lineHeight = 41.sp,
-        // color = Color.Black
-      ),
-      title1 =
-      TextStyle(
-        fontSize = 28.sp,
-        fontWeight = FontWeight.Normal,
-        fontFamily = FontFamily.Default,
-        lineHeight = 34.sp,
-        // color = Color.Black
-      ),
-      title2 =
-      TextStyle(
-        fontSize = 22.sp,
-        fontWeight = FontWeight.Normal,
-        fontFamily = FontFamily.Default,
-        lineHeight = 28.sp,
-        // color = Color.Black
-      ),
-      title3 =
-      TextStyle(
-        fontSize = 20.sp,
-        fontWeight = FontWeight.Normal,
-        fontFamily = FontFamily.Default,
-        lineHeight = 25.sp,
-        // color = Color.Black
-      ),
-      headline =
-      TextStyle(
-        fontSize = 17.sp,
-        fontWeight = FontWeight.SemiBold,
-        fontFamily = FontFamily.Default,
-        lineHeight = 22.sp,
-        // color = Color.Black
-      ),
-      body =
-      TextStyle(
-        fontSize = 17.sp,
-        fontWeight = FontWeight.Normal,
-        fontFamily = FontFamily.Default,
-        lineHeight = 22.sp,
-        // color = Color.Black
-      ),
-      callout =
-      TextStyle(
-        fontSize = 16.sp,
-        fontWeight = FontWeight.Normal,
-        fontFamily = FontFamily.Default,
-        lineHeight = 21.sp,
-        // color = Color.Black
-      ),
-      subhead =
-      TextStyle(
-        fontSize = 15.sp,
-        fontWeight = FontWeight.Normal,
-        fontFamily = FontFamily.Default,
-        lineHeight = 20.sp,
-        // color = Color.Black
-      ),
-      footnote =
-      TextStyle(
-        fontSize = 13.sp,
-        fontWeight = FontWeight.Normal,
-        fontFamily = FontFamily.Default,
-        lineHeight = 18.sp,
-        // color = Color.Black
-      ),
-      caption1 =
-      TextStyle(
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Normal,
-        fontFamily = FontFamily.Default,
-        lineHeight = 16.sp,
-        // color = Color.Black
-      ),
-      caption2 =
-      TextStyle(
-        fontSize = 11.sp,
-        fontWeight = FontWeight.Normal,
-        fontFamily = FontFamily.Default,
-        lineHeight = 13.sp,
-        // color = Color.Black
-      ),
+      // Used for titles and headings that need to make a strong visual impact.
+      largeTitle,// Used for titles and headings that need to make a strong visual impact.
+
+      title1,
+      title2,
+      title3,
+      headline,
+      body,
+      callout,
+      subhead,
+      footnote,
+      caption1,
+      caption2,
     )
 
   CompositionLocalProvider(

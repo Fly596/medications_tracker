@@ -11,10 +11,11 @@ import com.google.firebase.auth.FirebaseAuth
 data class LoginScreenState(
   val email: String = "",
   val password: String = "",
-  var showPassword: Boolean = false
+  val showPassword: Boolean = false
 )
 
 class LoginScreenViewModel : ViewModel() {
+
 
   var loginScreenState by mutableStateOf(LoginScreenState())
 
@@ -24,6 +25,10 @@ class LoginScreenViewModel : ViewModel() {
 
   fun updatePassword(input: String) {
     loginScreenState = loginScreenState.copy(password = input)
+  }
+
+  fun isShowPasswordChecked(input: Boolean) {
+    loginScreenState = loginScreenState.copy(showPassword = !input)
   }
 
 

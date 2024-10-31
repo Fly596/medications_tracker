@@ -14,7 +14,7 @@ data class Medication(
     val name: String,
     val type: String,
     val form: MedicationForm = MedicationForm.TABLET,
-    val strength: Float = 0.0f,
+    val strength: Float,
     val unit: MedicationUnit = MedicationUnit.MG,
 
     val startDate: LocalDate = LocalDate.now(),

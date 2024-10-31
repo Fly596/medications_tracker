@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
@@ -26,6 +28,7 @@ import com.galeria.medicationstracker.data.MedicationForm
 import com.galeria.medicationstracker.data.MedicationUnit
 import com.galeria.medicationstracker.ui.screens.autentification.login.MyTextField
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 @Composable
@@ -40,7 +43,7 @@ fun NewMedicationDataScreen(
     .padding(top = 32.dp)) {
     Text(
       stringResource(R.string.enter_med_values),
-      style = MedicationsTrackerAppTheme.extendedTypography.largeTitle,
+      style = MedTrackerTheme.typography.title1,
     )
 
     Spacer(modifier = Modifier.padding(8.dp))
@@ -49,6 +52,7 @@ fun NewMedicationDataScreen(
       value = state.name,
       onValueChange = { viewModel.updateMedName(it) },
       label = "Medication name",
+      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
       modifier = Modifier.fillMaxWidth(),
     )
 
@@ -82,9 +86,10 @@ fun NewMedicationDataScreen(
     var selectedUnit by remember { mutableStateOf(state.unit) }
     val unitOptions = MedicationUnit.entries.toTypedArray()
     MyTextField(
-      value = state.strength.toInt().toString(),
+      value = state.strength,
       onValueChange = { viewModel.updateMedStrength(it) },
       label = "Medication Strength",
+      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
       modifier = Modifier.fillMaxWidth(),
     )
 
@@ -100,6 +105,7 @@ fun NewMedicationDataScreen(
       }
     }
     Spacer(modifier = Modifier.padding(8.dp))
+
 
     // Frequency.
     /*     var selectedFrequency by remember { mutableStateOf(state.frequency) }

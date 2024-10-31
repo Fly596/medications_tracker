@@ -25,7 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
-import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun LoginScreen(
@@ -43,7 +43,7 @@ fun LoginScreen(
   ) {
     Text(
       stringResource(R.string.sign_in_screen_title),
-      style = MedicationsTrackerAppTheme.extendedTypography.body
+      style = MedTrackerTheme.typography.title1
     )
 
     Spacer(modifier = Modifier.height(20.dp))
@@ -72,7 +72,7 @@ fun LoginScreen(
     RememberMeSwitch(
       checked = state.showPassword,
       onCheckedChange = {
-        state.showPassword = it
+        viewModel.isShowPasswordChecked(state.showPassword)
       }
     )
 

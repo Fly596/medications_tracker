@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 enum class HIGButtonStyle {
@@ -47,7 +48,7 @@ fun HIGButton(
     when (style) {
       HIGButtonStyle.Filled ->
         ButtonDefaults.buttonColors(
-          containerColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
+          containerColor = MedTrackerTheme.colors.primary400,
           contentColor = Color.White,
           disabledContainerColor = Color(0x1f787880),
           disabledContentColor = Color(0x4d3c3c43),
@@ -55,8 +56,8 @@ fun HIGButton(
 
       HIGButtonStyle.Bezeled ->
         ButtonDefaults.buttonColors(
-          containerColor = Color(0x26007aff), /*Fills, tertiary*/
-          contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
+          containerColor = MedTrackerTheme.colors.primary400, /*Fills, tertiary*/
+          contentColor = MedTrackerTheme.colors.primaryLabelDark,
           /*.defaultLight*/ /*Labels, tertiary*/
           disabledContainerColor = Color(0x1f787880),
           disabledContentColor = Color(0x4d3c3c43),

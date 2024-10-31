@@ -9,10 +9,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,7 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.screens.autentification.login.LoginScreen
 import com.galeria.medicationstracker.ui.screens.autentification.signup.SignupScreen
-import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.google.firebase.FirebaseApp
 
 
@@ -33,7 +31,7 @@ class HeadActivity : ComponentActivity() {
     enableEdgeToEdge()
 
     setContent {
-      MedicationsTrackerAppTheme {
+      MedTrackerTheme {
         val navController = rememberNavController()
         val context: Context = LocalContext.current
 
@@ -92,14 +90,5 @@ class HeadActivity : ComponentActivity() {
         }
       }
     }
-  }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-  MedicationsTrackerAppTheme {
-    // Greeting("Android")
   }
 }
