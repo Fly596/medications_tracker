@@ -88,3 +88,4 @@ gradle.properties
 .idea/ktfmt.xml
 
 .idea/google-java-format.xml
+!/.idea/
