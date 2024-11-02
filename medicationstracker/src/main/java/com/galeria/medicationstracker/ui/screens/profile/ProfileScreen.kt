@@ -24,7 +24,7 @@ import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
 import com.galeria.medicationstracker.ui.shared.components.HIGListButton
-import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier) {
@@ -33,7 +33,7 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally) {
             // Heading.
-            Text(text = "Profile", style = MedicationsTrackerAppTheme.extendedTypography.title1)
+        Text(text = "Profile", style = MedTrackerTheme.typography.title1)
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -70,11 +70,14 @@ fun PfpWithName(painter: Int, userName: String, modifier: Modifier = Modifier) {
                 painter = painterResource(painter),
                 contentDescription = "pfp",
                 contentScale = ContentScale.Crop,
-                modifier = modifier.clip(CircleShape).size(128.dp))
+                modifier = modifier
+                    .clip(CircleShape)
+                    .size(128.dp))
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Text(text = userName, style = MedicationsTrackerAppTheme.extendedTypography.title2)
+        Text(text = userName, style = MedTrackerTheme.typography.title2)
+        Text(text = userName, style = MedTrackerTheme.typography.title2)
         }
 }
 
@@ -82,7 +85,8 @@ fun PfpWithName(painter: Int, userName: String, modifier: Modifier = Modifier) {
 fun ProfileOptionItem(title: String, onClick: () -> Unit) {
     Row(
         modifier =
-            Modifier.fillMaxWidth()
+            Modifier
+                .fillMaxWidth()
                 // .background(color =
                 // MedicationsTrackerAppTheme.systemColors.backgroundLightSecondary)
                 .clickable(onClick = onClick),

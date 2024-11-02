@@ -39,7 +39,6 @@ import com.galeria.medicationstracker.data.MedicationUnit
 import com.galeria.medicationstracker.ui.screens.autentification.login.MyTextField
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 import java.util.Date
 import java.util.Locale
 
@@ -51,9 +50,11 @@ fun NewMedicationDataScreen(
 ) {
   val state = viewModel.uiState
 
-  Column(modifier = Modifier
-    .fillMaxSize()
-    .padding(top = 32.dp)) {
+  Column(
+    modifier = Modifier
+      .fillMaxSize()
+      .padding(top = 32.dp)
+  ) {
     Text(
       stringResource(R.string.enter_med_values),
       style = MedTrackerTheme.typography.title1,
@@ -74,15 +75,20 @@ fun NewMedicationDataScreen(
     // Form.
     Text(
       stringResource(R.string.add_new_med_form_screen_title),
-      style = MedicationsTrackerAppTheme.extendedTypography.title2,
+      style = MedTrackerTheme.typography.title2,
     )
     var selectedForm by remember { mutableStateOf(state.form) }
     val options = MedicationForm.entries.toTypedArray()
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceBetween
+    ) {
       options.forEach { form ->
         Row(verticalAlignment = Alignment.CenterVertically) {
           Text(text = form.toString())
-          RadioButton(selected = selectedForm == form, onClick = { selectedForm = form })
+          RadioButton(
+            selected = selectedForm == form,
+            onClick = { selectedForm = form })
         }
       }
     }
@@ -92,7 +98,7 @@ fun NewMedicationDataScreen(
     // Strength.
     Text(
       stringResource(R.string.add_new_med_strength_screen_title),
-      style = MedicationsTrackerAppTheme.extendedTypography.title2,
+      style = MedTrackerTheme.typography.title2,
     )
     Spacer(modifier = Modifier.padding(8.dp))
 
@@ -109,11 +115,16 @@ fun NewMedicationDataScreen(
     Spacer(modifier = Modifier.padding(8.dp))
 
     // Units.
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceBetween
+    ) {
       unitOptions.forEach { unit ->
         Row(verticalAlignment = Alignment.CenterVertically) {
           Text(text = unit.toString())
-          RadioButton(selected = selectedUnit == unit, onClick = { selectedUnit = unit })
+          RadioButton(
+            selected = selectedUnit == unit,
+            onClick = { selectedUnit = unit })
         }
       }
     }
@@ -132,7 +143,7 @@ fun NewMedicationDataScreen(
 
     Text(
       stringResource(R.string.add_new_med_frequency_screen_title),
-      style = MedicationsTrackerAppTheme.extendedTypography.title2,
+      style = MedTrackerTheme.typography.title2,
     )
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
       frequencyOptions.forEach { option ->
@@ -299,18 +310,22 @@ fun convertMillisToDate(millis: Long?): String {
 
 // region later
 @Composable
-fun NewMedNameScreen(onNextClick: () -> Unit, viewModel: AddNewMedViewModel = viewModel()) {
+fun NewMedNameScreen(
+  onNextClick: () -> Unit,
+  viewModel: AddNewMedViewModel = viewModel()
+) {
   val uid = viewModel.userId
 
   val state = viewModel.uiState
 
-  Column(modifier = Modifier
-    .fillMaxSize()
-    .padding(top = 32.dp)) {
-    // Header.
+  Column(
+    modifier = Modifier
+      .fillMaxSize()
+      .padding(top = 32.dp)
+  ) {
     Text(
       stringResource(R.string.add_new_med_name_screen_title),
-      style = MedicationsTrackerAppTheme.extendedTypography.largeTitle,
+      style = MedTrackerTheme.typography.largeTitle,
     )
 
     Spacer(modifier = Modifier.padding(8.dp))
@@ -338,29 +353,39 @@ fun NewMedNameScreen(onNextClick: () -> Unit, viewModel: AddNewMedViewModel = vi
 }
 
 @Composable
-fun NewMedFormScreen(viewModel: AddNewMedViewModel = viewModel(), onNextClick: () -> Unit) {
+fun NewMedFormScreen(
+  viewModel: AddNewMedViewModel = viewModel(),
+  onNextClick: () -> Unit
+) {
   var state = viewModel.uiState
 
   var selectedForm by remember { mutableStateOf(state.form) }
   val options = MedicationForm.entries.toTypedArray()
 
-  Column(modifier = Modifier
-    .fillMaxSize()
-    .padding(top = 32.dp)) {
+  Column(
+    modifier = Modifier
+      .fillMaxSize()
+      .padding(top = 32.dp)
+  ) {
 
     // Header.
     Text(
       stringResource(R.string.add_new_med_form_screen_title),
-      style = MedicationsTrackerAppTheme.extendedTypography.largeTitle,
+      style = MedTrackerTheme.typography.largeTitle,
     )
 
     Spacer(modifier = Modifier.padding(8.dp))
 
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceBetween
+    ) {
       options.forEach { form ->
         Row(verticalAlignment = Alignment.CenterVertically) {
           Text(text = form.toString())
-          RadioButton(selected = selectedForm == form, onClick = { selectedForm = form })
+          RadioButton(
+            selected = selectedForm == form,
+            onClick = { selectedForm = form })
         }
       }
     }
@@ -379,19 +404,24 @@ fun NewMedFormScreen(viewModel: AddNewMedViewModel = viewModel(), onNextClick: (
 }
 
 @Composable
-fun NewMedStrengthScreen(viewModel: AddNewMedViewModel = viewModel(), onNextClick: () -> Unit) {
+fun NewMedStrengthScreen(
+  viewModel: AddNewMedViewModel = viewModel(),
+  onNextClick: () -> Unit
+) {
   val state = viewModel.uiState
   var selectedUnit by remember { mutableStateOf(state.unit) }
   val unitOptions = MedicationUnit.entries.toTypedArray()
 
-  Column(modifier = Modifier
-    .fillMaxSize()
-    .padding(top = 32.dp)) {
+  Column(
+    modifier = Modifier
+      .fillMaxSize()
+      .padding(top = 32.dp)
+  ) {
 
     // Header.
     Text(
       stringResource(R.string.add_new_med_strength_screen_title),
-      style = MedicationsTrackerAppTheme.extendedTypography.largeTitle,
+      style = MedTrackerTheme.typography.largeTitle,
     )
 
     Spacer(modifier = Modifier.padding(8.dp))
@@ -406,11 +436,16 @@ fun NewMedStrengthScreen(viewModel: AddNewMedViewModel = viewModel(), onNextClic
     Spacer(modifier = Modifier.padding(8.dp))
 
     // Units.
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalArrangement = Arrangement.SpaceBetween
+    ) {
       unitOptions.forEach { unit ->
         Row(verticalAlignment = Alignment.CenterVertically) {
           Text(text = unit.toString())
-          RadioButton(selected = selectedUnit == unit, onClick = { selectedUnit = unit })
+          RadioButton(
+            selected = selectedUnit == unit,
+            onClick = { selectedUnit = unit })
         }
       }
     }
@@ -429,20 +464,27 @@ fun NewMedStrengthScreen(viewModel: AddNewMedViewModel = viewModel(), onNextClic
 }
 
 @Composable
-fun NewMedFrequencyScreen(viewModel: AddNewMedViewModel = viewModel(), onNextClick: () -> Unit) {
+fun NewMedFrequencyScreen(
+  viewModel: AddNewMedViewModel = viewModel(),
+  onNextClick: () -> Unit
+) {
   val state = viewModel.uiState
   var selectedFrequency by remember { mutableStateOf(state.frequency) }
-  val frequencyOptions = listOf(Frequency.OnSpecificDaysOfTheWeek(), Frequency.AtRegularIntervals())
+  val frequencyOptions =
+    listOf(Frequency.OnSpecificDaysOfTheWeek(), Frequency.AtRegularIntervals())
 
   // Header.
   Text(
     stringResource(R.string.add_new_med_frequency_screen_title),
-    style = MedicationsTrackerAppTheme.extendedTypography.largeTitle,
+    style = MedTrackerTheme.typography.largeTitle,
   )
 
   Spacer(modifier = Modifier.padding(8.dp))
 
-  Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+  Row(
+    modifier = Modifier.fillMaxWidth(),
+    horizontalArrangement = Arrangement.SpaceBetween
+  ) {
     frequencyOptions.forEach { option ->
       Row(verticalAlignment = Alignment.CenterVertically) {
         Text(text = option.toString())
@@ -486,11 +528,18 @@ fun NewMedFrequencyScreen(viewModel: AddNewMedViewModel = viewModel(), onNextCli
 
   Spacer(modifier = Modifier.padding(8.dp))
 
-  HIGButton(text = "Next", onClick = { onNextClick.invoke() }, modifier = Modifier.fillMaxWidth())
+  HIGButton(
+    text = "Next",
+    onClick = { onNextClick.invoke() },
+    modifier = Modifier.fillMaxWidth()
+  )
 }
 
 @Composable
-fun NewMedReminderScreen(viewModel: AddNewMedViewModel = viewModel(), onNextClick: () -> Unit) {
+fun NewMedReminderScreen(
+  viewModel: AddNewMedViewModel = viewModel(),
+  onNextClick: () -> Unit
+) {
 }
 
 // endregion

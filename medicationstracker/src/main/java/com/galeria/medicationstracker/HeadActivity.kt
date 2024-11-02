@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
@@ -48,11 +49,16 @@ class HeadActivity : ComponentActivity() {
                 }*/
 
         Scaffold(
+          containerColor = MedTrackerTheme.colors.primaryBackground,
+
         ) { innerPadding ->
           NavHost(
             navController = navController,
             startDestination = Routes.Home,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+              .fillMaxSize()
+              .padding(innerPadding)
+              .padding(16.dp)
           ) {
 
             // region Autehntication
@@ -67,9 +73,9 @@ class HeadActivity : ComponentActivity() {
                     Routes.Registration
                   )
                 },
-                modifier = Modifier
-                  .fillMaxSize()
-                  .padding(24.dp)
+                modifier = Modifier.fillMaxWidth()
+                //.fillMaxSize()
+                //.padding(24.dp)
               )
             }
 
@@ -81,8 +87,8 @@ class HeadActivity : ComponentActivity() {
                   )
                 },
                 modifier = Modifier
-                  .fillMaxSize()
-                  .padding(24.dp)
+                //.fillMaxSize()
+                //.padding(24.dp)
               )
             }
             // endregion

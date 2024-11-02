@@ -28,7 +28,7 @@ class LoginScreenViewModel : ViewModel() {
   }
 
   fun isShowPasswordChecked(input: Boolean) {
-    loginScreenState = loginScreenState.copy(showPassword = input)
+    loginScreenState = loginScreenState.copy(showPassword = !input)
   }
 
 

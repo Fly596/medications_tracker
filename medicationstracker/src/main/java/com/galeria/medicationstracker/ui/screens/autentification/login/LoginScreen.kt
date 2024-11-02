@@ -6,14 +6,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Switch
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -25,6 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.shared.components.HIGButton
 import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
+import com.galeria.medicationstracker.ui.shared.components.MySwitch
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
@@ -37,36 +42,52 @@ fun LoginScreen(
   val state = viewModel.loginScreenState
 
   Column(
-    modifier = modifier,
+    modifier,
     verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.Start
   ) {
     Text(
       stringResource(R.string.sign_in_screen_title),
-      style = MedTrackerTheme.typography.title1
+      style = MedTrackerTheme.typography.largeTitle
     )
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    MyTextField(
-      value = state.email,
-      onValueChange = { viewModel.updateEmail(it) },
-      label = "Email",
-      modifier = Modifier.fillMaxWidth(),
-      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-    )
+    // Card() {
+    LazyColumn(
+      modifier
+    ) {
+      item {
+        MyTextField(
+          value = state.email,
+          onValueChange = { viewModel.updateEmail(it) },
+          label = "Email",
+          modifier,
+          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+        )
+      }
+      item {
+        HorizontalDivider(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+              start = 24.dp,
+              end = 12.dp
+            ),
+          color = MedTrackerTheme.colors.separator
+        )
+      }
 
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // var passwordVisibility by remember { mutableStateOf(false) }
-    MyTextField(
-      value = state.password,
-      onValueChange = { viewModel.updatePassword(it) },
-      label = "Password",
-      modifier = Modifier.fillMaxWidth(),
-      visualTransformation = if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-    )
+      item {
+        MyTextField(
+          value = state.password,
+          onValueChange = { viewModel.updatePassword(it) },
+          label = "Password",
+          modifier,
+          visualTransformation = if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+        )
+      }
+    }
 
     // Show password switch.
     RememberMeSwitch(
@@ -133,24 +154,35 @@ fun MyTextField(
   visualTransformation: VisualTransformation = VisualTransformation.None,
   keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
 ) {
-  OutlinedTextField(
+
+  TextField(
     value = value,
     onValueChange = onValueChange,
     label = { Text(label) },
     keyboardOptions = keyboardOptions,
     visualTransformation = visualTransformation,
-    modifier = modifier
+    modifier = modifier,
+    colors = TextFieldDefaults.colors(
+      unfocusedContainerColor = MedTrackerTheme.colors.secondaryBackground,
+      unfocusedIndicatorColor = Color.Transparent,
+      disabledIndicatorColor = Color.Transparent,
+      focusedIndicatorColor = Color.Transparent,
+      errorIndicatorColor = Color.Transparent,
+    )
   )
 }
+
 
 @Composable
 fun RememberMeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
   Row(verticalAlignment = Alignment.CenterVertically) {
     Text("Show password")
     Spacer(modifier = Modifier.width(12.dp))
-    Switch(checked = checked, onCheckedChange = onCheckedChange)
+
+    MySwitch(checked = checked, onCheckedChange = onCheckedChange)
   }
 }
+
 
 @Preview(name = "LoginScreen")
 @Composable

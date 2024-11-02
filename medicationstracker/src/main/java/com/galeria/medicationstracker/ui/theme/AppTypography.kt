@@ -16,7 +16,7 @@ val largeTitle = TextStyle(
 val title1 =
   TextStyle(
     fontSize = 28.sp,
-    fontWeight = FontWeight.Normal,
+    fontWeight = FontWeight.W600,
     fontFamily = FontFamily.Default,
     lineHeight = 34.sp,
 // color = Color.Black

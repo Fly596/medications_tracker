@@ -27,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.galeria.medicationstracker.ui.theme.MedicationsTrackerAppTheme
 
 enum class HIGButtonStyle {
   Filled,
@@ -65,7 +64,7 @@ fun HIGButton(
 
       HIGButtonStyle.Borderless ->
         ButtonDefaults.textButtonColors(
-          contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
+          contentColor = MedTrackerTheme.colors.primary400,
           disabledContentColor = Color(0x4d3c3c43),
         )
     }
@@ -77,7 +76,7 @@ fun HIGButton(
     modifier = modifier,
     colors = buttonColors,
   ) {
-    Text(text = text, style = MedicationsTrackerAppTheme.extendedTypography.body)
+    Text(text = text, style = MedTrackerTheme.typography.body)
   }
 }
 
@@ -94,8 +93,8 @@ fun HIGListButton(
       HIGButtonStyle.Filled ->
         ButtonDefaults.elevatedButtonColors(
           containerColor =
-          MedicationsTrackerAppTheme.systemColorsLight
-            .backgroundPrimaryGrouped,
+          MedTrackerTheme.colors
+            .primaryBackgroundGrouped,
           /*Fills, tertiary*/
           contentColor = Color.White,
           disabledContainerColor = Color(0x1f787880),
@@ -105,17 +104,17 @@ fun HIGListButton(
       HIGButtonStyle.Bezeled ->
         ButtonDefaults.elevatedButtonColors(
           containerColor =
-          MedicationsTrackerAppTheme.systemColorsLight
-            .backgroundPrimaryGrouped,
+          MedTrackerTheme.colors
+            .primaryBackgroundGrouped,
           /*Fills, tertiary*/
-          contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlack,
+          contentColor = MedTrackerTheme.colors.primaryLabel,
           disabledContainerColor = Color(0x1f787880),
           disabledContentColor = Color(0x4d3c3c43),
         )
 
       HIGButtonStyle.Borderless ->
         ButtonDefaults.elevatedButtonColors(
-          contentColor = MedicationsTrackerAppTheme.extendedColorsLight.extBlue,
+          contentColor = MedTrackerTheme.colors.primary400,
           disabledContentColor = Color(0x4d3c3c43),
         )
     }
@@ -131,7 +130,7 @@ fun HIGListButton(
   ) {
     Text(
       text = text,
-      style = MedicationsTrackerAppTheme.extendedTypography.body,
+      style = MedTrackerTheme.typography.body,
       modifier = Modifier.padding(vertical = 8.dp),
     )
 
@@ -140,7 +139,7 @@ fun HIGListButton(
     Icon(
       imageVector = icon,
       contentDescription = "Show options",
-      tint = MedicationsTrackerAppTheme.extendedColorsLight.extGray,
+      tint = MedTrackerTheme.colors.secondaryLabel,
       modifier = Modifier.size(16.dp),
     )
   }
@@ -154,7 +153,7 @@ fun HIGListButton(
 )
 @Composable
 private fun PreviewButtons() {
-  MedicationsTrackerAppTheme {
+  MedTrackerTheme {
     Column(
       modifier = Modifier.fillMaxSize(),
       horizontalAlignment = Alignment.CenterHorizontally,

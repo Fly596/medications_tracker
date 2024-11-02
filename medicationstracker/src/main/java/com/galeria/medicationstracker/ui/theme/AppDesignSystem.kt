@@ -56,6 +56,10 @@ data class MedTrackerColors(
   val sysError: Color,
   val sysWarning: Color,
   val sysSuccess: Color,
+
+  val sysWhite: Color,
+  val sysBlack: Color,
+  val sysTransparent: Color,
 )
 
 @Immutable
@@ -130,6 +134,9 @@ val LocalMedTrackerColors = staticCompositionLocalOf {
     sysError = Color.Unspecified,
     sysWarning = Color.Unspecified,
     sysSuccess = Color.Unspecified,
+    sysWhite = Color.Unspecified,
+    sysBlack = Color.Unspecified,
+    sysTransparent = Color.Unspecified
   )
 }
 
@@ -187,11 +194,14 @@ fun MedTrackerTheme(
       primaryLabelDark,
       secondaryLabelDark,
       tertiaryLabelDark,
-      separator,
+      nonOpaqueSeparator,
       opaqueSeparator,
       sysError,
       sysWarning,
       sysSuccess,
+      sysWhite,
+      sysBlack,
+      sysTransparent
     )
 
   val medTrackerTypography =

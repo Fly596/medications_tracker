@@ -1,15 +1,7 @@
 package com.galeria.medicationstracker.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 
 private val DarkColorScheme =
   darkColorScheme(primary = Purple80, secondary = PurpleGrey80, tertiary = Pink80)
@@ -31,8 +23,8 @@ private val LightColorScheme =
     */
   )
 
-@Composable
-fun MedicationsTrackerAppTheme(
+//@Composable
+/* fun MedicationsTrackerAppTheme(
   darkTheme: Boolean = isSystemInDarkTheme(),
   // Dynamic color is available on Android 12+
   dynamicColor: Boolean = false,
@@ -173,7 +165,7 @@ fun MedicationsTrackerAppTheme(
     LocalLightSystemColors provides replacementSystemColors,
     LocalExtColorsLight provides extendedColorsLight,
     content = content,
-  )
+  ) */
   /*    val colorScheme =
   when {
       dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
@@ -186,7 +178,7 @@ fun MedicationsTrackerAppTheme(
   }*/
 
   // MaterialTheme(/*colorScheme = colorScheme, typography = AppTypography, */content = content)
-}
+/* }
 
 object MedicationsTrackerAppTheme {
 
@@ -196,9 +188,9 @@ object MedicationsTrackerAppTheme {
   val extendedColorsLight: ExtendedColors
     @Composable get() = LocalExtColorsLight.current
 
-  /*    val extendedColorsDark: ExtendedColors
-  @Composable get() = ExtColorsDark.current*/
+   *//*    val extendedColorsDark: ExtendedColors
+  @Composable get() = ExtColorsDark.current*//*
 
   val systemColorsLight: AppSystemColors
     @Composable get() = LocalLightSystemColors.current
-}
+} */

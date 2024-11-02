@@ -10,9 +10,9 @@ val secondary400 = Color(0xFF633957)
 val secondary500 = Color(0xFF55304b)
 val secondary600 = Color(0xFF47283e)
 
-val primaryFill = Color(0x33738891)
-val secondaryFill = Color(0x29738891)
-val tertiaryFill = Color(0x1f738891)
+val primaryFill = Color(0x33787880)
+val secondaryFill = Color(0x29787880)
+val tertiaryFill = Color(0x1f787880)
 
 val primaryBackground = Color(0xFFFFFFFF)
 val secondaryBackground = Color(0xFFF2F2F7)
@@ -54,10 +54,13 @@ val secondaryLabelDark = Color(0x99ffffff)
 val tertiaryLabelDark = Color(0x4dffffff)
 
 // Separators.
-val separator = Color(0x80c6c6c9)
-val opaqueSeparator = Color(0xFFc6c6c9)
+val nonOpaqueSeparator = Color(0x57545456)
+val opaqueSeparator = Color(0xFFC6C6C8)
 
 // Functional colors.
 val sysError = Color(0xFFff3b30)
 val sysWarning = Color(0xFFff9500)
 val sysSuccess = Color(0xFF34c759)
+val sysWhite = Color(0xffffffff)
+val sysBlack = Color(0xff000000)
+val sysTransparent = Color(0x00ffffff)
