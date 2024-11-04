@@ -255,7 +255,12 @@ private fun PreviewButtons() {
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center,
     ) {
-      Row { FlyButton(onClick = {}, enabled = true) { Text(text = "Sign In") } }
+      Row {
+        FlyButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
+        FlyTextButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
+        FlyElevatedButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
+        FlyTonalButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
+      }
     }
   }
 }

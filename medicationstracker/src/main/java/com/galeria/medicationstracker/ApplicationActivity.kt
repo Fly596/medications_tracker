@@ -139,6 +139,7 @@ class ApplicationActivity : ComponentActivity() {
   ) {
     val selectedItemIndex = viewModel.selectedItemIndex.collectAsState().value
 
+    // TODO: Change colors
     NavigationBar(modifier = Modifier.fillMaxWidth()) {
       items.forEachIndexed { index, item ->
         NavigationBarItem(
