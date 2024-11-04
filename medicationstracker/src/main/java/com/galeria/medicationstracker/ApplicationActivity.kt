@@ -94,8 +94,10 @@ class ApplicationActivity : ComponentActivity() {
             ),
           )
 
-        Scaffold(bottomBar = { BottomNavBar(items, navController, headViewModel) }) { innerPadding
-          ->
+        Scaffold(
+          containerColor = MedTrackerTheme.colors.primaryBackground,
+          bottomBar = { BottomNavBar(items, navController, headViewModel) },
+        ) { innerPadding ->
           NavHost(
             navController = navController,
             startDestination = Routes.Medications,

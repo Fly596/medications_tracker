@@ -2,6 +2,7 @@ package com.galeria.medicationstracker.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -26,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.R
@@ -158,6 +158,7 @@ fun FlyTextButton(
     onClick,
     modifier,
     enabled,
+    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
     colors = ButtonDefaults.textButtonColors(contentColor = colors.primary600),
     content = { ProvideTextStyle(value = MedTrackerTheme.typography.body) { content() } },
   )
@@ -175,6 +176,7 @@ fun FlyElevatedButton(
     onClick,
     modifier,
     enabled,
+    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
     shape = shape,
     colors =
       ButtonDefaults.elevatedButtonColors(
@@ -199,13 +201,14 @@ fun FlyButton(
     onClick,
     modifier,
     enabled,
+    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
     shape = shape,
     colors =
       ButtonDefaults.buttonColors(
-        containerColor = MedTrackerTheme.colors.primary400,
-        contentColor = MedTrackerTheme.colors.primaryLabelDark,
-        disabledContainerColor = MedTrackerTheme.colors.tertiaryFill,
-        disabledContentColor = MedTrackerTheme.colors.tertiaryLabel,
+        containerColor = colors.primary400,
+        contentColor = colors.primaryLabelDark,
+        disabledContainerColor = colors.tertiaryFill,
+        disabledContentColor = colors.tertiaryLabel,
       ),
     content = { ProvideTextStyle(value = MedTrackerTheme.typography.body) { content() } },
   )
@@ -223,6 +226,7 @@ fun FlyTonalButton(
     onClick,
     modifier,
     enabled,
+    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
     shape = shape,
     colors =
       ButtonDefaults.filledTonalButtonColors(
@@ -249,63 +253,9 @@ private fun PreviewButtons() {
     Column(
       modifier = Modifier.fillMaxSize(),
       horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.Top,
+      verticalArrangement = Arrangement.Center,
     ) {
-      Row {
-        HIGListButton(
-          stringResource(R.string.button_default_text),
-          {},
-          enabled = true,
-          style = HIGButtonStyle.Bezeled,
-          // style = HIGButtonStyle.Filled
-        )
-      }
-
-      Row {
-        HIGButton(
-          stringResource(R.string.button_default_text),
-          {},
-          enabled = true,
-          style = HIGButtonStyle.Filled,
-        )
-        HIGButton(
-          stringResource(R.string.button_default_text),
-          {},
-          enabled = false,
-          style = HIGButtonStyle.Filled,
-        )
-      }
-
-      Row {
-        HIGButton(
-          stringResource(R.string.button_default_text),
-          {},
-          enabled = true,
-          style = HIGButtonStyle.Bezeled,
-        )
-
-        HIGButton(
-          stringResource(R.string.button_default_text),
-          {},
-          enabled = false,
-          style = HIGButtonStyle.Bezeled,
-        )
-      }
-      Row {
-        HIGButton(
-          stringResource(R.string.button_default_text),
-          {},
-          enabled = true,
-          style = HIGButtonStyle.Borderless,
-        )
-
-        HIGButton(
-          stringResource(R.string.button_default_text),
-          {},
-          enabled = false,
-          style = HIGButtonStyle.Borderless,
-        )
-      }
+      Row { FlyButton(onClick = {}, enabled = true) { Text(text = "Sign In") } }
     }
   }
 }

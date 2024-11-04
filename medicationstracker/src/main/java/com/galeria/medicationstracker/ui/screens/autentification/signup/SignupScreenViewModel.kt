@@ -10,7 +10,8 @@ import com.google.firebase.auth.FirebaseAuth
 
 data class SignupScreenState(
   val email: String = "",
-  val password: String = ""
+  val password: String = "",
+  val showPassword: Boolean = false
 )
 
 class SignupScreenViewModel : ViewModel() {
@@ -25,6 +26,10 @@ class SignupScreenViewModel : ViewModel() {
 
   fun updatePassword(input: String) {
     signupScreenState = signupScreenState.copy(password = input)
+  }
+
+  fun isShowPasswordChecked(input: Boolean) {
+    signupScreenState = signupScreenState.copy(showPassword = !input)
   }
 
   /**

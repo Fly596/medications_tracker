@@ -40,7 +40,7 @@ fun LoginScreen(
   Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
     Text(
       stringResource(R.string.sign_in_screen_title),
-      style = MedTrackerTheme.typography.largeTitle,
+      style = MedTrackerTheme.typography.largeTitleEmphasized,
     )
 
     Spacer(modifier = Modifier.weight(1f))
@@ -109,7 +109,7 @@ fun LoginScreen(
 @Composable
 fun RememberMeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
   Row(verticalAlignment = Alignment.CenterVertically) {
-    Text("Show password")
+    Text("Show password", style = MedTrackerTheme.typography.body)
     Spacer(modifier = Modifier.width(12.dp))
 
     MySwitch(checked = checked, onCheckedChange = onCheckedChange)

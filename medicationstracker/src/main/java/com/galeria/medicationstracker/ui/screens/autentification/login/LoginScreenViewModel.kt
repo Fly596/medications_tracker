@@ -16,7 +16,6 @@ data class LoginScreenState(
 
 class LoginScreenViewModel : ViewModel() {
 
-
   var loginScreenState by mutableStateOf(LoginScreenState())
 
   fun updateEmail(input: String) {

@@ -4,15 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,43 +35,44 @@ fun SignupScreen(
 ) {
   val state = viewModel.signupScreenState
 
-  val email = state.email
-  val password = state.password
-
-  Column(
-    modifier = modifier,
-    verticalArrangement = Arrangement.Center,
-    horizontalAlignment = Alignment.CenterHorizontally,
-  ) {
+  Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
     Text(
       stringResource(R.string.sign_up_screen_title),
-      style = MedTrackerTheme.typography.largeTitle,
+      style = MedTrackerTheme.typography.largeTitleEmphasized,
     )
 
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.weight(1f))
 
-    MyTextField(
-      value = email,
-      onValueChange = { viewModel.updateEmail(it) },
-      label = "Email",
-      modifier = Modifier.fillMaxWidth(),
-      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-    )
+    LazyColumn(modifier = Modifier) {
+      item {
+        MyTextField(
+          value = state.email,
+          onValueChange = { viewModel.updateEmail(it) },
+          label = "Email",
+          modifier = Modifier.fillMaxWidth(),
+          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        )
+      }
+      item { Spacer(modifier = Modifier.height(2.dp)) }
 
-    Spacer(modifier = Modifier.height(2.dp))
-    var passwordVisibility by remember { mutableStateOf(false) }
+      item {
+        MyTextField(
+          value = state.password,
+          onValueChange = { viewModel.updatePassword(it) },
+          label = "Password",
+          modifier = Modifier.fillMaxWidth(),
+          visualTransformation =
+            if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        )
+      }
+    }
 
-    MyTextField(
-      value = password,
-      onValueChange = { viewModel.updatePassword(it) },
-      label = "Password",
-      modifier = Modifier.fillMaxWidth(),
-      visualTransformation =
-        if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-    )
     // Show password switch.
-    RememberMeSwitch(checked = passwordVisibility, onCheckedChange = { passwordVisibility = it })
+    RememberMeSwitch(
+      checked = state.showPassword,
+      onCheckedChange = { viewModel.isShowPasswordChecked(state.showPassword) },
+    )
 
     Spacer(modifier = Modifier.height(16.dp))
 
@@ -88,5 +87,6 @@ fun SignupScreen(
         Text(text = "Create Account")
       }
     }
+    Spacer(modifier = Modifier.weight(1f))
   }
 }
