@@ -25,8 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.ui.shared.components.HIGButton
-import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
+import com.galeria.medicationstracker.ui.components.HIGButton
+import com.galeria.medicationstracker.ui.components.HIGButtonStyle
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable

@@ -33,11 +33,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.navigation.Routes
+import com.galeria.medicationstracker.ui.components.HeadViewModel
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
-import com.galeria.medicationstracker.ui.shared.components.HeadViewModel
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 data class BottomNavigationItem(
@@ -100,9 +100,7 @@ class ApplicationActivity : ComponentActivity() {
             navController = navController,
             startDestination = Routes.Medications,
             modifier =
-            Modifier
-              .padding(innerPadding)
-              .padding(start = 24.dp, end = 24.dp, top = 16.dp),
+              Modifier.padding(innerPadding).padding(start = 24.dp, end = 24.dp, top = 16.dp),
           ) {
             composable<Routes.Dashboard> {
               DashboardScreen(

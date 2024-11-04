@@ -1,34 +1,71 @@
 package com.galeria.medicationstracker.ui.theme
 
-import androidx.compose.material3.Typography
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+// @Immutable
+// data class _repTypography(
+//  val largeTitle:
+//    TextStyle, // Used for titles and headings that need to make a strong visual impact.
+//  val largeTitleEmphasized: TextStyle,
+//  val title1:
+//    TextStyle, // A major section heading, often used for top-level content within a page or
+// screen.
+//  val title1Emphasized:
+//    TextStyle, // A major section heading, often used for top-level content within a page or
+// screen.
+//  val title2:
+//    TextStyle, // A secondary heading, used to introduce subsections or groups of related content.
+//  val title2Emphasized:
+//    TextStyle, // A secondary heading, used to introduce subsections or groups of related content.
+//  val title3: TextStyle, // A tertiary heading, used to organize content within a subsection.
+//  val title3Emphasized:
+//    TextStyle, // A tertiary heading, used to organize content within a subsection.
+//
+//  // Body Text and Related Styles.
+//  val headline:
+//    TextStyle, // A short, attention-grabbing piece of text, often used for promotional or
+//               // call-to-action purposes.
+//  val headlineEmphasized:
+//    TextStyle, // A short, attention-grabbing piece of text, often used for promotional or
+//               // call-to-action purposes.
+//  val body:
+//    TextStyle, // The main content of a page or screen, used for paragraphs and blocks of text.
+//  val bodyEmphasized:
+//    TextStyle, // The main content of a page or screen, used for paragraphs and blocks of text.
+//  val callout:
+//    TextStyle, // Text that highlights important information or provides additional context.
+//  val calloutEmphasized:
+//    TextStyle, // Text that highlights important information or provides additional context.
+//  val subhead:
+//    TextStyle, // A smaller heading used to introduce a paragraph or section within the body
+//               // content.
+//  val subheadEmphasized:
+//    TextStyle, // A smaller heading used to introduce a paragraph or section within the body
+//               // content.
+//  val footnote:
+//    TextStyle, // Small-sized text typically placed at the bottom of a page or screen for
+// additional
+//               // information or credits.
+//  val footnoteEmphasized:
+//    TextStyle, // Small-sized text typically placed at the bottom of a page or screen for
+// additional
+//               // information or credits.
+//  val caption1:
+//    TextStyle, // Descriptive text accompanying an image or graphic, often placed below the visual
+//               // content.
+//  val caption1Emphasized:
+//    TextStyle, // Descriptive text accompanying an image or graphic, often placed below the visual
+//               // content.
+//  val caption2:
+//    TextStyle, // Smaller caption text, used for additional details or metadata related to an
+// image
+//               // or graphic.
+//  val caption2Emphasized:
+//    TextStyle, // Smaller caption text, used for additional details or metadata related to an
+// image
+//              // or graphic.
+// )
 
-
-@Immutable
-data class RepTypography(
-    val largeTitle: TextStyle, // Used for titles and headings that need to make a strong visual impact.
-    val title1: TextStyle, // A major section heading, often used for top-level content within a page or screen.
-    val title2: TextStyle, // A secondary heading, used to introduce subsections or groups of related content.
-    val title3: TextStyle,  // A tertiary heading, used to organize content within a subsection.
-
-    // Body Text and Related Styles.
-    val headline: TextStyle, // A short, attention-grabbing piece of text, often used for promotional or call-to-action purposes.
-    val body: TextStyle, // The main content of a page or screen, used for paragraphs and blocks of text.
-    val callout: TextStyle, // Text that highlights important information or provides additional context.
-    val subhead: TextStyle, // A smaller heading used to introduce a paragraph or section within the body content.
-    val footnote: TextStyle, // Small-sized text typically placed at the bottom of a page or screen for additional information or credits.
-
-    val caption1: TextStyle, // Descriptive text accompanying an image or graphic, often placed below the visual content.
-    val caption2: TextStyle, // Smaller caption text, used for additional details or metadata related to an image or graphic.
-)
-
-val LocalRepAppTypography = staticCompositionLocalOf{
-    RepTypography(
+/* val _localRepAppTypography = staticCompositionLocalOf{
+    _repTypography(
         largeTitle = TextStyle.Default,
         title1 = TextStyle.Default,
         title2 = TextStyle.Default,
@@ -43,7 +80,7 @@ val LocalRepAppTypography = staticCompositionLocalOf{
     )
 }
 
-val RepAppTypography = RepTypography(
+val RepAppTypography = _repTypography(
     largeTitle = TextStyle(
         fontSize = 34.sp,
         fontWeight = FontWeight.Medium,
@@ -121,9 +158,10 @@ val RepAppTypography = RepTypography(
         lineHeight = 13.sp,
         // color = Color.Black
     )
-)
+) */
 
 // Set of Material typography styles to start with
+/*
 val AppTypography = Typography(
     displayLarge = TextStyle(
         fontSize = 34.sp,
@@ -191,4 +229,4 @@ val AppTypography = Typography(
         fontFamily = FontFamily.Default,
         lineHeight = 13.sp,
     )
-)
+)*/

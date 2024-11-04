@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
@@ -21,7 +20,6 @@ import com.galeria.medicationstracker.ui.screens.autentification.login.LoginScre
 import com.galeria.medicationstracker.ui.screens.autentification.signup.SignupScreen
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.google.firebase.FirebaseApp
-
 
 class HeadActivity : ComponentActivity() {
 
@@ -39,26 +37,20 @@ class HeadActivity : ComponentActivity() {
         // TODO: remember current user.
         /*        var startDestination by remember { mutableStateOf("Routes.Home") }
 
-                Firebase.auth.addAuthStateListener { firebaseAuth ->
-                  val user = firebaseAuth.currentUser
-                  if (user != null) {
-                    startDestination = "mainScreen"
-                  } else {
-                    startDestination = "loginScreen"
-                  }
-                }*/
+        Firebase.auth.addAuthStateListener { firebaseAuth ->
+          val user = firebaseAuth.currentUser
+          if (user != null) {
+            startDestination = "mainScreen"
+          } else {
+            startDestination = "loginScreen"
+          }
+        }*/
 
-        Scaffold(
-          containerColor = MedTrackerTheme.colors.primaryBackground,
-
-        ) { innerPadding ->
+        Scaffold(containerColor = MedTrackerTheme.colors.primaryBackground) { innerPadding ->
           NavHost(
             navController = navController,
             startDestination = Routes.Home,
-            modifier = Modifier
-              .fillMaxSize()
-              .padding(innerPadding)
-              .padding(16.dp)
+            modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp),
           ) {
 
             // region Autehntication
@@ -68,27 +60,19 @@ class HeadActivity : ComponentActivity() {
                   val intent = Intent(context, ApplicationActivity::class.java)
                   startActivity(intent)
                 },
-                onSignupClick = {
-                  navController.navigate(
-                    Routes.Registration
-                  )
-                },
-                modifier = Modifier.fillMaxWidth()
-                //.fillMaxSize()
-                //.padding(24.dp)
+                onSignupClick = { navController.navigate(Routes.Registration) },
+
+                // .fillMaxSize()
+                // .padding(24.dp)
               )
             }
 
             composable<Routes.Registration> {
               SignupScreen(
-                navigateHome = {
-                  navController.navigate(
-                    Routes.Home
-                  )
-                },
-                modifier = Modifier
-                //.fillMaxSize()
-                //.padding(24.dp)
+                navigateHome = { navController.navigate(Routes.Home) }
+
+                // .fillMaxSize()
+                // .padding(24.dp)
               )
             }
             // endregion

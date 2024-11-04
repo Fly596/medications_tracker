@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,10 +23,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.ui.screens.autentification.login.MyTextField
+import com.galeria.medicationstracker.ui.components.FlyButton
+import com.galeria.medicationstracker.ui.components.FlyTextButton
+import com.galeria.medicationstracker.ui.components.MyTextField
 import com.galeria.medicationstracker.ui.screens.autentification.login.RememberMeSwitch
-import com.galeria.medicationstracker.ui.shared.components.HIGButton
-import com.galeria.medicationstracker.ui.shared.components.HIGButtonStyle
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun SignupScreen(
@@ -47,7 +47,7 @@ fun SignupScreen(
   ) {
     Text(
       stringResource(R.string.sign_up_screen_title),
-      style = MaterialTheme.typography.headlineMedium,
+      style = MedTrackerTheme.typography.largeTitle,
     )
 
     Spacer(modifier = Modifier.height(20.dp))
@@ -60,7 +60,7 @@ fun SignupScreen(
       keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
     )
 
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(2.dp))
     var passwordVisibility by remember { mutableStateOf(false) }
 
     MyTextField(
@@ -69,7 +69,7 @@ fun SignupScreen(
       label = "Password",
       modifier = Modifier.fillMaxWidth(),
       visualTransformation =
-      if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+        if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
       keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
     )
     // Show password switch.
@@ -80,21 +80,13 @@ fun SignupScreen(
     val context = LocalContext.current
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-      HIGButton(
-        text = "Cancel",
-        onClick = navigateHome,
-        enabled = true,
-        style = HIGButtonStyle.Borderless,
-      )
+      FlyTextButton(onClick = navigateHome) { Text(text = "Cancel") }
 
       Spacer(modifier = Modifier.weight(1f))
 
-      HIGButton(
-        text = "Create Account",
-        onClick = { viewModel.onRegisterClick(context, onSignupSuccess = navigateHome) },
-        enabled = true,
-        style = HIGButtonStyle.Bezeled,
-      )
+      FlyButton(onClick = { viewModel.onRegisterClick(context, onSignupSuccess = navigateHome) }) {
+        Text(text = "Create Account")
+      }
     }
   }
 }

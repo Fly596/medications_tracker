@@ -36,12 +36,11 @@ import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.Frequency
 import com.galeria.medicationstracker.data.MedicationForm
 import com.galeria.medicationstracker.data.MedicationUnit
-import com.galeria.medicationstracker.ui.screens.autentification.login.MyTextField
-import com.galeria.medicationstracker.ui.shared.components.HIGButton
+import com.galeria.medicationstracker.ui.components.HIGButton
+import com.galeria.medicationstracker.ui.components.MyTextField
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import java.util.Date
 import java.util.Locale
-
 
 @Composable
 fun NewMedicationDataScreen(
@@ -50,15 +49,8 @@ fun NewMedicationDataScreen(
 ) {
   val state = viewModel.uiState
 
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(top = 32.dp)
-  ) {
-    Text(
-      stringResource(R.string.enter_med_values),
-      style = MedTrackerTheme.typography.title1,
-    )
+  Column(modifier = Modifier.fillMaxSize().padding(top = 32.dp)) {
+    Text(stringResource(R.string.enter_med_values), style = MedTrackerTheme.typography.title1)
 
     Spacer(modifier = Modifier.padding(8.dp))
 
@@ -79,16 +71,11 @@ fun NewMedicationDataScreen(
     )
     var selectedForm by remember { mutableStateOf(state.form) }
     val options = MedicationForm.entries.toTypedArray()
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.SpaceBetween
-    ) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
       options.forEach { form ->
         Row(verticalAlignment = Alignment.CenterVertically) {
           Text(text = form.toString())
-          RadioButton(
-            selected = selectedForm == form,
-            onClick = { selectedForm = form })
+          RadioButton(selected = selectedForm == form, onClick = { selectedForm = form })
         }
       }
     }
@@ -115,24 +102,15 @@ fun NewMedicationDataScreen(
     Spacer(modifier = Modifier.padding(8.dp))
 
     // Units.
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.SpaceBetween
-    ) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
       unitOptions.forEach { unit ->
         Row(verticalAlignment = Alignment.CenterVertically) {
           Text(text = unit.toString())
-          RadioButton(
-            selected = selectedUnit == unit,
-            onClick = { selectedUnit = unit })
+          RadioButton(selected = selectedUnit == unit, onClick = { selectedUnit = unit })
         }
       }
     }
     Spacer(modifier = Modifier.padding(8.dp))
-
-
-
-
 
     ModalDatePicker(state, viewModel)
 
@@ -168,21 +146,12 @@ fun NewMedicationDataScreen(
   }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ModalDatePicker(
-  state: NewMedicationUiState,
-  viewModel: AddNewMedViewModel
-) {
+fun ModalDatePicker(state: NewMedicationUiState, viewModel: AddNewMedViewModel) {
 
   var showPicker by remember { mutableStateOf(false) }
-  HIGButton(
-    text = "Select start and end dates",
-    onClick = {
-      showPicker = !showPicker
-    }
-  )
+  HIGButton(text = "Select start and end dates", onClick = { showPicker = !showPicker })
 
   if (showPicker) {
     DateRangePickerModal(
@@ -191,38 +160,35 @@ fun ModalDatePicker(
         viewModel.updateEndDate(convertMillisToDate(it.second))
         showPicker = !showPicker
       },
-      onDismiss = {
-        showPicker = !showPicker
-      },
+      onDismiss = { showPicker = !showPicker },
     )
   }
 
   TextField(
     value = "Start: ${viewModel.uiState.startDate}   End: ${viewModel.uiState.endDate}",
     onValueChange = {},
-    readOnly = true
+    readOnly = true,
   )
-
 
   // if (
   /* viewModel.selectedStartDate != null &&
   viewModel.selectedEndDate != null && */
   // state.showDatePicker
-  //) {
+  // ) {
   /*     DateRangePickerModal(
-        onDateRangeSelected = {
-          selectedDate = it.first.toString()
-          selectEndDate = it.second.toString()
-        },
-        onDismiss = { viewModel.isShowDateChecked(false) },
-      ) */
+    onDateRangeSelected = {
+      selectedDate = it.first.toString()
+      selectEndDate = it.second.toString()
+    },
+    onDismiss = { viewModel.isShowDateChecked(false) },
+  ) */
 
   /*  val dateS = Date(selectedDate!!)
   val dateE = Date(selectEndDate!!)
   val formatedDateS = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateS)
   val formatedDateE = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateE)
   Text("Selected date: $formatedDateS to $formatedDateE") */
-  //} else {
+  // } else {
   // Text("No data selected.")
 
   // val dateS = Date(selectedDate!!)
@@ -231,15 +197,12 @@ fun ModalDatePicker(
   // val formatedDateE = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateE)
 
   // Text("Selected date: $formatedDateS to $formatedDateE")
-  //}
+  // }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateRangePickerModal(
-  onDateRangeSelected: (Pair<Long?, Long?>) -> Unit,
-  onDismiss: () -> Unit
-) {
+fun DateRangePickerModal(onDateRangeSelected: (Pair<Long?, Long?>) -> Unit, onDismiss: () -> Unit) {
   val dateRangePickerState = rememberDateRangePickerState()
 
   DatePickerDialog(
@@ -264,10 +227,7 @@ fun DateRangePickerModal(
       state = dateRangePickerState,
       title = { Text(text = "Select date range") },
       showModeToggle = false,
-      modifier = Modifier
-        .fillMaxWidth()
-        .height(500.dp)
-        .padding(16.dp),
+      modifier = Modifier.fillMaxWidth().height(500.dp).padding(16.dp),
     )
   }
 }
@@ -307,22 +267,14 @@ fun convertMillisToDate(millis: Long?): String {
   return ""
 }
 
-
 // region later
 @Composable
-fun NewMedNameScreen(
-  onNextClick: () -> Unit,
-  viewModel: AddNewMedViewModel = viewModel()
-) {
+fun NewMedNameScreen(onNextClick: () -> Unit, viewModel: AddNewMedViewModel = viewModel()) {
   val uid = viewModel.userId
 
   val state = viewModel.uiState
 
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(top = 32.dp)
-  ) {
+  Column(modifier = Modifier.fillMaxSize().padding(top = 32.dp)) {
     Text(
       stringResource(R.string.add_new_med_name_screen_title),
       style = MedTrackerTheme.typography.largeTitle,
@@ -353,20 +305,13 @@ fun NewMedNameScreen(
 }
 
 @Composable
-fun NewMedFormScreen(
-  viewModel: AddNewMedViewModel = viewModel(),
-  onNextClick: () -> Unit
-) {
+fun NewMedFormScreen(viewModel: AddNewMedViewModel = viewModel(), onNextClick: () -> Unit) {
   var state = viewModel.uiState
 
   var selectedForm by remember { mutableStateOf(state.form) }
   val options = MedicationForm.entries.toTypedArray()
 
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(top = 32.dp)
-  ) {
+  Column(modifier = Modifier.fillMaxSize().padding(top = 32.dp)) {
 
     // Header.
     Text(
@@ -376,16 +321,11 @@ fun NewMedFormScreen(
 
     Spacer(modifier = Modifier.padding(8.dp))
 
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.SpaceBetween
-    ) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
       options.forEach { form ->
         Row(verticalAlignment = Alignment.CenterVertically) {
           Text(text = form.toString())
-          RadioButton(
-            selected = selectedForm == form,
-            onClick = { selectedForm = form })
+          RadioButton(selected = selectedForm == form, onClick = { selectedForm = form })
         }
       }
     }
@@ -404,19 +344,12 @@ fun NewMedFormScreen(
 }
 
 @Composable
-fun NewMedStrengthScreen(
-  viewModel: AddNewMedViewModel = viewModel(),
-  onNextClick: () -> Unit
-) {
+fun NewMedStrengthScreen(viewModel: AddNewMedViewModel = viewModel(), onNextClick: () -> Unit) {
   val state = viewModel.uiState
   var selectedUnit by remember { mutableStateOf(state.unit) }
   val unitOptions = MedicationUnit.entries.toTypedArray()
 
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(top = 32.dp)
-  ) {
+  Column(modifier = Modifier.fillMaxSize().padding(top = 32.dp)) {
 
     // Header.
     Text(
@@ -436,16 +369,11 @@ fun NewMedStrengthScreen(
     Spacer(modifier = Modifier.padding(8.dp))
 
     // Units.
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.SpaceBetween
-    ) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
       unitOptions.forEach { unit ->
         Row(verticalAlignment = Alignment.CenterVertically) {
           Text(text = unit.toString())
-          RadioButton(
-            selected = selectedUnit == unit,
-            onClick = { selectedUnit = unit })
+          RadioButton(selected = selectedUnit == unit, onClick = { selectedUnit = unit })
         }
       }
     }
@@ -464,14 +392,10 @@ fun NewMedStrengthScreen(
 }
 
 @Composable
-fun NewMedFrequencyScreen(
-  viewModel: AddNewMedViewModel = viewModel(),
-  onNextClick: () -> Unit
-) {
+fun NewMedFrequencyScreen(viewModel: AddNewMedViewModel = viewModel(), onNextClick: () -> Unit) {
   val state = viewModel.uiState
   var selectedFrequency by remember { mutableStateOf(state.frequency) }
-  val frequencyOptions =
-    listOf(Frequency.OnSpecificDaysOfTheWeek(), Frequency.AtRegularIntervals())
+  val frequencyOptions = listOf(Frequency.OnSpecificDaysOfTheWeek(), Frequency.AtRegularIntervals())
 
   // Header.
   Text(
@@ -481,10 +405,7 @@ fun NewMedFrequencyScreen(
 
   Spacer(modifier = Modifier.padding(8.dp))
 
-  Row(
-    modifier = Modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.SpaceBetween
-  ) {
+  Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
     frequencyOptions.forEach { option ->
       Row(verticalAlignment = Alignment.CenterVertically) {
         Text(text = option.toString())
@@ -528,19 +449,11 @@ fun NewMedFrequencyScreen(
 
   Spacer(modifier = Modifier.padding(8.dp))
 
-  HIGButton(
-    text = "Next",
-    onClick = { onNextClick.invoke() },
-    modifier = Modifier.fillMaxWidth()
-  )
+  HIGButton(text = "Next", onClick = { onNextClick.invoke() }, modifier = Modifier.fillMaxWidth())
 }
 
 @Composable
-fun NewMedReminderScreen(
-  viewModel: AddNewMedViewModel = viewModel(),
-  onNextClick: () -> Unit
-) {
-}
+fun NewMedReminderScreen(viewModel: AddNewMedViewModel = viewModel(), onNextClick: () -> Unit) {}
 
 // endregion
 

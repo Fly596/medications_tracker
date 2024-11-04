@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.shared.components
+package com.galeria.medicationstracker.ui.components
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
