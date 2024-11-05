@@ -6,15 +6,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.galeria.medicationstracker.SnackbarAction
+import com.galeria.medicationstracker.SnackbarController
+import com.galeria.medicationstracker.SnackbarEvent
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.launch
 
 data class LoginScreenState(
   val email: String = "ggsell@gmail.com",
   val password: String = "password",
-  val showPassword: Boolean = false
+  val showPassword: Boolean = false,
 )
 
 class LoginScreenViewModel : ViewModel() {
+
+  val auth = FirebaseAuth.getInstance()
 
   var loginScreenState by mutableStateOf(LoginScreenState())
 
@@ -30,25 +37,34 @@ class LoginScreenViewModel : ViewModel() {
     loginScreenState = loginScreenState.copy(showPassword = !input)
   }
 
-
   fun onSignInClick(email: String, password: String, context: Context, onLoginClick: () -> Unit) {
-    val auth = FirebaseAuth.getInstance()
 
     auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
       if (task.isSuccessful) {
         // Login success
         Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
-        onLoginClick.invoke()
+        onLoginClick.invoke() // open main screen.
       } else {
-        // If sign in fails, display a message to the user.
-        Toast.makeText(
-            context,
-            "Authentication Failed: ${task.exception?.message}",
-            Toast.LENGTH_SHORT,
+        // Login failed.
+        viewModelScope.launch {
+          SnackbarController.sendEvent(
+            event =
+              SnackbarEvent(
+                message = "Authentication Failed: ${task.exception?.message}",
+                action =
+                  SnackbarAction(
+                    name = "U Can Cry",
+                    action = {
+                      SnackbarController.sendEvent(
+                        event = SnackbarEvent(message = "Snackbar Action")
+                      )
+                    },
+                  ),
+              )
           )
-          .show()
+        }
       }
-    }
+    } //
   }
 
   fun resetPassword(email: String, context: Context) {

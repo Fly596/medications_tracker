@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,13 +32,14 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun LoginScreen(
+  modifier: Modifier = Modifier,
   onLoginClick: () -> Unit,
   onSignupClick: () -> Unit,
   viewModel: LoginScreenViewModel = viewModel(),
 ) {
   val state = viewModel.loginScreenState
 
-  Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
+  Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
     Text(
       stringResource(R.string.sign_in_screen_title),
       style = MedTrackerTheme.typography.largeTitleEmphasized,
@@ -45,7 +47,7 @@ fun LoginScreen(
 
     Spacer(modifier = Modifier.weight(1f))
 
-    LazyColumn(modifier = Modifier) {
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(2.dp), modifier = Modifier) {
       item {
         MyTextField(
           value = state.email,
@@ -55,7 +57,6 @@ fun LoginScreen(
           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         )
       }
-      item { Spacer(modifier = Modifier.height(2.dp)) }
 
       item {
         MyTextField(
@@ -81,8 +82,16 @@ fun LoginScreen(
     // region Buttons
     val context = LocalContext.current
     Row(verticalAlignment = Alignment.CenterVertically) {
+      val scope = rememberCoroutineScope()
+
       FlyButton(
-        onClick = { viewModel.onSignInClick(state.email, state.password, context, onLoginClick) },
+        onClick = {
+          viewModel.onSignInClick(state.email, state.password, context, onLoginClick)
+
+          /* scope.launch {
+            viewModel.onSignInClick(state.email, state.password, context, onLoginClick)
+          } */
+        },
         enabled = true,
       ) {
         Text(text = "Sign In")

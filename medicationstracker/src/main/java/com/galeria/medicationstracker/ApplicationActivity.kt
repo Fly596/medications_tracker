@@ -33,7 +33,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.navigation.Routes
-import com.galeria.medicationstracker.ui.components.HeadViewModel
+import com.galeria.medicationstracker.ui.HeadViewModel
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen

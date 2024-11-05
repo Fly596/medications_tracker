@@ -9,6 +9,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -20,6 +26,7 @@ import com.galeria.medicationstracker.ui.screens.autentification.login.LoginScre
 import com.galeria.medicationstracker.ui.screens.autentification.signup.SignupScreen
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.google.firebase.FirebaseApp
+import kotlinx.coroutines.launch
 
 class HeadActivity : ComponentActivity() {
 
@@ -31,29 +38,38 @@ class HeadActivity : ComponentActivity() {
 
     setContent {
       MedTrackerTheme {
-        val navController = rememberNavController()
-        val context: Context = LocalContext.current
+        val snackbarHostState = remember { SnackbarHostState() }
+        val scope = rememberCoroutineScope()
+        ObserveAsEvents(flow = SnackbarController.events, snackbarHostState) { event ->
+          scope.launch {
+            snackbarHostState.currentSnackbarData?.dismiss()
 
-        // TODO: remember current user.
-        /*        var startDestination by remember { mutableStateOf("Routes.Home") }
+            val result =
+              snackbarHostState.showSnackbar(
+                message = event.message,
+                actionLabel = event.action?.name,
+                duration = SnackbarDuration.Short,
+              )
 
-        Firebase.auth.addAuthStateListener { firebaseAuth ->
-          val user = firebaseAuth.currentUser
-          if (user != null) {
-            startDestination = "mainScreen"
-          } else {
-            startDestination = "loginScreen"
+            if (result == SnackbarResult.ActionPerformed) {
+              event.action?.action?.invoke()
+            }
           }
-        }*/
+        }
 
-        Scaffold(containerColor = MedTrackerTheme.colors.primaryBackground) { innerPadding ->
+        Scaffold(
+          snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+          modifier = Modifier.fillMaxSize(),
+          containerColor = MedTrackerTheme.colors.primaryBackground,
+        ) { innerPadding ->
+          val navController = rememberNavController()
+          val context: Context = LocalContext.current
+
           NavHost(
             navController = navController,
             startDestination = Routes.Home,
             modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp),
           ) {
-
-            // region Autehntication
             composable<Routes.Home> {
               LoginScreen(
                 onLoginClick = {
@@ -61,21 +77,12 @@ class HeadActivity : ComponentActivity() {
                   startActivity(intent)
                 },
                 onSignupClick = { navController.navigate(Routes.Registration) },
-
-                // .fillMaxSize()
-                // .padding(24.dp)
               )
             }
 
             composable<Routes.Registration> {
-              SignupScreen(
-                navigateHome = { navController.navigate(Routes.Home) }
-
-                // .fillMaxSize()
-                // .padding(24.dp)
-              )
+              SignupScreen(navigateHome = { navController.navigate(Routes.Home) })
             }
-            // endregion
           }
         }
       }

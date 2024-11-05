@@ -2,10 +2,14 @@ package com.galeria.medicationstracker.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -23,6 +27,7 @@ fun MyTextField(
   value: String,
   onValueChange: (String) -> Unit,
   label: String,
+  enabled: Boolean = true,
   modifier: Modifier = Modifier,
   visualTransformation: VisualTransformation = VisualTransformation.None,
   keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -32,6 +37,7 @@ fun MyTextField(
     textStyle = MedTrackerTheme.typography.body,
     onValueChange = onValueChange,
     label = { Text(label) },
+    enabled = enabled,
     keyboardOptions = keyboardOptions,
     visualTransformation = visualTransformation,
     modifier = modifier,
@@ -48,9 +54,55 @@ fun MyTextField(
   )
 }
 
+// TODO.
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyText(text: String, modifier: Modifier = Modifier) {
-  Text(text = text, style = MedTrackerTheme.typography.body, modifier = modifier)
+fun MyOutlinedTextField(
+  value: String,
+  onValueChange: (String) -> Unit,
+  modifier: Modifier = Modifier,
+  label: String? = null,
+  placeholder: String? = null,
+  leadingIcon: @Composable (() -> Unit)? = null,
+  trailingIcon: @Composable (() -> Unit)? = null,
+  isError: Boolean = false,
+  enabled: Boolean = true,
+  readOnly: Boolean = false,
+  singleLine: Boolean = false,
+  keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+  keyboardActions: KeyboardActions = KeyboardActions.Default,
+) {
+  OutlinedTextField(
+    value = value,
+    onValueChange = onValueChange,
+    modifier = modifier,
+    label = { label?.let { Text(it, color = MedTrackerTheme.colors.primaryLabel) } },
+    placeholder = { placeholder?.let { Text(it, color = MedTrackerTheme.colors.secondaryLabel) } },
+    leadingIcon = leadingIcon,
+    trailingIcon = trailingIcon,
+    isError = isError,
+    enabled = enabled,
+    readOnly = readOnly,
+    singleLine = singleLine,
+    keyboardOptions = keyboardOptions,
+    keyboardActions = keyboardActions,
+    colors =
+      TextFieldDefaults.colors(
+        focusedTextColor = MedTrackerTheme.colors.primaryLabel,
+        unfocusedTextColor = MedTrackerTheme.colors.primaryLabel,
+        disabledTextColor = MedTrackerTheme.colors.tertiaryLabel,
+        errorTextColor = MedTrackerTheme.colors.primaryLabel,
+        //
+        focusedContainerColor = MedTrackerTheme.colors.sysTransparent,
+        unfocusedContainerColor = MedTrackerTheme.colors.sysTransparent,
+        disabledContainerColor = MedTrackerTheme.colors.sysTransparent,
+        errorContainerColor = MedTrackerTheme.colors.sysTransparent,
+        //
+        unfocusedIndicatorColor = MedTrackerTheme.colors.sysTransparent,
+        disabledIndicatorColor = MedTrackerTheme.colors.sysTransparent,
+        errorIndicatorColor = MedTrackerTheme.colors.sysTransparent,
+      ),
+  )
 }
 
 @Preview(
@@ -67,7 +119,18 @@ private fun PreviewButtons() {
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center,
     ) {
-      Row { MyTextField(value = "value", onValueChange = {}, label = "label") }
+      Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        MyTextField(value = "value", onValueChange = {}, label = "label", enabled = false)
+        MyTextField(value = "value", onValueChange = {}, label = "label", enabled = true)
+        Spacer(modifier = Modifier.height(24.dp))
+
+        MyRadioButton(selected = true, onClick = {})
+        MyCheckbox(checked = true, {})
+        MyCheckbox(checked = false, {})
+
+        MyCheckbox(checked = true, {}, enabled = false)
+        MyCheckbox(checked = false, {}, enabled = false)
+      }
     }
   }
 }
