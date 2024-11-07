@@ -27,16 +27,38 @@ fun MyTextField(
   value: String,
   onValueChange: (String) -> Unit,
   label: String,
+  placeholder: String,
   enabled: Boolean = true,
+  isError: Boolean = false,
+  errorMessage: String? = null,
   modifier: Modifier = Modifier,
   visualTransformation: VisualTransformation = VisualTransformation.None,
   keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
 ) {
   TextField(
     value = value,
+    singleLine = true,
+    isError = isError,
     textStyle = MedTrackerTheme.typography.body,
     onValueChange = onValueChange,
-    label = { Text(label) },
+    placeholder = {
+      Text(
+        if (isError) {
+          placeholder
+        } else {
+          placeholder
+        }
+      )
+    },
+    label = {
+      Text(
+        if (isError) {
+          errorMessage!!
+        } else {
+          label
+        }
+      )
+    },
     enabled = enabled,
     keyboardOptions = keyboardOptions,
     visualTransformation = visualTransformation,
@@ -48,8 +70,8 @@ fun MyTextField(
         unfocusedIndicatorColor = MedTrackerTheme.colors.sysTransparent,
         disabledIndicatorColor = MedTrackerTheme.colors.sysTransparent,
         focusedIndicatorColor = MedTrackerTheme.colors.primary400,
-        errorIndicatorColor = MedTrackerTheme.colors.sysTransparent,
         focusedContainerColor = MedTrackerTheme.colors.secondaryBackground,
+        errorIndicatorColor = MedTrackerTheme.colors.sysError,
       ),
   )
 }
@@ -66,6 +88,7 @@ fun MyOutlinedTextField(
   leadingIcon: @Composable (() -> Unit)? = null,
   trailingIcon: @Composable (() -> Unit)? = null,
   isError: Boolean = false,
+  errorMessage: String? = null,
   enabled: Boolean = true,
   readOnly: Boolean = false,
   singleLine: Boolean = false,
@@ -120,8 +143,24 @@ private fun PreviewButtons() {
       verticalArrangement = Arrangement.Center,
     ) {
       Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        MyTextField(value = "value", onValueChange = {}, label = "label", enabled = false)
-        MyTextField(value = "value", onValueChange = {}, label = "label", enabled = true)
+        /*         MyTextField(
+          value = "value",
+          onValueChange = {},
+          label = "label",
+          enabled = false,
+          modifier = TODO(),
+          visualTransformation = TODO(),
+          keyboardOptions = TODO(),
+        )
+        MyTextField(
+          value = "value",
+          onValueChange = {},
+          label = "label",
+          enabled = true,
+          modifier = TODO(),
+          visualTransformation = TODO(),
+          keyboardOptions = TODO(),
+        ) */
         Spacer(modifier = Modifier.height(24.dp))
 
         MyRadioButton(selected = true, onClick = {})

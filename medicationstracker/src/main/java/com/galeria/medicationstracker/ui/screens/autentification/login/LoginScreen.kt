@@ -52,7 +52,10 @@ fun LoginScreen(
         MyTextField(
           value = state.email,
           onValueChange = { viewModel.updateEmail(it) },
+          isError = state.emailError?.isNotEmpty() ?: false,
+          errorMessage = state.emailError,
           label = "Email",
+          placeholder = "",
           modifier = Modifier.fillMaxWidth(),
           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         )
@@ -62,7 +65,10 @@ fun LoginScreen(
         MyTextField(
           value = state.password,
           onValueChange = { viewModel.updatePassword(it) },
+          isError = state.passwordError?.isNotEmpty() ?: false,
+          errorMessage = state.passwordError,
           label = "Password",
+          placeholder = "At least 6 characters",
           modifier = Modifier.fillMaxWidth(),
           visualTransformation =
             if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),

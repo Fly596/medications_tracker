@@ -48,7 +48,10 @@ fun SignupScreen(
         MyTextField(
           value = state.email,
           onValueChange = { viewModel.updateEmail(it) },
+          isError = false,
+          errorMessage = "state.emailError",
           label = "Email",
+          placeholder = "Email",
           modifier = Modifier.fillMaxWidth(),
           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         )
@@ -59,7 +62,10 @@ fun SignupScreen(
         MyTextField(
           value = state.password,
           onValueChange = { viewModel.updatePassword(it) },
+          isError = false,
+          errorMessage = "state.Password",
           label = "Password",
+          placeholder = "Password",
           modifier = Modifier.fillMaxWidth(),
           visualTransformation =
             if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
