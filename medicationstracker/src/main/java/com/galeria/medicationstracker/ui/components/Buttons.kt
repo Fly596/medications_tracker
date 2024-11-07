@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.R
@@ -151,6 +152,7 @@ fun HIGListButton(
 fun FlyTextButton(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
+  textStyle: TextStyle = MedTrackerTheme.typography.headline,
   enabled: Boolean = true,
   content: @Composable RowScope.() -> Unit,
 ) {
@@ -158,9 +160,9 @@ fun FlyTextButton(
     onClick,
     modifier,
     enabled,
-    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
     colors = ButtonDefaults.textButtonColors(contentColor = colors.primary600),
-    content = { ProvideTextStyle(value = MedTrackerTheme.typography.body) { content() } },
+    content = { ProvideTextStyle(value = textStyle) { content() } },
   )
 }
 
@@ -169,6 +171,7 @@ fun FlyElevatedButton(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
+  textStyle: TextStyle = MedTrackerTheme.typography.headline,
   shape: Shape = ButtonShape,
   content: @Composable RowScope.() -> Unit,
 ) {
@@ -176,16 +179,16 @@ fun FlyElevatedButton(
     onClick,
     modifier,
     enabled,
-    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
     shape = shape,
     colors =
       ButtonDefaults.elevatedButtonColors(
-        containerColor = MedTrackerTheme.colors.tertiaryFill,
-        contentColor = MedTrackerTheme.colors.primary600,
-        disabledContainerColor = MedTrackerTheme.colors.tertiaryFill,
-        disabledContentColor = MedTrackerTheme.colors.tertiaryLabel,
+        containerColor = colors.tertiaryFill,
+        contentColor = colors.primary600,
+        disabledContainerColor = colors.tertiaryFill,
+        disabledContentColor = colors.tertiaryLabel,
       ),
-    content = { ProvideTextStyle(value = MedTrackerTheme.typography.body) { content() } },
+    content = { ProvideTextStyle(value = textStyle) { content() } },
   )
 }
 
@@ -194,6 +197,7 @@ fun FlyButton(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
+  textStyle: TextStyle = MedTrackerTheme.typography.headline,
   shape: Shape = ButtonShape,
   content: @Composable RowScope.() -> Unit,
 ) {
@@ -201,7 +205,7 @@ fun FlyButton(
     onClick,
     modifier,
     enabled,
-    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
     shape = shape,
     colors =
       ButtonDefaults.buttonColors(
@@ -210,7 +214,7 @@ fun FlyButton(
         disabledContainerColor = colors.tertiaryFill,
         disabledContentColor = colors.tertiaryLabel,
       ),
-    content = { ProvideTextStyle(value = MedTrackerTheme.typography.body) { content() } },
+    content = { ProvideTextStyle(value = textStyle) { content() } },
   )
 }
 
@@ -219,6 +223,7 @@ fun FlyTonalButton(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
+  textStyle: TextStyle = MedTrackerTheme.typography.headline,
   shape: Shape = ButtonShape,
   content: @Composable RowScope.() -> Unit,
 ) {
@@ -226,16 +231,16 @@ fun FlyTonalButton(
     onClick,
     modifier,
     enabled,
-    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
     shape = shape,
     colors =
       ButtonDefaults.filledTonalButtonColors(
-        containerColor = MedTrackerTheme.colors.primaryTinted,
-        contentColor = MedTrackerTheme.colors.primary600,
-        disabledContainerColor = MedTrackerTheme.colors.tertiaryFill,
-        disabledContentColor = MedTrackerTheme.colors.tertiaryLabel,
+        containerColor = colors.primaryTinted,
+        contentColor = colors.primary600,
+        disabledContainerColor = colors.tertiaryFill,
+        disabledContentColor = colors.tertiaryLabel,
       ),
-    content = { ProvideTextStyle(value = MedTrackerTheme.typography.body) { content() } },
+    content = { ProvideTextStyle(value = textStyle) { content() } },
   )
 }
 

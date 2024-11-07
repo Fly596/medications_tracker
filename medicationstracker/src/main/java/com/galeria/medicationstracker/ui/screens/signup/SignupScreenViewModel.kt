@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.autentification.signup
+package com.galeria.medicationstracker.ui.screens.signup
 
 import android.content.Context
 import android.widget.Toast
@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 data class SignupScreenState(
   val email: String = "",
   val password: String = "",
-  val showPassword: Boolean = false
+  val showPassword: Boolean = false,
 )
 
 class SignupScreenViewModel : ViewModel() {
@@ -49,13 +49,11 @@ class SignupScreenViewModel : ViewModel() {
    * @param onSignupSuccess A callback function to be invoked after successful registration.
    */
   //
-  fun onRegisterClick(
-    context: Context,
-    onSignupSuccess: () -> Unit,
-  ) {
+  fun onRegisterClick(context: Context, onSignupSuccess: () -> Unit) {
     auth = FirebaseAuth.getInstance()
 
-    auth.createUserWithEmailAndPassword(signupScreenState.email, signupScreenState.password)
+    auth
+      .createUserWithEmailAndPassword(signupScreenState.email, signupScreenState.password)
       .addOnCompleteListener { task ->
         if (task.isSuccessful) {
           // TODO: Add user info to database.

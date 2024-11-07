@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.autentification.login
+package com.galeria.medicationstracker.ui.screens.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -34,7 +33,8 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 fun LoginScreen(
   modifier: Modifier = Modifier,
   onLoginClick: () -> Unit,
-  onSignupClick: () -> Unit,
+  onSignupClick: (String) -> Unit,
+  onResetPasswordClick: (String) -> Unit,
   viewModel: LoginScreenViewModel = viewModel(),
 ) {
   val state = viewModel.loginScreenState
@@ -68,7 +68,8 @@ fun LoginScreen(
           isError = state.passwordError?.isNotEmpty() ?: false,
           errorMessage = state.passwordError,
           label = "Password",
-          placeholder = "At least 6 characters",
+          placeholder = "6 or more characters",
+          supportingText = "6 or more characters",
           modifier = Modifier.fillMaxWidth(),
           visualTransformation =
             if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
@@ -86,18 +87,11 @@ fun LoginScreen(
     Spacer(modifier = Modifier.height(16.dp))
 
     // region Buttons
-    val context = LocalContext.current
     Row(verticalAlignment = Alignment.CenterVertically) {
       val scope = rememberCoroutineScope()
 
       FlyButton(
-        onClick = {
-          viewModel.onSignInClick(state.email, state.password, context, onLoginClick)
-
-          /* scope.launch {
-            viewModel.onSignInClick(state.email, state.password, context, onLoginClick)
-          } */
-        },
+        onClick = { viewModel.onSignInClick(state.email, state.password, onLoginClick) },
         enabled = true,
       ) {
         Text(text = "Sign In")
@@ -105,7 +99,7 @@ fun LoginScreen(
 
       Spacer(modifier = Modifier.weight(1f))
 
-      FlyTonalButton(onClick = { onSignupClick() }, enabled = true) {
+      FlyTonalButton(onClick = { onSignupClick(state.email) }, enabled = true) {
         Text(text = "Create Account")
       }
     }
@@ -113,7 +107,7 @@ fun LoginScreen(
     // Spacer(modifier = Modifier.weight(1f))
     Spacer(modifier = Modifier.weight(1f))
 
-    FlyTextButton(onClick = { viewModel.resetPassword(state.email, context) }, enabled = true) {
+    FlyTextButton(onClick = { onResetPasswordClick(state.email) }, enabled = true) {
       Text(text = "Forgot password?")
     }
 

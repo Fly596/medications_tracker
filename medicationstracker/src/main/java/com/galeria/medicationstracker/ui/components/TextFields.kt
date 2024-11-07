@@ -27,7 +27,8 @@ fun MyTextField(
   value: String,
   onValueChange: (String) -> Unit,
   label: String,
-  placeholder: String,
+  supportingText: String? = null,
+  placeholder: String? = null,
   enabled: Boolean = true,
   isError: Boolean = false,
   errorMessage: String? = null,
@@ -41,15 +42,7 @@ fun MyTextField(
     isError = isError,
     textStyle = MedTrackerTheme.typography.body,
     onValueChange = onValueChange,
-    placeholder = {
-      Text(
-        if (isError) {
-          placeholder
-        } else {
-          placeholder
-        }
-      )
-    },
+    placeholder = { placeholder?.let { Text(it) } },
     label = {
       Text(
         if (isError) {
@@ -59,11 +52,12 @@ fun MyTextField(
         }
       )
     },
+    supportingText = { supportingText?.let { Text(it) } },
     enabled = enabled,
     keyboardOptions = keyboardOptions,
     visualTransformation = visualTransformation,
     modifier = modifier,
-    shape = RoundedCornerShape(12.dp),
+    shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
     colors =
       TextFieldDefaults.colors(
         unfocusedContainerColor = MedTrackerTheme.colors.secondaryBackground,

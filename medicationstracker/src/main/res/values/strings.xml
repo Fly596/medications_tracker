@@ -2,6 +2,7 @@
     <string name="app_name">Medications Tracker</string>
     <string name="sign_in_screen_title">Sign in</string>
     <string name="sign_up_screen_title">Create Your Account</string>
+    <string name="recover_password_screen_title">Reset your password</string>
     <string name="meds_screen_title">My Meds</string>
     <string name="add_new_med_name_screen_title">New Medication Details</string>
     <string name="add_new_med_form_screen_title">Select Form</string>

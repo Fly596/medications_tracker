@@ -156,22 +156,6 @@ class ApplicationActivity : ComponentActivity() {
               hasNews = item.hasNews,
               contentDescription = item.title,
             )
-            /*                        BadgedBox(
-                badge = {
-                    if (item.badgeCount != null) {
-                        Badge {
-                            Text(text = item.badgeCount.toString())
-                        }
-                    } else if (item.hasNews) {
-                        Badge()
-                    }
-                }
-            ) {
-                Icon(
-                    imageVector = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon,
-                    contentDescription = item.title
-                )
-            }*/
           },
         )
       }

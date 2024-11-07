@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.autentification.signup
+package com.galeria.medicationstracker.ui.screens.signup
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,15 +25,18 @@ import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.components.FlyButton
 import com.galeria.medicationstracker.ui.components.FlyTextButton
 import com.galeria.medicationstracker.ui.components.MyTextField
-import com.galeria.medicationstracker.ui.screens.autentification.login.RememberMeSwitch
+import com.galeria.medicationstracker.ui.screens.login.RememberMeSwitch
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun SignupScreen(
+  passedEmail: String,
   navigateHome: () -> Unit,
   modifier: Modifier = Modifier,
   viewModel: SignupScreenViewModel = viewModel(),
 ) {
+  LaunchedEffect(Unit) { viewModel.updateEmail(passedEmail) }
+
   val state = viewModel.signupScreenState
 
   Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
@@ -43,7 +47,7 @@ fun SignupScreen(
 
     Spacer(modifier = Modifier.weight(1f))
 
-    LazyColumn(modifier = Modifier) {
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(2.dp), modifier = Modifier) {
       item {
         MyTextField(
           value = state.email,
@@ -56,7 +60,6 @@ fun SignupScreen(
           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         )
       }
-      item { Spacer(modifier = Modifier.height(2.dp)) }
 
       item {
         MyTextField(
@@ -65,7 +68,8 @@ fun SignupScreen(
           isError = false,
           errorMessage = "state.Password",
           label = "Password",
-          placeholder = "Password",
+          placeholder = "6 or more characters",
+          supportingText = "6 or more characters",
           modifier = Modifier.fillMaxWidth(),
           visualTransformation =
             if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
@@ -93,6 +97,10 @@ fun SignupScreen(
         Text(text = "Create Account")
       }
     }
+
     Spacer(modifier = Modifier.weight(1f))
+
+    // просто, чтобы положение полей и кнопок было таким же, как на экране входа.
+    FlyTextButton(onClick = {}, enabled = false) { Text(text = "") }
   }
 }

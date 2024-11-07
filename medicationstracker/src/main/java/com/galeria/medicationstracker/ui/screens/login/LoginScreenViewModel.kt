@@ -1,17 +1,16 @@
-package com.galeria.medicationstracker.ui.screens.autentification.login
+package com.galeria.medicationstracker.ui.screens.login
 
-import android.content.Context
 import android.util.Patterns
-import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.galeria.medicationstracker.SnackbarAction
 import com.galeria.medicationstracker.SnackbarController
 import com.galeria.medicationstracker.SnackbarEvent
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.launch
 
 data class LoginScreenState(
@@ -75,61 +74,37 @@ class LoginScreenViewModel : ViewModel() {
   }
 
   fun validateInput(): Boolean {
-    if (validateEmail() && validatePassword()) {
-      return true
-    } else {
-      return false
-    }
+    return validateEmail() && validatePassword()
   }
 
-  fun onSignInClick(email: String, password: String, context: Context, onLoginClick: () -> Unit) {
+  fun onSignInClick(email: String, password: String, onLoginClick: () -> Unit) {
 
     if (validateInput()) {
       auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
         if (task.isSuccessful) {
           // Login success
-          Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+          viewModelScope.launch {
+            SnackbarController.sendEvent(event = SnackbarEvent("Login Successful!"))
+          }
+          // Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
           onLoginClick.invoke() // open main screen.
         } else {
+          val errorMessage =
+            when (task.exception) {
+              is FirebaseAuthInvalidUserException -> "Invalid email or password."
+              is FirebaseAuthInvalidCredentialsException -> "Invalid password."
+              else -> "Authentication failed: ${task.exception?.message}"
+            }
+
           // Login failed.
           viewModelScope.launch {
-            SnackbarController.sendEvent(
-              event =
-                SnackbarEvent(
-                  message = "Authentication Failed: ${task.exception?.message}",
-                  action =
-                    SnackbarAction(
-                      name = "U Can Cry",
-                      action = {
-                        SnackbarController.sendEvent(
-                          event = SnackbarEvent(message = "Snackbar Action")
-                        )
-                      },
-                    ),
-                )
-            )
+            SnackbarController.sendEvent(event = SnackbarEvent(message = errorMessage))
           }
         }
       } //
     } else {
       viewModelScope.launch {
-        SnackbarController.sendEvent(event = SnackbarEvent(message = "Invalid email or password"))
-      }
-    }
-  }
-
-  fun resetPassword(email: String, context: Context) {
-    val auth = FirebaseAuth.getInstance()
-    auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
-      if (task.isSuccessful) {
-        Toast.makeText(context, "Password reset email sent!", Toast.LENGTH_SHORT).show()
-      } else {
-        Toast.makeText(
-            context,
-            "Error sending password reset email: ${task.exception?.message}",
-            Toast.LENGTH_SHORT,
-          )
-          .show()
+        SnackbarController.sendEvent(event = SnackbarEvent(message = "Invalid email or password."))
       }
     }
   }
