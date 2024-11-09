@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerState
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
@@ -35,6 +37,7 @@ import com.galeria.medicationstracker.data.Frequency
 import com.galeria.medicationstracker.data.MedicationForm
 import com.galeria.medicationstracker.data.MedicationUnit
 import com.galeria.medicationstracker.ui.components.HIGButton
+import com.galeria.medicationstracker.ui.components.MyTextField
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import java.util.Date
 import java.util.Locale
@@ -51,13 +54,13 @@ fun NewMedicationDataScreen(
 
     Spacer(modifier = Modifier.padding(8.dp))
 
-    /*     MyTextField(
+    MyTextField(
       value = state.name,
       onValueChange = { viewModel.updateMedName(it) },
       label = "Medication name",
       keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
       modifier = Modifier.fillMaxWidth(),
-    ) */
+    )
 
     Spacer(modifier = Modifier.padding(8.dp))
 
