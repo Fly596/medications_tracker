@@ -69,7 +69,7 @@ fun LoginScreen(
           errorMessage = state.passwordError,
           label = "Password",
           placeholder = "6 or more characters",
-          supportingText = "6 or more characters",
+          // supportingText = "6 or more characters",
           modifier = Modifier.fillMaxWidth(),
           visualTransformation =
             if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),

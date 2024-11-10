@@ -73,13 +73,11 @@ class LoginScreenViewModel : ViewModel() {
     return isValid
   }
 
-  fun validateInput(): Boolean {
-    return validateEmail() && validatePassword()
-  }
-
   fun onSignInClick(email: String, password: String, onLoginClick: () -> Unit) {
+    val isEmailValid = validateEmail()
+    val isPasswordValid = validatePassword()
 
-    if (validateInput()) {
+    if (isEmailValid && isPasswordValid) {
       auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
         if (task.isSuccessful) {
           // Login success
