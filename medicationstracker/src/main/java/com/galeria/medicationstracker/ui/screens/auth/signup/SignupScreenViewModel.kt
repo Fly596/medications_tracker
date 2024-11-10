@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.signup
+package com.galeria.medicationstracker.ui.screens.auth.signup
 
 import android.content.Context
 import android.util.Patterns

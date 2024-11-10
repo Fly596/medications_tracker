@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.login
+package com.galeria.medicationstracker.ui.screens.auth.login
 
 import android.util.Patterns
 import androidx.compose.runtime.getValue
@@ -78,28 +78,29 @@ class LoginScreenViewModel : ViewModel() {
     val isPasswordValid = validatePassword()
 
     if (isEmailValid && isPasswordValid) {
-      auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-        if (task.isSuccessful) {
-          // Login success
-          viewModelScope.launch {
-            SnackbarController.sendEvent(event = SnackbarEvent("Login Successful!"))
-          }
-          // Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
-          onLoginClick.invoke() // open main screen.
-        } else {
-          val errorMessage =
-            when (task.exception) {
-              is FirebaseAuthInvalidUserException -> "Invalid email or password."
-              is FirebaseAuthInvalidCredentialsException -> "Invalid password."
-              else -> "Authentication failed: ${task.exception?.message}"
+      auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+          if (task.isSuccessful) {
+            // Login success
+            viewModelScope.launch {
+              SnackbarController.sendEvent(event = SnackbarEvent("Login Successful!"))
             }
+            // Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+            onLoginClick.invoke() // open main screen.
+          } else {
+            val errorMessage =
+              when (task.exception) {
+                is FirebaseAuthInvalidUserException -> "Invalid email or password."
+                is FirebaseAuthInvalidCredentialsException -> "Invalid password."
+                else -> "Authentication failed: ${task.exception?.message}"
+              }
 
-          // Login failed.
-          viewModelScope.launch {
-            SnackbarController.sendEvent(event = SnackbarEvent(message = errorMessage))
+            // Login failed.
+            viewModelScope.launch {
+              SnackbarController.sendEvent(event = SnackbarEvent(message = errorMessage))
+            }
           }
-        }
-      } //
+        } //
     } else {
       viewModelScope.launch {
         SnackbarController.sendEvent(event = SnackbarEvent(message = "Invalid email or password."))

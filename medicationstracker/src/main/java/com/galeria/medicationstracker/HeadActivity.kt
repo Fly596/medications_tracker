@@ -24,9 +24,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.galeria.medicationstracker.model.navigation.Routes
-import com.galeria.medicationstracker.ui.screens.accountrecovery.AccountRecoveryScreen
-import com.galeria.medicationstracker.ui.screens.login.LoginScreen
-import com.galeria.medicationstracker.ui.screens.signup.SignupScreen
+import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRecoveryScreen
+import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
+import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.launch

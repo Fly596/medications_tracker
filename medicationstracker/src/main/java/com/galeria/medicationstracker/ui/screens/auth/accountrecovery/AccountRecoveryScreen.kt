@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.accountrecovery
+package com.galeria.medicationstracker.ui.screens.auth.accountrecovery
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

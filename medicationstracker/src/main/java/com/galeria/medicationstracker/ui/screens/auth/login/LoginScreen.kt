@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.signup
+package com.galeria.medicationstracker.ui.screens.auth.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,14 +7,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -24,24 +24,24 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.components.FlyButton
 import com.galeria.medicationstracker.ui.components.FlyTextButton
+import com.galeria.medicationstracker.ui.components.FlyTonalButton
+import com.galeria.medicationstracker.ui.components.MySwitch
 import com.galeria.medicationstracker.ui.components.MyTextField
-import com.galeria.medicationstracker.ui.screens.login.RememberMeSwitch
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
-fun SignupScreen(
-  passedEmail: String,
-  navigateHome: () -> Unit,
+fun LoginScreen(
   modifier: Modifier = Modifier,
-  viewModel: SignupScreenViewModel = viewModel(),
+  onLoginClick: () -> Unit,
+  onSignupClick: (String) -> Unit,
+  onResetPasswordClick: (String) -> Unit,
+  viewModel: LoginScreenViewModel = viewModel(),
 ) {
-  LaunchedEffect(Unit) { viewModel.updateEmail(passedEmail) }
+  val state = viewModel.loginScreenState
 
-  val state = viewModel.signupScreenState
-
-  Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
+  Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
     Text(
-      stringResource(R.string.sign_up_screen_title),
+      stringResource(R.string.sign_in_screen_title),
       style = MedTrackerTheme.typography.largeTitleEmphasized,
     )
 
@@ -52,8 +52,8 @@ fun SignupScreen(
         MyTextField(
           value = state.email,
           onValueChange = { viewModel.updateEmail(it) },
-          isError = state.emailErrorMessage?.isNotEmpty() ?: false,
-          errorMessage = state.emailErrorMessage,
+          isError = state.emailError?.isNotEmpty() ?: false,
+          errorMessage = state.emailError,
           label = "Email",
           placeholder = "",
           modifier = Modifier.fillMaxWidth(),
@@ -65,11 +65,11 @@ fun SignupScreen(
         MyTextField(
           value = state.password,
           onValueChange = { viewModel.updatePassword(it) },
-          isError = state.passwordErrorMessage?.isNotEmpty() ?: false,
-          errorMessage = state.passwordErrorMessage,
+          isError = state.passwordError?.isNotEmpty() ?: false,
+          errorMessage = state.passwordError,
           label = "Password",
           placeholder = "6 or more characters",
-          supportingText = "6 or more characters",
+          // supportingText = "6 or more characters",
           modifier = Modifier.fillMaxWidth(),
           visualTransformation =
             if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
@@ -86,21 +86,41 @@ fun SignupScreen(
 
     Spacer(modifier = Modifier.height(16.dp))
 
-    val context = LocalContext.current
-
+    // region Buttons
     Row(verticalAlignment = Alignment.CenterVertically) {
-      FlyTextButton(onClick = navigateHome) { Text(text = "Cancel") }
+      val scope = rememberCoroutineScope()
+
+      FlyButton(
+        onClick = { viewModel.onSignInClick(state.email, state.password, onLoginClick) },
+        enabled = true,
+      ) {
+        Text(text = "Sign In")
+      }
 
       Spacer(modifier = Modifier.weight(1f))
 
-      FlyButton(onClick = { viewModel.onRegisterClick(context, onSignupSuccess = navigateHome) }) {
+      FlyTonalButton(onClick = { onSignupClick(state.email) }, enabled = true) {
         Text(text = "Create Account")
       }
     }
 
+    // Spacer(modifier = Modifier.weight(1f))
     Spacer(modifier = Modifier.weight(1f))
 
-    // просто, чтобы положение полей и кнопок было таким же, как на экране входа.
-    FlyTextButton(onClick = {}, enabled = false) { Text(text = "") }
+    FlyTextButton(onClick = { onResetPasswordClick(state.email) }, enabled = true) {
+      Text(text = "Forgot password?")
+    }
+
+    // endregion
+  }
+}
+
+@Composable
+fun RememberMeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+  Row(verticalAlignment = Alignment.CenterVertically) {
+    Text("Show password", style = MedTrackerTheme.typography.body)
+    Spacer(modifier = Modifier.width(12.dp))
+
+    MySwitch(checked = checked, onCheckedChange = onCheckedChange)
   }
 }

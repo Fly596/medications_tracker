@@ -146,9 +146,14 @@ fun CardComponent(
 @Preview
 @Composable
 fun CardComponentPreview() {
-  Column {
-    DateRangePickerModal({}, {})
-    // CardComponent("Header", "Top End Text", "Content",{})
-    // ModalDatePicker()
+  MedTrackerTheme{
+    Column {
+      CardComponent(
+        onClick = {}
+      )
+      // CardComponent("Header", "Top End Text", "Content",{})
+      // ModalDatePicker()
+    }
   }
+
 }

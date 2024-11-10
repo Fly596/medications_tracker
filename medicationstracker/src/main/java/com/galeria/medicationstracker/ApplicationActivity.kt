@@ -70,13 +70,13 @@ class ApplicationActivity : ComponentActivity() {
               unselectedIcon = Icons.Outlined.Dashboard,
               hasNews = false,
             ),
-            BottomNavigationItem(
+            /*BottomNavigationItem(
               title = "Calendar",
               route = Routes.Calendar,
               selectedIcon = Icons.Filled.CalendarMonth,
               unselectedIcon = Icons.Outlined.CalendarMonth,
               hasNews = false,
-            ),
+            ),*/
             BottomNavigationItem(
               title = "Medications",
               route = Routes.Medications,
@@ -90,24 +90,32 @@ class ApplicationActivity : ComponentActivity() {
               route = Routes.Profile,
               selectedIcon = Icons.Filled.AccountCircle,
               unselectedIcon = Icons.Outlined.AccountCircle,
-              hasNews = true,
+              hasNews = false,
             ),
           )
 
         Scaffold(
           containerColor = MedTrackerTheme.colors.primaryBackground,
-          bottomBar = { BottomNavBar(items, navController, headViewModel) },
+          bottomBar = {
+            BottomNavBar(items, navController, headViewModel)
+          },
         ) { innerPadding ->
           NavHost(
             navController = navController,
-            startDestination = Routes.Medications,
+            startDestination = Routes.Dashboard,
             modifier =
-              Modifier.padding(innerPadding).padding(start = 24.dp, end = 24.dp, top = 16.dp),
+            Modifier
+              .padding(innerPadding)
+              .padding(start = 24.dp, end = 24.dp, top = 16.dp),
           ) {
             composable<Routes.Dashboard> {
               DashboardScreen(
-                onProfileNavigate = { navController.navigate(Routes.Profile) },
-                onCalendarNavigate = { navController.navigate(Routes.Calendar) },
+                onProfileNavigate = {
+                  navController.navigate(Routes.Profile)
+                },
+                onCalendarNavigate = {
+                  navController.navigate(Routes.Calendar)
+                },
               )
             }
 
@@ -124,6 +132,7 @@ class ApplicationActivity : ComponentActivity() {
                 onConfirmClick = { navController.navigate(Routes.Medications) }
               )
             }
+
             composable<Routes.Profile> { ProfileScreen() }
           }
         }

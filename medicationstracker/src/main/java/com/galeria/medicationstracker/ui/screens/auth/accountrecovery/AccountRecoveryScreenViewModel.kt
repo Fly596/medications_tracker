@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.accountrecovery
+package com.galeria.medicationstracker.ui.screens.auth.accountrecovery
 
 import android.util.Patterns
 import androidx.compose.runtime.getValue
@@ -11,7 +11,10 @@ import com.galeria.medicationstracker.SnackbarEvent
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
-data class AccountRecoveryScreenState(val email: String = "", val emailError: String? = null)
+data class AccountRecoveryScreenState(
+  val email: String = "",
+  val emailError: String? = null
+)
 
 class AccountRecoveryScreenViewModel : ViewModel() {
 
@@ -36,24 +39,27 @@ class AccountRecoveryScreenViewModel : ViewModel() {
       isValid = false
     }
 
-    accountRecoveryScreenState = accountRecoveryScreenState.copy(emailError = errorMessage)
+    accountRecoveryScreenState =
+      accountRecoveryScreenState.copy(emailError = errorMessage)
     return isValid
   }
 
   fun resetPassword(email: String) {
-    if (validateEmail()) {
+    val isEmailValid = validateEmail()
+
+    if (isEmailValid) {
       auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
         if (task.isSuccessful) {
-          // Notify the user that the password reset email has been sent.
+          // Password reset email has been sent.
           viewModelScope.launch {
             SnackbarController.sendEvent(event = SnackbarEvent("Password reset email sent!"))
           }
         } else {
-          // Notify the user that there was an error sending the password reset email.
+          // Error sending the password reset email.
           viewModelScope.launch {
             SnackbarController.sendEvent(
               event =
-                SnackbarEvent("Error sending password reset email: ${task.exception?.message}")
+              SnackbarEvent("Error sending password reset email: ${task.exception?.message}")
             )
           }
         }
