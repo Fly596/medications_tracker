@@ -10,18 +10,18 @@ import java.util.Locale
 
 // Contains data from firestore db.
 data class Medication(
-    val uid: String,
-    val name: String,
-    val type: String,
-    val form: MedicationForm = MedicationForm.TABLET,
-    val strength: Float,
-    val unit: MedicationUnit = MedicationUnit.MG,
+  val uid: String,
+  val name: String,
+  val type: String,
+  val form: MedicationForms = MedicationForms.TABLET,
+  val strength: Float,
+  val unit: MedicationUnit = MedicationUnit.MG,
 
-    val startDate: LocalDate = LocalDate.now(),
-    val endDate: LocalDate? = null,
-    val frequency: Frequency = Frequency.AtRegularIntervals(0), // TODO: enum?
-    val intakeTime: LocalTime = LocalTime.now(),
-    val notes: String = "",
+  val startDate: LocalDate = LocalDate.now(),
+  val endDate: LocalDate? = null,
+  val frequency: Frequency = Frequency.AtRegularIntervals(0), // TODO: enum?
+  val intakeTime: LocalTime = LocalTime.now(),
+  val notes: String = "",
 )
 
 sealed class Frequency {
@@ -30,7 +30,7 @@ sealed class Frequency {
   data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek> = DayOfWeek.entries) : Frequency()
 }
 
-enum class MedicationForm {
+enum class MedicationForms {
   TABLET,
   CAPSULE,
   LIQUID,

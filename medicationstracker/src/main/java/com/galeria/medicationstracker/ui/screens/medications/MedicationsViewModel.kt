@@ -6,29 +6,27 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.galeria.medicationstracker.data.Frequency
-import com.galeria.medicationstracker.data.MedicationForm
+import com.galeria.medicationstracker.data.Medication
+import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
-import com.galeria.medicationstracker.data.TEMP_Medication
 import com.google.firebase.Firebase
 import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.launch
-import java.time.LocalTime
 
 data class MedicationsUiState(
   val uid: String = "",
   val name: String = "",
   val type: String = "",
-  val form: MedicationForm = MedicationForm.TABLET, // f
+  val form: MedicationForms = MedicationForms.TABLET, // f
   val strength: Float = 0.0f,
   val unit: MedicationUnit = MedicationUnit.MG, // f
   val startDate: String = "",// f
   val endDate: String= "",// f
-  val frequency: Frequency = Frequency.AtRegularIntervals(0),// f
-  val intakeTime: LocalTime = LocalTime.now(),// f
+  //val frequency: Frequency = Frequency.AtRegularIntervals(0),// f
+  val intakeTime: String= "",// f
   val notes: String = "",
 )
 
@@ -38,7 +36,7 @@ class MedicationsViewModel : ViewModel() {
     private set
 
   var userMedications =
-    mutableStateOf<List<TEMP_Medication>>(emptyList())
+    mutableStateOf<List<Medication>>(emptyList())
     private set
   //val userMedications = _userMedications.asStateFlow()
 
@@ -58,7 +56,7 @@ class MedicationsViewModel : ViewModel() {
   fun getMedsList() {
     viewModelScope.launch {
       try {
-        db.collection("med_temp")
+        db.collection("user_medications")
           .whereEqualTo("uid", userId)
           .addSnapshotListener { snapshot, error ->
             if (error != null) {

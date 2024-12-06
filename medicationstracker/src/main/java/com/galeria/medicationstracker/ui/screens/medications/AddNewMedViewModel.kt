@@ -9,7 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.galeria.medicationstracker.data.Frequency
 import com.galeria.medicationstracker.data.Medication
-import com.galeria.medicationstracker.data.MedicationForm
+import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
 import com.google.firebase.Firebase
 import com.google.firebase.appcheck.internal.util.Logger.TAG
@@ -21,7 +21,7 @@ data class NewMedicationUiState(
   val uid: String = "",
   val name: String = "",
   val type: String = "",
-  var form: MedicationForm = MedicationForm.TABLET, // f
+  var form: MedicationForms = MedicationForms.TABLET, // f
   val strength: String = "",
   val unit: MedicationUnit = MedicationUnit.MG, // f
   val startDate: String = "",// f
@@ -29,7 +29,8 @@ data class NewMedicationUiState(
   val frequency: Frequency = Frequency.AtRegularIntervals(),// f
   val intakeTime: LocalTime = LocalTime.now(),// f
   val notes: String = "",
-  val showDatePicker: Boolean = false
+  val showDatePicker: Boolean = false,
+  val showTimePicker: Boolean = false
 )
 
 class AddNewMedViewModel : ViewModel() {
@@ -85,6 +86,9 @@ class AddNewMedViewModel : ViewModel() {
   fun isShowDateChecked(input: Boolean) {
     uiState.copy(showDatePicker = !input)
   }
+  fun isShowTimeChecked(input: Boolean) {
+    uiState.copy(showTimePicker =  !input)
+  }
 
   // region fields data
   fun updateStartDate(input: String) {
@@ -103,7 +107,7 @@ class AddNewMedViewModel : ViewModel() {
     uiState = uiState.copy(type = newType)
   }
 
-  fun updateMedForm(newForm: MedicationForm) {
+  fun updateMedForm(newForm: MedicationForms) {
     uiState = uiState.copy(form = newForm)
   }
 

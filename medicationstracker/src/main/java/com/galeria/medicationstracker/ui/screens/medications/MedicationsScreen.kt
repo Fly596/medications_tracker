@@ -34,7 +34,10 @@ fun MedicationsScreen(
   viewModel: MedicationsViewModel = viewModel(),
 ) {
 
-  Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+  Column(
+    modifier = modifier.fillMaxSize(),
+    verticalArrangement = Arrangement.spacedBy(16.dp)
+  ) {
     // Header.
     Text(
       stringResource(R.string.meds_screen_title),
@@ -49,7 +52,10 @@ fun MedicationsScreen(
 
     // Spacer(modifier = Modifier.padding(24.dp))
 
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier) {
+    LazyColumn(
+      verticalArrangement = Arrangement.spacedBy(8.dp),
+      modifier = Modifier
+    ) {
 
       // TODO: get medications from firebase.
 
@@ -58,7 +64,7 @@ fun MedicationsScreen(
           CardComponent(
             header = medication.name,
             topEndText = "Edit",
-            content = medication.type,
+            content = medication.form.toString(),
             onClick = {
               // TODO: Реализовать открытие экрана с выбранным medication.
             },
@@ -146,7 +152,7 @@ fun CardComponent(
 @Preview
 @Composable
 fun CardComponentPreview() {
-  MedTrackerTheme{
+  MedTrackerTheme {
     Column {
       CardComponent(
         onClick = {}

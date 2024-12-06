@@ -1,5 +1,5 @@
 [versions]
-agp = "8.8.0-alpha09"
+agp = "8.9.0-alpha04"
 firebaseBom = "33.5.1"
 kotlin = "2.0.20"
 coreKtx = "1.15.0"
@@ -26,6 +26,7 @@ firebaseAnalytics = "22.1.2"
 firebaseStorage = "21.0.1"
 composeNavigation = "2.8.3"
 serialization = "1.7.3"
+roomRuntime = "2.7.0-alpha11"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -68,6 +69,7 @@ google-firebase-analytics = { group = "com.google.firebase", name = "firebase-an
 google-firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomRuntime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

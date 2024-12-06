@@ -20,7 +20,10 @@ import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +42,7 @@ import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
 
 data class BottomNavigationItem(
   val title: String,
@@ -149,10 +153,16 @@ class ApplicationActivity : ComponentActivity() {
     val selectedItemIndex = viewModel.selectedItemIndex.collectAsState().value
 
     // TODO: Change colors
-    NavigationBar(modifier = Modifier.fillMaxWidth()) {
+    NavigationBar(modifier = Modifier.fillMaxWidth(),
+      containerColor = MedTrackerTheme.colors.secondaryBackground,
+      contentColor = MedTrackerTheme.colors.secondary600,
+    ) {
       items.forEachIndexed { index, item ->
         NavigationBarItem(
           selected = selectedItemIndex == index,
+          colors = NavigationBarItemDefaults.colors(
+            indicatorColor = MedTrackerTheme.colors.primaryTinted
+          ),
           onClick = {
             viewModel.updateSelectedItemIndex(index)
             navController.navigate(item.route)

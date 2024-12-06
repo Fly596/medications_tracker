@@ -162,7 +162,7 @@ val AppTypography =
     headline =
       TextStyle(
         fontSize = 17.sp,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Medium,
         fontFamily = FontFamily.Default,
         lineHeight = 22.sp,
         // color = Color.Black
