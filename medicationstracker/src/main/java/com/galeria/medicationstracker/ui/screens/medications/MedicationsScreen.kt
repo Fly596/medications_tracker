@@ -15,7 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,13 +28,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.components.FlyButton
-import com.galeria.medicationstracker.ui.components.FlyElevatedCard
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun MedicationsScreen(
   modifier: Modifier = Modifier,
-  onAddMedicationClick: () -> Unit = {},
+  onAddMedClick: () -> Unit = {},
+  onOpenMedClick: () -> Unit = {},
   medicationsViewModel: MedicationsViewModel = viewModel(),
 ) {
   val medications by
@@ -53,7 +52,7 @@ fun MedicationsScreen(
 
     // Button to add a new medication.
     FlyButton(
-      onClick = { onAddMedicationClick.invoke() },
+      onClick = { onAddMedClick.invoke() },
       Modifier.fillMaxWidth()
     ) {
       Text("+ Add Medication")
@@ -69,7 +68,7 @@ fun MedicationsScreen(
           topEndText = "Edit",
           description = med.form.toString(),
           onClick = {
-            // TODO: Navigates to medication details screen.
+            onOpenMedClick.invoke()
           }
         )
       }

@@ -26,6 +26,8 @@ sealed class Routes {
 
   @Serializable data object NewMedication : Routes()
 
+  @Serializable data object ViewMedication : Routes()
+
   // region later
   @Serializable data object NewMedicationName : Routes()
 

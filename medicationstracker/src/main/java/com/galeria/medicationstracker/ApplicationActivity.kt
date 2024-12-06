@@ -36,6 +36,7 @@ import com.galeria.medicationstracker.ui.HeadViewModel
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
+import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
@@ -103,9 +104,9 @@ class ApplicationActivity : ComponentActivity() {
             navController = navController,
             startDestination = Routes.Dashboard,
             modifier =
-            Modifier
-              .padding(innerPadding)
-              .padding(start = 24.dp, end = 24.dp, top = 16.dp),
+              Modifier
+                .padding(innerPadding)
+                .padding(start = 24.dp, end = 24.dp, top = 16.dp),
           ) {
             composable<Routes.Dashboard> {
               DashboardScreen(
@@ -123,13 +124,21 @@ class ApplicationActivity : ComponentActivity() {
             }
 
             composable<Routes.Medications> {
-              MedicationsScreen(onAddMedicationClick = { navController.navigate(Routes.NewMedication) })
+              MedicationsScreen(
+                onAddMedClick = { navController.navigate(Routes.NewMedication) },
+                onOpenMedClick = {
+                navController.navigate(Routes.ViewMedication)
+                })
             }
 
             composable<Routes.NewMedication> {
               NewMedicationDataScreen(
                 onConfirmClick = { navController.navigate(Routes.Medications) }
               )
+            }
+
+            composable<Routes.ViewMedication> {
+              UpdateMedScreen(onConfirmEdit = { navController.navigate(Routes.Medications) })
             }
 
             composable<Routes.Profile> { ProfileScreen() }
@@ -148,7 +157,8 @@ class ApplicationActivity : ComponentActivity() {
     val selectedItemIndex = viewModel.selectedItemIndex.collectAsState().value
 
     // TODO: Change colors
-    NavigationBar(modifier = Modifier.fillMaxWidth(),
+    NavigationBar(
+      modifier = Modifier.fillMaxWidth(),
       containerColor = MedTrackerTheme.colors.secondaryBackground,
       contentColor = MedTrackerTheme.colors.secondary600,
     ) {
