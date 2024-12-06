@@ -2,14 +2,29 @@ package com.galeria.medicationstracker.data
 
 import android.icu.text.SimpleDateFormat
 import java.time.DayOfWeek
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.util.Date
 import java.util.Locale
 
+data class UserMedication(
+  val uid: String? = null,
+  val name: String? = null,
+  val form: String? = null,
+  val strength: Float? = null,
+  val unit: String? = null,
+  val startDate: String? = null,
+  val endDate: String? = null,
+  val intakeTime: String? = null,
+  val notes: String? = null,
+)
+
+data class Shit(
+  val id: Int = 0,
+  val text: String = ""
+)
+
 // Contains data from firestore db.
-data class Medication(
+/* data class Medication(
   val uid: String,
   val name: String,
   val type: String,
@@ -20,14 +35,15 @@ data class Medication(
   val startDate: LocalDate = LocalDate.now(),
   val endDate: LocalDate? = null,
   val frequency: Frequency = Frequency.AtRegularIntervals(0), // TODO: enum?
-  val intakeTime: LocalTime = LocalTime.now(),
+  val intakeTime: LocalTime,
   val notes: String = "",
-)
+) */
 
 sealed class Frequency {
   data class AtRegularIntervals(val interval: Int = 0) : Frequency()
 
-  data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek> = DayOfWeek.entries) : Frequency()
+  data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek> = DayOfWeek.entries) :
+    Frequency()
 }
 
 enum class MedicationForms {
@@ -46,29 +62,29 @@ enum class MedicationUnit {
 val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
 
 data class TEMP_Medication(
-    val uid: String = "",
-    val name: String = "",
-    val type: String = "",
-    val dateTime: String? = sdf.format(Date())
+  val uid: String = "",
+  val name: String = "",
+  val type: String = "",
+  val dateTime: String? = sdf.format(Date())
 )
 
 /*TODO: Symptoms, mood..*/
 data class MoodLog(
-    val date: LocalDateTime = LocalDateTime.now()
-    // TODO
+  val date: LocalDateTime = LocalDateTime.now()
+  // TODO
 )
 
 data class Users(
-    val name: String = "",
-    val email: String = "",
-    val pfp: String = "" /* url to pic*/,
-    val born: String = "" /*yyyy-MM-dd*/,
-    val notificationPreferences: NotificationPreferences = NotificationPreferences()
+  val name: String = "",
+  val email: String = "",
+  val pfp: String = "" /* url to pic*/,
+  val born: String = "" /*yyyy-MM-dd*/,
+  val notificationPreferences: NotificationPreferences = NotificationPreferences()
 )
 
 data class NotificationPreferences(
-    val sound: Boolean = true,
-    val vibration: Boolean = true,
+  val sound: Boolean = true,
+  val vibration: Boolean = true,
 )
 
 /* data class UserMedication(

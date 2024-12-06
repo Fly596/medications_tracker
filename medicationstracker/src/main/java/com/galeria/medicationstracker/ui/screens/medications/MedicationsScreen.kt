@@ -10,17 +10,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.components.FlyButton
@@ -30,49 +35,74 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 @Composable
 fun MedicationsScreen(
   modifier: Modifier = Modifier,
-  onNewMedClick: () -> Unit,
-  viewModel: MedicationsViewModel = viewModel(),
+  onAddMedicationClick: () -> Unit = {},
+  medicationsViewModel: MedicationsViewModel = viewModel(),
 ) {
+  val medications by
+  medicationsViewModel.userMedications.collectAsStateWithLifecycle()
 
   Column(
     modifier = modifier.fillMaxSize(),
     verticalArrangement = Arrangement.spacedBy(16.dp)
   ) {
-    // Header.
+    // Displays the screen title.
     Text(
       stringResource(R.string.meds_screen_title),
       style = MedTrackerTheme.typography.largeTitleEmphasized,
     )
 
-    // Spacer(modifier = Modifier.padding(16.dp))
-
-    FlyButton(onClick = { onNewMedClick.invoke() }, Modifier.fillMaxWidth()) {
+    // Button to add a new medication.
+    FlyButton(
+      onClick = { onAddMedicationClick.invoke() },
+      Modifier.fillMaxWidth()
+    ) {
       Text("+ Add Medication")
     }
 
-    // Spacer(modifier = Modifier.padding(24.dp))
-
     LazyColumn(
       verticalArrangement = Arrangement.spacedBy(8.dp),
-      modifier = Modifier
     ) {
 
-      // TODO: get medications from firebase.
-
-      viewModel.userMedications.value.forEach { medication ->
-        item {
-          CardComponent(
-            header = medication.name,
-            topEndText = "Edit",
-            content = medication.form.toString(),
-            onClick = {
-              // TODO: Реализовать открытие экрана с выбранным medication.
-            },
-          )
-        }
+      items(medications) { med ->
+        CardComponent(
+          title = med.name.toString(),
+          topEndText = "Edit",
+          description = med.form.toString(),
+          onClick = {
+            // TODO: Navigates to medication details screen.
+          }
+        )
       }
     }
   }
+}
+
+@Composable
+fun CardComponent(
+  title: String = "Header",
+  topEndText: String? = "Top End Text",
+  description: String = "Description",
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  ElevatedCard(modifier = modifier) {
+    Column(
+      modifier =
+        Modifier.padding(
+          horizontal = dimensionResource(R.dimen.card_content_padding_horizontal),
+          vertical = dimensionResource(R.dimen.card_content_padding_vertical),
+        ),
+      verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
+    ) {
+      Row(modifier = Modifier.fillMaxWidth()) {
+        Text(title, style = MedTrackerTheme.typography.body)
+        Spacer(modifier.weight(1f))
+        NavigationRow({ onClick() }, topEndText ?: "")
+      }
+      Text(description, style = MedTrackerTheme.typography.subhead)
+    }
+  }
+
 }
 
 @Composable
@@ -92,11 +122,77 @@ fun NavigationRow(onClick: () -> Unit, label: String) {
   }
 }
 
+/* @Composable
+fun MedicationsScreen(
+  modifier: Modifier = Modifier,
+  onAddMedicationClick: () -> Unit,
+  medicationsViewModel: MedicationsViewModel = viewModel(),
+) {
+  Column(
+    modifier = modifier.fillMaxSize(),
+    verticalArrangement = Arrangement.spacedBy(16.dp)
+  ) {
+    // Displays the screen title.
+    Text(
+      stringResource(R.string.meds_screen_title),
+      style = MedTrackerTheme.typography.largeTitleEmphasized,
+    )
+
+    // Button to add a new medication.
+    FlyButton(
+      onClick = { onAddMedicationClick.invoke() },
+      Modifier.fillMaxWidth()
+    ) {
+      Text("+ Add Medication")
+    }
+
+    // Displays the list of medications.
+    LazyColumn(
+      verticalArrangement = Arrangement.spacedBy(8.dp),
+      modifier = Modifier
+    ) {
+
+      // Iterates through the user's medications.
+      medicationsViewModel.userMmedication.value.forEach { medication ->
+        item {
+          // Card to display medication info.
+          CardComponent(
+            title = medication.name,
+            topEndText = "Edit",
+            description = medication.notes,
+            onClick = {
+              // TODO: Navigates to medication details screen.
+            },
+          )
+        }
+      }
+    }
+  }
+}
+
+@Composable
+fun NavigationRow(onClick: () -> Unit, label: String) {
+
+  Row(
+    modifier = Modifier.clickable(onClick = onClick),
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(4.dp),
+  ) {
+    Text(label, style = MedTrackerTheme.typography.body)
+    Icon(
+      imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+      contentDescription = null,
+      tint = MedTrackerTheme.colors.secondary600,
+      modifier = Modifier.size(10.dp),
+    )
+  }
+}
+
 @Composable
 fun CardComponent(
-  header: String = "Header",
+  title: String = "Header",
   topEndText: String? = "Top End Text",
-  content: String = "Content",
+  description: String = "Description",
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
@@ -104,20 +200,20 @@ fun CardComponent(
     Column(
       modifier =
         Modifier.padding(
-          horizontal = dimensionResource(R.dimen.card_padding_horizontal),
-          vertical = dimensionResource(R.dimen.card_padding_vertical),
+          horizontal = dimensionResource(R.dimen.card_content_padding_horizontal),
+          vertical = dimensionResource(R.dimen.card_content_padding_vertical),
         ),
       verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
     ) {
       Row(modifier = Modifier.fillMaxWidth()) {
-        Text(header, style = MedTrackerTheme.typography.body)
+        Text(title, style = MedTrackerTheme.typography.body)
         Spacer(modifier.weight(1f))
         NavigationRow({ onClick() }, topEndText ?: "")
       }
-      Text(content, style = MedTrackerTheme.typography.subhead)
+      Text(description, style = MedTrackerTheme.typography.subhead)
     }
   }
-}
+} */
 
 /*   Column(modifier = modifier.fillMaxWidth().padding(12.dp), horizontalAlignment = Alignment.Start) {
     OutlinedTextField(

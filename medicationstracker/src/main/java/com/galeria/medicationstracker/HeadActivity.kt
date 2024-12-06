@@ -35,12 +35,16 @@ class HeadActivity : ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+    // Initialize Firebase.
     FirebaseApp.initializeApp(this)
 
     enableEdgeToEdge()
 
     setContent {
       MedTrackerTheme {
+
+        // State for managing snackbar messages
         val snackbarHostState = remember { SnackbarHostState() }
         SnackbarHandler(snackbarHostState)
 
@@ -49,38 +53,52 @@ class HeadActivity : ComponentActivity() {
           modifier = Modifier.fillMaxSize(),
           containerColor = MedTrackerTheme.colors.primaryBackground,
         ) { innerPadding ->
+          // Initialize navigation controller
           val navController = rememberNavController()
+          // Get the current context for navigation
           val context: Context = LocalContext.current
 
+          // Define the navigation graph.
           NavHost(
             navController = navController,
             startDestination = Routes.Home,
-            modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp),
+            modifier = Modifier
+              .fillMaxSize()
+              .padding(innerPadding)
+              .padding(16.dp),
           ) {
+            // Home route with login, signup, and password reset actions
             composable<Routes.Home> {
               LoginScreen(
                 onLoginClick = {
+                  // Navigate to main application screen
                   val intent = Intent(context, ApplicationActivity::class.java)
                   startActivity(intent)
                 },
                 onSignupClick = { email ->
+                  // Navigate to the registration screen with email
                   navController.navigate(Routes.Registration(email = email))
                 },
                 onResetPasswordClick = { email ->
+                  // Navigate to the password recovery screen with email
                   navController.navigate(Routes.PasswordRecovery(email = email))
-                },
+                }
               )
             }
 
+            // Registration screen route
             composable<Routes.Registration> { backStackEntry ->
+              // Retrieve and pass the email argument
               val args = backStackEntry.toRoute<Routes.Registration>()
               SignupScreen(
                 passedEmail = args.email ?: "",
-                navigateHome = { navController.navigate(Routes.Home) },
+                navigateHome = { navController.navigate(Routes.Home) }
               )
             }
 
+            // Password recovery screen route
             composable<Routes.PasswordRecovery> { backStackEntry ->
+              // Retrieve and pass the email argument
               val args = backStackEntry.toRoute<Routes.PasswordRecovery>()
               AccountRecoveryScreen(
                 passedEmail = args.email ?: "",
@@ -97,7 +115,10 @@ class HeadActivity : ComponentActivity() {
 @Composable
 fun SnackbarHandler(snackbarHostState: SnackbarHostState) {
   val scope = rememberCoroutineScope()
-  ObserveAsEvents(flow = SnackbarController.events, snackbarHostState) { event ->
+  ObserveAsEvents(
+    flow = SnackbarController.events,
+    snackbarHostState
+  ) { event ->
     scope.launch {
       snackbarHostState.currentSnackbarData?.dismiss()
 

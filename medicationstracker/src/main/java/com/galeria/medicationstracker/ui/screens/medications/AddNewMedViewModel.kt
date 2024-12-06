@@ -8,9 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.galeria.medicationstracker.data.Frequency
-import com.galeria.medicationstracker.data.Medication
 import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
+import com.galeria.medicationstracker.data.UserMedication
 import com.google.firebase.Firebase
 import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.auth
@@ -19,16 +19,14 @@ import java.time.LocalTime
 
 data class NewMedicationUiState(
   val uid: String = "",
-  val name: String = "",
-  val type: String = "",
-  var form: MedicationForms = MedicationForms.TABLET, // f
-  val strength: String = "",
-  val unit: MedicationUnit = MedicationUnit.MG, // f
-  val startDate: String = "",// f
-  val endDate: String = "",// f
-  val frequency: Frequency = Frequency.AtRegularIntervals(),// f
-  val intakeTime: LocalTime = LocalTime.now(),// f
-  val notes: String = "",
+  val medName: String = "",
+  var medForm: MedicationForms = MedicationForms.TABLET, // f
+  val medStrength: String = "",
+  val medUnit: MedicationUnit = MedicationUnit.MG, // f
+  val medStartDate: String = "",// f
+  val medEndDate: String = "",// f
+  val medIntakeTime: String = "",// f
+  val medNotes: String = "",
   val showDatePicker: Boolean = false,
   val showTimePicker: Boolean = false
 )
@@ -48,24 +46,26 @@ class AddNewMedViewModel : ViewModel() {
   var selectedEndDate by mutableStateOf<Long?>(null)
 
   // private set
-  var combinedDates = Pair<Long?, Long?>(selectedStartDate, selectedEndDate)
+  // var combinedDates = Pair<Long?, Long?>(selectedStartDate, selectedEndDate)
 
   // TODO: Check for dublicates.
   fun addMedication(
-    /* medication: Medication, */
     context: Context,
   ) {
     val newUserMedication =
-      Medication(
+      UserMedication(
         userId,
-        uiState.name,
-        uiState.type,
-        uiState.form,
-        uiState.strength.toFloat(),
-        uiState.unit
+        uiState.medName,
+        uiState.medForm.toString(),
+        uiState.medStrength.toFloat(),
+        uiState.medUnit.toString(),
+        uiState.medStartDate,
+        uiState.medEndDate,
+        uiState.medIntakeTime,
+        uiState.medNotes
       )
 
-    db.collection("med_temp").add(newUserMedication)
+    db.collection("UserMedication").add(newUserMedication)
       .addOnSuccessListener {
         Toast.makeText(
           context,
@@ -76,7 +76,8 @@ class AddNewMedViewModel : ViewModel() {
         Log.d(TAG, "DocumentSnapshot added with ID: ${it.id}")
       }
       .addOnFailureListener { e ->
-        Toast.makeText(context, "Error adding medication", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Error adding medication", Toast.LENGTH_SHORT)
+          .show()
 
         Log.w(TAG, "Error adding document", e)
       }
@@ -86,50 +87,52 @@ class AddNewMedViewModel : ViewModel() {
   fun isShowDateChecked(input: Boolean) {
     uiState.copy(showDatePicker = !input)
   }
+
   fun isShowTimeChecked(input: Boolean) {
-    uiState.copy(showTimePicker =  !input)
+    uiState.copy(showTimePicker = !input)
   }
 
   // region fields data
   fun updateStartDate(input: String) {
-    uiState = uiState.copy(startDate = input)
+    uiState = uiState.copy(medStartDate = input)
   }
 
   fun updateEndDate(input: String) {
-    uiState = uiState.copy(endDate = input)
+    uiState = uiState.copy(medEndDate = input)
   }
 
   fun updateMedName(newName: String) {
-    uiState = uiState.copy(name = newName)
-  }
-
-  fun updateMedType(newType: String) {
-    uiState = uiState.copy(type = newType)
+    uiState = uiState.copy(medName = newName)
   }
 
   fun updateMedForm(newForm: MedicationForms) {
-    uiState = uiState.copy(form = newForm)
+    uiState = uiState.copy(medForm = newForm)
   }
 
   fun updateMedStrength(newStrength: String) {
-    uiState = uiState.copy(strength = newStrength)
+    uiState = uiState.copy(medStrength = newStrength/* .toFloat() */)
   }
 
   fun updateMedUnit(newUnit: MedicationUnit) {
-    uiState = uiState.copy(unit = newUnit)
+    uiState = uiState.copy(medUnit = newUnit)
   }
 
-  fun updateMedFrequency(newFrequency: Frequency) {
-    uiState = uiState.copy(frequency = newFrequency)
-  }
-
-  fun updateIntakeTime(newTime: LocalTime) {
-    uiState = uiState.copy(intakeTime = newTime)
+  fun updateIntakeTime(newTime: String) {
+    uiState = uiState.copy(medIntakeTime = newTime)
   }
 
   fun updateMedNotes(newNotes: String) {
-    uiState = uiState.copy(notes = newNotes)
+    uiState = uiState.copy(medNotes = newNotes)
   }
+
+  /*   fun updateMedType(newType: String) {
+      uiState = uiState.copy(type = newType)
+    } */
+
+  /*   fun updateMedFrequency(newFrequency: Frequency) {
+      uiState = uiState.copy(frequency = newFrequency)
+    } */
+
   /*   fun updateStartDate(newStartDate: LocalDate) {
       uiState = uiState.copy(startDate = newStartDate.toString())
     }
