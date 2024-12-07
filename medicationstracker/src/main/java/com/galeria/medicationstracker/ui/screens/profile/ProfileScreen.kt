@@ -30,6 +30,8 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 @Composable
 fun ProfileScreen(
   modifier: Modifier = Modifier,
+  onSettingsClick: () -> Unit = {},
+  onNotificationsClick: () -> Unit = {},
   viewModel: ProfileVM = viewModel(),
 ) {
   val state = viewModel.uiState
@@ -45,7 +47,6 @@ fun ProfileScreen(
       style = MedTrackerTheme.typography.largeTitleEmphasized,
     )
     Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
 
     // User's profile picture and name.
     PfpWithName(
@@ -65,11 +66,12 @@ fun ProfileScreen(
 
       // Notifications option.
       ProfileOptionItem("Notifications") {
-        // TODO: navigate to notifications screen.
+        onNotificationsClick.invoke()
       }
+
       // Details option.
       ProfileOptionItem("Settings") {
-        // TODO: navigate to details screen.
+        onSettingsClick.invoke()
       }
     }
 

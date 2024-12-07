@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+// TODO: What is this?
 class HeadViewModel : ViewModel() {
 
   private val _selectedItemIndex = MutableStateFlow(0)

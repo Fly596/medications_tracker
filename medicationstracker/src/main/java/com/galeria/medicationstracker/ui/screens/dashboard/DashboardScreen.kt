@@ -36,7 +36,7 @@ fun DashboardScreen(
 
     // Screen header with title
     Text(
-      "Dashboard",
+      "Today",
       style = MedTrackerTheme.typography.largeTitleEmphasized,
     )
     // Space between header and profile info.

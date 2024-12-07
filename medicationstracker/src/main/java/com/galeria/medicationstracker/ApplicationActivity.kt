@@ -38,6 +38,8 @@ import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
 import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
+import com.galeria.medicationstracker.ui.screens.profile.notifications.NotificationsSettingsScreen
+import com.galeria.medicationstracker.ui.screens.profile.settings.SettingsScreen
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 data class BottomNavigationItem(
@@ -61,38 +63,8 @@ class ApplicationActivity : ComponentActivity() {
       MedTrackerTheme {
         val navController = rememberNavController()
 
-        val items =
-          listOf(
-            BottomNavigationItem(
-              title = "Dashboard",
-              route = Routes.Dashboard,
-              selectedIcon = Icons.Filled.Dashboard,
-              unselectedIcon = Icons.Outlined.Dashboard,
-              hasNews = false,
-            ),
-            /*BottomNavigationItem(
-              title = "Calendar",
-              route = Routes.Calendar,
-              selectedIcon = Icons.Filled.CalendarMonth,
-              unselectedIcon = Icons.Outlined.CalendarMonth,
-              hasNews = false,
-            ),*/
-            BottomNavigationItem(
-              title = "Medications",
-              route = Routes.Medications,
-              selectedIcon = Icons.Filled.Medication,
-              unselectedIcon = Icons.Outlined.Medication,
-              hasNews = false,
-              badgeCount = 16,
-            ),
-            BottomNavigationItem(
-              title = "Profile",
-              route = Routes.Profile,
-              selectedIcon = Icons.Filled.AccountCircle,
-              unselectedIcon = Icons.Outlined.AccountCircle,
-              hasNews = false,
-            ),
-          )
+        // Bottom navigation items.
+        val items = bottomNavItems()
 
         Scaffold(
           containerColor = MedTrackerTheme.colors.primaryBackground,
@@ -108,6 +80,7 @@ class ApplicationActivity : ComponentActivity() {
                 .padding(innerPadding)
                 .padding(start = 24.dp, end = 24.dp, top = 16.dp),
           ) {
+
             composable<Routes.Dashboard> {
               DashboardScreen(
               )
@@ -135,20 +108,72 @@ class ApplicationActivity : ComponentActivity() {
               UpdateMedScreen(onConfirmEdit = { navController.navigate(Routes.Medications) })
             }
 
-            composable<Routes.Profile> { ProfileScreen() }
+            composable<Routes.Profile> {
+              ProfileScreen(
+                onSettingsClick = { navController.navigate(Routes.AppSettings) },
+                onNotificationsClick = {navController.navigate(Routes.NotificationsSettings)}
+              )
+            }
+
+            composable<Routes.AppSettings> { SettingsScreen() }
+
+            composable<Routes.NotificationsSettings> { NotificationsSettingsScreen() }
           }
         }
       }
     }
   }
 
+  data class BottomNavItem(
+    val title: String,
+    val route: Routes,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
+    val hasNews: Boolean = false,
+    val badgeCount: Int? = null
+  )
+
+  private fun bottomNavItems(): List<BottomNavItem> {
+    return listOf(
+      BottomNavItem(
+        title = "Dashboard",
+        route = Routes.Dashboard,
+        selectedIcon = Icons.Filled.Dashboard,
+        unselectedIcon = Icons.Outlined.Dashboard
+      ),
+      BottomNavItem(
+        title = "Dashboard",
+        route = Routes.Dashboard,
+        selectedIcon = Icons.Filled.Dashboard,
+        unselectedIcon = Icons.Outlined.Dashboard,
+        hasNews = false,
+      ),
+      BottomNavItem(
+        title = "Medications",
+        route = Routes.Medications,
+        selectedIcon = Icons.Filled.Medication,
+        unselectedIcon = Icons.Outlined.Medication,
+        hasNews = false,
+        badgeCount = 16,
+      ),
+      BottomNavItem(
+        title = "Profile",
+        route = Routes.Profile,
+        selectedIcon = Icons.Filled.AccountCircle,
+        unselectedIcon = Icons.Outlined.AccountCircle,
+        hasNews = false,
+      ),
+      // ... (other items)
+    )
+  }
+
   @Composable
   private fun BottomNavBar(
-    items: List<BottomNavigationItem>,
+    navItems: List<BottomNavItem>,
     navController: NavHostController,
     viewModel: HeadViewModel,
   ) {
-    val selectedItemIndex = viewModel.selectedItemIndex.collectAsState().value
+    val currentNavItemIndex = viewModel.selectedItemIndex.collectAsState().value
 
     // TODO: Change colors
     NavigationBar(
@@ -156,23 +181,23 @@ class ApplicationActivity : ComponentActivity() {
       containerColor = MedTrackerTheme.colors.secondaryBackground,
       contentColor = MedTrackerTheme.colors.secondary600,
     ) {
-      items.forEachIndexed { index, item ->
+      navItems.forEachIndexed { navItemIndex, navItem ->
         NavigationBarItem(
-          selected = selectedItemIndex == index,
+          selected = currentNavItemIndex == navItemIndex,
           colors = NavigationBarItemDefaults.colors(
             indicatorColor = MedTrackerTheme.colors.primaryTinted
           ),
           onClick = {
-            viewModel.updateSelectedItemIndex(index)
-            navController.navigate(item.route)
+            viewModel.updateSelectedItemIndex(navItemIndex)
+            navController.navigate(navItem.route)
           },
-          label = { Text(text = item.title) },
+          label = { Text(text = navItem.title) },
           icon = {
             IconWithBadge(
-              icon = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon,
-              badgeCount = item.badgeCount,
-              hasNews = item.hasNews,
-              contentDescription = item.title,
+              icon = if (navItemIndex == currentNavItemIndex) navItem.selectedIcon else navItem.unselectedIcon,
+              badgeCount = navItem.badgeCount,
+              showUnreadBadge = navItem.hasNews,
+              contentDescription = navItem.title,
             )
           },
         )
@@ -184,14 +209,14 @@ class ApplicationActivity : ComponentActivity() {
   fun IconWithBadge(
     icon: ImageVector,
     badgeCount: Int?,
-    hasNews: Boolean,
+    showUnreadBadge: Boolean,
     contentDescription: String?,
   ) {
     BadgedBox(
       badge = {
         when {
           badgeCount != null -> Badge { Text(text = badgeCount.toString()) }
-          hasNews -> Badge()
+          showUnreadBadge -> Badge()
         }
       }
     ) {

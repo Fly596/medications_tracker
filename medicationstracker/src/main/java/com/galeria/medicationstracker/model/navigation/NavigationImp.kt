@@ -20,6 +20,10 @@ sealed class Routes {
 
   @Serializable data object Profile : Routes()
 
+  @Serializable data object AppSettings : Routes()
+
+  @Serializable data object NotificationsSettings : Routes()
+
   @Serializable data object Calendar : Routes()
 
   @Serializable data object Medications : Routes()
@@ -27,6 +31,7 @@ sealed class Routes {
   @Serializable data object NewMedication : Routes()
 
   @Serializable data object ViewMedication : Routes()
+
 
   // region later
   @Serializable data object NewMedicationName : Routes()

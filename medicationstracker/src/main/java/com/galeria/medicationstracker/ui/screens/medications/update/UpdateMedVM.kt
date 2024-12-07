@@ -4,10 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.galeria.medicationstracker.data.UserMedication
-import com.galeria.medicationstracker.ui.screens.medications.NewMedicationUiState
-import java.time.LocalDate
-import java.time.LocalTime
 
 data class UpdateMedUiState(
   val medName: String = "",
@@ -17,7 +13,10 @@ data class UpdateMedUiState(
   val intakeTime: String = "",
   val notes: String = "",
   val strength: String = "",
-  val strengthUnit: String = "" // Add strength unit
+  val strengthUnit: String = "", // Add strength unit
+
+  val showDatePicker: Boolean = false,
+  val showTimePicker: Boolean = false
 )
 
 class UpdateMedVM : ViewModel() {

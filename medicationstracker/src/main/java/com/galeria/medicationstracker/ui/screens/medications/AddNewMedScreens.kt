@@ -195,7 +195,10 @@ fun ModalDatePicker(
 ) {
   var showPicker by remember { mutableStateOf(false) }
 
-  Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
+  Row(
+    horizontalArrangement = Arrangement.spacedBy(16.dp),
+    verticalAlignment = Alignment.CenterVertically
+  ) {
     HIGButton(
       text = "Select start and end dates",
       onClick = { showPicker = !showPicker })
@@ -282,12 +285,11 @@ fun IntakeTimePicker(
     )
     FlyButton(onClick = {
       viewModel.updateIntakeTime(time.format(dtf))
-
       onDismiss;
     }) {
       Text("Confirm Time")
     }
-    FlyTonalButton (onClick = onDismiss) {
+    FlyTonalButton(onClick = onDismiss) {
       Text("Dismiss")
     }
 
