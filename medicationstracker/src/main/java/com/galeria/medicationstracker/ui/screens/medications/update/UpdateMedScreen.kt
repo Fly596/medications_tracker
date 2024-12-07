@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.ui.components.FlyButton
+import com.galeria.medicationstracker.ui.components.FlyErrorButton
 import com.galeria.medicationstracker.ui.components.FlyTonalButton
 import com.galeria.medicationstracker.ui.components.MyTextField
 import com.galeria.medicationstracker.ui.screens.medications.DateRangePickerModal
@@ -66,6 +67,7 @@ fun UpdateMedScreen(
           text = "Name",
           style = MedTrackerTheme.typography.title2,
         )
+        Spacer(modifier = Modifier.padding(4.dp))
         MyTextField(
           value = state.medName,
           onValueChange = { viewModel.updateMedName(it) },
@@ -81,6 +83,8 @@ fun UpdateMedScreen(
           text = "Form",
           style = MedTrackerTheme.typography.title2,
         )
+        Spacer(modifier = Modifier.padding(4.dp))
+
         MyTextField(
           value = state.medForm,
           onValueChange = { viewModel.updateMedForm(it) },
@@ -124,6 +128,8 @@ fun UpdateMedScreen(
           text = "Notes",
           style = MedTrackerTheme.typography.title2,
         )
+        Spacer(modifier = Modifier.padding(4.dp))
+
         MyTextField(
           value = state.notes, // Assuming you have a medNotes state property
           onValueChange = { viewModel.updateNotes(it) }, // Update the notes state property
@@ -140,11 +146,13 @@ fun UpdateMedScreen(
           text = "Strength",
           style = MedTrackerTheme.typography.title2,
         )
+        Spacer(modifier = Modifier.padding(4.dp))
+
         MyTextField(
           value = state.strength, // Assuming you have a medStrength state property
           onValueChange = { viewModel.updateStrength(it) }, // Update the strength state property
           label = "Medication strength",
-          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
           modifier = Modifier.fillMaxWidth(),
         )
         // Add a unit selector or dropdown for strength units (e.g., MG, ML)
@@ -152,12 +160,22 @@ fun UpdateMedScreen(
       }
     }
 
-    FlyButton(
-      // TODO: Add editing medication logic.
-      onClick = onConfirmEdit
-    ) {
-      Text("Confirm Editing")
+    Row(modifier  = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween){
+      FlyButton(
+        // TODO: Add editing medication logic.
+        onClick = onConfirmEdit
+      ) {
+        Text("Confirm")
+      }
+
+      FlyErrorButton(
+        // TODO: Add editing medication logic.
+        onClick = onConfirmEdit
+      ) {
+        Text("Delete Medication")
+      }
     }
+
   }
 }
 

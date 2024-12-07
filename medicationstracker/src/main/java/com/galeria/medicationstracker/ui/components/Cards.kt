@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.Icons.AutoMirrored
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedCard
@@ -25,14 +27,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.screens.medications.SimpleCardComponent
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun FlyElevatedCard(
   modifier: Modifier = Modifier,
+  icon: ImageVector = Icons.Filled.Medication,
+  medication: UserMedication? = null,
   shape: Shape = RoundedCornerShape(8.dp),
   elevation: CardElevation = CardDefaults.elevatedCardElevation(),
   content: @Composable (ColumnScope.() -> Unit)
@@ -48,27 +54,30 @@ fun FlyElevatedCard(
       focusedElevation = 10.dp,
     ),
     colors =
-    CardDefaults.elevatedCardColors(
-      containerColor = MedTrackerTheme.colors.primaryBackgroundGrouped,
-      contentColor = MedTrackerTheme.colors.primaryLabel,
-    )
-  ){
+      CardDefaults.elevatedCardColors(
+        containerColor = MedTrackerTheme.colors.primaryBackgroundGrouped,
+        contentColor = MedTrackerTheme.colors.primaryLabel,
+      )
+  ) {
     Row(
       modifier = Modifier
         .padding(16.dp)
         .fillMaxSize(),
       verticalAlignment = Alignment.Top,
       horizontalArrangement = Arrangement.spacedBy(16.dp),
-    ){
-      IconButton( onClick = { /*TODO*/ }, modifier = Modifier.size(56.dp)) {
+    ) {
+      IconButton(onClick = { /*TODO*/ }, modifier = Modifier.size(56.dp)) {
         Icon(
-          imageVector =  Icons.Default.Android,
+          imageVector = icon,
           contentDescription = "Android Icon",
           modifier = Modifier.size(32.dp)
         )
       }
 
-      Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxHeight(), ) {
+      Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.fillMaxHeight(),
+      ) {
         Text("Medicine Name", style = MedTrackerTheme.typography.headline)
         Text("Dosage: 500 mg", style = MedTrackerTheme.typography.body)
         Text("Frequency: Once a day", style = MedTrackerTheme.typography.body)
@@ -79,7 +88,7 @@ fun FlyElevatedCard(
       Column {
         IconButton(onClick = { /*TODO*/ }) {
           Icon(
-            imageVector =  Icons.AutoMirrored.Filled.ArrowForwardIos,
+            imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
             contentDescription = "Android Icon",
             modifier = Modifier.size(24.dp)
           )
@@ -87,7 +96,6 @@ fun FlyElevatedCard(
         Spacer(modifier = Modifier.weight(1f))
 
       }
-
 
     }
   }
@@ -101,7 +109,7 @@ fun CardPreview() {
   MedTrackerTheme {
     Column(
       modifier = Modifier
-        .fillMaxSize()
+        //.fillMaxSize()
         .padding(16.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -129,17 +137,4 @@ fun CardPreview() {
 
   }
 
-}
-
-@Composable
-fun ElevatedCardExample() {
-  MedTrackerTheme {
-    Column {
-      SimpleCardComponent(
-        onClick = {}
-      )
-      // CardComponent("Header", "Top End Text", "Content",{})
-      // ModalDatePicker()
-    }
-  }
 }

@@ -142,13 +142,6 @@ class ApplicationActivity : ComponentActivity() {
         unselectedIcon = Icons.Outlined.Dashboard
       ),
       BottomNavItem(
-        title = "Dashboard",
-        route = Routes.Dashboard,
-        selectedIcon = Icons.Filled.Dashboard,
-        unselectedIcon = Icons.Outlined.Dashboard,
-        hasNews = false,
-      ),
-      BottomNavItem(
         title = "Medications",
         route = Routes.Medications,
         selectedIcon = Icons.Filled.Medication,

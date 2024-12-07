@@ -219,6 +219,32 @@ fun FlyButton(
 }
 
 @Composable
+fun FlyErrorButton(
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+  enabled: Boolean = true,
+  textStyle: TextStyle = MedTrackerTheme.typography.headline,
+  shape: Shape = ButtonShape,
+  content: @Composable RowScope.() -> Unit,
+) {
+  Button(
+    onClick,
+    modifier,
+    enabled,
+    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
+    shape = shape,
+    colors =
+      ButtonDefaults.buttonColors(
+        containerColor = colors.sysError,
+        contentColor = colors.primaryLabelDark,
+        disabledContainerColor = colors.tertiaryFill,
+        disabledContentColor = colors.tertiaryLabel,
+      ),
+    content = { ProvideTextStyle(value = textStyle) { content() } },
+  )
+}
+
+@Composable
 fun FlyTonalButton(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
@@ -263,8 +289,9 @@ private fun PreviewButtons() {
       Row {
         FlyButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
         FlyTextButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
-        FlyElevatedButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
-        FlyTonalButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
+        //FlyElevatedButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
+        //FlyTonalButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
+        HIGListButton("text", onClick = {}, enabled = true)
       }
     }
   }

@@ -12,12 +12,14 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.ui.components.FlyTextButton
 import com.galeria.medicationstracker.ui.screens.medications.NavigationRow
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
@@ -39,11 +41,12 @@ fun DashboardScreen(
       "Today",
       style = MedTrackerTheme.typography.largeTitleEmphasized,
     )
-    // Space between header and profile info.
+
     Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
     // TODO: Weekly calendar with medication records.
 
+    // Medication Cards List.
     LazyColumn(
       modifier = modifier.fillMaxWidth(),
       verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -56,52 +59,59 @@ fun DashboardScreen(
   }
 }
 
-
 @Composable
 fun DashboardCardComponent(
   modifier: Modifier = Modifier,
   title: String = "Medication name",
-  dosage: String = "Medication strength",
+  dosage: String = "Medication dosage",
   actionLabel: String? = "Add record",
   medicationSchedule: String = "Mon, Tue, Fri...",
   medicationIntakeTime: String = "12:00PM",
   onAddMedicationRecordClick: () -> Unit,
 ) {
-  ElevatedCard(modifier = modifier) {
-    // TODO: можно обнести Row и добавить картинку (таблетка, pill, etc.).
 
-    // Content of the card.
+  ElevatedCard(modifier = modifier) {
+
     Column(
       modifier =
         Modifier.padding(
           horizontal = dimensionResource(R.dimen.card_content_padding_horizontal),
           vertical = dimensionResource(R.dimen.card_content_padding_vertical),
         ),
-      verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
+      verticalArrangement = Arrangement.spacedBy(8.dp)/* spacedBy(dimensionResource(R.dimen.padding_medium)) */,
+      horizontalAlignment = Alignment.Start
     ) {
-      // Medication title, dosage, and action.
-      Column(
-        modifier = Modifier,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-      ) {
-        // Title and action (e.g., "Add record").
-        Row(modifier = Modifier.fillMaxWidth()) {
-          Text(title, style = MedTrackerTheme.typography.headline)
-          Spacer(modifier.weight(1f))
-          // Navigation for adding a record.
-          NavigationRow({ onAddMedicationRecordClick() }, actionLabel ?: "")
-        }
-        // Displays the medication dosage.
-        Text(dosage, style = MedTrackerTheme.typography.subhead)
+
+      // Title and action (e.g., "Add record").
+      Row(modifier = Modifier.fillMaxWidth()) {
+        Text(title, style = MedTrackerTheme.typography.headline)
+        Spacer(modifier.weight(1f))
+        // Navigation for adding a record.
+        NavigationRow({ onAddMedicationRecordClick() }, actionLabel ?: "")
       }
-      HorizontalDivider(color = MedTrackerTheme.colors.opaqueSeparator)
+
+      // Displays the medication dosage.
+      Text(dosage, style = MedTrackerTheme.typography.subhead)
 
       Row(modifier = Modifier.fillMaxWidth()) {
         // Displays the medication schedule.
         Text(medicationSchedule, style = MedTrackerTheme.typography.body)
         Spacer(modifier = Modifier.weight(1f))
         Text(medicationIntakeTime, style = MedTrackerTheme.typography.body)
+      }
 
+      HorizontalDivider(
+        color = MedTrackerTheme.colors.opaqueSeparator,
+        thickness = 0.5.dp,
+        modifier = Modifier.padding(top = 12.dp)
+      )
+
+      FlyTextButton(
+        onClick = {/*TODO*/ },
+        modifier = Modifier.fillMaxWidth(),
+        textStyle = MedTrackerTheme.typography.body
+      ) {
+        Text("Add Record")
       }
     }
   }

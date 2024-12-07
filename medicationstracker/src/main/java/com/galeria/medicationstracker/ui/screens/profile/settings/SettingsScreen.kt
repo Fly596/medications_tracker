@@ -80,10 +80,10 @@ fun SettingsScreen(
 
 @Composable
 fun SettingsCardComponent(
+  modifier: Modifier = Modifier,
   icon: ImageVector? = null,
   title: String = "category name",
   onClick: () -> Unit,
-  modifier: Modifier = Modifier,
 ) {
 
   ElevatedCard(modifier = modifier.padding(vertical = 8.dp)) {
