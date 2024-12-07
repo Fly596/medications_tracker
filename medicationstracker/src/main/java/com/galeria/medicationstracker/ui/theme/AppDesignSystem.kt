@@ -235,7 +235,7 @@ fun MedTrackerTheme(
       primaryLabelDark,
       secondaryLabelDark,
       tertiaryLabelDark,
-      nonOpaqueSeparator,
+      separator,
       opaqueSeparator,
       sysError,
       sysWarning,

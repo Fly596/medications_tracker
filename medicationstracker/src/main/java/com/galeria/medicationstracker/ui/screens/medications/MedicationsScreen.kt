@@ -49,21 +49,15 @@ fun MedicationsScreen(
       stringResource(R.string.meds_screen_title),
       style = MedTrackerTheme.typography.largeTitleEmphasized,
     )
+    Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-    // Button to add a new medication.
-    FlyButton(
-      onClick = { onAddMedClick.invoke() },
-      Modifier.fillMaxWidth()
-    ) {
-      Text("+ Add Medication")
-    }
 
     LazyColumn(
-      verticalArrangement = Arrangement.spacedBy(8.dp),
+      verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
 
       items(medications) { med ->
-        CardComponent(
+        SimpleCardComponent(
           title = med.name.toString(),
           topEndText = "Edit",
           description = med.form.toString(),
@@ -73,11 +67,19 @@ fun MedicationsScreen(
         )
       }
     }
+    // Button to add a new medication.
+    FlyButton(
+      onClick = { onAddMedClick.invoke() },
+      Modifier.fillMaxWidth()
+    ) {
+      Text("+ Add Medication")
+    }
+
   }
 }
 
 @Composable
-fun CardComponent(
+fun SimpleCardComponent(
   title: String = "Header",
   topEndText: String? = "Top End Text",
   description: String = "Description",
@@ -249,7 +251,7 @@ fun CardComponent(
 fun CardComponentPreview() {
   MedTrackerTheme {
     Column {
-      CardComponent(
+      SimpleCardComponent(
         onClick = {}
       )
       // CardComponent("Header", "Top End Text", "Content",{})

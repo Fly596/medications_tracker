@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -25,10 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.components.FlyTextButton
-import com.galeria.medicationstracker.ui.components.HIGButton
-import com.galeria.medicationstracker.ui.components.HIGButtonStyle
 import com.galeria.medicationstracker.ui.components.HIGListButton
-import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedVM
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
@@ -40,19 +36,16 @@ fun ProfileScreen(
 
   Column(
     modifier = modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.spacedBy(8.dp),
+    verticalArrangement = Arrangement.spacedBy(16.dp),
     // horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-
-
     // Screen header with title
     Text(
       "My Profile",
       style = MedTrackerTheme.typography.largeTitleEmphasized,
     )
+    Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-    // Space between header and profile info.
-    Spacer(modifier = Modifier.padding(8.dp))
 
     // User's profile picture and name.
     PfpWithName(
@@ -62,7 +55,7 @@ fun ProfileScreen(
       userEmail = "fly.yt.77@gmail.com"
     )
     // Space between profile info and options.
-    Spacer(modifier = Modifier.height(24.dp))
+    // Spacer(modifier = Modifier.height(12.dp))
 
     // Profile options.
     Column(

@@ -1,7 +1,5 @@
 package com.galeria.medicationstracker.ui.components
 
-import android.R.attr.onClick
-import android.R.attr.text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -12,36 +10,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Android
-import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.ui.screens.medications.CardComponent
-import com.galeria.medicationstracker.ui.screens.medications.NavigationRow
+import com.galeria.medicationstracker.ui.screens.medications.SimpleCardComponent
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.google.common.math.LinearTransformation.horizontal
 
 @Composable
 fun FlyElevatedCard(
@@ -51,7 +38,9 @@ fun FlyElevatedCard(
   content: @Composable (ColumnScope.() -> Unit)
 ) {
   ElevatedCard(
-    modifier = modifier.fillMaxWidth().height(120.dp),
+    modifier = modifier
+      .fillMaxWidth()
+      .height(120.dp),
     shape = RoundedCornerShape(16.dp),
     elevation = CardDefaults.elevatedCardElevation(
       defaultElevation = 6.dp,
@@ -65,7 +54,9 @@ fun FlyElevatedCard(
     )
   ){
     Row(
-      modifier = Modifier.padding(16.dp).fillMaxSize(),
+      modifier = Modifier
+        .padding(16.dp)
+        .fillMaxSize(),
       verticalAlignment = Alignment.Top,
       horizontalArrangement = Arrangement.spacedBy(16.dp),
     ){
@@ -144,7 +135,7 @@ fun CardPreview() {
 fun ElevatedCardExample() {
   MedTrackerTheme {
     Column {
-      CardComponent(
+      SimpleCardComponent(
         onClick = {}
       )
       // CardComponent("Header", "Top End Text", "Content",{})

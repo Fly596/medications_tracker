@@ -110,12 +110,6 @@ class ApplicationActivity : ComponentActivity() {
           ) {
             composable<Routes.Dashboard> {
               DashboardScreen(
-                onProfileNavigate = {
-                  navController.navigate(Routes.Profile)
-                },
-                onCalendarNavigate = {
-                  navController.navigate(Routes.Calendar)
-                },
               )
             }
 
@@ -127,7 +121,7 @@ class ApplicationActivity : ComponentActivity() {
               MedicationsScreen(
                 onAddMedClick = { navController.navigate(Routes.NewMedication) },
                 onOpenMedClick = {
-                navController.navigate(Routes.ViewMedication)
+                  navController.navigate(Routes.ViewMedication)
                 })
             }
 

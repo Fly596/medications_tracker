@@ -56,7 +56,7 @@ val secondaryLabelDark = Color(0x99ffffff)
 val tertiaryLabelDark = Color(0x4dffffff)
 
 // Separators.
-val nonOpaqueSeparator = Color(0x57545456)
+val separator = Color(0x57545456)
 val opaqueSeparator = Color(0xFFC6C6C8)
 
 // Functional colors.

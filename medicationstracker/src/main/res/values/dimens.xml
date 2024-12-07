@@ -9,6 +9,6 @@
 
     <dimen name="list_corner_radius_default">10dp</dimen>
 
-    <dimen name="card_content_padding_horizontal">16dp</dimen>
-    <dimen name="card_content_padding_vertical">8dp</dimen>
+    <dimen name="card_content_padding_horizontal">24dp</dimen>
+    <dimen name="card_content_padding_vertical">16dp</dimen>
 </resources>
