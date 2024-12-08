@@ -1,5 +1,6 @@
 package com.galeria.medicationstracker.ui.screens.profile.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.ui.components.HIGListButton
 import com.galeria.medicationstracker.ui.screens.medications.NavigationRow
 import com.galeria.medicationstracker.ui.screens.medications.SimpleCardComponent
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
@@ -49,31 +51,29 @@ fun SettingsScreen(
     )
     Spacer(modifier = Modifier.padding(8.dp))
 
-    SettingsCardComponent(
-      icon = Icons.Filled.Visibility,
-      title = "Adjust Design",
+    HIGListButton(
+      text = "Adjust Design",
       onClick = {
         // TODO: Navigates to screen.
       },
+      leftIcon = Icons.Filled.Visibility
     )
 
-    SettingsCardComponent(
-      icon = Icons.Filled.Start,
-      title = "Select Start Page",
+    HIGListButton(
+      text = "Select Start Page",
       onClick = {
         // TODO: Navigates to screen.
       },
+      leftIcon = Icons.Filled.Start
     )
 
-
-    SettingsCardComponent(
-      icon = Icons.Filled.Language,
-      title = "Change Language",
+    HIGListButton(
+      text = "Change Language",
       onClick = {
         // TODO: Navigates to screen.
       },
+      leftIcon = Icons.Filled.Language
     )
-
 
   }
 }

@@ -7,20 +7,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.galeria.medicationstracker.ui.components.HIGListButton
 import com.galeria.medicationstracker.ui.screens.medications.NavigationRow
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
@@ -37,25 +33,25 @@ fun NotificationsSettingsScreen(
 
     // Displays the screen title.
     Text(
-      "Ringtone Settings",
+      "Notifications Settings",
       style = MedTrackerTheme.typography.largeTitle,
     )
     Spacer(modifier = Modifier.padding(8.dp))
 
-    NotificationsSettingsCardComponent(
-      title = "Med alarm sound",
-      label = "Energy", // TODO: Replace with sound name.
-      onClick = {
-        // TODO: Navigates to screen.
-      },
+    HIGListButton(
+      onClick = { /* TODO: Navigates to screen. */},
+      text = "Med alarm sound",
+      rightText = "Energy",
+          textStyle = MedTrackerTheme.typography.bodyEmphasized
     )
-    NotificationsSettingsCardComponent(
-      title = "Customize notification",
-      label = "Compact", // TODO: Replace with sound name.
-      onClick = {
-        // TODO: Navigates to screen.
-      },
+
+    HIGListButton(
+      onClick = { /* TODO: Navigates to screen. */},
+      text = "Customize notification",
+      rightText = "Compact",
+      textStyle = MedTrackerTheme.typography.bodyEmphasized
     )
+
   }
 }
 
@@ -89,6 +85,7 @@ fun NotificationsSettingsCardComponent(
   }
 
 }
+
 @Preview
 @Composable
 fun NotificationsSettingsScreenPreview() {
@@ -98,6 +95,7 @@ fun NotificationsSettingsScreenPreview() {
     }
   }
 }
+
 @Preview
 @Composable
 fun NotificationsSettingsCardComponentPreview() {

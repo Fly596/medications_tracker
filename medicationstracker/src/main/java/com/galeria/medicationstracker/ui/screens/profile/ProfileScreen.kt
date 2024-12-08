@@ -1,6 +1,7 @@
 package com.galeria.medicationstracker.ui.screens.profile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.components.FlyTextButton
-import com.galeria.medicationstracker.ui.components.HIGButtonStyle
 import com.galeria.medicationstracker.ui.components.HIGListButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
@@ -39,15 +45,50 @@ fun ProfileScreen(
 
   Column(
     modifier = modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.spacedBy(16.dp),
-    // horizontalAlignment = Alignment.CenterHorizontally,
-  ) {
-    // Screen header with title
-    Text(
-      "My Profile",
-      style = MedTrackerTheme.typography.largeTitleEmphasized,
-    )
-    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+    verticalArrangement = Arrangement.Top,
+    horizontalAlignment = Alignment.Start
+
+    ) {
+
+    // Screen header with title.
+    Row(
+      modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.Start,
+    ) {
+
+/*       IconButton(
+        onClick = { *//*TODO: open settings*//*  }
+      ) {
+        Icon(
+          modifier = Modifier.size(28.dp),
+          imageVector = Icons.Filled.ArrowBackIosNew,
+          contentDescription = "Settings",
+          tint = MedTrackerTheme.colors.secondaryLabel
+        )
+      }
+      Spacer(modifier = Modifier.width(8.dp)) */
+
+      Text(
+        "My Profile",
+        style = MedTrackerTheme.typography.largeTitleEmphasized,
+      )
+
+      Spacer(modifier = Modifier.weight(1f))
+
+      IconButton(
+        onClick = {/*TODO: open settings*/ }
+      ) {
+        Icon(
+          modifier = Modifier.size(28.dp),
+          imageVector = Icons.Filled.Edit,
+          contentDescription = "Settings",
+          tint = MedTrackerTheme.colors.secondaryLabel
+        )
+      }
+
+    }
+
+    Spacer(modifier = Modifier.padding(vertical = 16.dp))
 
     // User's profile picture and name.
     PfpWithName(
@@ -56,8 +97,8 @@ fun ProfileScreen(
       userName = "Adolf Hitler",
       userEmail = "fly.yt.77@gmail.com"
     )
-    // Space between profile info and options.
-    // Spacer(modifier = Modifier.height(12.dp))
+
+    Spacer(modifier = Modifier.padding(vertical = 16.dp))
 
     // Profile options.
     Column(
@@ -66,21 +107,21 @@ fun ProfileScreen(
     ) {
 
       // Notifications option.
-      ProfileOptionItem("Notifications") {
-        onNotificationsClick.invoke()
-      }
+      HIGListButton(onClick = { onNotificationsClick.invoke() }, text = "Notifications")
 
       // Details option.
-      ProfileOptionItem("Settings") {
-        onSettingsClick.invoke()
-      }
+      HIGListButton(onClick = { onSettingsClick.invoke() }, text = "Settings")
+
     }
+    Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
     // Logout button.
     FlyTextButton(onClick = {}) {
-      Text(text = "Logout")
+      Text(text = "Log Out")
     }
   }
+
+
 }
 
 @Composable
@@ -92,9 +133,8 @@ fun PfpWithName(
 ) {
   Row(
     verticalAlignment = Alignment.CenterVertically,
-    // horizontalAlignment = Alignment.CenterHorizontally,
-    // verticalArrangement = Arrangement.Top,
-    modifier = modifier,
+    horizontalArrangement = Arrangement.Start,
+    modifier = modifier.fillMaxWidth(),
   ) {
     Image(
       painter = painterResource(painter),
@@ -105,18 +145,18 @@ fun PfpWithName(
         .size(128.dp),
     )
 
-    Spacer(modifier = Modifier.width(16.dp)) // add default dp values.
+    Spacer(modifier = Modifier.width(32.dp)) // add default dp values.
 
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
       Text(
         text = userName,
-        style = MedTrackerTheme.typography.title1,
+        style = MedTrackerTheme.typography.title1Emphasized,
         color = MedTrackerTheme.colors.primaryLabel
       )
       Text(
         text = userEmail,
         style = MedTrackerTheme.typography.headline,
-        color = MedTrackerTheme.colors.secondaryLabel
+        color = MedTrackerTheme.colors.tertiaryLabel
       )
     }
 
@@ -125,6 +165,7 @@ fun PfpWithName(
 
 @Composable
 fun ProfileOptionItem(title: String, onClick: () -> Unit) {
+
   Row(
     modifier =
       Modifier
@@ -132,10 +173,7 @@ fun ProfileOptionItem(title: String, onClick: () -> Unit) {
         // .background(color =
         // MedicationsTrackerAppTheme.systemColors.backgroundLightSecondary)
         .clickable(onClick = onClick),
-    horizontalArrangement = Arrangement.SpaceBetween,
-    verticalAlignment = Alignment.CenterVertically,
   ) {
-    HIGListButton(onClick = onClick, text = title)
   }
 }
 

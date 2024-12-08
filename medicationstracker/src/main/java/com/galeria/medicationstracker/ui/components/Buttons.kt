@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
@@ -94,7 +95,10 @@ fun HIGListButton(
   onClick: () -> Unit,
   enabled: Boolean = true,
   style: HIGButtonStyle = HIGButtonStyle.Bezeled,
+  textStyle: TextStyle = MedTrackerTheme.typography.body,
   icon: ImageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+  leftIcon: ImageVector? = null,
+  rightText: String? = null
 ) {
   val buttonColors =
     when (style) {
@@ -128,22 +132,44 @@ fun HIGListButton(
     enabled = enabled,
     shape = RoundedCornerShape(dimensionResource(R.dimen.list_corner_radius_default)),
     colors = buttonColors,
-    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(vertical = 8.dp),
   ) {
-    Text(
-      text = text,
-      style = MedTrackerTheme.typography.body,
-      modifier = Modifier.padding(vertical = 8.dp),
-    )
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
 
-    Spacer(modifier = Modifier.weight(1f))
+      if (leftIcon != null) {
+        Icon(
+          imageVector = leftIcon,
+          contentDescription = null,
+          tint = MedTrackerTheme.colors.primaryLabel,
+          modifier = Modifier.size(24.dp),
 
-    Icon(
-      imageVector = icon,
-      contentDescription = "Show options",
-      tint = MedTrackerTheme.colors.secondaryLabel,
-      modifier = Modifier.size(16.dp),
-    )
+          )
+      }
+
+      Text(
+        text = text,
+        style = textStyle,
+        modifier = Modifier.padding(vertical = 8.dp),
+      )
+
+      Spacer(modifier = Modifier.weight(1f))
+
+      Text(
+        text = rightText ?: "",
+        style = MedTrackerTheme.typography.body,
+        modifier = Modifier.padding(vertical = 8.dp),
+      )
+      Spacer(modifier = Modifier.width(8.dp))
+      Icon(
+        imageVector = icon,
+        contentDescription = "Show options",
+        tint = MedTrackerTheme.colors.secondaryLabel,
+        modifier = Modifier.size(16.dp),
+      )
+    }
+
   }
 }
 
@@ -289,8 +315,8 @@ private fun PreviewButtons() {
       Row {
         FlyButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
         FlyTextButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
-        //FlyElevatedButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
-        //FlyTonalButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
+        // FlyElevatedButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
+        // FlyTonalButton(onClick = {}, enabled = true) { Text(text = "Sign In") }
         HIGListButton("text", onClick = {}, enabled = true)
       }
     }

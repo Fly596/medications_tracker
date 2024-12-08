@@ -67,7 +67,7 @@ fun AccountRecoveryScreen(
         },
         enabled = true,
       ) {
-        Text(text = "Reset My Password")
+        Text(text = "Reset Password")
       }
     }
 
