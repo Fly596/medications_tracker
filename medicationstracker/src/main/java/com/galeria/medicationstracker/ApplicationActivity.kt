@@ -12,7 +12,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.systemGestures
 import androidx.compose.foundation.layout.waterfall
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
@@ -33,6 +37,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -50,6 +56,7 @@ import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.screens.profile.notifications.NotificationsSettingsScreen
 import com.galeria.medicationstracker.ui.screens.profile.settings.SettingsScreen
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.google.android.play.integrity.internal.c
 
 data class BottomNavigationItem(
   val title: String,
@@ -68,7 +75,7 @@ class ApplicationActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
 
     WindowCompat.setDecorFitsSystemWindows(window, false)
-    enableEdgeToEdge()
+    //enableEdgeToEdge()
 
     setContent {
       MedTrackerTheme {
@@ -79,7 +86,7 @@ class ApplicationActivity : ComponentActivity() {
 
         Scaffold(
           modifier = Modifier,
-          containerColor = MedTrackerTheme.colors.primaryBackground,
+          containerColor = MedTrackerTheme.colors.secondaryBackground,
           bottomBar = {
             BottomNavBar(items, navController, headViewModel)
           },
@@ -92,7 +99,6 @@ class ApplicationActivity : ComponentActivity() {
                 .fillMaxSize()
                 .padding(innerPadding)
                 .windowInsetsPadding(WindowInsets.displayCutout)
-            //.padding(start = 24.dp, end = 24.dp, top = 16.dp),
           ) {
 
             composable<Routes.Dashboard> {
@@ -187,6 +193,7 @@ class ApplicationActivity : ComponentActivity() {
       modifier = Modifier.fillMaxWidth(),
       containerColor = MedTrackerTheme.colors.secondaryBackground,
       contentColor = MedTrackerTheme.colors.secondary600,
+      //tonalElevation = 100.dp
     ) {
       navItems.forEachIndexed { navItemIndex, navItem ->
         NavigationBarItem(

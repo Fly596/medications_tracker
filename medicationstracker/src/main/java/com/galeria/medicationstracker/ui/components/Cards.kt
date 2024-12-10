@@ -38,6 +38,9 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 fun FlyElevatedCard(
   modifier: Modifier = Modifier,
   icon: ImageVector = Icons.Filled.Medication,
+  title: String = "Medicine Name",
+  dosage: String = "Dosage: 500 mg",
+  frequency: String = "Frequency: Once a day",
   medication: UserMedication? = null,
   shape: Shape = RoundedCornerShape(8.dp),
   elevation: CardElevation = CardDefaults.elevatedCardElevation(),
@@ -55,14 +58,16 @@ fun FlyElevatedCard(
     ),
     colors =
       CardDefaults.elevatedCardColors(
-        containerColor = MedTrackerTheme.colors.primaryBackgroundGrouped,
+        containerColor = MedTrackerTheme.colors.primaryBackground,
         contentColor = MedTrackerTheme.colors.primaryLabel,
+        disabledContainerColor = MedTrackerTheme.colors.primaryTinted,
+        disabledContentColor = MedTrackerTheme.colors.secondary600
       )
   ) {
     Row(
       modifier = Modifier
-        .padding(16.dp)
-        .fillMaxSize(),
+        .fillMaxSize()
+        .padding(16.dp),
       verticalAlignment = Alignment.Top,
       horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
@@ -78,9 +83,9 @@ fun FlyElevatedCard(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.fillMaxHeight(),
       ) {
-        Text("Medicine Name", style = MedTrackerTheme.typography.headline)
-        Text("Dosage: 500 mg", style = MedTrackerTheme.typography.body)
-        Text("Frequency: Once a day", style = MedTrackerTheme.typography.body)
+        Text(title, style = MedTrackerTheme.typography.headline)
+        Text(dosage, style = MedTrackerTheme.typography.body)
+        Text(frequency, style = MedTrackerTheme.typography.body)
       }
 
       Spacer(modifier = Modifier.weight(1f))
