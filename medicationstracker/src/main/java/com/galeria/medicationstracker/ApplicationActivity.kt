@@ -5,9 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.waterfall
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Dashboard
@@ -28,6 +35,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -58,7 +66,9 @@ class ApplicationActivity : ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    //enableEdgeToEdge()
+
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+    enableEdgeToEdge()
 
     setContent {
       MedTrackerTheme {
@@ -78,9 +88,11 @@ class ApplicationActivity : ComponentActivity() {
             navController = navController,
             startDestination = Routes.Dashboard,
             modifier =
-              Modifier.fillMaxSize()
+              Modifier
+                .fillMaxSize()
                 .padding(innerPadding)
-                .padding(start = 24.dp, end = 24.dp, top = 16.dp),
+                .windowInsetsPadding(WindowInsets.displayCutout)
+            //.padding(start = 24.dp, end = 24.dp, top = 16.dp),
           ) {
 
             composable<Routes.Dashboard> {
@@ -113,7 +125,7 @@ class ApplicationActivity : ComponentActivity() {
             composable<Routes.Profile> {
               ProfileScreen(
                 onSettingsClick = { navController.navigate(Routes.AppSettings) },
-                onNotificationsClick = {navController.navigate(Routes.NotificationsSettings)}
+                onNotificationsClick = { navController.navigate(Routes.NotificationsSettings) }
               )
             }
 

@@ -6,8 +6,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -50,7 +53,7 @@ class HeadActivity : ComponentActivity() {
 
         Scaffold(
           snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-          modifier = Modifier.fillMaxSize(),
+          modifier = Modifier,
           containerColor = MedTrackerTheme.colors.primaryBackground,
         ) { innerPadding ->
           // Initialize navigation controller
@@ -64,8 +67,8 @@ class HeadActivity : ComponentActivity() {
             startDestination = Routes.Home,
             modifier = Modifier
               .fillMaxSize()
-              .padding(innerPadding)
-              .padding(16.dp),
+              .padding(innerPadding).padding(horizontal = 16.dp)
+              .windowInsetsPadding(WindowInsets.displayCutout),
           ) {
             // Home route with login, signup, and password reset actions
             composable<Routes.Home> {

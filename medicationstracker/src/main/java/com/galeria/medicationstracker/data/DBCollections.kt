@@ -3,7 +3,6 @@ package com.galeria.medicationstracker.data
 import android.icu.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDateTime
-import java.util.Date
 import java.util.Locale
 
 data class UserMedication(
@@ -18,10 +17,6 @@ data class UserMedication(
   val notes: String? = null,
 )
 
-data class Shit(
-  val id: Int = 0,
-  val text: String = ""
-)
 
 // Contains data from firestore db.
 /* data class Medication(
@@ -61,12 +56,6 @@ enum class MedicationUnit {
 
 val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
 
-data class TEMP_Medication(
-  val uid: String = "",
-  val name: String = "",
-  val type: String = "",
-  val dateTime: String? = sdf.format(Date())
-)
 
 /*TODO: Symptoms, mood..*/
 data class MoodLog(

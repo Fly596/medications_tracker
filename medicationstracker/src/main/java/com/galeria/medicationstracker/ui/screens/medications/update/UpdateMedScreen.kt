@@ -163,7 +163,7 @@ fun UpdateMedScreen(
     Row(modifier  = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween){
       FlyButton(
         // TODO: Add editing medication logic.
-        onClick = onConfirmEdit
+        onClick = { /* TODO */ }
       ) {
         Text("Confirm")
       }

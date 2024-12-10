@@ -1,8 +1,6 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.galeria.medicationstracker.data.Shit
 import com.galeria.medicationstracker.data.UserMedication
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -22,10 +20,6 @@ class MedicationsViewModel : ViewModel() {
   // Initialize data.
   private var _userMedications = MutableStateFlow<List<UserMedication>>(emptyList())
   var userMedications = _userMedications.asStateFlow()
-
-  // Initialize shit.
-  private var _shit = MutableStateFlow<List<Shit>>(emptyList())
-  var shit = _shit.asStateFlow()
 
   init {
     getUserMedicationsFromFirestore()
@@ -49,7 +43,6 @@ class MedicationsViewModel : ViewModel() {
 
   fun deleteMedicationFromFirestore(medName: String) {
     val db = FirebaseFirestore.getInstance()
-
 
     db.collection("UserMedication")
       .whereEqualTo("name", medName)
