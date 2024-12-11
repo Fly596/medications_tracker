@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.ui.components.HIGListButton
-import com.galeria.medicationstracker.ui.screens.medications.NavigationRow
+import com.galeria.medicationstracker.ui.components.NavigationRow
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable

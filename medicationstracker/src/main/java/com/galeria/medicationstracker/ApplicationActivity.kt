@@ -3,22 +3,10 @@ package com.galeria.medicationstracker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContent
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.safeGestures
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.systemGestures
-import androidx.compose.foundation.layout.waterfall
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Dashboard
@@ -37,10 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -56,7 +41,6 @@ import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.screens.profile.notifications.NotificationsSettingsScreen
 import com.galeria.medicationstracker.ui.screens.profile.settings.SettingsScreen
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.google.android.play.integrity.internal.c
 
 data class BottomNavigationItem(
   val title: String,
@@ -97,8 +81,7 @@ class ApplicationActivity : ComponentActivity() {
             modifier =
               Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .windowInsetsPadding(WindowInsets.displayCutout)
+                .padding(innerPadding)/* .padding(horizontal = 16.dp) */
           ) {
 
             composable<Routes.Dashboard> {
@@ -113,7 +96,7 @@ class ApplicationActivity : ComponentActivity() {
             composable<Routes.Medications> {
               MedicationsScreen(
                 onAddMedClick = { navController.navigate(Routes.NewMedication) },
-                onOpenMedClick = {
+                onEditMedClick = {
                   navController.navigate(Routes.ViewMedication)
                 })
             }
@@ -191,9 +174,8 @@ class ApplicationActivity : ComponentActivity() {
     // TODO: Change colors
     NavigationBar(
       modifier = Modifier.fillMaxWidth(),
-      containerColor = MedTrackerTheme.colors.secondaryBackground,
-      contentColor = MedTrackerTheme.colors.secondary600,
-      //tonalElevation = 100.dp
+      containerColor = MedTrackerTheme.colors.secondaryBackgroundGrouped,
+      contentColor = MedTrackerTheme.colors.primaryLabel,
     ) {
       navItems.forEachIndexed { navItemIndex, navItem ->
         NavigationBarItem(

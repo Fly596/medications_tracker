@@ -44,7 +44,7 @@ class HeadActivity : ComponentActivity() {
     // Initialize Firebase.
     FirebaseApp.initializeApp(this)
 
-    enableEdgeToEdge()
+    //enableEdgeToEdge()
 
     setContent {
       MedTrackerTheme {
@@ -69,7 +69,9 @@ class HeadActivity : ComponentActivity() {
             startDestination = Routes.Home,
             modifier = Modifier
               .fillMaxSize()
-              .padding(innerPadding).padding(horizontal = 16.dp)
+              .padding(innerPadding)
+              .windowInsetsPadding(WindowInsets.safeContent)
+
           ) {
             // Home route with login, signup, and password reset actions
             composable<Routes.Home> {

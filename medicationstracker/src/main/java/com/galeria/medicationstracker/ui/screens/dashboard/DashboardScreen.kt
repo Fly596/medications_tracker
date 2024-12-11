@@ -4,33 +4,30 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.ui.components.FlyElevatedCard
+import com.galeria.medicationstracker.ui.components.FlyElevatedCardDashboard
 import com.galeria.medicationstracker.ui.components.FlyTextButton
-import com.galeria.medicationstracker.ui.screens.medications.NavigationRow
+import com.galeria.medicationstracker.ui.components.FlyTopAppBar
+import com.galeria.medicationstracker.ui.components.NavigationRow
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -44,31 +41,20 @@ fun DashboardScreen(
 ) {
   // Get today's date.
   val currentDate = LocalDate.now()
-  val formatter = DateTimeFormatter.ofPattern("MMM dd")
-  val formattedDate = currentDate.format(formatter)
+  val dateFormatter = DateTimeFormatter.ofPattern("MMM dd")
+  val formattedCurrentDate = currentDate.format(dateFormatter)
 
   Scaffold(
     modifier = Modifier,
     topBar = {
-      TopAppBar(
-        title = {
-          // Screen header with title
-          Text(
-            "Today, $formattedDate",
-            style = MedTrackerTheme.typography.largeTitleEmphasized,
-          )
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-          containerColor = MedTrackerTheme.colors.secondaryBackground
-        )
-      )
+      FlyTopAppBar("Today, $formattedCurrentDate")
     },
     containerColor = MedTrackerTheme.colors.secondaryBackground,
     content = {
       Column(
         modifier = modifier
           .fillMaxSize()
-          .padding(it).padding(horizontal = 16.dp),
+          .padding(it) .padding(horizontal = 16.dp),
         //.padding(it),
         verticalArrangement = Arrangement.spacedBy(16.dp),
 
@@ -84,9 +70,10 @@ fun DashboardScreen(
           verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
           items(5) {
-
-
-            DashboardCardComponent(onAddMedicationRecordClick = {/*TODO: */ })
+            FlyElevatedCardDashboard(
+              icon = Icons.Filled.Medication
+            )
+            //DashboardCardComponent(onAddRecordClick = {/*TODO: */ })
           }
 
         }
@@ -102,9 +89,9 @@ fun DashboardCardComponent(
   title: String = "Medication name",
   dosage: String = "Medication dosage",
   actionLabel: String? = "Add record",
-  medicationSchedule: String = "Mon, Tue, Fri...",
-  medicationIntakeTime: String = "12:00PM",
-  onAddMedicationRecordClick: () -> Unit,
+  schedule: String = "Mon, Tue, Fri...",
+  intakeTime: String = "12:00PM",
+  onAddRecordClick: () -> Unit,
 ) {
 
   ElevatedCard(modifier = modifier,
@@ -129,7 +116,7 @@ fun DashboardCardComponent(
         Text(title, style = MedTrackerTheme.typography.headline)
         Spacer(modifier.weight(1f))
         // Navigation for adding a record.
-        NavigationRow({ onAddMedicationRecordClick() }, actionLabel ?: "")
+        NavigationRow({ onAddRecordClick() }, actionLabel ?: "")
       }
 
       // Displays the medication dosage.
@@ -137,9 +124,9 @@ fun DashboardCardComponent(
 
       Row(modifier = Modifier.fillMaxWidth()) {
         // Displays the medication schedule.
-        Text(medicationSchedule, style = MedTrackerTheme.typography.body)
+        Text(schedule, style = MedTrackerTheme.typography.body)
         Spacer(modifier = Modifier.weight(1f))
-        Text(medicationIntakeTime, style = MedTrackerTheme.typography.body)
+        Text(intakeTime, style = MedTrackerTheme.typography.body)
       }
 
       HorizontalDivider(

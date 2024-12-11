@@ -285,7 +285,7 @@ fun IntakeTimePicker(
     )
     FlyButton(onClick = {
       viewModel.updateIntakeTime(time.format(dtf))
-      onDismiss;
+      onDismiss.invoke();
     }) {
       Text("Confirm Time")
     }
