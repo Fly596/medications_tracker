@@ -180,6 +180,7 @@ fun FlyElevatedCardMedsList(
         )
 
         FlyTextButton(
+          errorButton = true,
           onClick = { onRemoveMedClick.invoke() } ,
           textStyle = MedTrackerTheme.typography.body
         ) {

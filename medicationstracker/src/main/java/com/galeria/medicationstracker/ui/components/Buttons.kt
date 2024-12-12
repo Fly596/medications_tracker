@@ -177,6 +177,7 @@ fun HIGListButton(
 @Composable
 fun FlyTextButton(
   onClick: () -> Unit,
+  errorButton: Boolean = false,
   modifier: Modifier = Modifier,
   textStyle: TextStyle = MedTrackerTheme.typography.headline,
   enabled: Boolean = true,
@@ -187,7 +188,11 @@ fun FlyTextButton(
     modifier,
     enabled,
     contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
-    colors = ButtonDefaults.textButtonColors(contentColor = colors.primary600),
+    colors = if (errorButton) {
+      ButtonDefaults.textButtonColors(contentColor = colors.sysError)
+    } else {
+      ButtonDefaults.textButtonColors(contentColor = colors.primary600)
+    },
     content = { ProvideTextStyle(value = textStyle) { content() } },
   )
 }

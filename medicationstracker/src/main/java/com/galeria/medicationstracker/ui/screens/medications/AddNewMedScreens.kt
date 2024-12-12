@@ -146,7 +146,11 @@ fun NewMedicationDataScreen(
                 Text(text = unit.toString().lowercase())
                 RadioButton(
                   selected = selectedUnit == unit,
-                  onClick = { selectedUnit = unit })
+                  onClick = {
+                    viewModel.updateMedUnit(selectedUnit)
+                    selectedUnit = unit
+                  }
+                )
               }
             }
           }
@@ -200,8 +204,6 @@ fun NewMedicationDataScreen(
       }
     }
   )
-
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.ui.screens.medications.AddNewMedViewModel
 import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedVM
@@ -35,7 +37,7 @@ fun WeeklyCalendarView(modifier: Modifier = Modifier) {
   // Get today's date.
   val currentDate = LocalDate.now()
   val dateFormatter = DateTimeFormatter.ofPattern("dd")
-  val formattedCurrentDate = currentDate.format(dateFormatter)
+  val dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEE") // Add day of week formatter
 
   LazyRow(
     modifier = modifier.fillMaxWidth(),
@@ -47,6 +49,7 @@ fun WeeklyCalendarView(modifier: Modifier = Modifier) {
       val isSelected = date == currentDate // Check if it's the current date
 
       CalendarDayItem(
+        dayOfWeek = date.format(dayOfWeekFormatter),
         date = formattedDate,
         isSelected = isSelected
       )
@@ -55,9 +58,10 @@ fun WeeklyCalendarView(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun CalendarDayItem(date: String, isSelected: Boolean) {
+fun CalendarDayItem(dayOfWeek: String, date: String, isSelected: Boolean) {
   // Style for selected and unselected days
   val backgroundColor = if (isSelected) {
+    // TODO: условие, если все лекарства выпиьы.
     MedTrackerTheme.colors.primaryBackground
   } else {
     MedTrackerTheme.colors.secondaryBackground
@@ -74,11 +78,26 @@ fun CalendarDayItem(date: String, isSelected: Boolean) {
       .padding(12.dp),
     contentAlignment = Alignment.Center
   ) {
-    Text(
-      text = date,
-      style = MedTrackerTheme.typography.body,
-      color = textColor
-    )
+    Column(
+      modifier = Modifier,
+      horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+      Text(
+        text = dayOfWeek, // Display day of week
+        style = MedTrackerTheme.typography.body, // Adjust style as needed
+        color = textColor
+      )
+      Text(
+        text = date,
+        style = MedTrackerTheme.typography.body,
+        color = textColor
+      )
+    }
+    /*     Text(
+          text = date,
+          style = MedTrackerTheme.typography.body,
+          color = textColor
+        ) */
   }
 }
 
@@ -146,5 +165,13 @@ fun DayItem(
       text = dayOfWeek.name.substring(0, 1), // Get the first letter of the day
       color = textColor
     )
+  }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun WeeklyCalendarViewPreview() {
+  MaterialTheme {
+    WeeklyCalendarView()
   }
 }
