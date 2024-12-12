@@ -31,11 +31,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.HeadViewModel
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
+import com.galeria.medicationstracker.ui.screens.medications.logs.LogScreen
 import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.screens.profile.notifications.NotificationsSettingsScreen
@@ -59,7 +61,7 @@ class ApplicationActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
 
     WindowCompat.setDecorFitsSystemWindows(window, false)
-    //enableEdgeToEdge()
+    // enableEdgeToEdge()
 
     setContent {
       MedTrackerTheme {
@@ -70,7 +72,7 @@ class ApplicationActivity : ComponentActivity() {
 
         Scaffold(
           modifier = Modifier,
-          containerColor = MedTrackerTheme.colors.secondaryBackground,
+          containerColor = MedTrackerTheme.colors.primaryBackground,
           bottomBar = {
             BottomNavBar(items, navController, headViewModel)
           },
@@ -86,6 +88,17 @@ class ApplicationActivity : ComponentActivity() {
 
             composable<Routes.Dashboard> {
               DashboardScreen(
+                onLogsClick = {
+                  navController.navigate(Routes.LogScreen)
+                }
+              )
+            }
+
+            composable<Routes.LogScreen> {
+              LogScreen(
+                onGoBackClick = {
+                  navController.popBackStack()
+                }
               )
             }
 
@@ -96,8 +109,8 @@ class ApplicationActivity : ComponentActivity() {
             composable<Routes.Medications> {
               MedicationsScreen(
                 onAddMedClick = { navController.navigate(Routes.NewMedication) },
-                onEditMedClick = {
-                  navController.navigate(Routes.ViewMedication)
+                onViewMedClick = { medName ->
+                  navController.navigate(Routes.ViewMedication(medicationName = medName))
                 })
             }
 
@@ -106,9 +119,17 @@ class ApplicationActivity : ComponentActivity() {
                 onConfirmClick = { navController.navigate(Routes.Medications) }
               )
             }
+// TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
+            composable<Routes.ViewMedication> { backStackEntry ->
+              // Retrieve and pass the argument.
+              val args = backStackEntry.toRoute<Routes.ViewMedication>()
 
-            composable<Routes.ViewMedication> {
-              UpdateMedScreen(onConfirmEdit = { navController.navigate(Routes.Medications) })
+              UpdateMedScreen(
+                passedMedName = args.medicationName ?: "",
+                onConfirmEdit = {
+                  navController.navigate(Routes.Medications)
+                }
+              )
             }
 
             composable<Routes.Profile> {

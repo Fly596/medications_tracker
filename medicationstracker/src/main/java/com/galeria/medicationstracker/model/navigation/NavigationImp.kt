@@ -18,6 +18,9 @@ sealed class Routes {
   // region Application
   @Serializable data object Dashboard : Routes()
 
+  @Serializable
+  data object LogScreen : Routes()
+
   @Serializable data object Profile : Routes()
 
   @Serializable data object AppSettings : Routes()
@@ -30,7 +33,9 @@ sealed class Routes {
 
   @Serializable data object NewMedication : Routes()
 
-  @Serializable data object ViewMedication : Routes()
+  //@Serializable data object ViewMedication : Routes()
+  @Serializable
+  data class ViewMedication(val medicationName: String?) : Routes()
 
 
   // region later

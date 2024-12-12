@@ -113,7 +113,7 @@ fun HIGListButton(
 
       HIGButtonStyle.Bezeled ->
         ButtonDefaults.elevatedButtonColors(
-          containerColor = MedTrackerTheme.colors.primaryBackgroundGrouped,
+          containerColor = MedTrackerTheme.colors.primaryBackground,
           /*Fills, tertiary*/
           contentColor = MedTrackerTheme.colors.primaryLabel,
           disabledContainerColor = Color(0x1f787880),

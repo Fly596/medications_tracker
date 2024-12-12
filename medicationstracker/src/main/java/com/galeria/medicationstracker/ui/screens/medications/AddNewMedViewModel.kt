@@ -7,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.galeria.medicationstracker.data.Frequency
 import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
 import com.galeria.medicationstracker.data.UserMedication
@@ -15,7 +14,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
-import java.time.LocalTime
+import java.time.DayOfWeek
 
 data class NewMedicationUiState(
   val uid: String = "",
@@ -28,7 +27,8 @@ data class NewMedicationUiState(
   val medIntakeTime: String = "",// f
   val medNotes: String = "",
   val showDatePicker: Boolean = false,
-  val showTimePicker: Boolean = false
+  val showTimePicker: Boolean = false,
+  val selectedDays: MutableList<DayOfWeek> = mutableListOf(),
 )
 
 class AddNewMedViewModel : ViewModel() {
@@ -48,10 +48,27 @@ class AddNewMedViewModel : ViewModel() {
   // private set
   // var combinedDates = Pair<Long?, Long?>(selectedStartDate, selectedEndDate)
 
+  fun isShowDateChecked(input: Boolean) {
+    uiState.copy(showDatePicker = !input)
+  }
+
+  fun isShowTimeChecked(input: Boolean) {
+    uiState.copy(showTimePicker = !input)
+  }
+
+  fun updateSelectedDays(input: List<DayOfWeek>) {
+    for (day in input) {
+      uiState.selectedDays.add(day)
+    }
+    // val test:String = uiState.selectedDays.toString()
+
+  }
+
   // TODO: Check for dublicates.
   fun addMedication(
     context: Context,
   ) {
+
     val newUserMedication =
       UserMedication(
         userId,
@@ -61,6 +78,7 @@ class AddNewMedViewModel : ViewModel() {
         uiState.medUnit.toString(),
         uiState.medStartDate,
         uiState.medEndDate,
+        uiState.selectedDays.toString(),
         uiState.medIntakeTime,
         uiState.medNotes
       )
@@ -81,15 +99,6 @@ class AddNewMedViewModel : ViewModel() {
 
         Log.w(TAG, "Error adding document", e)
       }
-  }
-
-
-  fun isShowDateChecked(input: Boolean) {
-    uiState.copy(showDatePicker = !input)
-  }
-
-  fun isShowTimeChecked(input: Boolean) {
-    uiState.copy(showTimePicker = !input)
   }
 
   // region fields data

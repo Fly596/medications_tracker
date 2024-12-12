@@ -1,7 +1,5 @@
 package com.galeria.medicationstracker.ui.components
 
-import android.R.attr.label
-import android.R.attr.textStyle
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.CheckCircle
@@ -44,7 +41,7 @@ fun FlyElevatedCardDashboard(
   modifier: Modifier = Modifier,
   icon: ImageVector? = null,
   title: String = "Medicine Name",
-  dosage: String = "50 mg",
+  time: String = "9:00 AM",
   info: String = "Mon, Tue, Fri...",
   medication: UserMedication? = null,
   shape: Shape = RoundedCornerShape(8.dp),
@@ -89,7 +86,7 @@ fun FlyElevatedCardDashboard(
         modifier = Modifier.fillMaxHeight(),
       ) {
         Text(title, style = MedTrackerTheme.typography.headline)
-        Text(dosage, style = MedTrackerTheme.typography.body)
+        Text(time, style = MedTrackerTheme.typography.body)
         Text(info, style = MedTrackerTheme.typography.body)
       }
 
@@ -100,12 +97,21 @@ fun FlyElevatedCardDashboard(
       Column {
         IconButton(onClick = { isChecked = !isChecked }) {
           Icon(
-            imageVector = if (isChecked)
+            /*        if(isChecked){
+                     imageVector =
+                   } */
+            imageVector = if (isChecked) {
               Icons.Filled.CheckCircle
-            else Icons.Outlined.CheckCircle,
+            } else {
+              Icons.Outlined.CheckCircle
+            },
             contentDescription = "Android Icon",
             modifier = Modifier.size(32.dp),
-            tint = MedTrackerTheme.colors.secondary400
+            tint = if (isChecked) {
+              MedTrackerTheme.colors.primary400
+            } else {
+              MedTrackerTheme.colors.separator
+            }
           )
         }
         Spacer(modifier = Modifier.weight(1f))

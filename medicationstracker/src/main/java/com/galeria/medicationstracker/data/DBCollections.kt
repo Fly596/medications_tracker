@@ -13,6 +13,7 @@ data class UserMedication(
   val unit: String? = null,
   val startDate: String? = null,
   val endDate: String? = null,
+  val frequency: String? = null,
   val intakeTime: String? = null,
   val notes: String? = null,
 )

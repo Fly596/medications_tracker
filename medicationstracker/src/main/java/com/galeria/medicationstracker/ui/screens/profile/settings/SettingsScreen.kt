@@ -1,6 +1,5 @@
 package com.galeria.medicationstracker.ui.screens.profile.settings
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,71 +10,72 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.FirstPage
 import androidx.compose.material.icons.filled.Language
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Start
 import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.ui.components.FlyTopAppBar
 import com.galeria.medicationstracker.ui.components.HIGListButton
-import com.galeria.medicationstracker.ui.components.NavigationRow
-import com.galeria.medicationstracker.ui.screens.medications.SimpleCardComponent
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
   modifier: Modifier = Modifier,
   viewModel: SettingsViewModel = viewModel()
 ) {
+  Scaffold(
+    topBar = {
+      FlyTopAppBar("App Settings")
+    },
+    containerColor = MedTrackerTheme.colors.secondaryBackground,
+    content = {
+      Column(
+        modifier = modifier
+          .fillMaxSize()
+          .padding(it),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+      ) {
+        Spacer(modifier = Modifier.padding(8.dp))
 
-  Column(
-    modifier = modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.spacedBy(8.dp)
-  ) {
+        HIGListButton(
+          text = "Adjust Design",
+          onClick = {
+            // TODO: Navigates to screen.
+          },
+          leftIcon = Icons.Filled.Visibility
+        )
 
-    // Displays the screen title.
-    Text(
-      "Settings",
-      style = MedTrackerTheme.typography.largeTitle,
-    )
-    Spacer(modifier = Modifier.padding(8.dp))
+        HIGListButton(
+          text = "Select Start Page",
+          onClick = {
+            // TODO: Navigates to screen.
+          },
+          leftIcon = Icons.Filled.Start
+        )
 
-    HIGListButton(
-      text = "Adjust Design",
-      onClick = {
-        // TODO: Navigates to screen.
-      },
-      leftIcon = Icons.Filled.Visibility
-    )
+        HIGListButton(
+          text = "Change Language",
+          onClick = {
+            // TODO: Navigates to screen.
+          },
+          leftIcon = Icons.Filled.Language
+        )
 
-    HIGListButton(
-      text = "Select Start Page",
-      onClick = {
-        // TODO: Navigates to screen.
-      },
-      leftIcon = Icons.Filled.Start
-    )
+      }
+    }
+  )
 
-    HIGListButton(
-      text = "Change Language",
-      onClick = {
-        // TODO: Navigates to screen.
-      },
-      leftIcon = Icons.Filled.Language
-    )
-
-  }
 }
 
 @Composable

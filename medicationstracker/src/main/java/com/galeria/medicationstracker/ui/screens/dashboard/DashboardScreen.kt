@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -28,6 +29,7 @@ import com.galeria.medicationstracker.ui.components.FlyElevatedCardDashboard
 import com.galeria.medicationstracker.ui.components.FlyTextButton
 import com.galeria.medicationstracker.ui.components.FlyTopAppBar
 import com.galeria.medicationstracker.ui.components.NavigationRow
+import com.galeria.medicationstracker.ui.components.WeeklyCalendarView
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -37,6 +39,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun DashboardScreen(
   modifier: Modifier = Modifier,
+  onLogsClick: () -> Unit = {},
   viewModel: DashboardVM = viewModel(),
 ) {
   // Get today's date.
@@ -47,20 +50,27 @@ fun DashboardScreen(
   Scaffold(
     modifier = Modifier,
     topBar = {
-      FlyTopAppBar("Today, $formattedCurrentDate")
+      FlyTopAppBar(
+        "Today, $formattedCurrentDate",
+        onClick = onLogsClick,
+        icon = Icons.Filled.History
+      )
+      // FlyTopAppBar("Today, $formattedCurrentDate")
     },
     containerColor = MedTrackerTheme.colors.secondaryBackground,
     content = {
       Column(
         modifier = modifier
           .fillMaxSize()
-          .padding(it) .padding(horizontal = 16.dp),
-        //.padding(it),
+          .padding(it)
+          .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
 
         ) {
 
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
+        WeeklyCalendarView()
 
         // TODO: Weekly calendar with medication records.
 
@@ -71,9 +81,12 @@ fun DashboardScreen(
         ) {
           items(5) {
             FlyElevatedCardDashboard(
+              title = "Adderall",
+              time = "9:00 AM",
+              info = "Every Day",
               icon = Icons.Filled.Medication
             )
-            //DashboardCardComponent(onAddRecordClick = {/*TODO: */ })
+            // DashboardCardComponent(onAddRecordClick = {/*TODO: */ })
           }
 
         }
@@ -94,12 +107,13 @@ fun DashboardCardComponent(
   onAddRecordClick: () -> Unit,
 ) {
 
-  ElevatedCard(modifier = modifier,
+  ElevatedCard(
+    modifier = modifier,
     colors = CardDefaults.elevatedCardColors(
       containerColor = MedTrackerTheme.colors.primaryBackground,
       contentColor = MedTrackerTheme.colors.primaryLabel
     )
-    ) {
+  ) {
 
     Column(
       modifier =

@@ -68,6 +68,13 @@ class MedicationsViewModel : ViewModel() {
         println("Error finding documents to delete: $e")
       }
   }
+
+  fun updateMedicationInFirestore(medName: String) {
+    val db = FirebaseFirestore.getInstance()
+
+    // db.collection("UserMedication")
+
+  }
 }
 
 /*
