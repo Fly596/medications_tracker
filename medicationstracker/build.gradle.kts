@@ -53,6 +53,7 @@ dependencies {
   implementation(libs.google.firebase.storage)
   implementation(libs.androidx.material.icons.extended)
   implementation(libs.androidx.room.runtime)
+  implementation(libs.coil.compose)
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)

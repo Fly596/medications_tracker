@@ -55,7 +55,7 @@ fun MedicationsScreen(
           items(medications) { med ->
             FlyElevatedCardMedsList(
               title = med.name.toString(),
-              dosage = (med.unit.toString()),
+              dosage = ("${med.strength} ${med.unit.toString().lowercase()}"),
               info = med.form.toString().lowercase(),
               onEditClick = { onViewMedClick(med.name.toString()) },
               onRemoveMedClick = {

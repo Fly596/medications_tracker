@@ -34,6 +34,18 @@ import com.galeria.medicationstracker.ui.components.FlyTopAppBar
 import com.galeria.medicationstracker.ui.components.HIGListButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
+/**
+ * Represents the user's profile screen.
+ *
+ * This screen displays the user's profile information, including their
+ * profile picture, name, and email. It also provides options for
+ * managing notifications and app settings, as well as a logout button.
+ *
+ * @param modifier The modifier to be applied to the layout.
+ * @param onSettingsClick A callback function that is invoked when the user clicks on the settings option.
+ * @param onNotificationsClick A callback function that is invoked when the user clicks on the notifications option.
+ * @param viewModel The ViewModel for this screen. Defaults to a new instance of ProfileVM.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
@@ -44,6 +56,7 @@ fun ProfileScreen(
 ) {
   val state = viewModel.uiState
 
+  // Build the screen UI.
   Scaffold(
     topBar = {
       FlyTopAppBar("My Profile")
@@ -61,12 +74,13 @@ fun ProfileScreen(
       ) {
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-        // Screen header with title.
+        // Display header with profile picture and name.
         Row(
           modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top,
           horizontalArrangement = Arrangement.Start,
         ) {
-          // User's profile picture and name.
+
+          // User's profile information.
           PfpWithName(
             // TODO: get from firebase.
             painter = R.drawable.img_1543,
@@ -75,6 +89,7 @@ fun ProfileScreen(
           )
           Spacer(modifier = Modifier.weight(1f))
 
+          // Edit profile button.
           IconButton(
             onClick = {/*TODO: open settings*/ }
           ) {
@@ -88,19 +103,19 @@ fun ProfileScreen(
 
         }
 
-        // Profile options.
+        // Profile options section.
         Column(
           modifier = Modifier.fillMaxWidth(),
           horizontalAlignment = Alignment.Start
         ) {
 
-          // Notifications option.
+          // Notifications settings.
           HIGListButton(
             onClick = { onNotificationsClick.invoke() },
             text = "Notifications Settings"
           )
 
-          // Details option.
+          // App settings.
           HIGListButton(onClick = { onSettingsClick.invoke() }, text = "App Settings")
 
         }
@@ -113,8 +128,6 @@ fun ProfileScreen(
       }
     }
   )
-
-
 }
 
 @Composable
@@ -124,6 +137,7 @@ fun PfpWithName(
   userEmail: String,
   modifier: Modifier = Modifier
 ) {
+
   Row(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.Start,
