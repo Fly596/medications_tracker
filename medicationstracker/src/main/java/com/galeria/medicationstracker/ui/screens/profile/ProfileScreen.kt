@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -75,14 +74,14 @@ fun ProfileScreen(
       PfpWithName(
         // TODO: get from firebase.
         painter = R.drawable.img_1543,
-        userName = "Adolf Hitler",
+        userName = "Gerald Earl Gillum",
         userEmail = "fly.yt.77@gmail.com"
       )
       Spacer(modifier = Modifier.weight(1f))
 
       // Edit profile button.
-      IconButton(
-        onClick = {/*TODO: open settings*/ }
+      /*       IconButton(
+              onClick = { *//*TODO: open settings*//*  }
       ) {
         Icon(
           modifier = Modifier.size(28.dp),
@@ -90,7 +89,7 @@ fun ProfileScreen(
           contentDescription = "Settings",
           tint = MedTrackerTheme.colors.secondaryLabel
         )
-      }
+      } */
 
     }
 
@@ -128,9 +127,9 @@ fun PfpWithName(
 ) {
 
   Row(
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.Start,
-    modifier = modifier,
+    modifier = modifier.fillMaxWidth(),
+    verticalAlignment = Alignment.Top,
+    horizontalArrangement = Arrangement.SpaceBetween,
   ) {
     Image(
       painter = painterResource(painter),
@@ -141,12 +140,15 @@ fun PfpWithName(
         .size(128.dp),
     )
 
-    Spacer(modifier = Modifier.width(32.dp)) // add default dp values.
+    // Spacer(modifier = Modifier.width(32.dp)) // add default dp values.
 
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(
+      verticalArrangement = Arrangement.spacedBy(12.dp),
+      modifier = Modifier.padding(top = 8.dp)
+    ) {
       Text(
         text = userName,
-        style = MedTrackerTheme.typography.title1Emphasized,
+        style = MedTrackerTheme.typography.title2Emphasized,
         color = MedTrackerTheme.colors.primaryLabel
       )
       Text(
@@ -155,7 +157,17 @@ fun PfpWithName(
         color = MedTrackerTheme.colors.tertiaryLabel
       )
     }
+    IconButton(
+      onClick = {/*TODO: open settings*/ }
+    ) {
 
+      Icon(
+        modifier = Modifier.size(28.dp),
+        imageVector = Icons.Filled.Edit,
+        contentDescription = "Settings",
+        tint = MedTrackerTheme.colors.secondaryLabel
+      )
+    }
   }
 }
 
