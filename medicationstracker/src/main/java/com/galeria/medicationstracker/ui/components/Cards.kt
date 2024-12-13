@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedCard
@@ -35,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.typography
 
 @Composable
 fun FlyElevatedCardDashboard(
@@ -97,9 +100,6 @@ fun FlyElevatedCardDashboard(
       Column {
         IconButton(onClick = { isChecked = !isChecked }) {
           Icon(
-            /*        if(isChecked){
-                     imageVector =
-                   } */
             imageVector = if (isChecked) {
               Icons.Filled.CheckCircle
             } else {
@@ -219,14 +219,112 @@ fun NavigationRow(onClick: () -> Unit, label: String? = null) {
   }
 }
 
-@Preview(showBackground = true)
+@Composable
+fun FlyCardMedsByTimeList(medications: List<UserMedication> = emptyList()) {
+
+  val groupedMeds = medications.groupBy { it.intakeTime }
+
+  // Список лекарств с одинаковым временем приема.
+  var currentTimeMedications by remember {
+    mutableStateOf<List<UserMedication>>(emptyList())
+  }
+
+
+  LazyColumn(
+    modifier = Modifier.fillMaxWidth(),
+    verticalArrangement = Arrangement.spacedBy(24.dp)
+  ) {
+    groupedMeds.forEach { (intakeTime, medications) ->
+      item {
+        Card(
+          modifier = Modifier
+            .fillMaxWidth()
+          /* .height(120.dp) */,
+          shape = RoundedCornerShape(16.dp),
+          colors =
+            CardDefaults.elevatedCardColors(
+              containerColor = MedTrackerTheme.colors.secondaryBackgroundGrouped,
+              contentColor = MedTrackerTheme.colors.primaryLabel,
+              disabledContainerColor = MedTrackerTheme.colors.primaryTinted,
+              disabledContentColor = MedTrackerTheme.colors.secondary600
+            )
+        ) {
+          Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+          ) {
+            Text(
+              text = intakeTime.toString(),
+              style = typography.headline,
+              modifier = Modifier.padding(0.dp)
+            )
+
+            medications.forEach { medications ->
+              MedicationItem(
+                medications.name.toString()
+
+              )
+
+            }
+          }
+
+        }
+      }
+
+    }
+  }
+}
+
+@Composable
+fun MedicationItem(name: String, icon: ImageVector = Icons.Filled.Medication) {
+
+  Row(
+    modifier = Modifier,
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(8.dp)
+  ) {
+    Icon(
+      imageVector = icon,
+      contentDescription = null,
+      modifier = Modifier.size(32.dp)
+    )
+    // Name.
+    Text(text = name, style = typography.headline)
+
+    Spacer(modifier = Modifier.weight(1f))
+
+    var isChecked by remember { mutableStateOf(false) } // State to track icon
+
+    IconButton(onClick = { isChecked = !isChecked }) {
+      Icon(
+        imageVector = if (isChecked) {
+          Icons.Filled.CheckCircle
+        } else {
+          Icons.Outlined.CheckCircle
+        },
+        contentDescription = "Android Icon",
+        modifier = Modifier.size(32.dp),
+        tint = if (isChecked) {
+          MedTrackerTheme.colors.primary400
+        } else {
+          MedTrackerTheme.colors.tertiaryLabel
+        }
+      )
+    }
+  }
+
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
 fun FlyElevatedCardMedsListPreview() {
+
   MedTrackerTheme {
-    FlyElevatedCardMedsList(
+/*     FlyElevatedCardMedsList(
       icon = Icons.Filled.Medication,
-      onEditClick = { /*TODO*/ },
-      onRemoveMedClick = { /*TODO*/ }
-    )
+      onEditClick = {  *//*TODO*//*  },
+      onRemoveMedClick = {  *//*TODO*//*  }
+    ) */
+    FlyCardMedsByTimeList()
   }
 }

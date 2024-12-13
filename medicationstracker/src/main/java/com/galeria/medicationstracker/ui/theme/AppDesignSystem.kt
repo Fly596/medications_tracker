@@ -19,10 +19,12 @@ data class MedTrackerColors(
   val primary400: Color,
   val primary500: Color,
   val primary600: Color,
+  val primaryLight: Color,
   val primaryTinted: Color,
   val secondary400: Color,
   val secondary500: Color,
   val secondary600: Color,
+  val secondaryLight: Color,
   val secondaryTinted: Color,
   val primaryFill: Color, // for thin and small shapes, such as slider's track.
   val secondaryFill: Color, // for medium-size shapes, such as the background of a switch.
@@ -128,10 +130,12 @@ val LocalMedTrackerColors = staticCompositionLocalOf {
     primary400 = Color.Unspecified,
     primary500 = Color.Unspecified,
     primary600 = Color.Unspecified,
+    primaryLight = Color.Unspecified,
     primaryTinted = Color.Unspecified,
     secondary400 = Color.Unspecified,
     secondary500 = Color.Unspecified,
     secondary600 = Color.Unspecified,
+    secondaryLight = Color.Unspecified,
     secondaryTinted = Color.Unspecified,
     primaryFill = Color.Unspecified, // for thin and small shapes, such as slider's track.
     secondaryFill =
@@ -209,10 +213,12 @@ fun MedTrackerTheme(
       primary400,
       primary500,
       primary600,
+      primaryLight,
       primaryTinted,
       secondary400,
       secondary500,
       secondary600,
+      secondaryLight,
       secondaryTinted,
       primaryFill,
       secondaryFill,

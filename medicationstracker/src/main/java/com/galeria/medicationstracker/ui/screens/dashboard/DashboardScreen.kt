@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,7 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.ui.components.FlyElevatedCardDashboard
+import com.galeria.medicationstracker.data.UserMedication
+import com.galeria.medicationstracker.ui.components.FlyCardMedsByTimeList
 import com.galeria.medicationstracker.ui.components.FlyTextButton
 import com.galeria.medicationstracker.ui.components.NavigationRow
 import com.galeria.medicationstracker.ui.components.WeeklyCalendarView
@@ -56,24 +54,70 @@ fun DashboardScreen(
 
     WeeklyCalendarView()
 
-    // TODO: Weekly calendar with medication records.
+      // TODO: Replace with medication data from firebase DB.
+      val medicationsTest = listOf(
+          UserMedication(
+              uid = "001",
+              name = "Paracetamol",
+              form = "Tablet",
+              strength = 500f,
+              unit = "mg",
+              startDate = "2024-12-01",
+              endDate = "2024-12-10",
+              frequency = "Twice a day",
+              intakeTime = "9:25 AM",
+              notes = "Take after meals"
+          ),
+
+          UserMedication(
+              uid = "002",
+              name = "Amoxicillin",
+              form = "Capsule",
+              strength = 250f,
+              unit = "mg",
+              startDate = "2024-12-05",
+              endDate = "2024-12-14",
+              frequency = "Three times a day",
+              intakeTime = "08:00 AM",
+              notes = "Finish the entire course"
+          ),
+
+          UserMedication(
+              uid = "003",
+              name = "Ibuprofen",
+              form = "Syrup",
+              strength = 100f,
+              unit = "mg/5ml",
+              startDate = "2024-12-08",
+              endDate = "2024-12-15",
+              frequency = "Once a day",
+              intakeTime = "9:25 AM",
+              notes = "Shake well before use"
+          ),
+      )
+
+      val groupedMeds = medicationsTest.groupBy { it.intakeTime }
 
     // Medication Cards List.
-    LazyColumn(
-      modifier = modifier/* .fillMaxSize() */,
-      verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-      items(5) {
-        FlyElevatedCardDashboard(
-          title = "Adderall",
-          time = "9:00 AM",
-          info = "Every Day",
-          icon = Icons.Filled.Medication
-        )
-        // DashboardCardComponent(onAddRecordClick = {/*TODO: */ })
-      }
+      FlyCardMedsByTimeList(medications = medicationsTest)
 
-    }
+      /*      LazyColumn(
+            modifier = modifier.fillMaxSize()  ,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+          ) {
+            items(16) {
+
+
+              FlyElevatedCardDashboard(
+                title = "Adderall",
+                time = "9:00 AM",
+                info = "Every Day",
+                icon = Icons.Filled.Medication
+              )
+              // DashboardCardComponent(onAddRecordClick = { })
+            }
+
+          }  */
   }
 
 

@@ -6,11 +6,13 @@ val primary400 = Color(0xFF0A84FF)
 val primary500 = Color(0xFF0772de)
 val primary600 = Color(0xFF0560be)
 val primaryTinted = Color(0x260a84ff)
+val primaryLight = Color(0xFFEAF7FC)
 
 val secondary400 = Color(0xFF633957)
 val secondary500 = Color(0xFF55304b)
 val secondary600 = Color(0xFF47283e)
 val secondaryTinted = Color(0x26633957)
+val secondaryLight = Color(0xFF665360)
 
 val primaryFill = Color(0x33787880)
 val secondaryFill = Color(0x29787880)
