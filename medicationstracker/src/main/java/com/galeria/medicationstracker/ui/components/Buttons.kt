@@ -73,7 +73,7 @@ fun HIGButton(
 
       HIGButtonStyle.Borderless ->
         ButtonDefaults.outlinedButtonColors(
-          contentColor = MedTrackerTheme.colors.primary400,
+          contentColor = colors.primary400,
           disabledContentColor = Color(0x4d3c3c43),
         )
     }
@@ -104,7 +104,7 @@ fun HIGListButton(
     when (style) {
       HIGButtonStyle.Filled ->
         ButtonDefaults.elevatedButtonColors(
-          containerColor = MedTrackerTheme.colors.primaryBackgroundGrouped,
+          containerColor = colors.primaryBackgroundGrouped,
           /*Fills, tertiary*/
           contentColor = Color.White,
           disabledContainerColor = Color(0x1f787880),
@@ -113,16 +113,16 @@ fun HIGListButton(
 
       HIGButtonStyle.Bezeled ->
         ButtonDefaults.elevatedButtonColors(
-          containerColor = MedTrackerTheme.colors.primaryBackground,
+          containerColor = colors.primaryBackground,
           /*Fills, tertiary*/
-          contentColor = MedTrackerTheme.colors.primaryLabel,
+          contentColor = colors.primaryLabel,
           disabledContainerColor = Color(0x1f787880),
           disabledContentColor = Color(0x4d3c3c43),
         )
 
       HIGButtonStyle.Borderless ->
         ButtonDefaults.elevatedButtonColors(
-          contentColor = MedTrackerTheme.colors.primary400,
+          contentColor = colors.primary400,
           disabledContentColor = Color(0x4d3c3c43),
         )
     }
@@ -142,7 +142,7 @@ fun HIGListButton(
         Icon(
           imageVector = leftIcon,
           contentDescription = null,
-          tint = MedTrackerTheme.colors.primaryLabel,
+          tint = colors.primaryLabel,
           modifier = Modifier.size(24.dp),
 
           )
@@ -165,7 +165,7 @@ fun HIGListButton(
       Icon(
         imageVector = icon,
         contentDescription = "Show options",
-        tint = MedTrackerTheme.colors.secondaryLabel,
+        tint = colors.secondaryLabel,
         modifier = Modifier.size(16.dp),
       )
     }
@@ -179,7 +179,7 @@ fun FlyTextButton(
   onClick: () -> Unit,
   errorButton: Boolean = false,
   modifier: Modifier = Modifier,
-  textStyle: TextStyle = MedTrackerTheme.typography.headline,
+  textStyle: TextStyle = MedTrackerTheme.typography.body,
   enabled: Boolean = true,
   content: @Composable RowScope.() -> Unit,
 ) {
@@ -305,9 +305,10 @@ fun FlyTonalButton(
 
 @Preview(
   name = "Buttons",
-  showBackground = false,
   showSystemUi = true,
-  device = "spec:parent=pixel_8,navigation=buttons",
+  device = "spec:parent=pixel_8,navigation=buttons", showBackground = true,
+  backgroundColor = 0xFFD4CBCB,
+  uiMode = android.content.res.Configuration.UI_MODE_NIGHT_NO or android.content.res.Configuration.UI_MODE_TYPE_NORMAL,
 )
 @Composable
 private fun PreviewButtons() {

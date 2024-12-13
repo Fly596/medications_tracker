@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
@@ -167,6 +167,9 @@ fun FlyElevatedCardMedsList(
         modifier = Modifier.fillMaxHeight(),
       ) {
         Text(title, style = MedTrackerTheme.typography.headline)
+
+        Spacer(modifier = Modifier.weight(1f))
+
         Text(dosage, style = MedTrackerTheme.typography.body)
         Text(info, style = MedTrackerTheme.typography.body)
       }
@@ -181,7 +184,7 @@ fun FlyElevatedCardMedsList(
 
         FlyTextButton(
           errorButton = true,
-          onClick = { onRemoveMedClick.invoke() } ,
+          onClick = { onRemoveMedClick.invoke() },
           textStyle = MedTrackerTheme.typography.body
         ) {
           Text("Delete")
@@ -206,50 +209,24 @@ fun NavigationRow(onClick: () -> Unit, label: String? = null) {
       if (label != null) {
         Text(label)
       }
-      Icon(
-        imageVector = Icons.Filled.Edit,
-        contentDescription = null,
-        tint = MedTrackerTheme.colors.secondary400,
-        modifier = Modifier.padding(start = 8.dp),
-      )
+      /*       Icon(
+              imageVector = Icons.Filled.Edit,
+              contentDescription = null,
+              tint = MedTrackerTheme.colors.secondary400,
+              modifier = Modifier.padding(start = 8.dp),
+            ) */
     }
   }
 }
 
-@Preview(
-  showSystemUi = false
-)
+@Preview(showBackground = true)
 @Composable
-fun CardPreview() {
+fun FlyElevatedCardMedsListPreview() {
   MedTrackerTheme {
-    Column(
-      modifier = Modifier
-        //.fillMaxSize()
-        .padding(16.dp),
-      verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-/*       FlyElevatedCard(content = {
-
-        Text(
-          text = "Medicine Name: Aspirin",
-          style = MedTrackerTheme.typography.body,
-          modifier = Modifier.padding(8.dp)
-        )
-
-        Text(
-          text = "Dosage: 500 mg",
-          style = MedTrackerTheme.typography.body,
-          modifier = Modifier.padding(8.dp)
-        )
-        Text(
-          text = "Frequency: Once a day",
-          style = MedTrackerTheme.typography.body,
-          modifier = Modifier.padding(8.dp)
-        )
-
-      }) */
-    }
-
+    FlyElevatedCardMedsList(
+      icon = Icons.Filled.Medication,
+      onEditClick = { /*TODO*/ },
+      onRemoveMedClick = { /*TODO*/ }
+    )
   }
-
 }

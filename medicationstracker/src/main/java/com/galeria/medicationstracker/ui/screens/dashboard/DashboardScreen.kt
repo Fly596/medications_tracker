@@ -4,18 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +24,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.components.FlyElevatedCardDashboard
 import com.galeria.medicationstracker.ui.components.FlyTextButton
-import com.galeria.medicationstracker.ui.components.FlyTopAppBar
 import com.galeria.medicationstracker.ui.components.NavigationRow
 import com.galeria.medicationstracker.ui.components.WeeklyCalendarView
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
@@ -47,53 +43,40 @@ fun DashboardScreen(
   val dateFormatter = DateTimeFormatter.ofPattern("MMM dd")
   val formattedCurrentDate = currentDate.format(dateFormatter)
 
-  Scaffold(
-    modifier = Modifier,
-    topBar = {
-      FlyTopAppBar(
-        "Today, $formattedCurrentDate",
-        onClick = onLogsClick,
-        icon = Icons.Filled.History
-      )
-      // FlyTopAppBar("Today, $formattedCurrentDate")
-    },
-    containerColor = MedTrackerTheme.colors.secondaryBackground,
-    content = {
-      Column(
-        modifier = modifier
-          .fillMaxSize()
-          .padding(it)
-          .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+  Column(
+    modifier = modifier
+      //.fillMaxSize()
+      //.padding(it)
+      .padding(horizontal = 16.dp),
+    verticalArrangement = Arrangement.spacedBy(16.dp),
 
-        ) {
+    ) {
 
-        Spacer(modifier = Modifier.padding(vertical = 8.dp))
+    Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-        WeeklyCalendarView()
+    WeeklyCalendarView()
 
-        // TODO: Weekly calendar with medication records.
+    // TODO: Weekly calendar with medication records.
 
-        // Medication Cards List.
-        LazyColumn(
-          modifier = modifier.fillMaxSize(),
-          verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-          items(5) {
-            FlyElevatedCardDashboard(
-              title = "Adderall",
-              time = "9:00 AM",
-              info = "Every Day",
-              icon = Icons.Filled.Medication
-            )
-            // DashboardCardComponent(onAddRecordClick = {/*TODO: */ })
-          }
-
-        }
+    // Medication Cards List.
+    LazyColumn(
+      modifier = modifier/* .fillMaxSize() */,
+      verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+      items(5) {
+        FlyElevatedCardDashboard(
+          title = "Adderall",
+          time = "9:00 AM",
+          info = "Every Day",
+          icon = Icons.Filled.Medication
+        )
+        // DashboardCardComponent(onAddRecordClick = {/*TODO: */ })
       }
-    }
 
-  )
+    }
+  }
+
+
 }
 
 @Composable

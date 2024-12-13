@@ -40,8 +40,6 @@ class HeadActivity : ComponentActivity() {
     // Initialize Firebase.
     FirebaseApp.initializeApp(this)
 
-    //enableEdgeToEdge()
-
     setContent {
       MedTrackerTheme {
 

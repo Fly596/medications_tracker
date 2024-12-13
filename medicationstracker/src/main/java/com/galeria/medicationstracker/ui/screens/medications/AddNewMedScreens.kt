@@ -163,9 +163,19 @@ fun NewMedicationDataScreen(
         }
 
         item {
-          DayOfWeekSelector(
-            viewModel = viewModel
-          )
+          Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+          ) {
+            Text(
+              text = "Choose Days",
+              style = MedTrackerTheme.typography.title2Emphasized,
+            )
+            DayOfWeekSelector(
+              viewModel = viewModel
+            )
+          }
+
 
         }
 

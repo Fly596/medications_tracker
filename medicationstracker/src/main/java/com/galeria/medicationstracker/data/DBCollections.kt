@@ -47,12 +47,15 @@ enum class MedicationForms {
   CAPSULE,
   LIQUID,
   INJECTION,
+  POWDER
 }
 
 enum class MedicationUnit {
   MG,
-  ML,
+  MCG,
   G,
+  ML,
+  OZ,
 }
 
 val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)

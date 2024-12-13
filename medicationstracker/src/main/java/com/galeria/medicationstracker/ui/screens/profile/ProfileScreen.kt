@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.components.FlyTextButton
-import com.galeria.medicationstracker.ui.components.FlyTopAppBar
 import com.galeria.medicationstracker.ui.components.HIGListButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
@@ -57,77 +55,68 @@ fun ProfileScreen(
   val state = viewModel.uiState
 
   // Build the screen UI.
-  Scaffold(
-    topBar = {
-      FlyTopAppBar("My Profile")
-    },
-    containerColor = MedTrackerTheme.colors.secondaryBackground,
-    content = {
-      Column(
-        modifier = modifier
-          .fillMaxSize()
-          .padding(it)
-          .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.Start
+  Column(
+    modifier = modifier
+      .fillMaxSize()
+      .padding(horizontal = 16.dp),
+    verticalArrangement = Arrangement.spacedBy(16.dp),
+    horizontalAlignment = Alignment.Start
 
+  ) {
+    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
+    // Display header with profile picture and name.
+    Row(
+      modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top,
+      horizontalArrangement = Arrangement.Start,
+    ) {
+
+      // User's profile information.
+      PfpWithName(
+        // TODO: get from firebase.
+        painter = R.drawable.img_1543,
+        userName = "Adolf Hitler",
+        userEmail = "fly.yt.77@gmail.com"
+      )
+      Spacer(modifier = Modifier.weight(1f))
+
+      // Edit profile button.
+      IconButton(
+        onClick = {/*TODO: open settings*/ }
       ) {
-        Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
-        // Display header with profile picture and name.
-        Row(
-          modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top,
-          horizontalArrangement = Arrangement.Start,
-        ) {
-
-          // User's profile information.
-          PfpWithName(
-            // TODO: get from firebase.
-            painter = R.drawable.img_1543,
-            userName = "Adolf Hitler",
-            userEmail = "fly.yt.77@gmail.com"
-          )
-          Spacer(modifier = Modifier.weight(1f))
-
-          // Edit profile button.
-          IconButton(
-            onClick = {/*TODO: open settings*/ }
-          ) {
-            Icon(
-              modifier = Modifier.size(28.dp),
-              imageVector = Icons.Filled.Edit,
-              contentDescription = "Settings",
-              tint = MedTrackerTheme.colors.secondaryLabel
-            )
-          }
-
-        }
-
-        // Profile options section.
-        Column(
-          modifier = Modifier.fillMaxWidth(),
-          horizontalAlignment = Alignment.Start
-        ) {
-
-          // Notifications settings.
-          HIGListButton(
-            onClick = { onNotificationsClick.invoke() },
-            text = "Notifications Settings"
-          )
-
-          // App settings.
-          HIGListButton(onClick = { onSettingsClick.invoke() }, text = "App Settings")
-
-        }
-        Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
-        // Logout button.
-        FlyTextButton(onClick = {}) {
-          Text(text = "Log Out")
-        }
+        Icon(
+          modifier = Modifier.size(28.dp),
+          imageVector = Icons.Filled.Edit,
+          contentDescription = "Settings",
+          tint = MedTrackerTheme.colors.secondaryLabel
+        )
       }
+
     }
-  )
+
+    // Profile options section.
+    Column(
+      modifier = Modifier.fillMaxWidth(),
+      horizontalAlignment = Alignment.Start
+    ) {
+
+      // Notifications settings.
+      HIGListButton(
+        onClick = { onNotificationsClick.invoke() },
+        text = "Notifications Settings"
+      )
+
+      // App settings.
+      HIGListButton(onClick = { onSettingsClick.invoke() }, text = "App Settings")
+
+    }
+    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+
+    // Logout button.
+    FlyTextButton(onClick = {}) {
+      Text(text = "Log Out")
+    }
+  }
 }
 
 @Composable

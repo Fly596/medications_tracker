@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -51,12 +50,13 @@ fun FlyTopAppBar(
     Row(
       modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 16.dp, vertical = 16.dp),
-      verticalAlignment = Alignment.CenterVertically
+        .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp),
+      verticalAlignment = Alignment.CenterVertically,
+
     ) {
       Text(text = title, style = textStyle)
 
-      Spacer(modifier = Modifier.weight(1f))
+      // Spacer(modifier = Modifier.weight(1f))
 
 
       if (icon != null) {
@@ -75,19 +75,19 @@ fun FlyTopAppBar(
       }
 
     }
-    //Spacer(modifier = Modifier.padding(vertical = 8.dp))
+    Spacer(modifier = Modifier.padding(vertical = 8.dp))
     HorizontalDivider(
       color = MedTrackerTheme.colors.opaqueSeparator,
-      modifier = Modifier.layout() { measurable, constraints ->
-        val placeable = measurable.measure(
-          constraints.copy(
-            maxWidth = constraints.maxWidth + 16.dp.roundToPx(),
-          )
-        )
-        layout(placeable.width, placeable.height) {
-          placeable.place(8.dp.roundToPx(), 0)
-        }
-      }
+      /*       modifier = Modifier.layout() { measurable, constraints ->
+              val placeable = measurable.measure(
+                constraints.copy(
+                  maxWidth = constraints.maxWidth + 16.dp.roundToPx(),
+                )
+              )
+              layout(placeable.width, placeable.height) {
+                placeable.place(8.dp.roundToPx(), 0)
+              }
+            } */
     )
 
   }
