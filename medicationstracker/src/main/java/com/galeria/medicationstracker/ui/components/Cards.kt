@@ -33,7 +33,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
@@ -220,15 +219,10 @@ fun NavigationRow(onClick: () -> Unit, label: String? = null) {
 }
 
 @Composable
-fun FlyCardMedsByTimeList(medications: List<UserMedication> = emptyList()) {
-
+fun FlyCardMedsByTimeList(
+  medications: List<UserMedication> = emptyList()
+) {
   val groupedMeds = medications.groupBy { it.intakeTime }
-
-  // Список лекарств с одинаковым временем приема.
-  var currentTimeMedications by remember {
-    mutableStateOf<List<UserMedication>>(emptyList())
-  }
-
 
   LazyColumn(
     modifier = Modifier.fillMaxWidth(),
@@ -238,8 +232,7 @@ fun FlyCardMedsByTimeList(medications: List<UserMedication> = emptyList()) {
       item {
         Card(
           modifier = Modifier
-            .fillMaxWidth()
-          /* .height(120.dp) */,
+            .fillMaxWidth(),
           shape = RoundedCornerShape(16.dp),
           colors =
             CardDefaults.elevatedCardColors(
@@ -262,7 +255,6 @@ fun FlyCardMedsByTimeList(medications: List<UserMedication> = emptyList()) {
             medications.forEach { medications ->
               MedicationItem(
                 medications.name.toString()
-
               )
 
             }
@@ -276,33 +268,50 @@ fun FlyCardMedsByTimeList(medications: List<UserMedication> = emptyList()) {
 }
 
 @Composable
-fun MedicationItem(name: String, icon: ImageVector = Icons.Filled.Medication) {
+fun MedicationItem(
+  name: String,
+  onLogMedClick: () -> Unit = {},
+  icon: ImageVector = Icons.Filled.Medication
+) {
 
+  val showLogDialog = remember { mutableStateOf(false) }
+
+  // Main layout for the medication item.
   Row(
     modifier = Modifier,
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(8.dp)
   ) {
+    // Icon representing the medication.
     Icon(
       imageVector = icon,
       contentDescription = null,
       modifier = Modifier.size(32.dp)
     )
-    // Name.
+
+    // Medication name.
     Text(text = name, style = typography.headline)
 
     Spacer(modifier = Modifier.weight(1f))
 
-    var isChecked by remember { mutableStateOf(false) } // State to track icon
+    // State to control the check icon.
+    var isChecked by remember { mutableStateOf(false) }
 
-    IconButton(onClick = { isChecked = !isChecked }) {
+    // Log medication button.
+    IconButton(
+      onClick = {
+        showLogDialog.value = !showLogDialog.value
+        isChecked = !isChecked
+      }
+    ) {
+      // Check icon (filled or outlined).
       Icon(
         imageVector = if (isChecked) {
           Icons.Filled.CheckCircle
         } else {
           Icons.Outlined.CheckCircle
         },
-        contentDescription = "Android Icon",
+        contentDescription = null,
         modifier = Modifier.size(32.dp),
         tint = if (isChecked) {
           MedTrackerTheme.colors.primary400
@@ -311,20 +320,15 @@ fun MedicationItem(name: String, icon: ImageVector = Icons.Filled.Medication) {
         }
       )
     }
-  }
 
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
-@Composable
-fun FlyElevatedCardMedsListPreview() {
-
-  MedTrackerTheme {
-/*     FlyElevatedCardMedsList(
-      icon = Icons.Filled.Medication,
-      onEditClick = {  *//*TODO*//*  },
-      onRemoveMedClick = {  *//*TODO*//*  }
-    ) */
-    FlyCardMedsByTimeList()
+    // Display the dialog when `showLogDialog.value` is true
+    if (showLogDialog.value) {
+      LogMedicationTimeDialog(
+        onDismissRequest = { showLogDialog.value = false },
+        onConfirmation = {
+          showLogDialog.value = false
+        }
+      )
+    }
   }
 }
