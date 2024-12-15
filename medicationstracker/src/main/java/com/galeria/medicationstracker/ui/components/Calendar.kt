@@ -154,7 +154,7 @@ fun DayItem(
   onClick: () -> Unit
 ) {
   val backgroundColor =
-    if (isSelected) MedTrackerTheme.colors.primary400 else colors.primaryBackground
+    if (isSelected) MedTrackerTheme.colors.primary400 else colors.secondaryBackground
   val textColor = if (isSelected) MedTrackerTheme.colors.sysWhite else colors.primaryLabel
 
   Box(

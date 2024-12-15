@@ -4,15 +4,17 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun MyRadioButton(
+  modifier: Modifier = Modifier,
+  caption: String? = null,
   selected: Boolean,
   onClick: () -> Unit,
-  modifier: Modifier = Modifier,
   enabled: Boolean = true,
 ) {
   RadioButton(
@@ -28,6 +30,11 @@ fun MyRadioButton(
         disabledUnselectedColor = MedTrackerTheme.colors.secondaryLabel.copy(alpha = 0.38f),
       ),
   )
+  if (caption != null) {
+    Text(
+      text = caption
+    )
+  }
 }
 
 @Composable

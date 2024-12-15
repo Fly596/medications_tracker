@@ -3,6 +3,7 @@ package com.galeria.medicationstracker.ui.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -37,6 +38,31 @@ import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.typography
+
+@Composable
+fun FlySimpleCard(
+  modifier: Modifier = Modifier,
+  content: @Composable (ColumnScope.() -> Unit)
+) {
+  Card(
+    modifier = modifier.fillMaxWidth(),
+    shape = RoundedCornerShape(10.dp),
+    colors =
+      CardDefaults.cardColors(
+        containerColor = MedTrackerTheme.colors.primaryBackground,
+        contentColor = MedTrackerTheme.colors.primaryLabel,
+        disabledContainerColor = MedTrackerTheme.colors.primaryTinted,
+        disabledContentColor = MedTrackerTheme.colors.secondary600
+      )
+  ) {
+    Column(
+      modifier = Modifier.padding(16.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+      content.invoke(this)
+    }
+  }
+}
 
 @Composable
 fun FlyElevatedCardDashboard(

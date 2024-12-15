@@ -18,6 +18,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -38,11 +39,13 @@ import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
 import com.galeria.medicationstracker.ui.components.DayOfWeekSelector
 import com.galeria.medicationstracker.ui.components.FlyButton
+import com.galeria.medicationstracker.ui.components.FlySimpleCard
 import com.galeria.medicationstracker.ui.components.FlyTonalButton
 import com.galeria.medicationstracker.ui.components.HIGButton
 import com.galeria.medicationstracker.ui.components.MyRadioButton
 import com.galeria.medicationstracker.ui.components.MyTextField
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -65,18 +68,31 @@ fun NewMedicationDataScreen(
       .padding(horizontal = 16.dp),
     verticalArrangement = Arrangement.spacedBy(8.dp)
   ) {
+
     item {
       Spacer(modifier = Modifier.padding(8.dp))
 
-      // Name input.
-      MyTextField(
-        value = state.medName,
-        onValueChange = { viewModel.updateMedName(it) },
-        label = "Medication name",
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(vertical = 8.dp),
+      FlySimpleCard(
+        content = {
+          Text(
+            stringResource(R.string.add_new_med_name_screen_title),
+            style = MedTrackerTheme.typography.title2,
+          )
+
+          // Spacer(modifier = Modifier.padding(8.dp))
+
+          // Name input.
+          MyTextField(
+            value = state.medName,
+            onValueChange = { viewModel.updateMedName(it) },
+            label = "Add Medication name",
+            isPrimaryColor = false,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            modifier = Modifier
+              .fillMaxWidth()
+            // .padding(vertical = 8.dp),
+          )
+        }
       )
 
     }
@@ -86,58 +102,81 @@ fun NewMedicationDataScreen(
       var selectedForm by remember { mutableStateOf(state.medForm) }
       val options = MedicationForms.entries.toTypedArray()
 
-      Text(
-        stringResource(R.string.add_new_med_form_screen_title),
-        style = MedTrackerTheme.typography.title2,
-      )
+      FlySimpleCard(
+        content = {
+          Text(
+            stringResource(R.string.add_new_med_form_screen_title),
+            style = MedTrackerTheme.typography.title2,
+          )
 
-      Spacer(modifier = Modifier.padding(8.dp))
+          // Spacer(modifier = Modifier.padding(8.dp))
 
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-      ) {
-        options.forEach { form ->
-          Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = form.toString().lowercase())
-            MyRadioButton(
-              selected = selectedForm == form,
-              onClick = { selectedForm = form })
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+          ) {
+            options.forEach { form ->
+              Column(verticalArrangement = Arrangement.Center) {
+                MyRadioButton(
+                  selected = selectedForm == form,
+                  onClick = { selectedForm = form },
+                  caption = form.toString().lowercase()
+                )
+                // Text(text = form.toString().lowercase())
+
+              }
+            }
           }
         }
-      }
+
+      )
+
     }
 
     // Strength.
     item {
-
       var selectedUnit by remember { mutableStateOf(state.medUnit) }
       val unitOptions = MedicationUnit.entries.toTypedArray()
-      MyTextField(
-        value = state.medStrength.toString(),
-        onValueChange = { viewModel.updateMedStrength(it) },
-        label = "Medication Strength",
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        modifier = Modifier.fillMaxWidth(),
-      )
-      // Units.
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-      ) {
-        unitOptions.forEach { unit ->
-          Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = unit.toString().lowercase())
-            MyRadioButton(
-              selected = selectedUnit == unit,
-              onClick = {
-                viewModel.updateMedUnit(selectedUnit)
-                selectedUnit = unit
+
+      FlySimpleCard(
+        content = {
+          Text(
+            stringResource(R.string.add_new_med_strength_screen_title),
+            style = MedTrackerTheme.typography.title2,
+          )
+          // Spacer(modifier = Modifier.padding(8.dp))
+
+          MyTextField(
+            value = state.medStrength.toString(),
+            onValueChange = { viewModel.updateMedStrength(it) },
+            label = "Medication Strength",
+            isPrimaryColor = false,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth(),
+          )
+
+          // Units.
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+          ) {
+            unitOptions.forEach { unit ->
+              Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = unit.toString().lowercase())
+                MyRadioButton(
+                  selected = selectedUnit == unit,
+                  onClick = {
+                    viewModel.updateMedUnit(selectedUnit)
+                    selectedUnit = unit
+                  }
+                )
               }
-            )
+            }
           }
+
         }
-      }
+      )
+
       // Spacer(modifier = Modifier.padding(8.dp))
     }
 
@@ -147,19 +186,23 @@ fun NewMedicationDataScreen(
     }
 
     item {
-      Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-      ) {
-        Text(
-          text = "Choose Days",
-          style = MedTrackerTheme.typography.title2Emphasized,
-        )
-        DayOfWeekSelector(
-          viewModel = viewModel
-        )
-      }
+      FlySimpleCard(
+        content = {
 
+          Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+          ) {
+            Text(
+              text = "Choose Days",
+              style = MedTrackerTheme.typography.title2Emphasized,
+            )
+            DayOfWeekSelector(
+              viewModel = viewModel
+            )
+          }
+        }
+      )
     }
 
     item {
@@ -302,6 +345,18 @@ fun IntakeTimePicker(
   Column(horizontalAlignment = Alignment.CenterHorizontally) {
     TimePicker(
       state = timePickerState,
+      colors = TimePickerDefaults.colors(
+        clockDialColor = colors.tertiaryBackground,
+        clockDialSelectedContentColor = colors.primaryLabel,
+        clockDialUnselectedContentColor = colors.primaryLabel,
+        selectorColor = colors.primary400,
+        periodSelectorBorderColor = colors.opaqueSeparator,
+        periodSelectorSelectedContentColor = colors.primaryLabel,
+        periodSelectorUnselectedContentColor = colors.primaryLabel,
+        periodSelectorSelectedContainerColor = colors.primaryTinted,
+        timeSelectorSelectedContainerColor = colors.primaryTinted,
+        timeSelectorUnselectedContainerColor = colors.primaryLight
+      )
     )
     FlyButton(onClick = {
       viewModel.updateIntakeTime(time.format(dtf))
@@ -343,10 +398,10 @@ fun NewMedNameScreen(
       .fillMaxSize()
       .padding(top = 32.dp)
   ) {
-    Text(
+/*     Text(
       stringResource(R.string.add_new_med_name_screen_title),
       style = MedTrackerTheme.typography.largeTitle,
-    )
+    ) */
 
     Spacer(modifier = Modifier.padding(8.dp))
 

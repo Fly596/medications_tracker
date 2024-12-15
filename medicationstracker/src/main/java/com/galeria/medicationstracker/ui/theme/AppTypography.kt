@@ -181,7 +181,7 @@ val AppTypography =
         fontSize = 17.sp,
         fontWeight = FontWeight.Normal,
         fontFamily = FontFamily.Default,
-        lineHeight = 22.sp,
+        lineHeight = 20.sp,
         // color = Color.Black
       ),
     bodyEmphasized =

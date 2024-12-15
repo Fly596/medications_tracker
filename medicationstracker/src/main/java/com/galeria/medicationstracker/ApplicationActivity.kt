@@ -183,23 +183,6 @@ class ApplicationActivity : ComponentActivity() {
     }
   }
 
-  // Function to determine if top bar should be displayed
-  fun shouldDisplayTopBar(currentDestination: String?): Boolean {
-    return when (currentDestination) {
-      Routes.NewMedication.toString() -> false // No top bar on NewMedication screen
-      else -> true // Show top bar on all other screens
-    }
-  }
-  /*   fun shouldDisplayTopBar(route: String?): Boolean {
-      return when (route) {
-        "com.galeria.medicationstracker.model.navigation.Routes.Dashboard",
-        "com.galeria.medicationstracker.model.navigation.Routes.Medications",
-        "com.galeria.medicationstracker.model.navigation.Routes.Profile" -> true
-
-        else -> false
-      }
-    } */
-
   data class BottomNavItem(
     val title: String,
     val route: Routes,
@@ -262,7 +245,7 @@ class ApplicationActivity : ComponentActivity() {
               viewModel.updateSelectedItemIndex(navItemIndex)
               navController.navigate(navItem.route)
             },
-            label = { Text(text = navItem.title) },
+            label = { Text(text = navItem.title, style = MedTrackerTheme.typography.body) },
             icon = {
               IconWithBadge(
                 icon = if (navItemIndex == currentNavItemIndex) navItem.selectedIcon else navItem.unselectedIcon,

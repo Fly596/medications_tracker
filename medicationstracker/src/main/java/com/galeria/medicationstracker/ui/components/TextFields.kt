@@ -69,6 +69,7 @@ fun MyTextField(
   value: String,
   onValueChange: (String) -> Unit,
   label: String,
+  isPrimaryColor: Boolean = true,
   supportingText: String? = null,
   placeholder: String? = null,
   enabled: Boolean = true,
@@ -109,7 +110,13 @@ fun MyTextField(
     ),
     colors =
       TextFieldDefaults.colors(
-        unfocusedContainerColor = MedTrackerTheme.colors.primaryBackground,
+        unfocusedContainerColor =
+          if (isPrimaryColor) {
+            MedTrackerTheme.colors.primaryBackground
+          } else {
+            MedTrackerTheme.colors.secondaryBackground
+
+          },
         unfocusedIndicatorColor = MedTrackerTheme.colors.sysTransparent,
         disabledIndicatorColor = MedTrackerTheme.colors.sysTransparent,
         focusedIndicatorColor = MedTrackerTheme.colors.primary400,

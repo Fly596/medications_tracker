@@ -53,13 +53,17 @@ fun MedicationsScreen(
           }
         )
       }
+
+      item {
+        // Button to add a new medication.
+        FlyButton(
+          onClick = { onAddMedClick.invoke() },
+          Modifier.fillMaxWidth()
+        ) {
+          Text("+ Add Medication")
+        }
+      }
     }
-    // Button to add a new medication.
-    FlyButton(
-      onClick = { onAddMedClick.invoke() },
-      Modifier.fillMaxWidth()
-    ) {
-      Text("+ Add Medication")
-    }
+
   }
 }
