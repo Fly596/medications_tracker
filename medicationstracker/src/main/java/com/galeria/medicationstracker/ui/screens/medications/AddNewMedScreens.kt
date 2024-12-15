@@ -14,7 +14,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
@@ -34,7 +33,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.data.Frequency
 import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
 import com.galeria.medicationstracker.ui.components.DayOfWeekSelector
@@ -180,12 +178,31 @@ fun NewMedicationDataScreen(
       // Spacer(modifier = Modifier.padding(8.dp))
     }
 
-
+    // Start and end dates + time.
     item {
       ModalDatePicker(state, viewModel)
+
+      var showTimePicker by remember { mutableStateOf(false) }
+
+      FlyButton(
+        onClick = { showTimePicker = true }) {
+        Text("Set time")
+      }
+
+      if (showTimePicker) {
+        IntakeTimePicker(
+          onConfirm = {
+            showTimePicker = false
+          },
+          onDismiss = { showTimePicker = false },
+          viewModel
+        )
+      }
     }
 
+    // days.
     item {
+
       FlySimpleCard(
         content = {
 
@@ -205,26 +222,7 @@ fun NewMedicationDataScreen(
       )
     }
 
-    item {
-      var showTimePicker by remember { mutableStateOf(false) }
-
-      FlyButton(
-        onClick = { showTimePicker = true }) {
-        Text("Set time")
-      }
-
-      if (showTimePicker) {
-        IntakeTimePicker(
-          onConfirm = {
-            showTimePicker = false
-          },
-          onDismiss = { showTimePicker = false },
-          viewModel
-        )
-      }
-    }
-
-
+    // button to add medication.
     item {
       val context = LocalContext.current
       HIGButton(
@@ -276,12 +274,6 @@ fun ModalDatePicker(
       onValueChange = {},
       readOnly = true,
     )
-
-    /*     TextField(
-          value = "Start: ${viewModel.uiState.medStartDate}   End: ${viewModel.uiState.medEndDate}",
-          onValueChange = {},
-          readOnly = true,
-        ) */
   }
 }
 
@@ -372,7 +364,6 @@ fun IntakeTimePicker(
 
 }
 
-
 fun convertMillisToDate(millis: Long?): String {
   val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
 
@@ -382,316 +373,3 @@ fun convertMillisToDate(millis: Long?): String {
 
   return ""
 }
-
-// region later
-@Composable
-fun NewMedNameScreen(
-  onNextClick: () -> Unit,
-  viewModel: AddNewMedViewModel = viewModel()
-) {
-  val uid = viewModel.userId
-
-  val state = viewModel.uiState
-
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(top = 32.dp)
-  ) {
-/*     Text(
-      stringResource(R.string.add_new_med_name_screen_title),
-      style = MedTrackerTheme.typography.largeTitle,
-    ) */
-
-    Spacer(modifier = Modifier.padding(8.dp))
-
-    /*     MyTextField(
-      value = state.name,
-      onValueChange = { viewModel.updateMedName(it) },
-      label = "Medication name",
-      modifier = Modifier.fillMaxWidth(),
-    ) */
-
-    Spacer(modifier = Modifier.padding(8.dp))
-
-    val context = LocalContext.current
-    HIGButton(
-      text = "Next",
-      onClick = {
-        onNextClick.invoke()
-        // val newMed = TEMP_Medication(uid = uid, name = state.name, type = state.type)
-        // viewModel.addMedication(newMed, context)
-      },
-      modifier = Modifier.fillMaxWidth(),
-    )
-  }
-}
-
-@Composable
-fun NewMedFormScreen(
-  viewModel: AddNewMedViewModel = viewModel(),
-  onNextClick: () -> Unit
-) {
-  var state = viewModel.uiState
-
-  var selectedForm by remember { mutableStateOf(state.medForm) }
-  val options = MedicationForms.entries.toTypedArray()
-
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(top = 32.dp)
-  ) {
-
-    // Header.
-    Text(
-      stringResource(R.string.add_new_med_form_screen_title),
-      style = MedTrackerTheme.typography.largeTitle,
-    )
-
-    Spacer(modifier = Modifier.padding(8.dp))
-
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-      options.forEach { form ->
-        Row(verticalAlignment = Alignment.CenterVertically) {
-          Text(text = form.toString())
-          RadioButton(
-            selected = selectedForm == form,
-            onClick = { selectedForm = form })
-        }
-      }
-    }
-
-    Spacer(modifier = Modifier.padding(8.dp))
-
-    HIGButton(
-      text = "Next",
-      onClick = {
-        viewModel.updateMedForm(selectedForm)
-        onNextClick.invoke()
-      },
-      modifier = Modifier.fillMaxWidth(),
-    )
-  }
-}
-
-@Composable
-fun NewMedStrengthScreen(
-  viewModel: AddNewMedViewModel = viewModel(),
-  onNextClick: () -> Unit
-) {
-  val state = viewModel.uiState
-  var selectedUnit by remember { mutableStateOf(state.medUnit) }
-  val unitOptions = MedicationUnit.entries.toTypedArray()
-
-  Column(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(top = 32.dp)
-  ) {
-
-    // Header.
-    Text(
-      stringResource(R.string.add_new_med_strength_screen_title),
-      style = MedTrackerTheme.typography.largeTitle,
-    )
-
-    Spacer(modifier = Modifier.padding(8.dp))
-
-    /*     MyTextField(
-      value = state.strength.toString(),
-      onValueChange = { viewModel.updateMedStrength(it) },
-      label = "Medication Strength",
-      modifier = Modifier.fillMaxWidth(),
-    ) */
-
-    Spacer(modifier = Modifier.padding(8.dp))
-
-    // Units.
-    Row(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-      unitOptions.forEach { unit ->
-        Row(verticalAlignment = Alignment.CenterVertically) {
-          Text(text = unit.toString())
-          RadioButton(
-            selected = selectedUnit == unit,
-            onClick = { selectedUnit = unit })
-        }
-      }
-    }
-
-    Spacer(modifier = Modifier.padding(8.dp))
-
-    HIGButton(
-      text = "Next",
-      onClick = {
-        viewModel.updateMedUnit(selectedUnit)
-        onNextClick.invoke()
-      },
-      modifier = Modifier.fillMaxWidth(),
-    )
-  }
-}
-
-@Composable
-fun NewMedFrequencyScreen(
-  viewModel: AddNewMedViewModel = viewModel(),
-  onNextClick: () -> Unit
-) {
-  val state = viewModel.uiState
-  // var selectedFrequency by remember { mutableStateOf(state.frequency) }
-  val frequencyOptions =
-    listOf(Frequency.OnSpecificDaysOfTheWeek(), Frequency.AtRegularIntervals())
-
-  // Header.
-  Text(
-    stringResource(R.string.add_new_med_frequency_screen_title),
-    style = MedTrackerTheme.typography.largeTitle,
-  )
-
-  Spacer(modifier = Modifier.padding(8.dp))
-
-  Row(
-    modifier = Modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.SpaceBetween
-  ) {
-    frequencyOptions.forEach { option ->
-      Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(text = option.toString())
-        /*         RadioButton(
-                  selected = selectedFrequency == option,
-                  onClick = { selectedFrequency = option },
-                ) */
-      }
-    }
-  }
-
-  /*var selectedState by remember { mutableStateOf(true) }
-  // Frequency choice.
-  Row(
-    modifier = Modifier
-      .fillMaxWidth()
-      .selectableGroup(),
-    horizontalArrangement = Arrangement.SpaceBetween
-  ) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-      Text(text = "At Regular Intervals")
-      RadioButton(
-        selected = selectedFrequency == frequencyOptions[0],
-        onClick = {
-          selectedState = true
-          viewModel.updateMedFrequency(newFrequency = Frequency.AtRegularIntervals())
-        }
-      )
-    }
-
-    Row(verticalAlignment = Alignment.CenterVertically) {
-      Text(text = "On Specific Days Of The Week")
-      RadioButton(
-        selected = selectedFrequency == frequencyOptions[1],
-        onClick = {
-          selectedState = false
-          viewModel.updateMedFrequency(newFrequency = Frequency.OnSpecificDaysOfTheWeek())
-        })
-    }
-  }*/
-
-  Spacer(modifier = Modifier.padding(8.dp))
-
-  HIGButton(
-    text = "Next",
-    onClick = { onNextClick.invoke() },
-    modifier = Modifier.fillMaxWidth()
-  )
-}
-
-@Composable
-fun NewMedReminderScreen(
-  viewModel: AddNewMedViewModel = viewModel(),
-  onNextClick: () -> Unit
-) {
-}
-
-// endregion
-
-/* MyTextField(
-  value = state.type,
-  onValueChange = { viewModel.updateMedType(it) },
-  label = "Medication type",
-  modifier = Modifier.fillMaxWidth(),
-)
-MyTextField(
-  value = if (state.strength != 0.0f) state.strength.toString() else "",
-  onValueChange = { viewModel.updateMedStrength(it.toFloat()) },
-  label = "Strength",
-  modifier = Modifier.fillMaxWidth(),
-)
-MyTextField(
-  value = state.notes,
-  onValueChange = { viewModel.updateMedNotes(it) },
-  label = "Notes",
-  modifier = Modifier.fillMaxWidth(),
-) */
-
-/* TODO: Date Picker.
- HIGButton(
-  text = "Start Date",
-  onClick = { viewModel.showDatePicker = !viewModel.showDatePicker },
-  enabled = true,
-)
-ModalDatePicker(viewModel) */
-
-// Frequency.
-/*     var selectedFrequency by remember { mutableStateOf(state.frequency) }
-val frequencyOptions =
-  listOf(Frequency.OnSpecificDaysOfTheWeek(), Frequency.AtRegularIntervals())
-
-Text(
-  stringResource(R.string.add_new_med_frequency_screen_title),
-  style = MedTrackerTheme.typography.title2,
-)
-Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-  frequencyOptions.forEach { option ->
-    Row(verticalAlignment = Alignment.CenterVertically) {
-      Text(text = option.toString())
-      RadioButton(
-        selected = selectedFrequency == option,
-        onClick = { selectedFrequency = option },
-      )
-    }
-  }
-} */
-
-// if (
-/* viewModel.selectedStartDate != null &&
-viewModel.selectedEndDate != null && */
-// state.showDatePicker
-// ) {
-/*     DateRangePickerModal(
-  onDateRangeSelected = {
-    selectedDate = it.first.toString()
-    selectEndDate = it.second.toString()
-  },
-  onDismiss = { viewModel.isShowDateChecked(false) },
-) */
-
-/*  val dateS = Date(selectedDate!!)
-val dateE = Date(selectEndDate!!)
-val formatedDateS = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateS)
-val formatedDateE = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateE)
-Text("Selected date: $formatedDateS to $formatedDateE") */
-// } else {
-// Text("No data selected.")
-
-// val dateS = Date(selectedDate!!)
-// val dateE = Date(selectEndDate!!)
-// val formatedDateS = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateS)
-// val formatedDateE = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(dateE)
-
-// Text("Selected date: $formatedDateS to $formatedDateE")
-// }

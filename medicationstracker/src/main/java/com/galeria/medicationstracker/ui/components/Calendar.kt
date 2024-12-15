@@ -93,11 +93,6 @@ fun CalendarDayItem(dayOfWeek: String, date: String, isSelected: Boolean) {
         color = textColor
       )
     }
-    /*     Text(
-          text = date,
-          style = MedTrackerTheme.typography.body,
-          color = textColor
-        ) */
   }
 }
 
@@ -131,7 +126,7 @@ fun DayOfWeekSelector(
 
     Spacer(modifier = Modifier.height(16.dp))
 
-    FlyButton(
+    FlyTonalButton(
       onClick = {
         if (viewModel != null) {
           viewModel.updateSelectedDays(selectedDays.toList())

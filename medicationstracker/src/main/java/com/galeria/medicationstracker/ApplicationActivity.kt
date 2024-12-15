@@ -79,13 +79,6 @@ class ApplicationActivity : ComponentActivity() {
           topBar = {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination?.route
-            /*             val title = when (currentDestination) {
-                          "com.galeria.medicationstracker.model.navigation.Routes.Dashboard" -> "Today, $formattedCurrentDate"
-                          "com.galeria.medicationstracker.model.navigation.Routes.Medications" -> "My Meds"
-                          "com.galeria.medicationstracker.model.navigation.Routes.Profile" -> "My Profile"
-                          //"com.galeria.medicationstracker.model.navigation.Routes.NewMedication" -> "Add medication"
-                          else -> null
-                        } */
 
             // if (shouldDisplayTopBar(currentDestination)) {
             val title = when (currentDestination) {

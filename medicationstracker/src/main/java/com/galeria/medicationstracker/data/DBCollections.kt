@@ -18,24 +18,18 @@ data class UserMedication(
   val notes: String? = null,
 )
 
+data class HospitalDrugs(
+  val name: String? = null, // Drisdol.
+  val drugClass: String? = null, // vitamins d derivatives.
+  val availability: String? = null, // prescription sometimes needed.
+  val strength: Float? = null, // 1.25.
+  val unit: String? = null, // MG.
+  val form: String? = null, // capsules.
+)
 
-// Contains data from firestore db.
-/* data class Medication(
-  val uid: String,
-  val name: String,
-  val type: String,
-  val form: MedicationForms = MedicationForms.TABLET,
-  val strength: Float,
-  val unit: MedicationUnit = MedicationUnit.MG,
-
-  val startDate: LocalDate = LocalDate.now(),
-  val endDate: LocalDate? = null,
-  val frequency: Frequency = Frequency.AtRegularIntervals(0), // TODO: enum?
-  val intakeTime: LocalTime,
-  val notes: String = "",
-) */
 
 sealed class Frequency {
+
   data class AtRegularIntervals(val interval: Int = 0) : Frequency()
 
   data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek> = DayOfWeek.entries) :
@@ -50,6 +44,12 @@ enum class MedicationForms {
   POWDER
 }
 
+enum class UserTypes {
+  ADMIN,
+  PATIENT,
+  DOCTOR,
+}
+
 enum class MedicationUnit {
   MG,
   MCG,
@@ -60,20 +60,25 @@ enum class MedicationUnit {
 
 val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
 
-
 /*TODO: Symptoms, mood..*/
 data class MoodLog(
   val date: LocalDateTime = LocalDateTime.now()
   // TODO
 )
 
-data class Users(
+data class User(
+  val uid: String = "",
+  val login: String = "",
+  val type: UserTypes = UserTypes.PATIENT,
+)
+
+/* data class Users(
   val name: String = "",
   val email: String = "",
-  val pfp: String = "" /* url to pic*/,
-  val born: String = "" /*yyyy-MM-dd*/,
+  val pfp: String = ""  *//* url to pic*//* ,
+  val born: String = ""  *//*yyyy-MM-dd*//* ,
   val notificationPreferences: NotificationPreferences = NotificationPreferences()
-)
+) */
 
 data class NotificationPreferences(
   val sound: Boolean = true,

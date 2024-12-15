@@ -9,36 +9,30 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.SnackbarController
 import com.galeria.medicationstracker.SnackbarEvent
+import com.galeria.medicationstracker.data.User
+import com.galeria.medicationstracker.data.UserTypes
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 
 data class SignupScreenState(
+  val uid: String = "",
   val email: String = "",
   val emailErrorMessage: String? = null,
   val password: String = "",
   val passwordErrorMessage: String? = null,
   val showPassword: Boolean = false,
+  var userType: UserTypes = UserTypes.PATIENT,
 )
 
 class SignupScreenViewModel : ViewModel() {
 
   val auth = FirebaseAuth.getInstance()
 
-  // private lateinit var auth: FirebaseAuth
-
   var signupScreenState by mutableStateOf(SignupScreenState())
-
-  fun updateEmail(input: String) {
-    signupScreenState = signupScreenState.copy(email = input)
-  }
-
-  fun updatePassword(input: String) {
-    signupScreenState = signupScreenState.copy(password = input)
-  }
-
-  fun isShowPasswordChecked(input: Boolean) {
-    signupScreenState = signupScreenState.copy(showPassword = !input)
-  }
+    private set
+  private val db = Firebase.firestore
 
   private fun validateEmail(): Boolean {
     val emailInput = signupScreenState.email.trim()
@@ -85,6 +79,13 @@ class SignupScreenViewModel : ViewModel() {
         .addOnCompleteListener { task ->
           if (task.isSuccessful) {
 
+            // Получение id пользователя.
+            val userId = task.result?.user?.uid ?: ""
+            updateUserId(userId)
+
+            // Добавление нового юзера в БД.
+            addUserData()
+
             // Toast.makeText(context, "Account Created", Toast.LENGTH_SHORT).show()
             viewModelScope.launch {
               SnackbarController.sendEvent(event = SnackbarEvent(message = "Account Created!"))
@@ -103,6 +104,51 @@ class SignupScreenViewModel : ViewModel() {
         SnackbarController.sendEvent(event = SnackbarEvent(message = "Invalid email or password."))
       }
     }
+  }
+
+  fun addUserData() {
+    val newUser = User(
+      signupScreenState.uid,
+      signupScreenState.email,
+      signupScreenState.userType,
+    )
+
+    db.collection("users").add(newUser)
+      .addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+          viewModelScope.launch {
+            SnackbarController.sendEvent(event = SnackbarEvent(message = "Account Created!"))
+          }
+        } else {
+          viewModelScope.launch {
+            SnackbarController.sendEvent(event = SnackbarEvent(message = "Something went wrong :("))
+
+          }
+        }
+
+      }
+  }
+
+  fun updateUserType(input: UserTypes) {
+    signupScreenState = signupScreenState.copy(userType = input)
+  }
+
+
+  fun updateUserId(input: String) {
+    signupScreenState = signupScreenState.copy(uid = input)
+  }
+
+
+  fun updateEmail(input: String) {
+    signupScreenState = signupScreenState.copy(email = input)
+  }
+
+  fun updatePassword(input: String) {
+    signupScreenState = signupScreenState.copy(password = input)
+  }
+
+  fun isShowPasswordChecked(input: Boolean) {
+    signupScreenState = signupScreenState.copy(showPassword = !input)
   }
 }
 

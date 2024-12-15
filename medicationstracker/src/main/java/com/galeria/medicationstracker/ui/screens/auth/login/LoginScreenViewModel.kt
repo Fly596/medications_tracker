@@ -14,9 +14,9 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.launch
 
 data class LoginScreenState(
-  val email: String = "ggsell@gmail.com",
+  val email: String = "adminka@gmail.com",/* "ggsell@gmail.com" */
   val emailError: String? = null,
-  val password: String = "password",
+  val password: String = "14881337",/* "password" */
   val passwordError: String? = null,
   val showPassword: Boolean = false,
 )
