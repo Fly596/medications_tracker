@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.ui.screens.medications.AddNewMedViewModel
@@ -155,8 +154,8 @@ fun DayItem(
   onClick: () -> Unit
 ) {
   val backgroundColor =
-    if (isSelected) MedTrackerTheme.colors.primary400 else colors.secondaryBackground
-  val textColor = if (isSelected) Color.White else Color.Black
+    if (isSelected) MedTrackerTheme.colors.primary400 else colors.primaryBackground
+  val textColor = if (isSelected) MedTrackerTheme.colors.sysWhite else colors.primaryLabel
 
   Box(
     modifier = Modifier

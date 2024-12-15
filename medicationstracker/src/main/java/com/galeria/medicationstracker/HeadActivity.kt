@@ -50,7 +50,7 @@ class HeadActivity : ComponentActivity() {
         Scaffold(
           snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
           modifier = Modifier,
-          containerColor = MedTrackerTheme.colors.primaryBackground,
+          containerColor = MedTrackerTheme.colors.secondaryBackground,
         ) { innerPadding ->
           // Initialize navigation controller
           val navController = rememberNavController()

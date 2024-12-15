@@ -39,6 +39,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.galeria.medicationstracker.model.getFormattedDate
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.HeadViewModel
 import com.galeria.medicationstracker.ui.components.FlyTopAppBar
@@ -52,7 +53,6 @@ import com.galeria.medicationstracker.ui.screens.profile.notifications.Notificat
 import com.galeria.medicationstracker.ui.screens.profile.settings.SettingsScreen
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class ApplicationActivity : ComponentActivity() {
 
@@ -63,7 +63,6 @@ class ApplicationActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
 
     WindowCompat.setDecorFitsSystemWindows(window, false)
-    // enableEdgeToEdge()
 
     setContent {
       MedTrackerTheme {
@@ -71,25 +70,39 @@ class ApplicationActivity : ComponentActivity() {
 
         val items = bottomNavItems()
 
-        val currentDate = LocalDate.now()
-        val dateFormatter = DateTimeFormatter.ofPattern("MMM dd")
-        val formattedCurrentDate = currentDate.format(dateFormatter)
+        val formattedCurrentDate = getFormattedDate(LocalDate.now())
 
         Scaffold(
           modifier = Modifier
             .windowInsetsPadding(WindowInsets.displayCutout),
+
           topBar = {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination?.route
+            /*             val title = when (currentDestination) {
+                          "com.galeria.medicationstracker.model.navigation.Routes.Dashboard" -> "Today, $formattedCurrentDate"
+                          "com.galeria.medicationstracker.model.navigation.Routes.Medications" -> "My Meds"
+                          "com.galeria.medicationstracker.model.navigation.Routes.Profile" -> "My Profile"
+                          //"com.galeria.medicationstracker.model.navigation.Routes.NewMedication" -> "Add medication"
+                          else -> null
+                        } */
+
+            // if (shouldDisplayTopBar(currentDestination)) {
             val title = when (currentDestination) {
               "com.galeria.medicationstracker.model.navigation.Routes.Dashboard" -> "Today, $formattedCurrentDate"
               "com.galeria.medicationstracker.model.navigation.Routes.Medications" -> "My Meds"
               "com.galeria.medicationstracker.model.navigation.Routes.Profile" -> "My Profile"
+              "com.galeria.medicationstracker.model.navigation.Routes.NewMedication" -> "Add medication"
+              "com.galeria.medicationstracker.model.navigation.Routes.AppSettings" -> "App Settings"
+              "com.galeria.medicationstracker.model.navigation.Routes.NotificationsSettings" -> "Notifications Settings"
               else -> null
             }
+
             FlyTopAppBar(
               title = title.toString()
             )
+            //}
+
           },
           containerColor = MedTrackerTheme.colors.secondaryBackground,
           bottomBar = {
@@ -169,6 +182,23 @@ class ApplicationActivity : ComponentActivity() {
       }
     }
   }
+
+  // Function to determine if top bar should be displayed
+  fun shouldDisplayTopBar(currentDestination: String?): Boolean {
+    return when (currentDestination) {
+      Routes.NewMedication.toString() -> false // No top bar on NewMedication screen
+      else -> true // Show top bar on all other screens
+    }
+  }
+  /*   fun shouldDisplayTopBar(route: String?): Boolean {
+      return when (route) {
+        "com.galeria.medicationstracker.model.navigation.Routes.Dashboard",
+        "com.galeria.medicationstracker.model.navigation.Routes.Medications",
+        "com.galeria.medicationstracker.model.navigation.Routes.Profile" -> true
+
+        else -> false
+      }
+    } */
 
   data class BottomNavItem(
     val title: String,

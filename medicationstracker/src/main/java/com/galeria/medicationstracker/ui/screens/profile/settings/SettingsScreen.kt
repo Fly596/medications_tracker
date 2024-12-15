@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.ui.components.FlyTopAppBar
 import com.galeria.medicationstracker.ui.components.HIGListButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
@@ -34,47 +32,39 @@ fun SettingsScreen(
   modifier: Modifier = Modifier,
   viewModel: SettingsViewModel = viewModel()
 ) {
-  Scaffold(
-    topBar = {
-      FlyTopAppBar("App Settings")
-    },
-    containerColor = MedTrackerTheme.colors.secondaryBackground,
-    content = {
-      Column(
-        modifier = modifier
-          .fillMaxSize()
-          .padding(it),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-      ) {
-        Spacer(modifier = Modifier.padding(8.dp))
+  Column(
+    modifier = modifier
+      .fillMaxSize(),
+    //.padding(it),
+    verticalArrangement = Arrangement.spacedBy(8.dp)
+  ) {
+    Spacer(modifier = Modifier.padding(8.dp))
 
-        HIGListButton(
-          text = "Adjust Design",
-          onClick = {
-            // TODO: Navigates to screen.
-          },
-          leftIcon = Icons.Filled.Visibility
-        )
+    HIGListButton(
+      text = "Adjust Design",
+      onClick = {
+        // TODO: Navigates to screen.
+      },
+      leftIcon = Icons.Filled.Visibility
+    )
 
-        HIGListButton(
-          text = "Select Start Page",
-          onClick = {
-            // TODO: Navigates to screen.
-          },
-          leftIcon = Icons.Filled.Start
-        )
+    HIGListButton(
+      text = "Select Start Page",
+      onClick = {
+        // TODO: Navigates to screen.
+      },
+      leftIcon = Icons.Filled.Start
+    )
 
-        HIGListButton(
-          text = "Change Language",
-          onClick = {
-            // TODO: Navigates to screen.
-          },
-          leftIcon = Icons.Filled.Language
-        )
+    HIGListButton(
+      text = "Change Language",
+      onClick = {
+        // TODO: Navigates to screen.
+      },
+      leftIcon = Icons.Filled.Language
+    )
 
-      }
-    }
-  )
+  }
 
 }
 

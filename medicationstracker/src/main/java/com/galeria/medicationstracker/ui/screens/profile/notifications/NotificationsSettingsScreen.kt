@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.ui.components.FlyTopAppBar
 import com.galeria.medicationstracker.ui.components.HIGListButton
 import com.galeria.medicationstracker.ui.components.NavigationRow
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
@@ -30,38 +28,30 @@ fun NotificationsSettingsScreen(
   viewModel: NotificationsSettingsVM = viewModel()
 ) {
 
-  Scaffold(
-    topBar = {
-      FlyTopAppBar("Notifications Settings")
-    },
-    containerColor = MedTrackerTheme.colors.secondaryBackground,
-    content = {
-      Column(
-        modifier = modifier
-          .fillMaxSize()
-          .padding(it),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-      ) {
+  Column(
+    modifier = modifier
+      .fillMaxSize(),
+    //.padding(it),
+    verticalArrangement = Arrangement.spacedBy(8.dp)
+  ) {
 
-        Spacer(modifier = Modifier.padding(8.dp))
+    Spacer(modifier = Modifier.padding(8.dp))
 
-        HIGListButton(
-          onClick = { /* TODO: Navigates to screen. */ },
-          text = "Med alarm sound",
-          rightText = "Energy",
-          textStyle = MedTrackerTheme.typography.bodyEmphasized
-        )
+    HIGListButton(
+      onClick = { /* TODO: Navigates to screen. */ },
+      text = "Med alarm sound",
+      rightText = "Energy",
+      textStyle = MedTrackerTheme.typography.bodyEmphasized
+    )
 
-        HIGListButton(
-          onClick = { /* TODO: Navigates to screen. */ },
-          text = "Customize notification",
-          rightText = "Compact",
-          textStyle = MedTrackerTheme.typography.bodyEmphasized
-        )
+    HIGListButton(
+      onClick = { /* TODO: Navigates to screen. */ },
+      text = "Customize notification",
+      rightText = "Compact",
+      textStyle = MedTrackerTheme.typography.bodyEmphasized
+    )
 
-      }
-    }
-  )
+  }
 
 
 }

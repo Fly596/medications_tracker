@@ -1,11 +1,11 @@
 package com.galeria.medicationstracker.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,6 +16,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
-fun MyTextField(
+fun FlyTextField(
   value: String,
   onValueChange: (String) -> Unit,
   label: String,
@@ -36,9 +37,52 @@ fun MyTextField(
   visualTransformation: VisualTransformation = VisualTransformation.None,
   keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
 ) {
+  BasicTextField(
+    modifier = modifier
+      .fillMaxWidth()
+      .padding(top = 8.dp, bottom = 16.dp),
+    value = value,
+    onValueChange = onValueChange,
+    singleLine = true,
+    keyboardOptions = keyboardOptions,
+    textStyle = MedTrackerTheme.typography.body,
+    decorationBox = { innerTextField ->
+      Box(
+        modifier = Modifier
+          .fillMaxWidth()
+          .background(MedTrackerTheme.colors.primaryBackground, RoundedCornerShape(6.dp))
+          .padding(16.dp),
+        contentAlignment = Alignment.BottomStart
+      ) {
+        if (value.isEmpty()) {
+          Text("Add Medication Name", color = Color.LightGray)
+        }
+        innerTextField()
+      }
+
+    }
+  )
+}
+
+@Composable
+fun MyTextField(
+  value: String,
+  onValueChange: (String) -> Unit,
+  label: String,
+  supportingText: String? = null,
+  placeholder: String? = null,
+  enabled: Boolean = true,
+  isError: Boolean = false,
+  errorMessage: String? = null,
+  readOnly: Boolean = false,
+  modifier: Modifier = Modifier,
+  visualTransformation: VisualTransformation = VisualTransformation.None,
+  keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+) {
   TextField(
     value = value,
     singleLine = true,
+    readOnly = readOnly,
     isError = isError,
     textStyle = MedTrackerTheme.typography.body,
     onValueChange = onValueChange,
@@ -57,15 +101,25 @@ fun MyTextField(
     keyboardOptions = keyboardOptions,
     visualTransformation = visualTransformation,
     modifier = modifier,
-    shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
+    shape = RoundedCornerShape(
+      topStart = 12.dp,
+      topEnd = 12.dp,
+      bottomEnd = 12.dp,
+      bottomStart = 12.dp
+    ),
     colors =
       TextFieldDefaults.colors(
-        unfocusedContainerColor = MedTrackerTheme.colors.secondaryBackground,
+        unfocusedContainerColor = MedTrackerTheme.colors.primaryBackground,
         unfocusedIndicatorColor = MedTrackerTheme.colors.sysTransparent,
         disabledIndicatorColor = MedTrackerTheme.colors.sysTransparent,
         focusedIndicatorColor = MedTrackerTheme.colors.primary400,
-        focusedContainerColor = MedTrackerTheme.colors.secondaryBackground,
+        focusedContainerColor = MedTrackerTheme.colors.primaryBackground,
         errorIndicatorColor = MedTrackerTheme.colors.sysError,
+        focusedLabelColor = MedTrackerTheme.colors.primary400,
+        unfocusedLabelColor = MedTrackerTheme.colors.secondaryLabel,
+        errorLabelColor = MedTrackerTheme.colors.sysError,
+        errorSupportingTextColor = MedTrackerTheme.colors.sysError,
+        errorCursorColor = MedTrackerTheme.colors.sysError,
       ),
   )
 }
@@ -122,6 +176,7 @@ fun MyOutlinedTextField(
   )
 }
 
+/*
 @Preview(
   name = "TFields",
   showBackground = false,
@@ -137,7 +192,8 @@ private fun PreviewButtons() {
       verticalArrangement = Arrangement.Center,
     ) {
       Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        /*         MyTextField(
+        */
+/*         MyTextField(
           value = "value",
           onValueChange = {},
           label = "label",
@@ -154,7 +210,8 @@ private fun PreviewButtons() {
           modifier = TODO(),
           visualTransformation = TODO(),
           keyboardOptions = TODO(),
-        ) */
+        ) *//*
+
         Spacer(modifier = Modifier.height(24.dp))
 
         MyRadioButton(selected = true, onClick = {})
@@ -166,4 +223,27 @@ private fun PreviewButtons() {
       }
     }
   }
+}
+*/
+
+@Preview(
+  showBackground = false,
+  showSystemUi = false,
+  device = "spec:parent=pixel_8,navigation=buttons",
+)
+@Composable
+fun FlyTextFieldPreview() {
+  FlyTextField(
+    value = "",
+    onValueChange = {},
+    label = "Label",
+    supportingText = "Supporting Text",
+    placeholder = "Placeholder",
+    enabled = true,
+    isError = false,
+    errorMessage = null,
+    modifier = Modifier,
+    visualTransformation = VisualTransformation.None,
+    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+  )
 }

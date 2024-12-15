@@ -136,7 +136,10 @@ fun HIGListButton(
       .fillMaxWidth()
       .padding(vertical = 8.dp),
   ) {
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
 
       if (leftIcon != null) {
         Icon(
@@ -228,7 +231,7 @@ fun FlyButton(
   onClick: () -> Unit,
   modifier: Modifier = Modifier,
   enabled: Boolean = true,
-  textStyle: TextStyle = MedTrackerTheme.typography.headline,
+  textStyle: TextStyle = MedTrackerTheme.typography.body,
   shape: Shape = ButtonShape,
   content: @Composable RowScope.() -> Unit,
 ) {
