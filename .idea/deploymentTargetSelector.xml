@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="medicationstracker">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-12-15T22:11:45.976382300Z">
+        <DropdownSelection timestamp="2024-12-16T03:01:14.642668500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\zheny\.android\avd\Pixel_8_Pro.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=39191FDJH00GPJ" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -28,6 +28,9 @@
         <DialogSelection />
       </SelectionState>
       <SelectionState runConfigName="FlyElevatedCardMedsListPreview">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="DoctorActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

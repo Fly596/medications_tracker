@@ -1,20 +1,15 @@
 package com.galeria.medicationstracker.ui.screens.auth.signup
 
-import android.content.Context
-import android.util.Patterns
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.galeria.medicationstracker.SnackbarController
-import com.galeria.medicationstracker.SnackbarEvent
-import com.galeria.medicationstracker.data.User
-import com.galeria.medicationstracker.data.UserTypes
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.launch
+import android.content.*
+import android.util.*
+import androidx.compose.runtime.*
+import androidx.lifecycle.*
+import com.galeria.medicationstracker.*
+import com.galeria.medicationstracker.data.*
+import com.google.firebase.*
+import com.google.firebase.auth.*
+import com.google.firebase.firestore.*
+import kotlinx.coroutines.*
 
 data class SignupScreenState(
   val uid: String = "",
@@ -27,18 +22,18 @@ data class SignupScreenState(
 )
 
 class SignupScreenViewModel : ViewModel() {
-
+  
   val auth = FirebaseAuth.getInstance()
-
+  
   var signupScreenState by mutableStateOf(SignupScreenState())
     private set
   private val db = Firebase.firestore
-
+  
   private fun validateEmail(): Boolean {
     val emailInput = signupScreenState.email.trim()
     var isValid = true
     var errorMessage = ""
-
+    
     if (emailInput.isBlank() || emailInput.isEmpty()) {
       errorMessage = "Email cannot be empty"
       isValid = false
@@ -46,17 +41,17 @@ class SignupScreenViewModel : ViewModel() {
       errorMessage = "Wrong email format"
       isValid = false
     }
-
+    
     signupScreenState = signupScreenState.copy(emailErrorMessage = errorMessage)
     return isValid
   }
-
+  
   private fun validatePassword(): Boolean {
-
+    
     val passwordInput = signupScreenState.password
     var isValid = true
     var errorMessage = ""
-
+    
     if (passwordInput.isBlank() || passwordInput.isEmpty()) {
       errorMessage = "Password cannot be empty"
       isValid = false
@@ -64,28 +59,32 @@ class SignupScreenViewModel : ViewModel() {
       errorMessage = "Password must be at least 6 characters"
       isValid = false
     }
-
-    signupScreenState = signupScreenState.copy(passwordErrorMessage = errorMessage)
+    
+    signupScreenState =
+      signupScreenState.copy(passwordErrorMessage = errorMessage)
     return isValid
   }
-
+  
   fun onRegisterClick(context: Context, onSignupSuccess: () -> Unit) {
     val isEmailValid = validateEmail()
     val isPasswordValid = validatePassword()
-
+    
     if (isEmailValid && isPasswordValid) {
       auth
-        .createUserWithEmailAndPassword(signupScreenState.email, signupScreenState.password)
+        .createUserWithEmailAndPassword(
+          signupScreenState.email,
+          signupScreenState.password
+        )
         .addOnCompleteListener { task ->
           if (task.isSuccessful) {
-
+            
             // Получение id пользователя.
             val userId = task.result?.user?.uid ?: ""
             updateUserId(userId)
-
+            
             // Добавление нового юзера в БД.
             addUserData()
-
+            
             // Toast.makeText(context, "Account Created", Toast.LENGTH_SHORT).show()
             viewModelScope.launch {
               SnackbarController.sendEvent(event = SnackbarEvent(message = "Account Created!"))
@@ -105,14 +104,14 @@ class SignupScreenViewModel : ViewModel() {
       }
     }
   }
-
+  
   fun addUserData() {
     val newUser = User(
       signupScreenState.uid,
       signupScreenState.email,
       signupScreenState.userType,
     )
-
+    
     db.collection("users").add(newUser)
       .addOnCompleteListener { task ->
         if (task.isSuccessful) {
@@ -122,31 +121,31 @@ class SignupScreenViewModel : ViewModel() {
         } else {
           viewModelScope.launch {
             SnackbarController.sendEvent(event = SnackbarEvent(message = "Something went wrong :("))
-
+            
           }
         }
-
+        
       }
   }
-
+  
   fun updateUserType(input: UserTypes) {
     signupScreenState = signupScreenState.copy(userType = input)
   }
-
-
+  
+  
   fun updateUserId(input: String) {
     signupScreenState = signupScreenState.copy(uid = input)
   }
-
-
+  
+  
   fun updateEmail(input: String) {
     signupScreenState = signupScreenState.copy(email = input)
   }
-
+  
   fun updatePassword(input: String) {
     signupScreenState = signupScreenState.copy(password = input)
   }
-
+  
   fun isShowPasswordChecked(input: Boolean) {
     signupScreenState = signupScreenState.copy(showPassword = !input)
   }
