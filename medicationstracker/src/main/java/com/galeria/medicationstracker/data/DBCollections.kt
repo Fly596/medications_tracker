@@ -1,9 +1,8 @@
 package com.galeria.medicationstracker.data
 
-import android.icu.text.SimpleDateFormat
-import java.time.DayOfWeek
-import java.time.LocalDateTime
-import java.util.Locale
+import android.icu.text.*
+import java.time.*
+import java.util.*
 
 data class UserMedication(
   val uid: String? = null,
@@ -29,9 +28,9 @@ data class HospitalDrugs(
 
 
 sealed class Frequency {
-
+  
   data class AtRegularIntervals(val interval: Int = 0) : Frequency()
-
+  
   data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek> = DayOfWeek.entries) :
     Frequency()
 }
@@ -44,11 +43,17 @@ enum class MedicationForms {
   POWDER
 }
 
-enum class UserTypes {
+enum class UserType {
   ADMIN,
   PATIENT,
   DOCTOR,
 }
+
+data class User(
+  val uid: String,
+  val login: String,
+  val type: UserType = UserType.PATIENT
+)
 
 enum class MedicationUnit {
   MG,
@@ -64,12 +69,6 @@ val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
 data class MoodLog(
   val date: LocalDateTime = LocalDateTime.now()
   // TODO
-)
-
-data class User(
-  val uid: String = "",
-  val login: String = "",
-  val type: UserTypes = UserTypes.PATIENT,
 )
 
 /* data class Users(

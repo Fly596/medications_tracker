@@ -1,6 +1,7 @@
 [versions]
 agp = "8.9.0-alpha05"
 firebaseBom = "33.7.0"
+hiltAndroid = "2.51.1"
 kotlin = "2.0.20"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -30,6 +31,7 @@ roomRuntime = "2.7.0-alpha12"
 lifecycleViewmodelComposeVersion = "2.9.0-alpha08"
 playServicesLocation = "21.3.0"
 kotlinxSerializationJson = "1.8.0-RC"
+comGoogleDaggerHiltAndroidGradlePlugin = "2.53.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +40,8 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics", versio
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 #noinspection SimilarGradleDependency
 firebase-storage = { module = "com.google.firebase:firebase-storage", version = "21.0.1" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -76,6 +80,7 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelComposeVersion" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 jetbrains-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+com-google-dagger-hilt-android-gradle-plugin = { group = "com.google.dagger.hilt.android", name = "com.google.dagger.hilt.android.gradle.plugin", version.ref = "comGoogleDaggerHiltAndroidGradlePlugin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
