@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="medicationstracker">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-12-16T03:01:14.642668500Z">
+        <DropdownSelection timestamp="2024-12-16T16:56:59.015639900Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="PhysicalDevice" identifier="serial=39191FDJH00GPJ" />

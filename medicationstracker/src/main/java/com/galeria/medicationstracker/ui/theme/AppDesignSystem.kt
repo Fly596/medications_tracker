@@ -1,18 +1,13 @@
 package com.galeria.medicationstracker.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ProvideTextStyle
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.text.*
 
 @Immutable
 data class MedTrackerColors(
@@ -43,7 +38,7 @@ data class MedTrackerColors(
   val primaryGroupedBackgroundDark: Color,
   val secondaryGroupedBackgroundDark: Color,
   val tertiaryGroupedBackgroundDark: Color,
-
+  
   // typo.
   val primaryLabel: Color,
   val secondaryLabel: Color,
@@ -51,11 +46,11 @@ data class MedTrackerColors(
   val primaryLabelDark: Color,
   val secondaryLabelDark: Color,
   val tertiaryLabelDark: Color,
-
+  
   // Separators.
   val separator: Color,
   val opaqueSeparator: Color,
-
+  
   // Functional colors.
   val sysError: Color,
   val sysWarning: Color,
@@ -68,58 +63,58 @@ data class MedTrackerColors(
 @Immutable
 data class MedTrackerTypography(
   val largeTitle:
-    TextStyle, // Used for titles and headings that need to make a strong visual impact.
+  TextStyle, // Used for titles and headings that need to make a strong visual impact.
   val largeTitleEmphasized: TextStyle,
   val title1:
-    TextStyle, // A major section heading, often used for top-level content within a page or screen.
+  TextStyle, // A major section heading, often used for top-level content within a page or screen.
   val title1Emphasized:
-    TextStyle, // A major section heading, often used for top-level content within a page or screen.
+  TextStyle, // A major section heading, often used for top-level content within a page or screen.
   val title2:
-    TextStyle, // A secondary heading, used to introduce subsections or groups of related content.
+  TextStyle, // A secondary heading, used to introduce subsections or groups of related content.
   val title2Emphasized:
-    TextStyle, // A secondary heading, used to introduce subsections or groups of related content.
+  TextStyle, // A secondary heading, used to introduce subsections or groups of related content.
   val title3: TextStyle, // A tertiary heading, used to organize content within a subsection.
   val title3Emphasized:
-    TextStyle, // A tertiary heading, used to organize content within a subsection.
-
+  TextStyle, // A tertiary heading, used to organize content within a subsection.
+  
   // Body Text and Related Styles.
   val headline:
-    TextStyle, // A short, attention-grabbing piece of text, often used for promotional or
+  TextStyle, // A short, attention-grabbing piece of text, often used for promotional or
   // call-to-action purposes.
   val headlineItalic:
-    TextStyle, // A short, attention-grabbing piece of text, often used for promotional or
+  TextStyle, // A short, attention-grabbing piece of text, often used for promotional or
   // call-to-action purposes.
   val body:
-    TextStyle, // The main content of a page or screen, used for paragraphs and blocks of text.
+  TextStyle, // The main content of a page or screen, used for paragraphs and blocks of text.
   val bodyEmphasized:
-    TextStyle, // The main content of a page or screen, used for paragraphs and blocks of text.
+  TextStyle, // The main content of a page or screen, used for paragraphs and blocks of text.
   val callout:
-    TextStyle, // Text that highlights important information or provides additional context.
+  TextStyle, // Text that highlights important information or provides additional context.
   val calloutEmphasized:
-    TextStyle, // Text that highlights important information or provides additional context.
+  TextStyle, // Text that highlights important information or provides additional context.
   val subhead:
-    TextStyle, // A smaller heading used to introduce a paragraph or section within the body
+  TextStyle, // A smaller heading used to introduce a paragraph or section within the body
   // content.
   val subheadEmphasized:
-    TextStyle, // A smaller heading used to introduce a paragraph or section within the body
+  TextStyle, // A smaller heading used to introduce a paragraph or section within the body
   // content.
   val footnote:
-    TextStyle, // Small-sized text typically placed at the bottom of a page or screen for additional
+  TextStyle, // Small-sized text typically placed at the bottom of a page or screen for additional
   // information or credits.
   val footnoteEmphasized:
-    TextStyle, // Small-sized text typically placed at the bottom of a page or screen for additional
+  TextStyle, // Small-sized text typically placed at the bottom of a page or screen for additional
   // information or credits.
   val caption1:
-    TextStyle, // Descriptive text accompanying an image or graphic, often placed below the visual
+  TextStyle, // Descriptive text accompanying an image or graphic, often placed below the visual
   // content.
   val caption1Emphasized:
-    TextStyle, // Descriptive text accompanying an image or graphic, often placed below the visual
+  TextStyle, // Descriptive text accompanying an image or graphic, often placed below the visual
   // content.
   val caption2:
-    TextStyle, // Smaller caption text, used for additional details or metadata related to an image
+  TextStyle, // Smaller caption text, used for additional details or metadata related to an image
   // or graphic.
   val caption2Emphasized:
-    TextStyle, // Smaller caption text, used for additional details or metadata related to an image
+  TextStyle, // Smaller caption text, used for additional details or metadata related to an image
   // or graphic.
 )
 
@@ -250,9 +245,9 @@ fun MedTrackerTheme(
       sysBlack,
       sysTransparent,
     )
-
+  
   val medTrackerTypography = AppTypography
-
+  
   CompositionLocalProvider(
     LocalMedTrackerColors provides medTrackerColors,
     LocalMedTrackerTypography provides medTrackerTypography,
@@ -261,10 +256,10 @@ fun MedTrackerTheme(
 }
 
 object MedTrackerTheme {
-
+  
   val colors: MedTrackerColors
     @Composable get() = LocalMedTrackerColors.current
-
+  
   val typography: MedTrackerTypography
     @Composable get() = LocalMedTrackerTypography.current
 }

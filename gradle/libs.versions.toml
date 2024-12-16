@@ -16,8 +16,8 @@ comGoogleGmsGoogleServicesGradlePlugin = "4.4.2"
 firebaseFirestoreKtx = "25.1.1"
 firebaseStorageKtx = "21.0.1"
 coilCompose = "2.7.0"
-uiTextGoogleFonts = "1.7.5"
-uiTextGoogleFontsVersion = "1.7.5"
+uiTextGoogleFonts = "1.7.6"
+uiTextGoogleFontsVersion = "1.7.6"
 firebaseFirestore = "25.1.1"
 firebaseAuth = "23.1.0"
 comGoogleRelayGradlePlugin = "0.3.12"
@@ -29,6 +29,7 @@ serialization = "1.7.3"
 roomRuntime = "2.7.0-alpha12"
 lifecycleViewmodelComposeVersion = "2.9.0-alpha08"
 playServicesLocation = "21.3.0"
+kotlinxSerializationJson = "1.8.0-RC"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -74,6 +75,7 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 #noinspection SimilarGradleDependency
 lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelComposeVersion" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+jetbrains-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

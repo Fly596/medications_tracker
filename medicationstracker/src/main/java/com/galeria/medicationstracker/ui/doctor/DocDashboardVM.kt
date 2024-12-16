@@ -4,7 +4,6 @@ import androidx.lifecycle.*
 import com.galeria.medicationstracker.data.*
 import com.google.firebase.*
 import com.google.firebase.firestore.*
-import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.*
 import kotlinx.coroutines.flow.*
 
@@ -57,12 +56,12 @@ class DocDashboardVM : ViewModel() {
   
   
   init {
-    viewModelScope.launch {
-      getPatientsList().collect { patients ->
-        docDashboardState.value =
-          docDashboardState.value.copy(patientsList = patients)
-      }
-    }
+    /*     viewModelScope.launch {
+          getPatientsList().collect { patients ->
+            docDashboardState.value =
+              docDashboardState.value.copy(patientsList = patients)
+          }
+        } */
   }
   
   private fun getPatientsList():

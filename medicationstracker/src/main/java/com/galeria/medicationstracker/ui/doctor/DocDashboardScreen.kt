@@ -17,28 +17,29 @@ fun DocDashboardScreen(
   val state = viewModel._docDashboardState.collectAsStateWithLifecycle()
   
   val testValues = state.value.tempList
-  val patientsList = state.value.patientsList
+  // val patientsList = state.value.patientsList
   val headerValues = state.value.headerValuesUsers
   
   Column(modifier = modifier.fillMaxWidth()) {
+    
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
       // Header Row.
       item {
         FlyRow(values = headerValues, isHeader = true)
       }
       
-      items(patientsList!!.size) { index ->
-        FlyRow(
-          values = listOf<String>(patientsList[index].toString()),
-          isHeader = false
-        )
-        
-      }
+      /*       items(patientsList!!.size) { index ->
+              FlyRow(
+                values = listOf<String>(patientsList[index].toString()),
+                isHeader = false
+              )
+              
+            } */
       
       // Body Rows.
-      /* items(testValues.size) { index ->
+      items(testValues.size) { index ->
         FlyRow(values = testValues[index], isHeader = false)
-      } */
+      }
       
     }
   }
