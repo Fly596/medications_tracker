@@ -14,10 +14,22 @@ sealed class Routes {
 
   @Serializable
   data class PasswordRecovery(val email: String?) : Routes()
+  // endregion
+
+  // region Admin Screens.
+
+  // экран с данными всех таблиц БД.
+  @Serializable
+  data object DataBaseData : Routes()
 
   // endregion
 
-  // import com.google.firebase.firestore.ktx.toObjects
+  // region Doctor Screens.
+  @Serializable
+  data object DocDashboard : Routes()
+
+  // endregion
+
   // region Application
   @Serializable
   data object Dashboard : Routes()

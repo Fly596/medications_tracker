@@ -121,33 +121,6 @@ fun SignupScreen(
 
     )
 
-    /*     Column(
-          modifier = Modifier.fillMaxWidth(),
-          verticalArrangement = Arrangement.spacedBy(8.dp),
-          horizontalAlignment = Alignment.Start
-        ) {
-          var selectedType by remember { mutableStateOf(state.userType) }
-          val options = UserTypes.entries.toTypedArray()
-
-          options.forEach { type ->
-            Row {
-              MyRadioButton(
-                selected = selectedType == type,
-                onClick = {
-                  selectedType = type
-                   *//* viewModel.updateUserType(
-                type
-              ) *//*
-            },
-            caption = type.toString().lowercase()
-          )
-        }
-
-      }
-    } */
-
-    // UserTypesSelection(viewModel)
-
     Spacer(modifier = Modifier.height(16.dp))
 
     val context = LocalContext.current

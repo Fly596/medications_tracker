@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.data.UserTypes
 import com.galeria.medicationstracker.ui.components.FlyButton
 import com.galeria.medicationstracker.ui.components.FlyTextButton
 import com.galeria.medicationstracker.ui.components.FlyTonalButton
@@ -32,12 +34,13 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 @Composable
 fun LoginScreen(
   modifier: Modifier = Modifier,
-  onLoginClick: () -> Unit,
+  onLoginClick: (userType: UserTypes) -> Unit,
   onSignupClick: (String) -> Unit,
   onResetPasswordClick: (String) -> Unit,
   viewModel: LoginScreenViewModel = viewModel(),
 ) {
   val state = viewModel.loginScreenState
+  val context = LocalContext.current
 
   Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
     Text(
@@ -91,7 +94,12 @@ fun LoginScreen(
       val scope = rememberCoroutineScope()
 
       FlyButton(
-        onClick = { viewModel.onSignInClick(state.email, state.password, onLoginClick) },
+        onClick = {
+          viewModel.onSignInClick(state.email, state.password) { userType ->
+            onLoginClick(userType)
+          }
+
+        },
         enabled = true,
       ) {
         Text(text = "Sign In")

@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="medicationstracker">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-12-15T19:54:52.768268700Z">
+        <DropdownSelection timestamp="2024-12-15T22:11:45.976382300Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=39191FDJH00GPJ" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\zheny\.android\avd\Pixel_8_Pro.avd" />
             </handle>
           </Target>
         </DropdownSelection>

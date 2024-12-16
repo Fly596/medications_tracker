@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.galeria.medicationstracker.data.UserTypes
 import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRecoveryScreen
 import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
@@ -52,6 +53,7 @@ class HeadActivity : ComponentActivity() {
           modifier = Modifier,
           containerColor = MedTrackerTheme.colors.secondaryBackground,
         ) { innerPadding ->
+
           // Initialize navigation controller
           val navController = rememberNavController()
           // Get the current context for navigation
@@ -70,10 +72,23 @@ class HeadActivity : ComponentActivity() {
             // Home route with login, signup, and password reset actions
             composable<Routes.Home> {
               LoginScreen(
-                onLoginClick = {
-                  // Navigate to main application screen
-                  val intent = Intent(context, ApplicationActivity::class.java)
-                  startActivity(intent)
+                onLoginClick = { userType ->
+                  when (userType) {
+                    UserTypes.ADMIN -> {
+                      val intent = Intent(context, AdminActivity::class.java)
+                      startActivity(intent)
+                    }
+
+                    UserTypes.DOCTOR -> {
+                      val intent = Intent(context, DoctorActivity::class.java)
+                      startActivity(intent)
+                    }
+
+                    else -> {
+                      val intent = Intent(context, ApplicationActivity::class.java)
+                      startActivity(intent)
+                    }
+                  }
                 },
                 onSignupClick = { email ->
                   // Navigate to the registration screen with email

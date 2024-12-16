@@ -9,8 +9,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpeechRecognitionApp">
         <activity
+            android:name=".AdminActivity"
+            android:exported="true"
+            android:label="@string/title_activity_admin"
+            android:theme="@style/Theme.SpeechRecognitionApp" />
+        <activity
+            android:name=".DoctorActivity"
+            android:exported="true"
+            android:label="@string/title_activity_doctor"
+            android:theme="@style/Theme.SpeechRecognitionApp" />
+        <activity
             android:name=".ApplicationActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_application"
             android:theme="@style/Theme.SpeechRecognitionApp" />
         <activity
