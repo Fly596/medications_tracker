@@ -10,6 +10,7 @@ import androidx.compose.ui.*
 import androidx.navigation.compose.*
 import com.galeria.medicationstracker.model.*
 import com.galeria.medicationstracker.model.navigation.Routes.NavigationRoutes
+import com.galeria.medicationstracker.ui.*
 import com.galeria.medicationstracker.ui.components.*
 import com.galeria.medicationstracker.ui.theme.*
 import com.google.firebase.*
@@ -17,6 +18,8 @@ import kotlinx.coroutines.*
 import java.time.*
 
 class HeadActivity : ComponentActivity() {
+  
+  private val headViewModel: HeadViewModel by viewModels()
   
   @OptIn(ExperimentalMaterial3Api::class)
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +32,9 @@ class HeadActivity : ComponentActivity() {
       val navController = rememberNavController()
       
       MedTrackerTheme {
+        
+        val items = bottomNavItems()
+        
         Scaffold(
           modifier = Modifier
             .fillMaxSize()
@@ -42,7 +48,7 @@ class HeadActivity : ComponentActivity() {
             val routeTitles = mapOf(
               NavigationRoutes.USER_DASHBOARD to {
                 "Today, ${
-                  getFormattedDate(
+                  getStringFormattedDate(
                     LocalDate.now()
                   )
                 }"
@@ -56,25 +62,6 @@ class HeadActivity : ComponentActivity() {
               NavigationRoutes.ADMIN_DASHBOARD to { "Hello, Admin" },
             )
             
-            // if (shouldDisplayTopBar(currentDestination)) {
-            /*             val title = when (currentDestination) {
-                          "com.galeria.medicationstracker.model.navigation.Routes.UserDashboard" -> "Today, ${
-                            getFormattedDate(
-                              LocalDate.now()
-                            )
-                          }"
-                          
-                          "com.galeria.medicationstracker.model.navigation.Routes.Medications" -> "My Meds"
-                          "com.galeria.medicationstracker.model.navigation.Routes.Profile" -> "My Profile"
-                          "com.galeria.medicationstracker.model.navigation.Routes.NewMedication" -> "Add medication"
-                          "com.galeria.medicationstracker.model.navigation.Routes.AppSettings" -> "App Settings"
-                          "com.galeria.medicationstracker.model.navigation.Routes.NotificationsSettings" -> "Notifications Settings"
-                          
-                          "com.galeria.medicationstracker.model.navigation.Routes.DocDashboard" -> "Welcome, Doctor"
-                          "com.galeria.medicationstracker.model.navigation.Routes.AdminDashboard" -> "Hello, Admin"
-                          else -> null
-                        } */
-            
             val routesWithoutTopBar = listOf(
               NavigationRoutes.LOGIN,
               NavigationRoutes.REGISTRATION,
@@ -86,6 +73,9 @@ class HeadActivity : ComponentActivity() {
               FlyTopAppBar(title = title)
             }
             
+          },
+          bottomBar = {
+            BottomNavBar(items, navController, headViewModel)
           },
           content = {
             MedTrackerNavGraph(

@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.tasks.*
 
 data class LoginScreenState(
-  val email: String = "ggsell@gmail.com",/* "adminka@gmail.com" */
+  val email: String = "user@gmail.com",/* "ggsell@gmail.com", *//* "adminka@gmail.com" */
   val emailError: String? = null,
-  val password: String = "password",/* "14881337" */
+  val password: String = "user66",/*"password" "14881337" */
   val passwordError: String? = null,
   val showPassword: Boolean = false,
   val userType: UserType = UserType.PATIENT,

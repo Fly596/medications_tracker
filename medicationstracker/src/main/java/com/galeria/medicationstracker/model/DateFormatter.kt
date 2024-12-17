@@ -1,11 +1,46 @@
 package com.galeria.medicationstracker.model
 
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import com.google.firebase.*
+import java.text.*
+import java.time.*
+import java.time.format.*
+import java.util.*
 
-fun getFormattedDate(date: LocalDate): String {
+fun getStringFormattedDate(inputDate: LocalDate): String {
   val dateFormatter = DateTimeFormatter.ofPattern("MMM dd")
-  val formattedCurrentDate = date.format(dateFormatter)
-
+  val formattedCurrentDate = inputDate.format(dateFormatter)
+  
   return formattedCurrentDate.toString()
+}
+
+fun parseDateString(dateString: String): LocalDate {
+  return try {
+    val formatter = DateTimeFormatter.ofPattern("MMM dd")
+    
+    LocalDate.parse(dateString, formatter)
+  } catch (e: Exception) {
+    
+    // Handle parsing errors, e.g., log the error or return null
+    LocalDate.now()
+  }
+}
+
+fun parseDateForFirestore(dateString: String): Timestamp? {
+  return try {
+    val formatter = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault())
+    val date = formatter.parse(dateString)
+    if (date != null) {
+      Timestamp(date)
+    } else {
+      null
+    }
+  } catch (e: Exception) {
+    // Handle parsing errors (e.g., log the error)
+    null
+  }
+}
+
+fun formatTimestamp(timestamp: Timestamp): String {
+  val formatter = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault())
+  return formatter.format(timestamp.toDate())
 }

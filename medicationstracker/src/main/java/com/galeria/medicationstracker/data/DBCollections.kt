@@ -1,6 +1,7 @@
 package com.galeria.medicationstracker.data
 
 import android.icu.text.*
+import com.google.firebase.*
 import java.time.*
 import java.util.*
 
@@ -10,8 +11,8 @@ data class UserMedication(
   val form: String? = null,
   val strength: Float? = null,
   val unit: String? = null,
-  val startDate: String? = null,
-  val endDate: String? = null,
+  val startDate: Timestamp? = null,
+  val endDate: Timestamp? = null,
   val frequency: String? = null,
   val intakeTime: String? = null,
   val notes: String? = null,
@@ -25,6 +26,18 @@ data class HospitalDrugs(
   val unit: String? = null, // MG.
   val form: String? = null, // capsules.
 )
+
+data class User(
+  val uid: String,
+  val login: String,
+  val type: UserType = UserType.PATIENT
+)
+
+enum class UserType {
+  ADMIN,
+  PATIENT,
+  DOCTOR,
+}
 
 
 sealed class Frequency {
@@ -42,18 +55,6 @@ enum class MedicationForms {
   INJECTION,
   POWDER
 }
-
-enum class UserType {
-  ADMIN,
-  PATIENT,
-  DOCTOR,
-}
-
-data class User(
-  val uid: String,
-  val login: String,
-  val type: UserType = UserType.PATIENT
-)
 
 enum class MedicationUnit {
   MG,

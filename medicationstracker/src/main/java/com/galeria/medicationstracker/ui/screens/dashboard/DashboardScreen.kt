@@ -1,22 +1,17 @@
 package com.galeria.medicationstracker.ui.screens.dashboard
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.data.UserMedication
-import com.galeria.medicationstracker.ui.components.FlyCardMedsByTimeList
-import com.galeria.medicationstracker.ui.components.WeeklyCalendarView
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.tooling.preview.*
+import androidx.compose.ui.unit.*
+import androidx.lifecycle.viewmodel.compose.*
+import com.galeria.medicationstracker.data.*
+import com.galeria.medicationstracker.ui.components.*
+import com.google.firebase.*
+import java.time.*
+import java.time.format.*
 
 // TODO: Get medications from firebase DB.
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,14 +25,14 @@ fun DashboardScreen(
   val currentDate = LocalDate.now()
   val dateFormatter = DateTimeFormatter.ofPattern("MMM dd")
   val formattedCurrentDate = currentDate.format(dateFormatter)
-
+  
   val showLogDialog = remember { mutableStateOf(false) }
-
+  
   Column(
     modifier = modifier
       .padding(horizontal = 16.dp),
     verticalArrangement = Arrangement.spacedBy(16.dp),
-
+    
     ) {
 /*
 
@@ -57,11 +52,11 @@ fun DashboardScreen(
       )
     }
 */
-
+    
     Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
+    
     WeeklyCalendarView()
-
+    
     // TODO: Replace with medication data from firebase DB.
     val medicationsTest = listOf(
       UserMedication(
@@ -70,50 +65,50 @@ fun DashboardScreen(
         form = "Tablet",
         strength = 500f,
         unit = "mg",
-        startDate = "2024-12-01",
-        endDate = "2024-12-10",
+        startDate = Timestamp.now(),
+        endDate = Timestamp.now(),
         frequency = "Twice a day",
         intakeTime = "9:25 AM",
         notes = "Take after meals"
       ),
-
+      
       UserMedication(
         uid = "002",
         name = "Amoxicillin",
         form = "Capsule",
         strength = 250f,
         unit = "mg",
-        startDate = "2024-12-05",
-        endDate = "2024-12-14",
+        startDate = Timestamp.now(),
+        endDate = Timestamp.now(),
         frequency = "Three times a day",
         intakeTime = "08:00 AM",
         notes = "Finish the entire course"
       ),
-
+      
       UserMedication(
         uid = "003",
         name = "Ibuprofen",
         form = "Syrup",
         strength = 100f,
         unit = "mg/5ml",
-        startDate = "2024-12-08",
-        endDate = "2024-12-15",
+        startDate = Timestamp.now(),
+        endDate = Timestamp.now(),
         frequency = "Once a day",
         intakeTime = "9:25 AM",
         notes = "Shake well before use"
       ),
     )
-
+    
     val groupedMeds = medicationsTest.groupBy { it.intakeTime }
-
+    
     // Medication Cards List.
     FlyCardMedsByTimeList(
       medications = medicationsTest
     )
-
+    
   }
-
-
+  
+  
 }
 
 @Preview(name = "StartScreen")

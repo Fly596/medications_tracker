@@ -27,15 +27,16 @@ fun MedTrackerNavGraph(
   startDestination: Routes = Routes.Login,
 ) {
   
-  // Define the navigation graph.
   NavHost(
     navController = navController,
-    startDestination = Routes.Login,
+    // startDestination = Routes.Login,
+    startDestination = Routes.UserDashboard,
     modifier = modifier
       .fillMaxSize()
       .windowInsetsPadding(WindowInsets.safeGestures)
   
   ) {
+    
     // Home route with login, signup, and password reset actions
     composable<Routes.Login> {
       LoginScreen(
