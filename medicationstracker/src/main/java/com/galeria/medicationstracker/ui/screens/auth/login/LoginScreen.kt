@@ -18,10 +18,11 @@ import com.galeria.medicationstracker.ui.theme.*
 @Composable
 fun LoginScreen(
   modifier: Modifier = Modifier,
-  onLoginClick: (userType: UserTypes) -> Unit,
+  onLoginClick: (userType: UserType) -> Unit,
   onSignupClick: (String) -> Unit,
   onResetPasswordClick: (String) -> Unit,
   viewModel: LoginScreenViewModel = viewModel(),
+  // mainViewModel: MainViewModel = viewModel()
 ) {
   val state = viewModel.loginScreenState
   
@@ -84,6 +85,7 @@ fun LoginScreen(
       
       FlyButton(
         onClick = {
+          viewModel.getUserType()
           viewModel.onSignInClick(state.email, state.password) { userType ->
             onLoginClick(userType)
           }

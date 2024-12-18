@@ -1,9 +1,9 @@
 package com.galeria.medicationstracker.data
 
-import android.icu.text.SimpleDateFormat
-import java.time.DayOfWeek
-import java.time.LocalDateTime
-import java.util.Locale
+import android.icu.text.*
+import com.google.firebase.*
+import java.time.*
+import java.util.*
 
 data class UserMedication(
   val uid: String? = null,
@@ -11,8 +11,8 @@ data class UserMedication(
   val form: String? = null,
   val strength: Float? = null,
   val unit: String? = null,
-  val startDate: String? = null,
-  val endDate: String? = null,
+  val startDate: Timestamp? = null,
+  val endDate: Timestamp? = null,
   val frequency: String? = null,
   val intakeTime: String? = null,
   val notes: String? = null,
@@ -27,11 +27,23 @@ data class HospitalDrugs(
   val form: String? = null, // capsules.
 )
 
+data class User(
+  val uid: String,
+  val login: String,
+  val type: UserType = UserType.PATIENT
+)
+
+enum class UserType {
+  ADMIN,
+  PATIENT,
+  DOCTOR,
+}
+
 
 sealed class Frequency {
-
+  
   data class AtRegularIntervals(val interval: Int = 0) : Frequency()
-
+  
   data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek> = DayOfWeek.entries) :
     Frequency()
 }
@@ -42,12 +54,6 @@ enum class MedicationForms {
   LIQUID,
   INJECTION,
   POWDER
-}
-
-enum class UserTypes {
-  ADMIN,
-  PATIENT,
-  DOCTOR,
 }
 
 enum class MedicationUnit {
@@ -64,12 +70,6 @@ val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
 data class MoodLog(
   val date: LocalDateTime = LocalDateTime.now()
   // TODO
-)
-
-data class User(
-  val uid: String = "",
-  val login: String = "",
-  val type: UserTypes = UserTypes.PATIENT,
 )
 
 /* data class Users(

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,12 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpeechRecognitionApp">
         <activity
-            android:name=".AdminActivity"
+            android:name=".ui.admin.AdminActivity"
             android:exported="true"
             android:label="@string/title_activity_admin"
             android:theme="@style/Theme.SpeechRecognitionApp" />
         <activity
-            android:name=".DoctorActivity"
+            android:name=".ui.doctor.DoctorActivity"
             android:exported="true"
             android:label="@string/title_activity_doctor"
             android:theme="@style/Theme.SpeechRecognitionApp" />

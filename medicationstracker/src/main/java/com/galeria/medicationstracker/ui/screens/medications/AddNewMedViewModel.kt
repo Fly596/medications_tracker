@@ -1,20 +1,16 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
-import com.galeria.medicationstracker.data.MedicationForms
-import com.galeria.medicationstracker.data.MedicationUnit
-import com.galeria.medicationstracker.data.UserMedication
-import com.google.firebase.Firebase
+import android.content.*
+import android.util.*
+import android.widget.*
+import androidx.compose.runtime.*
+import androidx.lifecycle.*
+import com.galeria.medicationstracker.data.*
+import com.google.firebase.*
 import com.google.firebase.appcheck.internal.util.Logger.TAG
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
-import java.time.DayOfWeek
+import com.google.firebase.auth.*
+import com.google.firebase.firestore.*
+import java.time.*
 
 data class NewMedicationUiState(
   val uid: String = "",
@@ -22,8 +18,8 @@ data class NewMedicationUiState(
   var medForm: MedicationForms = MedicationForms.TABLET, // f
   val medStrength: String = "",
   val medUnit: MedicationUnit = MedicationUnit.MG, // f
-  val medStartDate: String = "",// f
-  val medEndDate: String = "",// f
+  val medStartDate: Timestamp = Timestamp.now(),// f
+  val medEndDate: Timestamp = Timestamp.now(),// f
   val medIntakeTime: String = "",// f
   val medNotes: String = "",
   val showDatePicker: Boolean = false,
@@ -32,43 +28,43 @@ data class NewMedicationUiState(
 )
 
 class AddNewMedViewModel : ViewModel() {
-
+  
   var uiState by mutableStateOf(NewMedicationUiState())
     private set
-
+  
   private val db = Firebase.firestore
   private val user = Firebase.auth.currentUser
   val userId = user?.uid ?: ""
-
+  
   var selectedStartDate by mutableStateOf<Long?>(null)
   // private set
-
+  
   var selectedEndDate by mutableStateOf<Long?>(null)
-
+  
   // private set
   // var combinedDates = Pair<Long?, Long?>(selectedStartDate, selectedEndDate)
-
+  
   fun isShowDateChecked(input: Boolean) {
     uiState.copy(showDatePicker = !input)
   }
-
+  
   fun isShowTimeChecked(input: Boolean) {
     uiState.copy(showTimePicker = !input)
   }
-
+  
   fun updateSelectedDays(input: List<DayOfWeek>) {
     for (day in input) {
       uiState.selectedDays.add(day)
     }
     // val test:String = uiState.selectedDays.toString()
-
+    
   }
-
+  
   // TODO: Check for dublicates.
   fun addMedication(
     context: Context,
   ) {
-
+    
     val newUserMedication =
       UserMedication(
         userId,
@@ -82,7 +78,7 @@ class AddNewMedViewModel : ViewModel() {
         uiState.medIntakeTime,
         uiState.medNotes
       )
-
+    
     db.collection("UserMedication").add(newUserMedication)
       .addOnSuccessListener {
         Toast.makeText(
@@ -90,58 +86,59 @@ class AddNewMedViewModel : ViewModel() {
           "DocumentSnapshot added successfully!",
           Toast.LENGTH_SHORT
         ).show()
-
+        
         Log.d(TAG, "DocumentSnapshot added with ID: ${it.id}")
       }
       .addOnFailureListener { e ->
         Toast.makeText(context, "Error adding medication", Toast.LENGTH_SHORT)
           .show()
-
+        
         Log.w(TAG, "Error adding document", e)
       }
   }
-
+  
   // region fields data
-  fun updateStartDate(input: String) {
-    uiState = uiState.copy(medStartDate = input)
+  fun updateStartDate(input: Timestamp?) {
+    
+    uiState = uiState.copy(medStartDate = input ?: Timestamp.now())
   }
-
-  fun updateEndDate(input: String) {
-    uiState = uiState.copy(medEndDate = input)
+  
+  fun updateEndDate(input: Timestamp?) {
+    uiState = uiState.copy(medEndDate = input ?: Timestamp.now())
   }
-
+  
   fun updateMedName(newName: String) {
     uiState = uiState.copy(medName = newName)
   }
-
+  
   fun updateMedForm(newForm: MedicationForms) {
     uiState = uiState.copy(medForm = newForm)
   }
-
+  
   fun updateMedStrength(newStrength: String) {
     uiState = uiState.copy(medStrength = newStrength/* .toFloat() */)
   }
-
+  
   fun updateMedUnit(newUnit: MedicationUnit) {
     uiState = uiState.copy(medUnit = newUnit)
   }
-
+  
   fun updateIntakeTime(newTime: String) {
     uiState = uiState.copy(medIntakeTime = newTime)
   }
-
+  
   fun updateMedNotes(newNotes: String) {
     uiState = uiState.copy(medNotes = newNotes)
   }
-
+  
   /*   fun updateMedType(newType: String) {
       uiState = uiState.copy(type = newType)
     } */
-
+  
   /*   fun updateMedFrequency(newFrequency: Frequency) {
       uiState = uiState.copy(frequency = newFrequency)
     } */
-
+  
   /*   fun updateStartDate(newStartDate: LocalDate) {
       uiState = uiState.copy(startDate = newStartDate.toString())
     }
@@ -149,7 +146,7 @@ class AddNewMedViewModel : ViewModel() {
     fun updateEndDate(newEndDate: LocalDate) {
       uiState = uiState.copy(endDate = newEndDate.toString())
     } */
-
+  
   // endregion
-
+  
 }

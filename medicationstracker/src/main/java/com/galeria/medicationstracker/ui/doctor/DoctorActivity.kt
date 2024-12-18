@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker
+package com.galeria.medicationstracker.ui.doctor
 
 import android.os.*
 import androidx.activity.*
@@ -13,7 +13,6 @@ import androidx.navigation.*
 import androidx.navigation.compose.*
 import com.galeria.medicationstracker.model.navigation.*
 import com.galeria.medicationstracker.ui.components.*
-import com.galeria.medicationstracker.ui.doctor.*
 import com.galeria.medicationstracker.ui.theme.*
 
 

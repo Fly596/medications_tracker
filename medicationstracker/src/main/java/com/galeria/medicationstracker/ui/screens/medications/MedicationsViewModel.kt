@@ -1,49 +1,53 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
-import androidx.lifecycle.ViewModel
-import com.galeria.medicationstracker.data.UserMedication
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.toObjects
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import androidx.lifecycle.*
+import com.galeria.medicationstracker.data.*
+import com.google.firebase.*
+import com.google.firebase.auth.*
+import com.google.firebase.firestore.*
+import kotlinx.coroutines.flow.*
+
 
 class MedicationsViewModel : ViewModel() {
-
+  
+  var patient: String = "KT95DFgGbgYt90QtKjIYSApXKqw1"
+  var doctor: String = "suAPx8M00vdYqqpWnahF7Ce6pJl2"
+  var admin: String = "sT3E84Rw8oNiI4hBQwavVo3dhjy1"
+  
   // Initialize Firebase Auth and Firestore.
   private val user = Firebase.auth.currentUser
   private val db = Firebase.firestore
-  val userId = user?.uid ?: ""
-
+  
+  // val userId = user?.uid ?: ""
+  val userId = patient //
+  
   // Initialize data.
   private var _userMedications = MutableStateFlow<List<UserMedication>>(emptyList())
   var userMedications = _userMedications.asStateFlow()
-
+  
   init {
     getUserMedicationsFromFirestore()
   }
-
+  
   private fun getUserMedicationsFromFirestore() {
-
+    
     db.collection("UserMedication")
       .whereEqualTo("uid", userId)
       .addSnapshotListener { value, error ->
         if (error != null) {
           return@addSnapshotListener
         }
-
+        
         if (value != null) {
           _userMedications.value = value.toObjects()
         }
-
+        
       }
   }
-
+  
   fun deleteMedicationFromFirestore(medName: String) {
     val db = FirebaseFirestore.getInstance()
-
+    
     db.collection("UserMedication")
       .whereEqualTo("name", medName)
       .get()
@@ -68,12 +72,12 @@ class MedicationsViewModel : ViewModel() {
         println("Error finding documents to delete: $e")
       }
   }
-
+  
   fun updateMedicationInFirestore(medName: String) {
     val db = FirebaseFirestore.getInstance()
-
+    
     // db.collection("UserMedication")
-
+    
   }
 }
 

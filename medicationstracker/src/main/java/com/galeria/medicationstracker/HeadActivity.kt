@@ -1,127 +1,102 @@
 package com.galeria.medicationstracker
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeGestures
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import com.galeria.medicationstracker.data.UserTypes
-import com.galeria.medicationstracker.model.navigation.Routes
-import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRecoveryScreen
-import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
-import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.google.firebase.FirebaseApp
-import kotlinx.coroutines.launch
+import android.os.*
+import androidx.activity.*
+import androidx.activity.compose.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.navigation.compose.*
+import com.galeria.medicationstracker.model.*
+import com.galeria.medicationstracker.model.navigation.Routes.NavigationRoutes
+import com.galeria.medicationstracker.ui.*
+import com.galeria.medicationstracker.ui.components.*
+import com.galeria.medicationstracker.ui.theme.*
+import com.google.firebase.*
+import kotlinx.coroutines.*
+import java.time.*
 
 class HeadActivity : ComponentActivity() {
-
+  
+  private val headViewModel: HeadViewModel by viewModels()
+  
+  @OptIn(ExperimentalMaterial3Api::class)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
+    
     // Initialize Firebase.
     FirebaseApp.initializeApp(this)
-
+    
     setContent {
+      val navController = rememberNavController()
+      
       MedTrackerTheme {
-
-        // State for managing snackbar messages
-        val snackbarHostState = remember { SnackbarHostState() }
-        SnackbarHandler(snackbarHostState)
-
+        
+        val items = bottomNavItems()
+        
         Scaffold(
-          snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-          modifier = Modifier,
+          modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.displayCutout),
           containerColor = MedTrackerTheme.colors.secondaryBackground,
-        ) { innerPadding ->
-
-          // Initialize navigation controller
-          val navController = rememberNavController()
-          // Get the current context for navigation
-          val context: Context = LocalContext.current
-
-          // Define the navigation graph.
-          NavHost(
-            navController = navController,
-            startDestination = Routes.Home,
-            modifier = Modifier
-              .fillMaxSize()
-              .padding(innerPadding)
-              .windowInsetsPadding(WindowInsets.safeGestures)
-
-          ) {
-            // Home route with login, signup, and password reset actions
-            composable<Routes.Home> {
-              LoginScreen(
-                onLoginClick = { userType ->
-                  when (userType) {
-                    UserTypes.ADMIN -> {
-                      val intent = Intent(context, AdminActivity::class.java)
-                      startActivity(intent)
-                    }
-
-                    UserTypes.DOCTOR -> {
-                      val intent = Intent(context, DoctorActivity::class.java)
-                      startActivity(intent)
-                    }
-
-                    else -> {
-                      val intent = Intent(context, ApplicationActivity::class.java)
-                      startActivity(intent)
-                    }
-                  }
-                },
-                onSignupClick = { email ->
-                  // Navigate to the registration screen with email
-                  navController.navigate(Routes.Registration(email = email))
-                },
-                onResetPasswordClick = { email ->
-                  // Navigate to the password recovery screen with email
-                  navController.navigate(Routes.PasswordRecovery(email = email))
-                }
-              )
+          
+          topBar = {
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentDestination = navBackStackEntry?.destination?.route
+            
+            val routeTitles = mapOf(
+              NavigationRoutes.USER_DASHBOARD to {
+                "Today, ${
+                  getStringFormattedDate(
+                    LocalDate.now()
+                  )
+                }"
+              },
+              NavigationRoutes.MEDICATIONS to { "My Meds" },
+              NavigationRoutes.PROFILE to { "My Profile" },
+              NavigationRoutes.NEW_MEDICATION to { "Add medication" },
+              NavigationRoutes.APP_SETTINGS to { "App Settings" },
+              NavigationRoutes.NOTIFICATIONS_SETTINGS to { "Notifications Settings" },
+              NavigationRoutes.DOC_DASHBOARD to { "Welcome, Doctor" },
+              NavigationRoutes.ADMIN_DASHBOARD to { "Hello, Admin" },
+            )
+            
+            val routesWithoutTopBar = listOf(
+              NavigationRoutes.LOGIN,
+              NavigationRoutes.REGISTRATION,
+              NavigationRoutes.PASSWORD_RECOVERY
+            )
+            val title = routeTitles[currentDestination]?.invoke()
+            
+            if (title != null && currentDestination !in routesWithoutTopBar) {
+              FlyTopAppBar(title = title)
             }
-
-            // Registration screen route
-            composable<Routes.Registration> { backStackEntry ->
-              // Retrieve and pass the email argument.
-              val args = backStackEntry.toRoute<Routes.Registration>()
-              SignupScreen(
-                passedEmail = args.email ?: "",
-                navigateHome = { navController.navigate(Routes.Home) }
-              )
+            
+          },
+          bottomBar = {
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentDestination = navBackStackEntry?.destination?.route
+            val routesWithoutBottomBar = listOf(
+              NavigationRoutes.LOGIN,
+              NavigationRoutes.REGISTRATION,
+              NavigationRoutes.PASSWORD_RECOVERY
+            )
+            
+            if (currentDestination !in routesWithoutBottomBar) {
+              BottomNavBar(items, navController, headViewModel)
+              
             }
-
-            // Password recovery screen route
-            composable<Routes.PasswordRecovery> { backStackEntry ->
-              // Retrieve and pass the email argument
-              val args = backStackEntry.toRoute<Routes.PasswordRecovery>()
-              AccountRecoveryScreen(
-                passedEmail = args.email ?: "",
-                navigateHome = { navController.navigate(Routes.Home) },
-              )
-            }
+            
+          },
+          content = {
+            MedTrackerNavGraph(
+              modifier = Modifier.padding(it),
+              navController = navController
+            )
+            
           }
-        }
+        )
       }
     }
   }
@@ -136,14 +111,14 @@ fun SnackbarHandler(snackbarHostState: SnackbarHostState) {
   ) { event ->
     scope.launch {
       snackbarHostState.currentSnackbarData?.dismiss()
-
+      
       val result =
         snackbarHostState.showSnackbar(
           message = event.message,
           actionLabel = event.action?.name,
           duration = SnackbarDuration.Short,
         )
-
+      
       if (result == SnackbarResult.ActionPerformed) {
         event.action?.action?.invoke()
       }

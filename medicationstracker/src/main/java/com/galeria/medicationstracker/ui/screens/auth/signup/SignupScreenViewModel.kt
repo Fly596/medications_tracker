@@ -18,7 +18,7 @@ data class SignupScreenState(
   val password: String = "",
   val passwordErrorMessage: String? = null,
   val showPassword: Boolean = false,
-  var userType: UserTypes = UserTypes.PATIENT,
+  var userType: UserType = UserType.PATIENT,
 )
 
 class SignupScreenViewModel : ViewModel() {
@@ -128,7 +128,7 @@ class SignupScreenViewModel : ViewModel() {
       }
   }
   
-  fun updateUserType(input: UserTypes) {
+  fun updateUserType(input: UserType) {
     signupScreenState = signupScreenState.copy(userType = input)
   }
   
