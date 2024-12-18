@@ -6,9 +6,12 @@ import com.galeria.medicationstracker.model.FirestoreFunctions.*
 import com.google.firebase.*
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.*
+import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.flow.*
+import javax.inject.*
 
-class MedicationsViewModel : ViewModel() {
+@HiltViewModel
+class MedicationsViewModel @Inject constructor() : ViewModel() {
 
   var patient: String = "KT95DFgGbgYt90QtKjIYSApXKqw1"
   var doctor: String = "suAPx8M00vdYqqpWnahF7Ce6pJl2"

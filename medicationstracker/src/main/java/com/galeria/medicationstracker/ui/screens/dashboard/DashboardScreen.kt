@@ -34,19 +34,12 @@ fun DashboardScreen(
     verticalArrangement = Arrangement.spacedBy(16.dp),
   ) {
 
-    TextField(
-      value = "${currentMedications.size}",
-      label = { Text("Current taken medications") },
-      onValueChange = {},
-      readOnly = true
-    )
-
     // Календарь на неделю.
     WeeklyCalendarView()
 
     // Medication Cards List.
     MedsByIntakeTimeList(
-      medicationsForIntakeTime = currentMedications
+      viewModel = dashboardViewModel, medicationsForIntakeTime = currentMedications
     )
   }
 }
@@ -54,16 +47,14 @@ fun DashboardScreen(
 // Список лекарств по времени приема.
 @Composable
 fun MedsByIntakeTimeList(
-    medicationsForIntakeTime: List<UserMedication> = emptyList()
+    viewModel: DashboardVM, medicationsForIntakeTime: List<UserMedication> = emptyList()
 ) {
 
   // Группируем лекарства по времени приема.
-  val medicationsByIntakeTime =
-    medicationsForIntakeTime.groupBy { it.intakeTime }
+  val medicationsByIntakeTime = medicationsForIntakeTime.groupBy { it.intakeTime }
 
   LazyColumn(
-    modifier = Modifier.fillMaxWidth(),
-    verticalArrangement = Arrangement.spacedBy(24.dp)
+    modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)
   ) {
 
     medicationsByIntakeTime.forEach { (intakeTime, medications) ->
@@ -71,8 +62,7 @@ fun MedsByIntakeTimeList(
         // Контейнер для каждого времени приема.
         FLySimpleCardContainer(modifier = Modifier.fillMaxWidth()) {
           Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
           ) {
 
             // Время приема.
@@ -85,7 +75,8 @@ fun MedsByIntakeTimeList(
             // Лекарства на это время.
             medications.forEach { medicationsForIntakeTime ->
               MedicationItem(
-                medicationsForIntakeTime.name.toString()
+                viewModel = viewModel,
+                medication = medicationsForIntakeTime,
               )
 
             }
@@ -99,11 +90,12 @@ fun MedsByIntakeTimeList(
 
 @Composable
 fun MedicationItem(
-    name: String,
-    onLogMedClick: () -> Unit = {},
+    viewModel: DashboardVM,
+    medication: UserMedication,
     icon: ImageVector = Icons.Filled.Medication
 ) {
 
+  // viewModel.hasIntakeToday(medication.name.toString())
   // State to control the visibility of the log medication dialog.
   val showLogDialog = remember { mutableStateOf(false) }
 
@@ -113,12 +105,10 @@ fun MedicationItem(
     horizontalArrangement = Arrangement.spacedBy(8.dp)
   ) {
     Icon(
-      imageVector = icon,
-      contentDescription = null,
-      modifier = Modifier.size(32.dp)
+      imageVector = icon, contentDescription = null, modifier = Modifier.size(32.dp)
     )
 
-    Text(text = name, style = typography.headline)
+    Text(text = medication.name.toString(), style = typography.headline)
 
     Spacer(modifier = Modifier.weight(1f))
 
@@ -130,17 +120,13 @@ fun MedicationItem(
         // Add logic to log medication here.
         showLogDialog.value = !showLogDialog.value
         isChecked = !isChecked
-      }
-    ) {
+      }) {
       Icon(
         imageVector = if (isChecked) {
           Icons.Filled.CheckCircle
         } else {
           Icons.Outlined.CheckCircle
-        },
-        contentDescription = null,
-        modifier = Modifier.size(32.dp),
-        tint = if (isChecked) {
+        }, contentDescription = null, modifier = Modifier.size(32.dp), tint = if (isChecked) {
           MedTrackerTheme.colors.primary400
         } else {
           MedTrackerTheme.colors.tertiaryLabel
@@ -151,8 +137,13 @@ fun MedicationItem(
     // Display the dialog when `showLogDialog.value` is true
     if (showLogDialog.value) {
       LogMedicationTimeDialog(
-        onDismissRequest = { showLogDialog.value = false },
+        viewModel,
+        onDismiss = {
+          viewModel.recordMedicationIntake(medication = medication, status = false)
+          showLogDialog.value = false
+        },
         onConfirmation = {
+          viewModel.recordMedicationIntake(medication = medication, status = true)
           showLogDialog.value = false
         }
       )

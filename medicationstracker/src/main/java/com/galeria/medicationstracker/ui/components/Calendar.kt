@@ -94,6 +94,7 @@ fun DayOfWeekSelector(
 ) {
   val daysOfWeek = DayOfWeek.entries
   val selectedDays = remember { mutableStateListOf<DayOfWeek>() }
+  val selectedDaysS = remember { mutableStateListOf<String>() }
 
   Column {
     Row(
@@ -103,12 +104,12 @@ fun DayOfWeekSelector(
       daysOfWeek.forEach { dayOfWeek ->
         DayItem(
           dayOfWeek = dayOfWeek,
-          isSelected = selectedDays.contains(dayOfWeek),
+          isSelected = selectedDaysS.contains(dayOfWeek.toString())/* selectedDays.contains(dayOfWeek) */,
           onClick = {
-            if (selectedDays.contains(dayOfWeek)) {
-              selectedDays.remove(dayOfWeek)
+            if (selectedDaysS.contains(dayOfWeek.toString())) {
+              selectedDaysS.remove(dayOfWeek.toString())
             } else {
-              selectedDays.add(dayOfWeek)
+              selectedDaysS.add(dayOfWeek.toString())
             }
           }
         )
@@ -120,7 +121,7 @@ fun DayOfWeekSelector(
     FlyTonalButton(
       onClick = {
         if (viewModel != null) {
-          viewModel.updateSelectedDays(selectedDays.toList())
+          viewModel.updateSelectedDays(selectedDaysS.toList())
         } else {
           viewModelUpd?.updateSelectedDays(selectedDays.toList())
         }

@@ -6,31 +6,39 @@ import java.time.*
 import java.util.*
 
 data class UserMedication(
-  val uid: String? = null,
-  val name: String? = null,
-  val form: String? = null,
-  val strength: Float? = null,
-  val unit: String? = null,
-  val startDate: Timestamp? = null,
-  val endDate: Timestamp? = null,
-  val frequency: String? = null,
-  val intakeTime: String? = null,
-  val notes: String? = null,
+    val uid: String? = null,
+    val name: String? = null,
+    val form: String? = null,
+    val strength: Float? = null,
+    val unit: String? = null,
+    val startDate: Timestamp? = null,
+    val endDate: Timestamp? = null,
+    val frequency: List<String> = emptyList(),
+    val intakeTime: String? = null,
+    val notes: String? = null,
 )
 
 data class HospitalDrugs(
-  val name: String? = null, // Drisdol.
-  val drugClass: String? = null, // vitamins d derivatives.
-  val availability: String? = null, // prescription sometimes needed.
-  val strength: Float? = null, // 1.25.
-  val unit: String? = null, // MG.
-  val form: String? = null, // capsules.
+    val name: String? = null, // Drisdol.
+    val drugClass: String? = null, // vitamins d derivatives.
+    val availability: String? = null, // prescription sometimes needed.
+    val strength: Float? = null, // 1.25.
+    val unit: String? = null, // MG.
+    val form: String? = null, // capsules.
 )
 
 data class User(
-  val uid: String,
-  val login: String,
-  val type: UserType = UserType.PATIENT
+    val uid: String,
+    val login: String,
+    val type: UserType = UserType.PATIENT
+)
+
+data class UserIntake(
+    val uid: String,
+    val medicationName: String,
+    val dose: String,
+    val status: Boolean,
+    val dateTime: Timestamp,
 )
 
 enum class UserType {
@@ -39,11 +47,10 @@ enum class UserType {
   DOCTOR,
 }
 
-
 sealed class Frequency {
-  
+
   data class AtRegularIntervals(val interval: Int = 0) : Frequency()
-  
+
   data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek> = DayOfWeek.entries) :
     Frequency()
 }
@@ -68,7 +75,7 @@ val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
 
 /*TODO: Symptoms, mood..*/
 data class MoodLog(
-  val date: LocalDateTime = LocalDateTime.now()
+    val date: LocalDateTime = LocalDateTime.now()
   // TODO
 )
 
@@ -81,8 +88,8 @@ data class MoodLog(
 ) */
 
 data class NotificationPreferences(
-  val sound: Boolean = true,
-  val vibration: Boolean = true,
+    val sound: Boolean = true,
+    val vibration: Boolean = true,
 )
 
 /* data class UserMedication(
