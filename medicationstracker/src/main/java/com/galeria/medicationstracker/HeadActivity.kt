@@ -75,7 +75,19 @@ class HeadActivity : ComponentActivity() {
             
           },
           bottomBar = {
-            BottomNavBar(items, navController, headViewModel)
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentDestination = navBackStackEntry?.destination?.route
+            val routesWithoutBottomBar = listOf(
+              NavigationRoutes.LOGIN,
+              NavigationRoutes.REGISTRATION,
+              NavigationRoutes.PASSWORD_RECOVERY
+            )
+            
+            if (currentDestination !in routesWithoutBottomBar) {
+              BottomNavBar(items, navController, headViewModel)
+              
+            }
+            
           },
           content = {
             MedTrackerNavGraph(
@@ -85,85 +97,6 @@ class HeadActivity : ComponentActivity() {
             
           }
         )
-        // State for managing snackbar messages
-        /*         val snackbarHostState = remember { SnackbarHostState() }
-                SnackbarHandler(snackbarHostState)
-                
-                Scaffold(
-                  snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-                  modifier = Modifier,
-                  containerColor = MedTrackerTheme.colors.secondaryBackground,
-                ) { innerPadding ->
-                  
-                  // Initialize navigation controller
-                  val navController = rememberNavController()
-                  // Get the current context for navigation
-                  val context: Context = LocalContext.current
-                  
-                  // Define the navigation graph.
-                  NavHost(
-                    navController = navController,
-                    startDestination = Routes.Login,
-                    modifier = Modifier
-                      .fillMaxSize()
-                      .padding(innerPadding)
-                      .windowInsetsPadding(WindowInsets.safeGestures)
-                  
-                  ) {
-                    // Home route with login, signup, and password reset actions
-                    composable<Routes.Login> {
-                      LoginScreen(
-                        onLoginClick = { userType ->
-                          when (userType) {
-                            UserType.ADMIN -> {
-                              val intent = Intent(context, AdminActivity::class.java)
-                              startActivity(intent)
-                            }
-                            
-                            UserType.DOCTOR -> {
-                              val intent = Intent(context, DoctorActivity::class.java)
-                              startActivity(intent)
-                            }
-                            
-                            else -> {
-                              val intent =
-                                Intent(context, ApplicationActivity::class.java)
-                              startActivity(intent)
-                            }
-                          }
-                        },
-                        onSignupClick = { email ->
-                          // Navigate to the registration screen with email
-                          navController.navigate(Routes.Registration(email = email))
-                        },
-                        onResetPasswordClick = { email ->
-                          // Navigate to the password recovery screen with email
-                          navController.navigate(Routes.PasswordRecovery(email = email))
-                        }
-                      )
-                    }
-                    
-                    // Registration screen route
-                    composable<Routes.Registration> { backStackEntry ->
-                      // Retrieve and pass the email argument.
-                      val args = backStackEntry.toRoute<Routes.Registration>()
-                      SignupScreen(
-                        passedEmail = args.email ?: "",
-                        navigateHome = { navController.navigate(Routes.Login) }
-                      )
-                    }
-                    
-                    // Password recovery screen route
-                    composable<Routes.PasswordRecovery> { backStackEntry ->
-                      // Retrieve and pass the email argument
-                      val args = backStackEntry.toRoute<Routes.PasswordRecovery>()
-                      AccountRecoveryScreen(
-                        passedEmail = args.email ?: "",
-                        navigateHome = { navController.navigate(Routes.Login) },
-                      )
-                    }
-                  }
-                } */
       }
     }
   }

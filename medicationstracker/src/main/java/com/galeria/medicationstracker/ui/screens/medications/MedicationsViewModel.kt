@@ -7,27 +7,19 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.*
 import kotlinx.coroutines.flow.*
 
-data class UserId(
-  val patient: String = "KT95DFgGbgYt90QtKjIYSApXKqw1",
-  val doctor: String = "suAPx8M00vdYqqpWnahF7Ce6pJl2",
-  val admin: String = "sT3E84Rw8oNiI4hBQwavVo3dhjy1",
-  
-  )
 
 class MedicationsViewModel : ViewModel() {
   
-  val ids = listOf(
-    "KT95DFgGbgYt90QtKjIYSApXKqw1",
-    "suAPx8M00vdYqqpWnahF7Ce6pJl2",
-    "sT3E84Rw8oNiI4hBQwavVo3dhjy1",
-  )
+  var patient: String = "KT95DFgGbgYt90QtKjIYSApXKqw1"
+  var doctor: String = "suAPx8M00vdYqqpWnahF7Ce6pJl2"
+  var admin: String = "sT3E84Rw8oNiI4hBQwavVo3dhjy1"
   
   // Initialize Firebase Auth and Firestore.
   private val user = Firebase.auth.currentUser
   private val db = Firebase.firestore
   
   // val userId = user?.uid ?: ""
-  val userId = ids[0] //
+  val userId = patient //
   
   // Initialize data.
   private var _userMedications = MutableStateFlow<List<UserMedication>>(emptyList())

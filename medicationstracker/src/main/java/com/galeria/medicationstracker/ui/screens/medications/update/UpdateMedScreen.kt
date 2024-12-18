@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.*
 import androidx.lifecycle.compose.*
 import androidx.lifecycle.viewmodel.compose.*
 import com.galeria.medicationstracker.data.*
+import com.galeria.medicationstracker.model.*
 import com.galeria.medicationstracker.ui.components.*
 import com.galeria.medicationstracker.ui.screens.medications.*
 import com.galeria.medicationstracker.ui.theme.*
@@ -180,6 +181,7 @@ fun UpdateMedScreen(
                 // TODO: Add editing medication logic.
                 onClick = {
                   viewModel.updateMedicationFromFirestore()
+                  
                 }
               ) {
                 Text("Confirm")
@@ -207,9 +209,10 @@ fun DatePicker(
   viewModel: UpdateMedVM
 ) {
   var showPicker by remember { mutableStateOf(false) }
-  Row(
-    horizontalArrangement = Arrangement.spacedBy(16.dp),
-    verticalAlignment = Alignment.CenterVertically
+  
+  Column(
+    horizontalAlignment = Alignment.Start,
+    verticalArrangement = Arrangement.Center
   ) {
     FlyButton(
       onClick = { showPicker = !showPicker }) {
@@ -219,15 +222,19 @@ fun DatePicker(
     if (showPicker) {
       DateRangePickerModal(
         onDateRangeSelected = {
-          viewModel.updateStartDate(convertMillisToDate(it.first))
-          viewModel.updateEndDate(convertMillisToDate(it.second))
+          viewModel.updateStartDate(parseDateForFirestore(convertMillisToDate(it.first)))
+          viewModel.updateEndDate(parseDateForFirestore(convertMillisToDate(it.second)))
           showPicker = !showPicker
         },
         onDismiss = { showPicker = !showPicker },
       )
     }
     TextField(
-      value = "Start: ${viewModel.uiState.startDate}   End: ${viewModel.uiState.endDate}",
+      value = "Start: ${formatTimestamp(viewModel.uiState.startDate)}   End: ${
+        formatTimestamp(
+          viewModel.uiState.endDate
+        )
+      }",
       onValueChange = {},
       readOnly = true,
     )

@@ -24,16 +24,17 @@ import com.galeria.medicationstracker.ui.screens.profile.settings.*
 fun MedTrackerNavGraph(
   modifier: Modifier = Modifier,
   navController: NavHostController = rememberNavController(),
-  startDestination: Routes = Routes.Login,
+  startDestination: Routes = Routes.UserDashboard,
 ) {
   
   NavHost(
     navController = navController,
     // startDestination = Routes.Login,
-    startDestination = Routes.UserDashboard,
+    startDestination = startDestination,
     modifier = modifier
       .fillMaxSize()
       .windowInsetsPadding(WindowInsets.safeGestures)
+    //.windowInsetsPadding(WindowInsets.safeGestures)
   
   ) {
     

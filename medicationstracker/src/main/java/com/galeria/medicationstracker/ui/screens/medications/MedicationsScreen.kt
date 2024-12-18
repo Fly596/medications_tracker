@@ -1,23 +1,14 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.ui.components.FlyButton
-import com.galeria.medicationstracker.ui.components.FlyElevatedCardMedsList
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.unit.*
+import androidx.lifecycle.compose.*
+import androidx.lifecycle.viewmodel.compose.*
+import com.galeria.medicationstracker.ui.components.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,19 +20,18 @@ fun MedicationsScreen(
 ) {
   val medications by
   medicationsViewModel.userMedications.collectAsStateWithLifecycle()
-
+  
   Column(
     modifier = modifier
-      .fillMaxSize()
-      .padding(horizontal = 16.dp),
+      .fillMaxSize(),
     verticalArrangement = Arrangement.spacedBy(16.dp)
   ) {
     Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
+    
     LazyColumn(
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-
+      
       items(medications) { med ->
         FlyElevatedCardMedsList(
           title = med.name.toString(),
@@ -53,7 +43,7 @@ fun MedicationsScreen(
           }
         )
       }
-
+      
       item {
         // Button to add a new medication.
         FlyButton(
@@ -64,6 +54,6 @@ fun MedicationsScreen(
         }
       }
     }
-
+    
   }
 }

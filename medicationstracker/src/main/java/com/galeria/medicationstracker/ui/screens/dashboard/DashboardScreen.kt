@@ -29,8 +29,7 @@ fun DashboardScreen(
   val showLogDialog = remember { mutableStateOf(false) }
   
   Column(
-    modifier = modifier
-      .padding(horizontal = 16.dp),
+    modifier = modifier,
     verticalArrangement = Arrangement.spacedBy(16.dp),
     
     ) {
