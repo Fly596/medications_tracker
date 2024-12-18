@@ -22,22 +22,22 @@ import com.galeria.medicationstracker.ui.screens.profile.settings.*
 
 @Composable
 fun MedTrackerNavGraph(
-  modifier: Modifier = Modifier,
-  navController: NavHostController = rememberNavController(),
-  startDestination: Routes = Routes.UserDashboard,
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+    startDestination: Routes = Routes.UserDashboard,
 ) {
-  
+
   NavHost(
     navController = navController,
     // startDestination = Routes.Login,
     startDestination = startDestination,
     modifier = modifier
-      .fillMaxSize()
-      .windowInsetsPadding(WindowInsets.safeGestures)
+        .fillMaxSize()
+        .windowInsetsPadding(WindowInsets.safeGestures)
     //.windowInsetsPadding(WindowInsets.safeGestures)
-  
+
   ) {
-    
+
     // Home route with login, signup, and password reset actions
     composable<Routes.Login> {
       LoginScreen(
@@ -47,7 +47,7 @@ fun MedTrackerNavGraph(
             UserType.DOCTOR -> navController.navigate(Routes.DocDashboard)
             UserType.ADMIN -> navController.navigate(Routes.AdminDashboard)
           }
-          
+
         },
         onSignupClick = { email ->
           // Navigate to the registration screen with email
@@ -59,7 +59,7 @@ fun MedTrackerNavGraph(
         }
       )
     }
-    
+
     // Registration screen route
     composable<Routes.Registration> { backStackEntry ->
       // Retrieve and pass the email argument.
@@ -69,7 +69,7 @@ fun MedTrackerNavGraph(
         navigateHome = { navController.navigate(Routes.Login) }
       )
     }
-    
+
     // Password recovery screen route
     composable<Routes.PasswordRecovery> { backStackEntry ->
       // Retrieve and pass the email argument
@@ -79,15 +79,15 @@ fun MedTrackerNavGraph(
         navigateHome = { navController.navigate(Routes.Login) },
       )
     }
-    
+
     composable<Routes.UserDashboard> {
       DashboardScreen(
-        onLogsClick = {
+        onMedicationLogsClick = {
           navController.navigate(Routes.LogScreen)
         }
       )
     }
-    
+
     composable<Routes.DocDashboard> {
       DocDashboardScreen(
         /* onLogsClick = {
@@ -95,7 +95,7 @@ fun MedTrackerNavGraph(
         } */
       )
     }
-    
+
     composable<Routes.AdminDashboard> {
       DBDataScreen(
         /* onLogsClick = {
@@ -103,7 +103,7 @@ fun MedTrackerNavGraph(
         } */
       )
     }
-    
+
     composable<Routes.LogScreen> {
       LogScreen(
         onGoBackClick = {
@@ -111,11 +111,11 @@ fun MedTrackerNavGraph(
         }
       )
     }
-    
+
     composable<Routes.Calendar> {
       // TODO: Calendar
     }
-    
+
     composable<Routes.Medications> {
       MedicationsScreen(
         onAddMedClick = { navController.navigate(Routes.NewMedication) },
@@ -132,24 +132,24 @@ fun MedTrackerNavGraph(
     composable<Routes.ViewMedication> { backStackEntry ->
       // Retrieve and pass the argument.
       val args = backStackEntry.toRoute<Routes.ViewMedication>()
-      
+
       UpdateMedScreen(
         passedMedName = args.medicationName ?: "",
         onConfirmEdit = {
-          navController.navigate(Routes.Medications)
+          navController.popBackStack()
         }
       )
     }
-    
+
     composable<Routes.Profile> {
       ProfileScreen(
         onSettingsClick = { navController.navigate(Routes.AppSettings) },
         onNotificationsClick = { navController.navigate(Routes.NotificationsSettings) }
       )
     }
-    
+
     composable<Routes.AppSettings> { SettingsScreen() }
-    
+
     composable<Routes.NotificationsSettings> { NotificationsSettingsScreen() }
   }
 }

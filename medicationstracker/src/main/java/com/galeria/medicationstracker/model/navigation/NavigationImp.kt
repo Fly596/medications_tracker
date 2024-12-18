@@ -5,9 +5,83 @@ import kotlinx.serialization.*
 
 @Serializable
 sealed class Routes {
-  
+
+  // region Autehntication
+  @Serializable
+  data object Login : Routes()
+
+  @Serializable
+  data class Registration(val email: String?) : Routes()
+
+  @Serializable
+  data class PasswordRecovery(val email: String?) : Routes()
+  // endregion
+
+  // region Admin Screens.
+
+  // экран с данными всех таблиц БД.
+  @Serializable
+  data object AdminDashboard : Routes()
+
+  // endregion
+
+  // region Doctor Screens.
+  @Serializable
+  data object DocDashboard : Routes()
+
+  // endregion
+
+  // region Application
+  @Serializable
+  data object UserDashboard : Routes()
+
+  @Serializable
+  data object LogScreen : Routes()
+
+  @Serializable
+  data object Profile : Routes()
+
+  @Serializable
+  data object AppSettings : Routes()
+
+  @Serializable
+  data object NotificationsSettings : Routes()
+
+  @Serializable
+  data object Calendar : Routes()
+
+  @Serializable
+  data object Medications : Routes()
+
+  @Serializable
+  data object NewMedication : Routes()
+
+  //@Serializable data object ViewMedication : Routes()
+  @Serializable
+  data class ViewMedication(val medicationName: String?) : Routes()
+
+  // region later
+  @Serializable
+  data object NewMedicationName : Routes()
+
+  @Serializable
+  data object NewMedicationForm : Routes()
+
+  @Serializable
+  data object NewMedicationStrength : Routes()
+
+  @Serializable
+  data object NewMedicationFrequency : Routes()
+
+  @Serializable
+  data object NewMedicationReminder : Routes()
+
+  @Serializable
+  data object NewMedicationReview : Routes()
+  // endregion
+
   object NavigationRoutes {
-    
+
     const val USER_DASHBOARD =
       "com.galeria.medicationstracker.model.navigation.Routes.UserDashboard"
     const val MEDICATIONS =
@@ -32,79 +106,5 @@ sealed class Routes {
       "com.galeria.medicationstracker.model.navigation.Routes.PasswordRecovery"
     // ... other routes
   }
-  
-  // region Autehntication
-  @Serializable
-  data object Login : Routes()
-  
-  @Serializable
-  data class Registration(val email: String?) : Routes()
-  
-  @Serializable
-  data class PasswordRecovery(val email: String?) : Routes()
-  // endregion
-  
-  // region Admin Screens.
-  
-  // экран с данными всех таблиц БД.
-  @Serializable
-  data object AdminDashboard : Routes()
-  
-  // endregion
-  
-  // region Doctor Screens.
-  @Serializable
-  data object DocDashboard : Routes()
-  
-  // endregion
-  
-  // region Application
-  @Serializable
-  data object UserDashboard : Routes()
-  
-  @Serializable
-  data object LogScreen : Routes()
-  
-  @Serializable
-  data object Profile : Routes()
-  
-  @Serializable
-  data object AppSettings : Routes()
-  
-  @Serializable
-  data object NotificationsSettings : Routes()
-  
-  @Serializable
-  data object Calendar : Routes()
-  
-  @Serializable
-  data object Medications : Routes()
-  
-  @Serializable
-  data object NewMedication : Routes()
-  
-  //@Serializable data object ViewMedication : Routes()
-  @Serializable
-  data class ViewMedication(val medicationName: String?) : Routes()
-  
-  // region later
-  @Serializable
-  data object NewMedicationName : Routes()
-  
-  @Serializable
-  data object NewMedicationForm : Routes()
-  
-  @Serializable
-  data object NewMedicationStrength : Routes()
-  
-  @Serializable
-  data object NewMedicationFrequency : Routes()
-  
-  @Serializable
-  data object NewMedicationReminder : Routes()
-  
-  @Serializable
-  data object NewMedicationReview : Routes()
-  // endregion
 }
 

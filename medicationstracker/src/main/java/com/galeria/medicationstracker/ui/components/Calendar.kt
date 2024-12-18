@@ -1,50 +1,41 @@
 package com.galeria.medicationstracker.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.galeria.medicationstracker.ui.screens.medications.AddNewMedViewModel
-import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedVM
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.shape.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.draw.*
+import androidx.compose.ui.tooling.preview.*
+import androidx.compose.ui.unit.*
+import com.galeria.medicationstracker.ui.screens.medications.*
+import com.galeria.medicationstracker.ui.screens.medications.update.*
+import com.galeria.medicationstracker.ui.theme.*
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
+import java.time.*
+import java.time.format.*
+import java.time.temporal.*
 
 @Composable
 fun WeeklyCalendarView(modifier: Modifier = Modifier) {
+
   // Get today's date.
   val currentDate = LocalDate.now()
   val dateFormatter = DateTimeFormatter.ofPattern("dd")
-  val dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEE") // Add day of week formatter
+  val dayOfWeekFormatter =
+    DateTimeFormatter.ofPattern("EEE") // Add day of week formatter
 
   LazyRow(
     modifier = modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.SpaceBetween
   ) {
     items(7) { index ->
-      val date = currentDate.plus(index.toLong(), ChronoUnit.DAYS) // Calculate date for each item
+      val date = currentDate.plus(
+        index.toLong(),
+        ChronoUnit.DAYS
+      ) // Calculate date for each item
       val formattedDate = date.format(dateFormatter)
       val isSelected = date == currentDate // Check if it's the current date
 
@@ -59,23 +50,23 @@ fun WeeklyCalendarView(modifier: Modifier = Modifier) {
 
 @Composable
 fun CalendarDayItem(dayOfWeek: String, date: String, isSelected: Boolean) {
+
   // Style for selected and unselected days
   val backgroundColor = if (isSelected) {
-    // TODO: условие, если все лекарства выпиьы.
-    MedTrackerTheme.colors.primaryBackground
+    colors.primaryBackground
   } else {
-    MedTrackerTheme.colors.secondaryBackground
+    colors.secondaryBackground
   }
   val textColor = if (isSelected) {
-    MedTrackerTheme.colors.primary600
+    colors.primary600
   } else {
-    MedTrackerTheme.colors.primaryLabel
+    colors.primaryLabel
   }
 
   Box(
     modifier = Modifier
-      .background(backgroundColor, shape = RoundedCornerShape(4.dp))
-      .padding(12.dp),
+        .background(backgroundColor, shape = RoundedCornerShape(4.dp))
+        .padding(12.dp),
     contentAlignment = Alignment.Center
   ) {
     Column(
@@ -83,8 +74,8 @@ fun CalendarDayItem(dayOfWeek: String, date: String, isSelected: Boolean) {
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
       Text(
-        text = dayOfWeek, // Display day of week
-        style = MedTrackerTheme.typography.body, // Adjust style as needed
+        text = dayOfWeek,
+        style = MedTrackerTheme.typography.body,
         color = textColor
       )
       Text(
@@ -98,8 +89,8 @@ fun CalendarDayItem(dayOfWeek: String, date: String, isSelected: Boolean) {
 
 @Composable
 fun DayOfWeekSelector(
-  viewModel: AddNewMedViewModel? = null,
-  viewModelUpd: UpdateMedVM? = null,
+    viewModel: AddNewMedViewModel? = null,
+    viewModelUpd: UpdateMedVM? = null,
 ) {
   val daysOfWeek = DayOfWeek.entries
   val selectedDays = remember { mutableStateListOf<DayOfWeek>() }
@@ -138,26 +129,25 @@ fun DayOfWeekSelector(
       Text("Confirm")
     }
   }
-
-
 }
 
 @Composable
 fun DayItem(
-  dayOfWeek: DayOfWeek,
-  isSelected: Boolean,
-  onClick: () -> Unit
+    dayOfWeek: DayOfWeek,
+    isSelected: Boolean,
+    onClick: () -> Unit
 ) {
   val backgroundColor =
-    if (isSelected) MedTrackerTheme.colors.primary400 else colors.secondaryBackground
-  val textColor = if (isSelected) MedTrackerTheme.colors.sysWhite else colors.primaryLabel
+    if (isSelected) colors.primary400 else colors.secondaryBackground
+  val textColor =
+    if (isSelected) colors.sysWhite else colors.primaryLabel
 
   Box(
     modifier = Modifier
-      .size(40.dp)
-      .clip(RoundedCornerShape(8.dp))
-      .background(backgroundColor)
-      .clickable { onClick() },
+        .size(40.dp)
+        .clip(RoundedCornerShape(8.dp))
+        .background(backgroundColor)
+        .clickable { onClick() },
     contentAlignment = Alignment.Center
   ) {
     Text(
