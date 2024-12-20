@@ -24,7 +24,7 @@ import com.galeria.medicationstracker.ui.screens.profile.settings.*
 fun MedTrackerNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: Routes = Routes.UserDashboard,
+    startDestination: Routes = Routes.Login,
 ) {
 
   NavHost(
@@ -38,7 +38,6 @@ fun MedTrackerNavGraph(
 
   ) {
 
-    // Home route with login, signup, and password reset actions
     composable<Routes.Login> {
       LoginScreen(
         onLoginClick = { userType ->
@@ -60,8 +59,8 @@ fun MedTrackerNavGraph(
       )
     }
 
-    // Registration screen route
     composable<Routes.Registration> { backStackEntry ->
+
       // Retrieve and pass the email argument.
       val args = backStackEntry.toRoute<Routes.Registration>()
       SignupScreen(
@@ -79,6 +78,7 @@ fun MedTrackerNavGraph(
         navigateHome = { navController.navigate(Routes.Login) },
       )
     }
+
 
     composable<Routes.UserDashboard> {
       DashboardScreen(

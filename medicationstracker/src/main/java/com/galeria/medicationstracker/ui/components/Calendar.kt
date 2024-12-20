@@ -104,7 +104,7 @@ fun DayOfWeekSelector(
       daysOfWeek.forEach { dayOfWeek ->
         DayItem(
           dayOfWeek = dayOfWeek,
-          isSelected = selectedDaysS.contains(dayOfWeek.toString())/* selectedDays.contains(dayOfWeek) */,
+          isSelected = selectedDaysS.contains(dayOfWeek.toString()),
           onClick = {
             if (selectedDaysS.contains(dayOfWeek.toString())) {
               selectedDaysS.remove(dayOfWeek.toString())
@@ -158,10 +158,28 @@ fun DayItem(
   }
 }
 
-@Preview(showBackground = true)
+@Preview(
+  showBackground = true, device = "spec:width=411dp,height=891dp", showSystemUi = true,
+  uiMode = android.content.res.Configuration.UI_MODE_NIGHT_NO or android.content.res.Configuration.UI_MODE_TYPE_NORMAL,
+  backgroundColor = 0xFFFFFFFF
+)
 @Composable
-fun WeeklyCalendarViewPreview() {
-  MaterialTheme {
-    WeeklyCalendarView()
+fun DayItemSelectedPreview() {
+  MedTrackerTheme {
+    Column(modifier = Modifier.fillMaxSize()) {
+      DayOfWeekSelector()
+
+      DayItem(
+        dayOfWeek = DayOfWeek.MONDAY,
+        isSelected = false,
+        onClick = { }
+      )
+      DayItem(
+        dayOfWeek = DayOfWeek.MONDAY,
+        isSelected = true,
+        onClick = { }
+      )
+    }
+
   }
 }

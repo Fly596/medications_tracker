@@ -17,15 +17,14 @@ import com.galeria.medicationstracker.ui.theme.*
 
 @Composable
 fun LoginScreen(
-  modifier: Modifier = Modifier,
-  onLoginClick: (userType: UserType) -> Unit,
-  onSignupClick: (String) -> Unit,
-  onResetPasswordClick: (String) -> Unit,
-  viewModel: LoginScreenViewModel = viewModel(),
-  // mainViewModel: MainViewModel = viewModel()
+    modifier: Modifier = Modifier,
+    onLoginClick: (userType: UserType) -> Unit,
+    onSignupClick: (String) -> Unit,
+    onResetPasswordClick: (String) -> Unit,
+    viewModel: LoginScreenViewModel = viewModel(),
 ) {
   val state = viewModel.loginScreenState
-  
+
   Column(
     modifier = modifier.fillMaxSize(),
     verticalArrangement = Arrangement.Top
@@ -34,9 +33,9 @@ fun LoginScreen(
       stringResource(R.string.sign_in_screen_title),
       style = MedTrackerTheme.typography.largeTitleEmphasized,
     )
-    
+
     Spacer(modifier = Modifier.weight(1f))
-    
+
     LazyColumn(
       verticalArrangement = Arrangement.spacedBy(2.dp),
       modifier = Modifier
@@ -53,7 +52,7 @@ fun LoginScreen(
           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         )
       }
-      
+
       item {
         MyTextField(
           value = state.password,
@@ -70,48 +69,48 @@ fun LoginScreen(
         )
       }
     }
-    
+
     // Show password switch.
     RememberMeSwitch(
       checked = state.showPassword,
       onCheckedChange = { viewModel.isShowPasswordChecked(state.showPassword) },
     )
-    
+
     Spacer(modifier = Modifier.height(16.dp))
-    
-    // region Buttons
+
     Row(verticalAlignment = Alignment.CenterVertically) {
       val scope = rememberCoroutineScope()
-      
+
       FlyButton(
         onClick = {
+          // Запрос типа пользователя.
           viewModel.getUserType()
+
           viewModel.onSignInClick(state.email, state.password) { userType ->
             onLoginClick(userType)
           }
-          
+
         },
         enabled = true,
       ) {
         Text(text = "Sign In")
       }
-      
+
       Spacer(modifier = Modifier.weight(1f))
-      
+
       FlyTonalButton(onClick = { onSignupClick(state.email) }, enabled = true) {
         Text(text = "Create Account")
       }
     }
-    
+
     Spacer(modifier = Modifier.weight(1f))
-    
+
     FlyTextButton(
       onClick = { onResetPasswordClick(state.email) },
       enabled = true
     ) {
       Text(text = "Forgot password?")
     }
-    // endregion
   }
 }
 
@@ -120,7 +119,7 @@ fun RememberMeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
   Row(verticalAlignment = Alignment.CenterVertically) {
     Text("Show password", style = MedTrackerTheme.typography.body)
     Spacer(modifier = Modifier.width(12.dp))
-    
+
     MySwitch(checked = checked, onCheckedChange = onCheckedChange)
   }
 }

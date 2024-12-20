@@ -19,10 +19,9 @@ class DashboardVM @Inject constructor() : ViewModel() {
   var currentTakenMedications = _currentTakenMedications.asStateFlow()
 
   init {
+    // Получение списка активных лекарств пациента.
     getCurrentMedications()
   }
-
-  // Получение списка лекарств пациента.
 
   var showToastCallback: ((String) -> Unit)? = null
 
