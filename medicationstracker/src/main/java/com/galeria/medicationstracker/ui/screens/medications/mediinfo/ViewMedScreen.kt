@@ -7,5 +7,5 @@ import androidx.lifecycle.viewmodel.compose.*
 fun ViewMedicationInfoScreen(
     viewMedVM: ViewMedVM = viewModel(),
 ) {
-  
+
 }

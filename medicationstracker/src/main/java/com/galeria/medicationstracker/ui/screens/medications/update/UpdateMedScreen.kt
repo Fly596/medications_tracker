@@ -206,7 +206,6 @@ fun UpdateMedScreen(
 
   }
 
-
 }
 
 @Composable
@@ -232,8 +231,8 @@ fun DatePicker(
     }
     MyTextField(
       value = "",
-      label = "Start: ${formatTimestamp(viewModel.uiState.startDate)}\nEnd: ${
-        formatTimestamp(
+      label = "Start: ${formatTimestampTillTheDay(viewModel.uiState.startDate)}\nEnd: ${
+        formatTimestampTillTheDay(
           viewModel.uiState.endDate
         )
       }",

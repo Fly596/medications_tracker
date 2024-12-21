@@ -34,11 +34,11 @@ data class User(
 )
 
 data class UserIntake(
-    val uid: String,
-    val medicationName: String,
-    val dose: String,
-    val status: Boolean,
-    val dateTime: Timestamp,
+    val uid: String? = null,
+    val medicationName: String? = null,
+    val dose: String? = null,
+    val status: Boolean? = null,
+    val dateTime: Timestamp? = null,
 )
 
 enum class UserType {

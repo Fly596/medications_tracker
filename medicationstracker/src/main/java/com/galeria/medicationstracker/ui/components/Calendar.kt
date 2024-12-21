@@ -25,7 +25,7 @@ fun WeeklyCalendarView(modifier: Modifier = Modifier) {
   val currentDate = LocalDate.now()
   val dateFormatter = DateTimeFormatter.ofPattern("dd")
   val dayOfWeekFormatter =
-    DateTimeFormatter.ofPattern("EEE") // Add day of week formatter
+    DateTimeFormatter.ofPattern("EEEE") // Add day of week formatter
 
   LazyRow(
     modifier = modifier.fillMaxWidth(),

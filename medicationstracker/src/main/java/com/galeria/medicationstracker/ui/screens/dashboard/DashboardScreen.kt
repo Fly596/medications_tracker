@@ -37,6 +37,13 @@ fun DashboardScreen(
     // Календарь на неделю.
     WeeklyCalendarView()
 
+    // логи.
+    FlyButton(
+      onClick = {/*TODO: открыть экран логов. */ }
+    ) {
+      Text("View Logs")
+    }
+
     // Medication Cards List.
     MedsByIntakeTimeList(
       viewModel = dashboardViewModel, medicationsForIntakeTime = currentMedications
@@ -78,7 +85,6 @@ fun MedsByIntakeTimeList(
                 viewModel = viewModel,
                 medication = medicationsForIntakeTime,
               )
-
             }
           }
         }
@@ -95,7 +101,6 @@ fun MedicationItem(
     icon: ImageVector = Icons.Filled.Medication
 ) {
 
-  // viewModel.hasIntakeToday(medication.name.toString())
   // State to control the visibility of the log medication dialog.
   val showLogDialog = remember { mutableStateOf(false) }
 
@@ -114,6 +119,9 @@ fun MedicationItem(
 
     // State to control the check icon.
     var isChecked by remember { mutableStateOf(false) }
+    LaunchedEffect(medication) {
+      isChecked = viewModel.checkIntake(medication)
+    }
 
     IconButton(
       onClick = {

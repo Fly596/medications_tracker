@@ -219,8 +219,8 @@ fun ModalDatePicker(
 
     MyTextField(
       value = "",
-      label = "Start: ${formatTimestamp(viewModel.uiState.medStartDate)}\nEnd: ${
-        formatTimestamp(
+      label = "Start: ${formatTimestampTillTheDay(viewModel.uiState.medStartDate)}\nEnd: ${
+        formatTimestampTillTheDay(
           viewModel.uiState.medEndDate
         )
       }",
