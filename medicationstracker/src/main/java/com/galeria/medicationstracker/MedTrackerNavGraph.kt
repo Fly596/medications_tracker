@@ -1,24 +1,32 @@
 package com.galeria.medicationstracker
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.navigation.*
-import androidx.navigation.compose.*
-import com.galeria.medicationstracker.data.*
-import com.galeria.medicationstracker.model.navigation.*
-import com.galeria.medicationstracker.ui.admin.*
-import com.galeria.medicationstracker.ui.doctor.*
-import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.*
-import com.galeria.medicationstracker.ui.screens.auth.login.*
-import com.galeria.medicationstracker.ui.screens.auth.signup.*
-import com.galeria.medicationstracker.ui.screens.dashboard.*
-import com.galeria.medicationstracker.ui.screens.medications.*
-import com.galeria.medicationstracker.ui.screens.medications.logs.*
-import com.galeria.medicationstracker.ui.screens.medications.update.*
-import com.galeria.medicationstracker.ui.screens.profile.*
-import com.galeria.medicationstracker.ui.screens.profile.notifications.*
-import com.galeria.medicationstracker.ui.screens.profile.settings.*
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeGestures
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.galeria.medicationstracker.data.UserType
+import com.galeria.medicationstracker.model.navigation.Routes
+import com.galeria.medicationstracker.ui.admin.DBDataScreen
+import com.galeria.medicationstracker.ui.doctor.home.DocDashboardScreen
+import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRecoveryScreen
+import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
+import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
+import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
+import com.galeria.medicationstracker.ui.screens.dashboard.record.RecordsScreen
+import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
+import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
+import com.galeria.medicationstracker.ui.screens.medications.logs.LogScreen
+import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
+import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
+import com.galeria.medicationstracker.ui.screens.profile.notifications.NotificationsSettingsScreen
+import com.galeria.medicationstracker.ui.screens.profile.settings.SettingsScreen
 
 @Composable
 fun MedTrackerNavGraph(
@@ -83,8 +91,12 @@ fun MedTrackerNavGraph(
     composable<Routes.UserDashboard> {
       DashboardScreen(
         onMedicationLogsClick = {
-          navController.navigate(Routes.LogScreen)
+          navController.navigate(Routes.RecordsScreen)
         }
+      )
+    }
+    composable<Routes.RecordsScreen> {
+      RecordsScreen(
       )
     }
 

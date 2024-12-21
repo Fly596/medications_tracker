@@ -1,16 +1,24 @@
 package com.galeria.medicationstracker.ui.screens.auth.login
 
-import android.util.*
-import androidx.compose.runtime.*
-import androidx.lifecycle.*
-import com.galeria.medicationstracker.*
-import com.galeria.medicationstracker.data.*
-import com.google.firebase.*
-import com.google.firebase.auth.*
-import com.google.firebase.firestore.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.tasks.*
+import android.util.Log
+import android.util.Patterns
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.galeria.medicationstracker.SnackbarController
+import com.galeria.medicationstracker.SnackbarEvent
+import com.galeria.medicationstracker.data.UserType
+import com.galeria.medicationstracker.model.FirestoreFunctions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 data class LoginScreenState(
     val email: String = "user@gmail.com",/* "ggsell@gmail.com", *//* "adminka@gmail.com" */
@@ -23,8 +31,8 @@ data class LoginScreenState(
 
 class LoginScreenViewModel : ViewModel() {
 
-  val auth = FirebaseAuth.getInstance()
-  private val db = Firebase.firestore
+  val firebaseAuth = FirebaseAuth.getInstance()
+  private val db = FirestoreFunctions.FirestoreService.db
 
   private var _userType = MutableStateFlow<String?>(null)
   var userType = _userType.asStateFlow()
@@ -113,7 +121,7 @@ class LoginScreenViewModel : ViewModel() {
     val isPasswordValid = validatePassword()
 
     if (isEmailValid && isPasswordValid) {
-      auth.signInWithEmailAndPassword(email, password)
+      firebaseAuth.signInWithEmailAndPassword(email, password)
           .addOnCompleteListener { task ->
             if (task.isSuccessful) {
               val userId = task.result?.user?.uid

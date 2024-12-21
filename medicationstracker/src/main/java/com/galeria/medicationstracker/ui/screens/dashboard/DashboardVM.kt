@@ -1,24 +1,29 @@
 package com.galeria.medicationstracker.ui.screens.dashboard
 
-import android.util.*
-import androidx.lifecycle.*
-import com.galeria.medicationstracker.data.*
-import com.galeria.medicationstracker.model.*
-import com.galeria.medicationstracker.model.FirestoreFunctions.*
-import com.google.firebase.*
-import com.google.firebase.auth.*
-import dagger.hilt.android.lifecycle.*
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.tasks.*
-import javax.inject.*
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import com.galeria.medicationstracker.data.UserIntake
+import com.galeria.medicationstracker.data.UserMedication
+import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
+import com.galeria.medicationstracker.model.formatStringDateToWeekday
+import com.galeria.medicationstracker.model.formatTimestampTillTheDay
+import com.galeria.medicationstracker.model.formatTimestampTillTheSec
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.tasks.await
 
-@HiltViewModel
-class DashboardVM @Inject constructor() : ViewModel() {
+class DashboardVM() : ViewModel() {
 
-  val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+  // Лекарства, которые нужно принимать сейчас.
   private var _currentTakenMedications =
     MutableStateFlow<List<UserMedication>>(emptyList())
   var currentTakenMedications = _currentTakenMedications.asStateFlow()
+
+  val db = FirestoreService.db
+  val firebaseAuth = FirebaseAuth.getInstance()
+  val currentUserId = firebaseAuth.currentUser?.uid
 
   init {
     // Получение списка активных лекарств пациента.
@@ -94,7 +99,6 @@ class DashboardVM @Inject constructor() : ViewModel() {
       val querySnapshot = FirestoreService.db.collection("MedicationIntake")
           .whereEqualTo("uid", currentUserId)
           .whereEqualTo("medicationName", medication.name)
-          .orderBy("dateTime")
           .limit(1)
           .get()
           .await()

@@ -1,6 +1,6 @@
 package com.galeria.medicationstracker.model.navigation
 
-import kotlinx.serialization.*
+import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class Routes {
@@ -36,6 +36,9 @@ sealed class Routes {
 
   @Serializable
   data object LogScreen : Routes()
+
+  @Serializable
+  data object RecordsScreen : Routes()
 
   @Serializable
   data object Profile : Routes()

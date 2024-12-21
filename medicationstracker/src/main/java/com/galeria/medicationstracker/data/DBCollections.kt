@@ -1,12 +1,25 @@
 package com.galeria.medicationstracker.data
 
-import android.icu.text.*
-import com.google.firebase.*
-import java.time.*
-import java.util.*
+import android.icu.text.SimpleDateFormat
+import com.google.firebase.Timestamp
+import java.time.DayOfWeek
+import java.time.LocalDateTime
+import java.util.Locale
 
 data class UserMedication(
     val uid: String? = null,
+    val name: String? = null,
+    val form: String? = null,
+    val strength: Float? = null,
+    val unit: String? = null,
+    val startDate: Timestamp? = null,
+    val endDate: Timestamp? = null,
+    val frequency: List<String> = emptyList(),
+    val intakeTime: String? = null,
+    val notes: String? = null,
+)
+
+data class UserMedicationUpd(
     val name: String? = null,
     val form: String? = null,
     val strength: Float? = null,

@@ -1,14 +1,14 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
-import androidx.lifecycle.*
-import com.galeria.medicationstracker.data.*
-import com.galeria.medicationstracker.model.FirestoreFunctions.*
-import com.google.firebase.*
-import com.google.firebase.auth.*
-import com.google.firebase.firestore.*
-import dagger.hilt.android.lifecycle.*
-import kotlinx.coroutines.flow.*
-import javax.inject.*
+import androidx.lifecycle.ViewModel
+import com.galeria.medicationstracker.data.UserMedication
+import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.toObjects
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
 @HiltViewModel
 class MedicationsViewModel @Inject constructor() : ViewModel() {
@@ -17,10 +17,11 @@ class MedicationsViewModel @Inject constructor() : ViewModel() {
   var doctor: String = "suAPx8M00vdYqqpWnahF7Ce6pJl2"
   var admin: String = "sT3E84Rw8oNiI4hBQwavVo3dhjy1"
 
-  private val user = Firebase.auth.currentUser
-  private val db = Firebase.firestore
+  private val db = FirestoreService.db
+  val firebaseAuth = FirebaseAuth.getInstance()
+  private val user = firebaseAuth.currentUser
 
-  val userId = patient
+  val userId = user?.uid
 
   private var _userMedications = MutableStateFlow<List<UserMedication>>(emptyList())
   var userMedications = _userMedications.asStateFlow()
@@ -31,17 +32,31 @@ class MedicationsViewModel @Inject constructor() : ViewModel() {
 
   // Получение всех пользовательских лекарств.
   private fun fetchUserMedications() {
-    FirestoreService.db.collection("UserMedication")
-        .whereEqualTo("uid", userId)
-        .addSnapshotListener { snapshot, error ->
-          if (error != null) {
-            return@addSnapshotListener
-          }
+    val docRef = db.collection("UserMedication")
 
-          if (snapshot != null) {
-            _userMedications.value = snapshot.toObjects()
-          }
+    docRef
+        .whereEqualTo("uid", userId)
+        .get()
+        .addOnSuccessListener { result ->
+          _userMedications.value = result.toObjects()
         }
+        .addOnFailureListener { ex ->
+          println("Error finding documents: $ex")
+
+        }
+
+    /*     FirestoreService.db.collection("UserMedication")
+            .whereEqualTo("uid", userId)
+
+            .addSnapshotListener { snapshot, error ->
+              if (error != null) {
+                return@addSnapshotListener
+              }
+
+              if (snapshot != null) {
+                _userMedications.value = snapshot.toObjects()
+              }
+            } */
   }
 
   // Удаление лекарства из Firestore.
