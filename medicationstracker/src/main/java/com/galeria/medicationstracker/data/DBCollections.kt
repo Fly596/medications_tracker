@@ -43,6 +43,8 @@ data class HospitalDrugs(
 data class User(
     val uid: String,
     val login: String,
+    val age: Int,
+    val name: String,
     val type: UserType = UserType.PATIENT
 )
 
