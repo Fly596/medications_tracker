@@ -5,13 +5,10 @@ import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.toObjects
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
-@HiltViewModel
-class MedicationsViewModel @Inject constructor() : ViewModel() {
+class MedicationsViewModel : ViewModel() {
 
   var patient: String = "KT95DFgGbgYt90QtKjIYSApXKqw1"
   var doctor: String = "suAPx8M00vdYqqpWnahF7Ce6pJl2"
@@ -27,11 +24,11 @@ class MedicationsViewModel @Inject constructor() : ViewModel() {
   var userMedications = _userMedications.asStateFlow()
 
   init {
-    fetchUserMedications()
+    // fetchUserMedications()
   }
 
   // Получение всех пользовательских лекарств.
-  private fun fetchUserMedications() {
+  fun fetchUserMedications() {
     val docRef = db.collection("UserMedication")
 
     docRef
@@ -44,24 +41,11 @@ class MedicationsViewModel @Inject constructor() : ViewModel() {
           println("Error finding documents: $ex")
 
         }
-
-    /*     FirestoreService.db.collection("UserMedication")
-            .whereEqualTo("uid", userId)
-
-            .addSnapshotListener { snapshot, error ->
-              if (error != null) {
-                return@addSnapshotListener
-              }
-
-              if (snapshot != null) {
-                _userMedications.value = snapshot.toObjects()
-              }
-            } */
   }
 
   // Удаление лекарства из Firestore.
   fun deleteMedicationFromFirestore(medName: String) {
-    FirestoreService.db.collection("UserMedication")
+    db.collection("UserMedication")
         .whereEqualTo("name", medName)
         .get()
         .addOnSuccessListener { querySnapshot ->

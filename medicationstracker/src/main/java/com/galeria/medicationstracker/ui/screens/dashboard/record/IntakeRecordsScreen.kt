@@ -17,7 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
-fun RecordsScreen(
+fun IntakeRecordsScreen(
     modifier: Modifier = Modifier,
     viewModel: RecordsVM = viewModel(),
     onConfirmRecord: () -> Unit = {}

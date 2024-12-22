@@ -11,13 +11,14 @@ import com.galeria.medicationstracker.SnackbarController
 import com.galeria.medicationstracker.SnackbarEvent
 import com.galeria.medicationstracker.data.User
 import com.galeria.medicationstracker.data.UserType
-import com.google.firebase.Firebase
+import com.galeria.medicationstracker.model.FirestoreFunctions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 
 data class SignupScreenState(
     val uid: String = "",
+    val age: Int = 18,
+    val name: String = "",
     val email: String = "",
     val emailErrorMessage: String? = null,
     val password: String = "",
@@ -32,7 +33,8 @@ class SignupScreenViewModel : ViewModel() {
 
   var signupScreenState by mutableStateOf(SignupScreenState())
     private set
-  private val db = Firebase.firestore
+
+  private val db = FirestoreFunctions.FirestoreService.db
 
   private fun validateEmail(): Boolean {
     val emailInput = signupScreenState.email.trim()
@@ -115,8 +117,9 @@ class SignupScreenViewModel : ViewModel() {
       signupScreenState.uid,
       signupScreenState.email,
       signupScreenState.userType,
+      signupScreenState.age,
+      signupScreenState.name
     )
-// создание акка с id из логина пользователя.
     db.collection("User").document(newUser.login).set(newUser)
         .addOnCompleteListener { task ->
           if (task.isSuccessful) {
@@ -146,6 +149,14 @@ class SignupScreenViewModel : ViewModel() {
             }
 
           } */
+  }
+
+  fun updateUserAge(input: Int) {
+    signupScreenState = signupScreenState.copy(age = input)
+  }
+
+  fun updateUserName(input: String) {
+    signupScreenState = signupScreenState.copy(name = input)
   }
 
   fun updateUserType(input: UserType) {

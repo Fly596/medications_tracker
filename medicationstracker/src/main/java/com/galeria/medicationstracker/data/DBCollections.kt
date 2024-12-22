@@ -14,19 +14,7 @@ data class UserMedication(
     val unit: String? = null,
     val startDate: Timestamp? = null,
     val endDate: Timestamp? = null,
-    val frequency: List<String> = emptyList(),
-    val intakeTime: String? = null,
-    val notes: String? = null,
-)
-
-data class UserMedicationUpd(
-    val name: String? = null,
-    val form: String? = null,
-    val strength: Float? = null,
-    val unit: String? = null,
-    val startDate: Timestamp? = null,
-    val endDate: Timestamp? = null,
-    val frequency: List<String> = emptyList(),
+    val daysOfWeek: List<String> = emptyList(),
     val intakeTime: String? = null,
     val notes: String? = null,
 )
@@ -43,9 +31,9 @@ data class HospitalDrugs(
 data class User(
     val uid: String,
     val login: String,
-    val age: Int,
-    val name: String,
-    val type: UserType = UserType.PATIENT
+    val type: UserType = UserType.PATIENT,
+    val age: Int? = null,
+    val name: String? = null,
 )
 
 data class UserIntake(

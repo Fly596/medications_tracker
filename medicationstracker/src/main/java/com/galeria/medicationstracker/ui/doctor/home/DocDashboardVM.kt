@@ -2,8 +2,7 @@ package com.galeria.medicationstracker.ui.doctor.home
 
 import androidx.lifecycle.ViewModel
 import com.galeria.medicationstracker.data.User
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
+import com.galeria.medicationstracker.model.FirestoreFunctions
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -50,7 +49,7 @@ data class DocDashboardState(
 
 class DocDashboardVM : ViewModel() {
 
-  private val db = Firebase.firestore
+  private val db = FirestoreFunctions.FirestoreService.db
 
   private var docDashboardState = MutableStateFlow(DocDashboardState())
   val _docDashboardState = docDashboardState.asStateFlow()

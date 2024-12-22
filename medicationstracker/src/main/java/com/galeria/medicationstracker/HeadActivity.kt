@@ -1,20 +1,32 @@
 package com.galeria.medicationstracker
 
-import android.os.*
-import androidx.activity.*
-import androidx.activity.compose.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.navigation.compose.*
-import com.galeria.medicationstracker.model.*
-import com.galeria.medicationstracker.model.navigation.Routes.*
-import com.galeria.medicationstracker.ui.*
-import com.galeria.medicationstracker.ui.components.*
-import com.galeria.medicationstracker.ui.theme.*
-import kotlinx.coroutines.*
-import java.time.*
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.viewModels
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.galeria.medicationstracker.model.getStringFormattedDate
+import com.galeria.medicationstracker.model.navigation.Routes.NavigationRoutes
+import com.galeria.medicationstracker.ui.HeadViewModel
+import com.galeria.medicationstracker.ui.components.FlyTopAppBar
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class HeadActivity : ComponentActivity() {
 
@@ -58,6 +70,7 @@ class HeadActivity : ComponentActivity() {
               NavigationRoutes.APP_SETTINGS to { "App Settings" },
               NavigationRoutes.NOTIFICATIONS_SETTINGS to { "Notifications Settings" },
               NavigationRoutes.DOC_DASHBOARD to { "Welcome, Doctor" },
+              NavigationRoutes.DOC_PATIENTS_LIST to { "List of Patients" },
               NavigationRoutes.ADMIN_DASHBOARD to { "Hello, Admin" },
             )
 

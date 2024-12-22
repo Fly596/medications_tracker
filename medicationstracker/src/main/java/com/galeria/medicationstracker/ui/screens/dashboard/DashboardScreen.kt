@@ -37,7 +37,6 @@ import com.galeria.medicationstracker.ui.components.WeeklyCalendarView
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.typography
 
-// TODO: Get medications from firebase DB.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
@@ -49,7 +48,7 @@ fun DashboardScreen(
   val currentMedications by dashboardViewModel.currentTakenMedications.collectAsStateWithLifecycle()
 
   Column(
-    modifier = modifier,
+    modifier = modifier.fillMaxWidth(),
     verticalArrangement = Arrangement.spacedBy(16.dp),
   ) {
 

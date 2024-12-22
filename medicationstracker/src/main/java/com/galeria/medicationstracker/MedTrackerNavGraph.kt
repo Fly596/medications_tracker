@@ -19,7 +19,7 @@ import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRec
 import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
 import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
-import com.galeria.medicationstracker.ui.screens.dashboard.record.RecordsScreen
+import com.galeria.medicationstracker.ui.screens.dashboard.record.IntakeRecordsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
 import com.galeria.medicationstracker.ui.screens.medications.logs.LogScreen
@@ -37,13 +37,10 @@ fun MedTrackerNavGraph(
 
   NavHost(
     navController = navController,
-    // startDestination = Routes.Login,
     startDestination = startDestination,
     modifier = modifier
         .fillMaxSize()
         .windowInsetsPadding(WindowInsets.safeGestures)
-    //.windowInsetsPadding(WindowInsets.safeGestures)
-
   ) {
 
     composable<Routes.Login> {
@@ -91,12 +88,12 @@ fun MedTrackerNavGraph(
     composable<Routes.UserDashboard> {
       DashboardScreen(
         onMedicationLogsClick = {
-          navController.navigate(Routes.RecordsScreen)
+          navController.navigate(Routes.LogsScreen)
         }
       )
     }
-    composable<Routes.RecordsScreen> {
-      RecordsScreen(
+    composable<Routes.LogsScreen> {
+      IntakeRecordsScreen(
       )
     }
 

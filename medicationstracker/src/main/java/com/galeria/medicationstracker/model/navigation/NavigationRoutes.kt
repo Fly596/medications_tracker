@@ -28,6 +28,9 @@ sealed class Routes {
   @Serializable
   data object DocDashboard : Routes()
 
+  @Serializable
+  data object PatientsList : Routes()
+
   // endregion
 
   // region Application
@@ -38,7 +41,7 @@ sealed class Routes {
   data object LogScreen : Routes()
 
   @Serializable
-  data object RecordsScreen : Routes()
+  data object LogsScreen : Routes()
 
   @Serializable
   data object Profile : Routes()
@@ -98,6 +101,9 @@ sealed class Routes {
       "com.galeria.medicationstracker.model.navigation.Routes.NotificationsSettings"
     const val DOC_DASHBOARD =
       "com.galeria.medicationstracker.model.navigation.Routes.DocDashboard"
+
+    const val DOC_PATIENTS_LIST =
+      "com.galeria.medicationstracker.model.navigation.Routes.PatientsList"
     const val ADMIN_DASHBOARD =
       "com.galeria.medicationstracker.model.navigation.Routes.AdminDashboard"
     const val LOGIN =

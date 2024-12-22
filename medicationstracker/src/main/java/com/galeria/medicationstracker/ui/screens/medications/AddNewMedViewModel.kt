@@ -9,19 +9,17 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
-import com.galeria.medicationstracker.data.UserMedicationUpd
+import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
 import com.google.firebase.Timestamp
 import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.FirebaseAuth
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 data class NewMedicationUiState(
     val uid: String = "",
     val medName: String = "",
     var medForm: MedicationForms = MedicationForms.TABLET, // f
-    val medStrength: String = "",
+    val medStrength: Float = 0.0f,
     val medUnit: MedicationUnit = MedicationUnit.MG, // f
     val medStartDate: Timestamp = Timestamp.now(),// f
     val medEndDate: Timestamp = Timestamp.now(),// f
@@ -29,49 +27,43 @@ data class NewMedicationUiState(
     val medNotes: String = "",
     val showDatePicker: Boolean = false,
     val showTimePicker: Boolean = false,
-    val selectedDays: List<String> = emptyList(),
+    val intakeDays: List<String> = emptyList(),
 )
 
-@HiltViewModel
-class AddNewMedViewModel @Inject constructor() : ViewModel() {
+class AddNewMedViewModel : ViewModel() {
 
   var uiState by mutableStateOf(NewMedicationUiState())
     private set
 
-  val userId = FirebaseAuth.getInstance().currentUser?.uid
-  val userLogin = FirebaseAuth.getInstance().currentUser?.email
+  val db = FirestoreService.db
 
-  var selectedStartDate by mutableStateOf<Long?>(null)
-  // private set
-
-  var selectedEndDate by mutableStateOf<Long?>(null)
-
-  // private set
-  // var combinedDates = Pair<Long?, Long?>(selectedStartDate, selectedEndDate)
+  val auth = FirebaseAuth.getInstance()
+  val userId = auth.currentUser?.uid
+  val userLogin = auth.currentUser?.email
 
   // TODO: Check for dublicates.
   fun addMedication(
       context: Context,
   ) {
-    val medicationRef = FirestoreService.db
-        .collection("User").document("$userLogin")
-        .collection("drugs")
+    val medicationRef = db
+        .collection("UserMedication")
 
     val newUserMedication =
-      UserMedicationUpd(
+      UserMedication(
+        userId,
         uiState.medName,
         uiState.medForm.toString(),
-        uiState.medStrength.toFloat(),
+        uiState.medStrength,
         uiState.medUnit.toString(),
         uiState.medStartDate,
         uiState.medEndDate,
-        uiState.selectedDays,
+        uiState.intakeDays,
         uiState.medIntakeTime,
         uiState.medNotes
       )
 
-
-    medicationRef.document(uiState.medName).set(newUserMedication)
+    medicationRef.document("${userLogin}_${uiState.medName}_${uiState.medStrength}")
+        .set(newUserMedication)
         .addOnSuccessListener {
           Toast.makeText(
             context,
@@ -105,44 +97,8 @@ class AddNewMedViewModel @Inject constructor() : ViewModel() {
               Log.w(TAG, "Error adding document", e)
             } */
   }
-  /*   fun addMedication(
-      context: Context,
-  ) {
-
-    val newUserMedication =
-      UserMedication(
-        userId,
-        uiState.medName,
-        uiState.medForm.toString(),
-        uiState.medStrength.toFloat(),
-        uiState.medUnit.toString(),
-        uiState.medStartDate,
-        uiState.medEndDate,
-        uiState.selectedDays,
-        uiState.medIntakeTime,
-        uiState.medNotes
-      )
-
-    FirestoreService.db.collection("UserMedication").add(newUserMedication)
-        .addOnSuccessListener {
-          Toast.makeText(
-            context,
-            "DocumentSnapshot added successfully!",
-            Toast.LENGTH_SHORT
-          ).show()
-
-          Log.d(TAG, "DocumentSnapshot added with ID: ${it.id}")
-        }
-        .addOnFailureListener { e ->
-          Toast.makeText(context, "Error adding medication", Toast.LENGTH_SHORT)
-              .show()
-
-          Log.w(TAG, "Error adding document", e)
-        }
-  } */
 
   fun updateStartDate(input: Timestamp?) {
-
     uiState = uiState.copy(medStartDate = input ?: Timestamp.now())
   }
 
@@ -158,7 +114,7 @@ class AddNewMedViewModel @Inject constructor() : ViewModel() {
     uiState = uiState.copy(medForm = newForm)
   }
 
-  fun updateMedStrength(newStrength: String) {
+  fun updateMedStrength(newStrength: Float) {
     uiState = uiState.copy(medStrength = newStrength/* .toFloat() */)
   }
 
@@ -183,7 +139,7 @@ class AddNewMedViewModel @Inject constructor() : ViewModel() {
   }
 
   fun updateSelectedDays(input: List<String>) {
-    uiState = uiState.copy(selectedDays = uiState.selectedDays + input)
+    uiState = uiState.copy(intakeDays = uiState.intakeDays + input)
   }
 
 }

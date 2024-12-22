@@ -1,22 +1,36 @@
 package com.galeria.medicationstracker.ui.components
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
-import androidx.compose.foundation.shape.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.draw.*
-import androidx.compose.ui.tooling.preview.*
-import androidx.compose.ui.unit.*
-import com.galeria.medicationstracker.ui.screens.medications.*
-import com.galeria.medicationstracker.ui.screens.medications.update.*
-import com.galeria.medicationstracker.ui.theme.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.galeria.medicationstracker.ui.screens.medications.AddNewMedViewModel
+import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedVM
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
-import java.time.*
-import java.time.format.*
-import java.time.temporal.*
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 @Composable
 fun WeeklyCalendarView(modifier: Modifier = Modifier) {
@@ -25,7 +39,7 @@ fun WeeklyCalendarView(modifier: Modifier = Modifier) {
   val currentDate = LocalDate.now()
   val dateFormatter = DateTimeFormatter.ofPattern("dd")
   val dayOfWeekFormatter =
-    DateTimeFormatter.ofPattern("EEEE") // Add day of week formatter
+    DateTimeFormatter.ofPattern("EE") // Add day of week formatter
 
   LazyRow(
     modifier = modifier.fillMaxWidth(),
@@ -75,7 +89,7 @@ fun CalendarDayItem(dayOfWeek: String, date: String, isSelected: Boolean) {
     ) {
       Text(
         text = dayOfWeek,
-        style = MedTrackerTheme.typography.body,
+        style = MedTrackerTheme.typography.caption1,
         color = textColor
       )
       Text(
@@ -93,8 +107,7 @@ fun DayOfWeekSelector(
     viewModelUpd: UpdateMedVM? = null,
 ) {
   val daysOfWeek = DayOfWeek.entries
-  val selectedDays = remember { mutableStateListOf<DayOfWeek>() }
-  val selectedDaysS = remember { mutableStateListOf<String>() }
+  val selectedDays = remember { mutableStateListOf<String>() }
 
   Column {
     Row(
@@ -104,12 +117,12 @@ fun DayOfWeekSelector(
       daysOfWeek.forEach { dayOfWeek ->
         DayItem(
           dayOfWeek = dayOfWeek,
-          isSelected = selectedDaysS.contains(dayOfWeek.toString()),
+          isSelected = selectedDays.contains(dayOfWeek.toString()),
           onClick = {
-            if (selectedDaysS.contains(dayOfWeek.toString())) {
-              selectedDaysS.remove(dayOfWeek.toString())
+            if (selectedDays.contains(dayOfWeek.toString())) {
+              selectedDays.remove(dayOfWeek.toString())
             } else {
-              selectedDaysS.add(dayOfWeek.toString())
+              selectedDays.add(dayOfWeek.toString())
             }
           }
         )
@@ -121,7 +134,7 @@ fun DayOfWeekSelector(
     FlyTonalButton(
       onClick = {
         if (viewModel != null) {
-          viewModel.updateSelectedDays(selectedDaysS.toList())
+          viewModel.updateSelectedDays(selectedDays.toList())
         } else {
           viewModelUpd?.updateSelectedDays(selectedDays.toList())
         }

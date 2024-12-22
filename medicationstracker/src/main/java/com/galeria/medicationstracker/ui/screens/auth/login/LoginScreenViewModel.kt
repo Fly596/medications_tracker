@@ -14,16 +14,15 @@ import com.galeria.medicationstracker.model.FirestoreFunctions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 data class LoginScreenState(
-    val email: String = "user@gmail.com",/* "ggsell@gmail.com", *//* "adminka@gmail.com" */
+    val email: String = "tom@gmail.com",/* "ggsell@gmail.com", *//* "adminka@gmail.com" */
     val emailError: String? = null,
-    val password: String = "user66",/*"password" "14881337" */
+    val password: String = "tomtom",/*"password" "14881337" */
     val passwordError: String? = null,
     val showPassword: Boolean = false,
     val userType: UserType = UserType.PATIENT,
@@ -48,14 +47,13 @@ class LoginScreenViewModel : ViewModel() {
           return@launch
         }
 
-        val snapshot = db.collection("users")
-            .whereEqualTo("login", login)
-            .limit(1)
+        val snapshot = db.collection("User")
+            .document(login)
             .get()
             .await()
 
-        if (!snapshot.isEmpty) {
-          _userType.value = snapshot.documents[0].get("type") as? String
+        if (!snapshot.exists()) {
+          _userType.value = snapshot.data?.get("type") as? String
         } else {
           _userType.value = null
         }
@@ -127,16 +125,14 @@ class LoginScreenViewModel : ViewModel() {
               val userId = task.result?.user?.uid
 
               if (userId != null) {
-                val dataBase = FirebaseFirestore.getInstance()
+                val dataBase = FirestoreFunctions.FirestoreService.db
 
-                dataBase.collection("users")
-                    .whereEqualTo("uid", userId)
-                    .whereEqualTo("login", email)
+                dataBase.collection("User").document(email)
                     .get()
                     .addOnSuccessListener { snapshot ->
-                      if (!snapshot.isEmpty) {
-                        val document = snapshot.documents[0]
-                        val userTypeString = document.getString("type")
+                      if (snapshot.exists()) {
+
+                        val userTypeString = snapshot.getString("type")
 
                         if (userTypeString != null) {
                           val docUserType =

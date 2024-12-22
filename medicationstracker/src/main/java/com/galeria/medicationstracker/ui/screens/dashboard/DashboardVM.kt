@@ -16,9 +16,8 @@ import kotlinx.coroutines.tasks.await
 
 class DashboardVM() : ViewModel() {
 
-  // Лекарства, которые нужно принимать сейчас.
-  private var _currentTakenMedications =
-    MutableStateFlow<List<UserMedication>>(emptyList())
+  // Лекарства, которые нужно принимать.
+  private var _currentTakenMedications = MutableStateFlow<List<UserMedication>>(emptyList())
   var currentTakenMedications = _currentTakenMedications.asStateFlow()
 
   val db = FirestoreService.db
@@ -36,10 +35,11 @@ class DashboardVM() : ViewModel() {
   fun getCurrentMedications() {
     val todayWeekDay = formatStringDateToWeekday(Timestamp.now()).uppercase()
 
+
     FirestoreService.db.collection("UserMedication")
         .whereEqualTo("uid", currentUserId)
         .whereGreaterThanOrEqualTo("endDate", Timestamp.now())
-        .whereArrayContains("frequency", todayWeekDay.toString())
+        .whereArrayContains("daysOfWeek", todayWeekDay.toString())
         .addSnapshotListener { medicationSnapshots, error ->
           if (error != null) {
             Log.e(
@@ -156,23 +156,4 @@ class DashboardVM() : ViewModel() {
         return ret */
   }
 
-  /*
-  // Проверка на то, был ли сегодня прием или нет
-    fun hasIntakeToday(medicationName: String) {
-      val temp = LocalDateTime.now().toTimestamp()
-      val temp2 = Timestamp.now().toLocalDateTime()
-
-      FirestoreService.db.collection("MedicationIntake")
-          .whereEqualTo("uid", currentUserId)
-          .whereEqualTo("medicationName", medicationName)
-          .whereLessThanOrEqualTo("dateTime", LocalDateTime.now().toTimestamp())
-          .get()
-          .addOnSuccessListener {
-            Log.d("DashboardVM", "hasIntakeToday: ${it.isEmpty}")
-          }
-          .addOnFailureListener {
-            Log.d("DashboardVM", "hasIntakeToday: ${it.message}")
-          }
-
-    } */
 }
