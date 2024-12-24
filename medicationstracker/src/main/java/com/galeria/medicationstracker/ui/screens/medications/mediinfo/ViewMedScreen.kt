@@ -6,24 +6,57 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.galeria.medicationstracker.model.formatTimestampTillTheDay
 import com.galeria.medicationstracker.ui.components.FlySimpleCard
+import com.galeria.medicationstracker.ui.components.FlyTextButton
+import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.google.firebase.Timestamp
 
 @Composable
 fun ViewMedicationInfoScreen(
     modifier: Modifier = Modifier,
-    // viewMedVM: ViewMedVM = viewModel(),
+    onReturn: () -> Unit = {},
+    medsViewModel: MedsPagesViewModel = viewModel(),
 ) {
+    val uiState by medsViewModel.uiState.collectAsStateWithLifecycle()
+
     Column(modifier = modifier.fillMaxWidth()) {
+        FlyTextButton(
+            onClick = onReturn
+        ) {
+            Text(text = "Return")
+        }
         // имя и дни приема.
-        MedInfoHeader()
+        MedInfoHeader(
+            medName = uiState.selectedMed?.name ?: ""
+        )
+
+
+        TextField(
+            value = uiState.selectedMed?.name ?: "",
+            onValueChange = {}
+        )
+        /*         FlyTextField(
+                    value = uiState.selectedMed?.name ?: "",
+                    readOnly = True,
+                    onValueChange = {
+                        medsViewModel.getSelectedMed(it).toString()
+                    }
+                ) */
 
         // начальная дата, total taken/skipped.
-        MedStatCard()
+        MedStatCard(
+            startDate = uiState.selectedMed?.startDate
+        )
     }
 
 }
@@ -31,13 +64,15 @@ fun ViewMedicationInfoScreen(
 @Composable
 fun MedStatCard(
     modifier: Modifier = Modifier,
-    startDate: String = "Dec 07, 2024"
+    startDate: Timestamp? = null,
 ) {
+    if (startDate == null) return
+    val startDateFormatted = formatTimestampTillTheDay(startDate)
     FlySimpleCard(modifier = modifier) {
         // начальная дата.
         Column() {
             Text("Start Date")
-            Text(startDate, style = MedTrackerTheme.typography.title3Emphasized)
+            Text(startDateFormatted, style = MedTrackerTheme.typography.title3Emphasized)
         }
 
         MedStatCardBody()

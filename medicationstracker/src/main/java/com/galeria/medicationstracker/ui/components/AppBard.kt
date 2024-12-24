@@ -25,71 +25,69 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FlyTopAppBar(
-  title: String = "Title",
-  modifier: Modifier = Modifier,
-  onClick: () -> Unit = {},
-  icon: ImageVector? = null,
-  navigationIcon: @Composable () -> Unit = {},
-  actions: @Composable RowScope.() -> Unit = {},
-  expandedHeight: Dp = TopAppBarDefaults.TopAppBarExpandedHeight,
-  windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
-  colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
-  textStyle: TextStyle = MedTrackerTheme.typography.title1Emphasized
+    title: String = "Title",
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    icon: ImageVector? = null,
+    navigationIcon: @Composable () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
+    expandedHeight: Dp = TopAppBarDefaults.TopAppBarExpandedHeight,
+    windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
+    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
+    textStyle: TextStyle = MedTrackerTheme.typography.title1Emphasized
 ) {
-  Column(
-    modifier = Modifier
-      .background(
-        color = MedTrackerTheme.colors.primaryBackground
-      )
-      .fillMaxWidth()
-  ) {
-    Row(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(start = 16.dp, end = 16.dp, top = 32.dp, bottom = 16.dp),
-      verticalAlignment = Alignment.CenterVertically,
-
+    Column(
+        modifier = Modifier
+            .background(
+                color = MedTrackerTheme.colors.primaryBackground
+            )
+            .fillMaxWidth()
     ) {
-      Text(text = title, style = textStyle)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 0.dp),
+            verticalAlignment = Alignment.Top,
 
-      // Spacer(modifier = Modifier.weight(1f))
+            ) {
+            Text(text = title, style = textStyle)
 
+            // Spacer(modifier = Modifier.weight(1f))
 
-      if (icon != null) {
-        IconButton(
-          onClick = { onClick.invoke() },
-          modifier = Modifier
-            .padding(start = 16.dp)
-            .size(28.dp)
-        ) {
-          Icon(
-            modifier = Modifier.size(28.dp),
-            imageVector = icon,
-            contentDescription = null,
-          )
+            if (icon != null) {
+                IconButton(
+                    onClick = { onClick.invoke() },
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .size(28.dp)
+                ) {
+                    Icon(
+                        modifier = Modifier.size(28.dp),
+                        imageVector = icon,
+                        contentDescription = null,
+                    )
+                }
+            }
+
         }
-      }
+        Spacer(modifier = Modifier.padding(vertical = 8.dp))
+        HorizontalDivider(
+            color = MedTrackerTheme.colors.opaqueSeparator,
+            /*       modifier = Modifier.layout() { measurable, constraints ->
+                    val placeable = measurable.measure(
+                      constraints.copy(
+                        maxWidth = constraints.maxWidth + 16.dp.roundToPx(),
+                      )
+                    )
+                    layout(placeable.width, placeable.height) {
+                      placeable.place(8.dp.roundToPx(), 0)
+                    }
+                  } */
+        )
 
     }
-    Spacer(modifier = Modifier.padding(vertical = 8.dp))
-    HorizontalDivider(
-      color = MedTrackerTheme.colors.opaqueSeparator,
-      /*       modifier = Modifier.layout() { measurable, constraints ->
-              val placeable = measurable.measure(
-                constraints.copy(
-                  maxWidth = constraints.maxWidth + 16.dp.roundToPx(),
-                )
-              )
-              layout(placeable.width, placeable.height) {
-                placeable.place(8.dp.roundToPx(), 0)
-              }
-            } */
-    )
-
-  }
 
 }

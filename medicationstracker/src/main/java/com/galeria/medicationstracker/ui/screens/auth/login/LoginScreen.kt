@@ -46,6 +46,8 @@ fun LoginScreen(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text(
             stringResource(R.string.sign_in_screen_title),
             style = MedTrackerTheme.typography.largeTitleEmphasized,

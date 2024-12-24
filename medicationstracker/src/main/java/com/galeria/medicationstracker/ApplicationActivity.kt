@@ -10,7 +10,6 @@ import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.Medication
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -158,30 +157,30 @@ data class BottomNavItem(
 )
 
 fun bottomNavItems(): List<BottomNavItem> {
-  return listOf(
-    BottomNavItem(
-      title = "Dashboard",
-      route = Routes.UserHome,
-      selectedIcon = Icons.Filled.Dashboard,
-      unselectedIcon = Icons.Outlined.Dashboard
-    ),
-    BottomNavItem(
-      title = "Medications",
-      route = Routes.UserMedications,
-      selectedIcon = Icons.Filled.Medication,
-      unselectedIcon = Icons.Outlined.Medication,
-      hasNews = false,
-      badgeCount = 16,
-    ),
-    BottomNavItem(
-      title = "Profile",
-      route = Routes.UserProfile,
-      selectedIcon = Icons.Filled.AccountCircle,
-      unselectedIcon = Icons.Outlined.AccountCircle,
-      hasNews = false,
-    ),
-    // ... (other items)
-  )
+    return listOf(
+        BottomNavItem(
+            title = "Dashboard",
+            route = Routes.UserHome,
+            selectedIcon = Icons.Filled.Dashboard,
+            unselectedIcon = Icons.Outlined.Dashboard
+        ),
+        BottomNavItem(
+            title = "Medications",
+            route = Routes.UserMedications,
+            selectedIcon = Icons.Filled.Medication,
+            unselectedIcon = Icons.Outlined.Medication,
+            hasNews = false,
+            badgeCount = 16,
+        ),
+        BottomNavItem(
+            title = "Profile",
+            route = Routes.UserProfile,
+            selectedIcon = Icons.Filled.AccountCircle,
+            unselectedIcon = Icons.Outlined.AccountCircle,
+            hasNews = false,
+        ),
+        // ... (other items)
+    )
 }
 
 @Composable
@@ -190,46 +189,45 @@ fun BottomNavBar(
     navController: NavHostController,
     viewModel: HeadViewModel,
 ) {
-  val currentNavItemIndex = viewModel.selectedItemIndex.collectAsState().value
+    val currentNavItemIndex = viewModel.selectedItemIndex.collectAsState().value
 
-  Column {
-    HorizontalDivider()
+    Column {
 
-    NavigationBar(
-      // modifier = Modifier.fillMaxWidth(),
-      containerColor = MedTrackerTheme.colors.secondaryBackgroundGrouped,
-      contentColor = MedTrackerTheme.colors.primaryLabel,
-    ) {
-      navItems.forEachIndexed { navItemIndex, navItem ->
-        NavigationBarItem(
-          selected = currentNavItemIndex == navItemIndex,
-          colors = NavigationBarItemDefaults.colors(
-            indicatorColor = MedTrackerTheme.colors.primaryTinted
-          ),
-          onClick = {
-            viewModel.updateSelectedItemIndex(navItemIndex)
-            navController.navigate(navItem.route)
-          },
-          label = {
-            Text(
-              text = navItem.title,
-              style = MedTrackerTheme.typography.body
-            )
-          },
-          icon = {
-            IconWithBadge(
-              icon = if (navItemIndex == currentNavItemIndex) navItem.selectedIcon else navItem.unselectedIcon,
-              badgeCount = navItem.badgeCount,
-              showUnreadBadge = navItem.hasNews,
-              contentDescription = navItem.title,
-            )
-          },
-        )
-      }
+        NavigationBar(
+            // modifier = Modifier.fillMaxWidth(),
+            containerColor = MedTrackerTheme.colors.secondaryBackgroundGrouped,
+            contentColor = MedTrackerTheme.colors.primaryLabel,
+        ) {
+            navItems.forEachIndexed { navItemIndex, navItem ->
+                NavigationBarItem(
+                    selected = currentNavItemIndex == navItemIndex,
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = MedTrackerTheme.colors.primaryTinted
+                    ),
+                    onClick = {
+                        viewModel.updateSelectedItemIndex(navItemIndex)
+                        navController.navigate(navItem.route)
+                    },
+                    label = {
+                        Text(
+                            text = navItem.title,
+                            style = MedTrackerTheme.typography.body
+                        )
+                    },
+                    icon = {
+                        IconWithBadge(
+                            icon = if (navItemIndex == currentNavItemIndex) navItem.selectedIcon else navItem.unselectedIcon,
+                            badgeCount = navItem.badgeCount,
+                            showUnreadBadge = navItem.hasNews,
+                            contentDescription = navItem.title,
+                        )
+                    },
+                )
+            }
 
+        }
     }
-  }
-  // TODO: Change colors
+    // TODO: Change colors
 
 }
 
@@ -240,15 +238,15 @@ fun IconWithBadge(
     showUnreadBadge: Boolean,
     contentDescription: String?,
 ) {
-  BadgedBox(
-    badge = {
-      when {
-        badgeCount != null -> Badge { Text(text = badgeCount.toString()) }
-        showUnreadBadge -> Badge()
-      }
+    BadgedBox(
+        badge = {
+            when {
+                badgeCount != null -> Badge { Text(text = badgeCount.toString()) }
+                showUnreadBadge -> Badge()
+            }
+        }
+    ) {
+        Icon(imageVector = icon, contentDescription = contentDescription)
     }
-  ) {
-    Icon(imageVector = icon, contentDescription = contentDescription)
-  }
 }
 

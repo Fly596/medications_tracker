@@ -31,7 +31,6 @@ import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.components.FlyButton
 import com.galeria.medicationstracker.ui.components.FlyTextButton
 import com.galeria.medicationstracker.ui.components.NavigationRow
-import com.galeria.medicationstracker.ui.screens.dashboard.DashboardVM
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,9 +38,10 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 fun MedicationsScreen(
     modifier: Modifier = Modifier,
     onAddMedClick: () -> Unit = {},
-    onViewMedClick: (String) -> Unit = {},
-    dashboardViewModel: DashboardVM = viewModel(),
+    onViewMed: () -> Unit,
+    onEditMedClick: (String) -> Unit = {},
     medicationsViewModel: MedicationsViewModel = viewModel(),
+    medsPagesVM: MedsPagesViewModel = viewModel(),
 ) {
 
     LaunchedEffect(Unit) { medicationsViewModel.fetchUserMedications() }
@@ -59,15 +59,29 @@ fun MedicationsScreen(
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-
+            item {
+                // Button to add a new medication.
+                FlyButton(
+                    onClick = {
+                        medsPagesVM.getSelectedMed("Benadryl")
+                    },
+                    Modifier.fillMaxWidth()
+                ) {
+                    Text("+ Get Med")
+                }
+            }
             items(medications) { med ->
                 FlyElevatedCardMedsList(
                     title = med.name.toString(),
                     dosage = ("${med.strength} ${med.unit.toString().lowercase()}"),
                     info = med.form.toString().lowercase(),
-                    onEditClick = { onViewMedClick(med.name.toString()) },
+                    onEditClick = { onEditMedClick(med.name.toString()) },
                     onRemoveMedClick = {
                         medicationsViewModel.deleteMedicationFromFirestore(med.name.toString())
+                    },
+                    onViewMed = {
+                        medsPagesVM.getSelectedMed(med.name.toString())
+                        onViewMed()
                     }
                 )
             }
@@ -102,6 +116,7 @@ fun FlyElevatedCardMedsList(
     info: String = "Mon, Tue, Fri...",
     onEditClick: () -> Unit,
     onRemoveMedClick: () -> Unit,
+    onViewMed: () -> Unit,
     medication: UserMedication? = null,
     shape: Shape = RoundedCornerShape(8.dp),
     elevation: CardElevation = CardDefaults.elevatedCardElevation(),
@@ -109,7 +124,7 @@ fun FlyElevatedCardMedsList(
     ElevatedCard(
         modifier = modifier
             .fillMaxWidth()
-            .height(120.dp),
+            .height(240.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 1.dp,
@@ -158,6 +173,14 @@ fun FlyElevatedCardMedsList(
                     textStyle = MedTrackerTheme.typography.body
                 ) {
                     Text("Delete")
+                }
+
+                FlyButton(
+                    onClick =
+                        onViewMed,
+                    textStyle = MedTrackerTheme.typography.body
+                ) {
+                    Text("View")
                 }
 
             }

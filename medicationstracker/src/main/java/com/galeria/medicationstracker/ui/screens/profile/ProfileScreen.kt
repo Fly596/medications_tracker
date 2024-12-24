@@ -79,7 +79,6 @@ fun ProfileScreen(
                 userEmail = "fly.yt.77@gmail.com"
             )
             Spacer(modifier = Modifier.weight(1f))
-
             // Edit profile button.
             /*       IconButton(
                     onClick = { *//*TODO: open settings*//*  }

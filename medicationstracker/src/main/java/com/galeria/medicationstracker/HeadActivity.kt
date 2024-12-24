@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.getStringFormattedDate
@@ -38,7 +40,6 @@ class HeadActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
-
             MedTrackerTheme {
 
                 val items = bottomNavItems()
@@ -99,17 +100,19 @@ class HeadActivity : ComponentActivity() {
                         }
 
                     },
-                    content = {
+                    /* content = {
                         ApplicationNavHost(
                             navController = navController
                         )
-                        /*                         MedTrackerNavHost(
-                                                    modifier = Modifier.padding(it),
-                                                    navController = navController
-                                                ) */
-
-                    }
-                )
+                    } */
+                ) {
+                    ApplicationNavHost(
+                        modifier = Modifier
+                            .padding(it)
+                            .padding(horizontal = 16.dp),
+                        navController = navController
+                    )
+                }
             }
         }
     }

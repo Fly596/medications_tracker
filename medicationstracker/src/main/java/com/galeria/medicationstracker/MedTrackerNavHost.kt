@@ -119,9 +119,11 @@ fun MedTrackerNavHost(
         composable<Routes.UserMedications> {
             MedicationsScreen(
                 onAddMedClick = { navController.navigate(Routes.NewMedication) },
-                onViewMedClick = { medName ->
-                    navController.navigate(Routes.ViewMedication(medicationName = medName))
-                })
+                onEditMedClick = { medName ->
+                    navController.navigate(Routes.EditMedication(medicationName = medName))
+                },
+                onViewMed = {/* T */ }
+            )
         }
         composable<Routes.NewMedication> {
             NewMedicationDataScreen(
@@ -129,9 +131,9 @@ fun MedTrackerNavHost(
             )
         }
         // TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CHECK THIS
-        composable<Routes.ViewMedication> { backStackEntry ->
+        composable<Routes.EditMedication> { backStackEntry ->
             // Retrieve and pass the argument.
-            val args = backStackEntry.toRoute<Routes.ViewMedication>()
+            val args = backStackEntry.toRoute<Routes.EditMedication>()
 
             UpdateMedScreen(
                 passedMedName = args.medicationName ?: "",
