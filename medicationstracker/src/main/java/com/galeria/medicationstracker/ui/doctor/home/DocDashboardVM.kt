@@ -57,15 +57,6 @@ class DocDashboardVM : ViewModel() {
   private var _users = MutableStateFlow<List<User>>(emptyList())
   var users = _users.asStateFlow()
 
-  init {
-    /*     viewModelScope.launch {
-          getPatientsList().collect { patients ->
-            docDashboardState.value =
-              docDashboardState.value.copy(patientsList = patients)
-          }
-        } */
-  }
-
   private fun getPatientsList():
       Flow<List<User>> = callbackFlow {
     val listener = db.collection("users")
