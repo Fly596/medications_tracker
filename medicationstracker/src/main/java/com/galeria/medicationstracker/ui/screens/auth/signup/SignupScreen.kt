@@ -37,7 +37,7 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun SignupScreen(
-    passedEmail: String,
+    passedEmail: String = "",
     navigateHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignupScreenViewModel = viewModel(),
