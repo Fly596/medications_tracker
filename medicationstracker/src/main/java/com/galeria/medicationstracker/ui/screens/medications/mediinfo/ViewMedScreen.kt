@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -40,11 +39,6 @@ fun ViewMedicationInfoScreen(
             medName = uiState.selectedMed?.name ?: ""
         )
 
-
-        TextField(
-            value = uiState.selectedMed?.name ?: "",
-            onValueChange = {}
-        )
         /*         FlyTextField(
                     value = uiState.selectedMed?.name ?: "",
                     readOnly = True,
@@ -55,7 +49,9 @@ fun ViewMedicationInfoScreen(
 
         // начальная дата, total taken/skipped.
         MedStatCard(
-            startDate = uiState.selectedMed?.startDate
+            startDate = uiState.selectedMed?.startDate,
+            totalTaken = uiState.intakesCount,
+            totalSkipped = uiState.skipCount
         )
     }
 
@@ -65,6 +61,8 @@ fun ViewMedicationInfoScreen(
 fun MedStatCard(
     modifier: Modifier = Modifier,
     startDate: Timestamp? = null,
+    totalTaken: Int,
+    totalSkipped: Int
 ) {
     if (startDate == null) return
     val startDateFormatted = formatTimestampTillTheDay(startDate)
@@ -75,13 +73,13 @@ fun MedStatCard(
             Text(startDateFormatted, style = MedTrackerTheme.typography.title3Emphasized)
         }
 
-        MedStatCardBody()
+        MedStatCardBody(totalTaken, totalSkipped)
 
     }
 }
 
 @Composable
-fun MedStatCardBody(totalTaken: Int = 10, totalSkipped: Int = 0) {
+fun MedStatCardBody(totalTaken: Int, totalSkipped: Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

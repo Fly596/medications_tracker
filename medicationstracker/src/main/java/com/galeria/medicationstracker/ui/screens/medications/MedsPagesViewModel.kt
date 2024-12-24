@@ -6,6 +6,7 @@ import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
 import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.AggregateSource.SERVER
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,6 +14,8 @@ import kotlinx.coroutines.flow.asStateFlow
 data class MedsPagesUiState(
     val medications: List<UserMedication> = emptyList(),
     val selectedMed: UserMedication? = null,
+    val intakesCount: Int = 0,
+    val skipCount: Int = 0
 )
 
 class MedsPagesViewModel : ViewModel() {
@@ -31,16 +34,74 @@ class MedsPagesViewModel : ViewModel() {
 
         docRef.whereEqualTo("uid", userId).whereEqualTo("name", medName)
             .get().addOnSuccessListener { docSnapshot ->
-                val medications = docSnapshot.toObjects(UserMedication::class.java)
-                _uiState.value = _uiState.value.copy(selectedMed = medications[0])
-                Log.d(TAG, "Success getting document: ")
-
+                if (docSnapshot.documents.isNotEmpty()) {
+                    val medications = docSnapshot.toObjects(UserMedication::class.java)
+                    _uiState.value = _uiState.value.copy(selectedMed = medications[0])
+                    getMedicationIntakes()
+                    getSkippedIntakes()
+                    Log.d(TAG, "Success getting document: ")
+                } else {
+                    Log.d(TAG, "No such document")
+                }
             }.addOnFailureListener { exception ->
                 Log.d(TAG, "Error getting documents: ", exception)
 
                 println("Error getting documents: $exception")
             }
 
+    }
+
+    fun getMedicationIntakes() {
+        val docRef = db.collection("MedicationIntake")
+            .whereEqualTo("medicationName", uiState.value.selectedMed?.name.toString())
+            .whereEqualTo("status", true)
+        val count = docRef.count()
+
+        // Получение количества документов в коллекции.
+        count.get(SERVER).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val snapshot = task.result
+
+                // Обновление состояния UI с количеством документов.
+                updateIntakesCount(snapshot.count.toInt())
+                Log.d(TAG, "Count: ${snapshot.count}")
+            } else {
+                Log.d(TAG, "Error getting count", task.exception)
+            }
+        }
+    }
+
+    fun getSkippedIntakes() {
+        val docRef = db.collection("MedicationIntake")
+            .whereEqualTo("medicationName", uiState.value.selectedMed?.name.toString())
+            .whereEqualTo("status", false)
+
+        val count = docRef.count()
+
+        // Получение количества документов в коллекции.
+        count.get(SERVER).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val snapshot = task.result
+
+                // Обновление состояния UI с количеством документов.
+                updateSkippedIntakesCount(snapshot.count.toInt())
+                Log.d(TAG, "Count: ${snapshot.count}")
+            } else {
+                Log.d(TAG, "Error getting count", task.exception)
+            }
+        }
+    }
+
+    private fun updateMedications(medications: List<UserMedication>) {
+        _uiState.value = _uiState.value.copy(medications = medications)
+    }
+
+    private fun updateIntakesCount(count: Int) {
+        _uiState.value = _uiState.value.copy(intakesCount = count)
+    }
+
+    private fun updateSkippedIntakesCount(count: Int) {
+        _uiState.value = _uiState.value.copy(skipCount = count)
     }
 
     fun getAllUserMeds() {
@@ -53,7 +114,4 @@ class MedsPagesViewModel : ViewModel() {
             }
     }
 
-    private fun updateMedications(medications: List<UserMedication>) {
-        _uiState.value = _uiState.value.copy(medications = medications)
-    }
 }
