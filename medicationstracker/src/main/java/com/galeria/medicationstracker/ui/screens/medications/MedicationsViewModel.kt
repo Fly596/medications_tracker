@@ -1,83 +1,73 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
-import androidx.lifecycle.*
-import com.galeria.medicationstracker.data.*
-import com.google.firebase.*
-import com.google.firebase.auth.*
-import com.google.firebase.firestore.*
-import kotlinx.coroutines.flow.*
-
+import androidx.lifecycle.ViewModel
+import com.galeria.medicationstracker.data.UserMedication
+import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.toObjects
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class MedicationsViewModel : ViewModel() {
-  
+
   var patient: String = "KT95DFgGbgYt90QtKjIYSApXKqw1"
   var doctor: String = "suAPx8M00vdYqqpWnahF7Ce6pJl2"
   var admin: String = "sT3E84Rw8oNiI4hBQwavVo3dhjy1"
-  
-  // Initialize Firebase Auth and Firestore.
-  private val user = Firebase.auth.currentUser
-  private val db = Firebase.firestore
-  
-  // val userId = user?.uid ?: ""
-  val userId = patient //
-  
-  // Initialize data.
+
+  private val db = FirestoreService.db
+  val firebaseAuth = FirebaseAuth.getInstance()
+  private val user = firebaseAuth.currentUser
+
+  val userId = user?.uid
+
   private var _userMedications = MutableStateFlow<List<UserMedication>>(emptyList())
   var userMedications = _userMedications.asStateFlow()
-  
+
   init {
-    getUserMedicationsFromFirestore()
+    // fetchUserMedications()
   }
-  
-  private fun getUserMedicationsFromFirestore() {
-    
-    db.collection("UserMedication")
-      .whereEqualTo("uid", userId)
-      .addSnapshotListener { value, error ->
-        if (error != null) {
-          return@addSnapshotListener
+
+  // Получение всех пользовательских лекарств.
+  fun fetchUserMedications() {
+    val docRef = db.collection("UserMedication")
+
+    docRef
+        .whereEqualTo("uid", userId)
+        .get()
+        .addOnSuccessListener { result ->
+          _userMedications.value = result.toObjects()
         }
-        
-        if (value != null) {
-          _userMedications.value = value.toObjects()
+        .addOnFailureListener { ex ->
+          println("Error finding documents: $ex")
+
         }
-        
-      }
   }
-  
+
+  // Удаление лекарства из Firestore.
   fun deleteMedicationFromFirestore(medName: String) {
-    val db = FirebaseFirestore.getInstance()
-    
     db.collection("UserMedication")
-      .whereEqualTo("name", medName)
-      .get()
-      .addOnSuccessListener { querySnapshot ->
-        if (!querySnapshot.isEmpty) {
-          for (document in querySnapshot.documents) {
-            db.collection("UserMedication")
-              .document(document.id)
-              .delete()
-              .addOnSuccessListener {
-                println("Document with ID ${document.id} successfully deleted!")
-              }
-              .addOnFailureListener { e ->
-                println("Error deleting document with ID ${document.id}: $e")
-              }
+        .whereEqualTo("name", medName)
+        .get()
+        .addOnSuccessListener { querySnapshot ->
+          if (!querySnapshot.isEmpty) {
+            for (document in querySnapshot.documents) {
+              db.collection("UserMedication")
+                  .document(document.id)
+                  .delete()
+                  .addOnSuccessListener {
+                    println("Document with ID ${document.id} successfully deleted!")
+                  }
+                  .addOnFailureListener { e ->
+                    println("Error deleting document with ID ${document.id}: $e")
+                  }
+            }
+          } else {
+            println("No document found with the name: ${medName}")
           }
-        } else {
-          println("No document found with the name: ${medName}")
         }
-      }
-      .addOnFailureListener { e ->
-        println("Error finding documents to delete: $e")
-      }
-  }
-  
-  fun updateMedicationInFirestore(medName: String) {
-    val db = FirebaseFirestore.getInstance()
-    
-    // db.collection("UserMedication")
-    
+        .addOnFailureListener { e ->
+          println("Error finding documents to delete: $e")
+        }
   }
 }
 

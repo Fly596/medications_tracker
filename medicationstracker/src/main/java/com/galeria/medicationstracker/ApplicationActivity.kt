@@ -1,95 +1,80 @@
 package com.galeria.medicationstracker
 
-import android.os.*
-import androidx.activity.*
-import androidx.activity.compose.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
 import androidx.compose.ui.graphics.vector.*
-import androidx.core.view.*
 import androidx.navigation.*
-import androidx.navigation.compose.*
-import com.galeria.medicationstracker.model.*
 import com.galeria.medicationstracker.model.navigation.*
 import com.galeria.medicationstracker.ui.*
-import com.galeria.medicationstracker.ui.components.*
-import com.galeria.medicationstracker.ui.screens.dashboard.*
-import com.galeria.medicationstracker.ui.screens.medications.*
-import com.galeria.medicationstracker.ui.screens.medications.logs.*
-import com.galeria.medicationstracker.ui.screens.medications.update.*
-import com.galeria.medicationstracker.ui.screens.profile.*
-import com.galeria.medicationstracker.ui.screens.profile.notifications.*
-import com.galeria.medicationstracker.ui.screens.profile.settings.*
 import com.galeria.medicationstracker.ui.theme.*
-import java.time.*
 
+/*
 class ApplicationActivity : ComponentActivity() {
-  
-  private val headViewModel: HeadViewModel by viewModels()
-  
-  @OptIn(ExperimentalMaterial3Api::class)
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    
-    WindowCompat.setDecorFitsSystemWindows(window, false)
-    
-    setContent {
-      MedTrackerTheme {
-        val navController = rememberNavController()
-        
-        val items = bottomNavItems()
-        
-        val formattedCurrentDate = getStringFormattedDate(LocalDate.now())
-        
-        Scaffold(
-          modifier = Modifier
-            .windowInsetsPadding(WindowInsets.displayCutout),
-          
-          topBar = {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentDestination = navBackStackEntry?.destination?.route
-            
-            // if (shouldDisplayTopBar(currentDestination)) {
-            val title = when (currentDestination) {
-              "com.galeria.medicationstracker.model.navigation.Routes.Dashboard" -> "Today, $formattedCurrentDate"
-              "com.galeria.medicationstracker.model.navigation.Routes.Medications" -> "My Meds"
-              "com.galeria.medicationstracker.model.navigation.Routes.Profile" -> "My Profile"
-              "com.galeria.medicationstracker.model.navigation.Routes.NewMedication" -> "Add medication"
-              "com.galeria.medicationstracker.model.navigation.Routes.AppSettings" -> "App Settings"
-              "com.galeria.medicationstracker.model.navigation.Routes.NotificationsSettings" -> "Notifications Settings"
-              else -> null
-            }
-            
-            FlyTopAppBar(
-              title = title.toString()
-            )
-            //}
-            
-          },
-          containerColor = MedTrackerTheme.colors.secondaryBackground,
-          bottomBar = {
-            BottomNavBar(items, navController, headViewModel)
-          },
-          
-          content = {
-            NavHost(
-              navController = navController,
-              startDestination = Routes.UserDashboard,
-              modifier =
-                Modifier
-                  .fillMaxSize()
-                  .padding(it)/* .padding(horizontal = 16.dp) */
+
+  // private val headViewModel: HeadViewModel by viewModels()
+
+     @OptIn(ExperimentalMaterial3Api::class)
+    override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)
+
+      WindowCompat.setDecorFitsSystemWindows(window, false)
+
+      setContent {
+        MedTrackerTheme {
+          val navController = rememberNavController()
+
+          val items = bottomNavItems()
+
+          val formattedCurrentDate = getStringFormattedDate(LocalDate.now())
+
+          Scaffold(
+            modifier = Modifier
+              .windowInsetsPadding(WindowInsets.displayCutout),
+
+            topBar = {
+              val navBackStackEntry by navController.currentBackStackEntryAsState()
+              val currentDestination = navBackStackEntry?.destination?.route
+
+              // if (shouldDisplayTopBar(currentDestination)) {
+              val title = when (currentDestination) {
+                "com.galeria.medicationstracker.model.navigation.Routes.Dashboard" -> "Today, $formattedCurrentDate"
+                "com.galeria.medicationstracker.model.navigation.Routes.Medications" -> "My Meds"
+                "com.galeria.medicationstracker.model.navigation.Routes.Profile" -> "My Profile"
+                "com.galeria.medicationstracker.model.navigation.Routes.NewMedication" -> "Add medication"
+                "com.galeria.medicationstracker.model.navigation.Routes.AppSettings" -> "App Settings"
+                "com.galeria.medicationstracker.model.navigation.Routes.NotificationsSettings" -> "Notifications Settings"
+                else -> null
+              }
+
+              FlyTopAppBar(
+                title = title.toString()
+              )
+              //}
+
+            },
+            containerColor = MedTrackerTheme.colors.secondaryBackground,
+            bottomBar = {
+              BottomNavBar(items, navController, headViewModel)
+            },
+
+            content = {
+              NavHost(
+                navController = navController,
+                startDestination = Routes.UserDashboard,
+                modifier =
+                  Modifier
+                    .fillMaxSize()
+                    .padding(it) *//* .padding(horizontal = 16.dp) *//*
             
             ) {
               
               composable<Routes.UserDashboard> {
                 DashboardScreen(
-                  onLogsClick = {
+                  onMedicationLogsClick = {
                     navController.navigate(Routes.LogScreen)
                   }
                 )
@@ -150,14 +135,14 @@ class ApplicationActivity : ComponentActivity() {
     }
   }
 }
-
+*/
 data class BottomNavItem(
-  val title: String,
-  val route: Routes,
-  val selectedIcon: ImageVector,
-  val unselectedIcon: ImageVector,
-  val hasNews: Boolean = false,
-  val badgeCount: Int? = null
+    val title: String,
+    val route: Routes,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector,
+    val hasNews: Boolean = false,
+    val badgeCount: Int? = null
 )
 
 fun bottomNavItems(): List<BottomNavItem> {
@@ -189,15 +174,15 @@ fun bottomNavItems(): List<BottomNavItem> {
 
 @Composable
 fun BottomNavBar(
-  navItems: List<BottomNavItem>,
-  navController: NavHostController,
-  viewModel: HeadViewModel,
+    navItems: List<BottomNavItem>,
+    navController: NavHostController,
+    viewModel: HeadViewModel,
 ) {
   val currentNavItemIndex = viewModel.selectedItemIndex.collectAsState().value
-  
+
   Column {
     HorizontalDivider()
-    
+
     NavigationBar(
       // modifier = Modifier.fillMaxWidth(),
       containerColor = MedTrackerTheme.colors.secondaryBackgroundGrouped,
@@ -229,19 +214,19 @@ fun BottomNavBar(
           },
         )
       }
-      
+
     }
   }
   // TODO: Change colors
-  
+
 }
 
 @Composable
 fun IconWithBadge(
-  icon: ImageVector,
-  badgeCount: Int?,
-  showUnreadBadge: Boolean,
-  contentDescription: String?,
+    icon: ImageVector,
+    badgeCount: Int?,
+    showUnreadBadge: Boolean,
+    contentDescription: String?,
 ) {
   BadgedBox(
     badge = {

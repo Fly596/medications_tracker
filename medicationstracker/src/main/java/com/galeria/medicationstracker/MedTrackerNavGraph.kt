@@ -1,44 +1,48 @@
 package com.galeria.medicationstracker
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.navigation.*
-import androidx.navigation.compose.*
-import com.galeria.medicationstracker.data.*
-import com.galeria.medicationstracker.model.navigation.*
-import com.galeria.medicationstracker.ui.admin.*
-import com.galeria.medicationstracker.ui.doctor.*
-import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.*
-import com.galeria.medicationstracker.ui.screens.auth.login.*
-import com.galeria.medicationstracker.ui.screens.auth.signup.*
-import com.galeria.medicationstracker.ui.screens.dashboard.*
-import com.galeria.medicationstracker.ui.screens.medications.*
-import com.galeria.medicationstracker.ui.screens.medications.logs.*
-import com.galeria.medicationstracker.ui.screens.medications.update.*
-import com.galeria.medicationstracker.ui.screens.profile.*
-import com.galeria.medicationstracker.ui.screens.profile.notifications.*
-import com.galeria.medicationstracker.ui.screens.profile.settings.*
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeGestures
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.galeria.medicationstracker.data.UserType
+import com.galeria.medicationstracker.model.navigation.Routes
+import com.galeria.medicationstracker.ui.admin.DBDataScreen
+import com.galeria.medicationstracker.ui.doctor.home.DocDashboardScreen
+import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRecoveryScreen
+import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
+import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
+import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
+import com.galeria.medicationstracker.ui.screens.dashboard.record.IntakeRecordsScreen
+import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
+import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
+import com.galeria.medicationstracker.ui.screens.medications.logs.LogScreen
+import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
+import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
+import com.galeria.medicationstracker.ui.screens.profile.notifications.NotificationsSettingsScreen
+import com.galeria.medicationstracker.ui.screens.profile.settings.SettingsScreen
 
 @Composable
 fun MedTrackerNavGraph(
-  modifier: Modifier = Modifier,
-  navController: NavHostController = rememberNavController(),
-  startDestination: Routes = Routes.UserDashboard,
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+    startDestination: Routes = Routes.Login,
 ) {
-  
+
   NavHost(
     navController = navController,
-    // startDestination = Routes.Login,
     startDestination = startDestination,
     modifier = modifier
-      .fillMaxSize()
-      .windowInsetsPadding(WindowInsets.safeGestures)
-    //.windowInsetsPadding(WindowInsets.safeGestures)
-  
+        .fillMaxSize()
+        .windowInsetsPadding(WindowInsets.safeGestures)
   ) {
-    
-    // Home route with login, signup, and password reset actions
+
     composable<Routes.Login> {
       LoginScreen(
         onLoginClick = { userType ->
@@ -47,7 +51,7 @@ fun MedTrackerNavGraph(
             UserType.DOCTOR -> navController.navigate(Routes.DocDashboard)
             UserType.ADMIN -> navController.navigate(Routes.AdminDashboard)
           }
-          
+
         },
         onSignupClick = { email ->
           // Navigate to the registration screen with email
@@ -59,9 +63,9 @@ fun MedTrackerNavGraph(
         }
       )
     }
-    
-    // Registration screen route
+
     composable<Routes.Registration> { backStackEntry ->
+
       // Retrieve and pass the email argument.
       val args = backStackEntry.toRoute<Routes.Registration>()
       SignupScreen(
@@ -69,7 +73,7 @@ fun MedTrackerNavGraph(
         navigateHome = { navController.navigate(Routes.Login) }
       )
     }
-    
+
     // Password recovery screen route
     composable<Routes.PasswordRecovery> { backStackEntry ->
       // Retrieve and pass the email argument
@@ -79,15 +83,20 @@ fun MedTrackerNavGraph(
         navigateHome = { navController.navigate(Routes.Login) },
       )
     }
-    
+
+
     composable<Routes.UserDashboard> {
       DashboardScreen(
-        onLogsClick = {
-          navController.navigate(Routes.LogScreen)
+        onMedicationLogsClick = {
+          navController.navigate(Routes.LogsScreen)
         }
       )
     }
-    
+    composable<Routes.LogsScreen> {
+      IntakeRecordsScreen(
+      )
+    }
+
     composable<Routes.DocDashboard> {
       DocDashboardScreen(
         /* onLogsClick = {
@@ -95,7 +104,7 @@ fun MedTrackerNavGraph(
         } */
       )
     }
-    
+
     composable<Routes.AdminDashboard> {
       DBDataScreen(
         /* onLogsClick = {
@@ -103,7 +112,7 @@ fun MedTrackerNavGraph(
         } */
       )
     }
-    
+
     composable<Routes.LogScreen> {
       LogScreen(
         onGoBackClick = {
@@ -111,11 +120,11 @@ fun MedTrackerNavGraph(
         }
       )
     }
-    
+
     composable<Routes.Calendar> {
       // TODO: Calendar
     }
-    
+
     composable<Routes.Medications> {
       MedicationsScreen(
         onAddMedClick = { navController.navigate(Routes.NewMedication) },
@@ -132,24 +141,24 @@ fun MedTrackerNavGraph(
     composable<Routes.ViewMedication> { backStackEntry ->
       // Retrieve and pass the argument.
       val args = backStackEntry.toRoute<Routes.ViewMedication>()
-      
+
       UpdateMedScreen(
         passedMedName = args.medicationName ?: "",
         onConfirmEdit = {
-          navController.navigate(Routes.Medications)
+          navController.popBackStack()
         }
       )
     }
-    
+
     composable<Routes.Profile> {
       ProfileScreen(
         onSettingsClick = { navController.navigate(Routes.AppSettings) },
         onNotificationsClick = { navController.navigate(Routes.NotificationsSettings) }
       )
     }
-    
+
     composable<Routes.AppSettings> { SettingsScreen() }
-    
+
     composable<Routes.NotificationsSettings> { NotificationsSettingsScreen() }
   }
 }

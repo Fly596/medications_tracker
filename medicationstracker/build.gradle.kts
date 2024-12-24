@@ -6,25 +6,25 @@ plugins {
   id("com.google.gms.google-services")
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.compose.compiler)
-  id("kotlin-kapt")
-  id("com.google.dagger.hilt.android")
+  // id("kotlin-kapt")
+  // id("com.google.dagger.hilt.android.gradle.plugin")
   // alias(libs.plugins.kotlin.compose)
 }
 
 android {
   namespace = "com.galeria.medicationstracker"
   compileSdkVersion(rootProject.extra["compileSdkVersion"] as Int)
-  
+
   defaultConfig {
     applicationId = "com.galeria.medicationstracker"
     minSdk = 31
     targetSdk = 35
     versionCode = 1
     versionName = "1.0"
-    
+
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
-  
+
   buildTypes {
     release {
       isMinifyEnabled = false
@@ -63,7 +63,7 @@ dependencies {
   implementation(libs.coil.compose)
   implementation(libs.lifecycle.viewmodel.compose)
   implementation(libs.play.services.location)
-  implementation(libs.jetbrains.kotlinx.serialization.json)
+  // implementation(libs.jetbrains.kotlinx.serialization.json)
   implementation(libs.com.google.dagger.hilt.android.gradle.plugin)
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
@@ -72,14 +72,14 @@ dependencies {
   androidTestImplementation(libs.androidx.ui.test.junit4)
   debugImplementation(libs.androidx.ui.tooling)
   debugImplementation(libs.androidx.ui.test.manifest)
-  
+
   implementation(libs.navigation.compose)
   implementation(libs.kotlinx.serialization.json)
-  
+
   implementation(libs.hilt.android)
-  kapt(libs.hilt.android.compiler)
-  
+  // kapt(libs.hilt.android.compiler)
+
 }
-kapt {
+/* kapt {
   correctErrorTypes = true
-}
+} */

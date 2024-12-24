@@ -9,17 +9,17 @@ import java.util.*
 fun getStringFormattedDate(inputDate: LocalDate): String {
   val dateFormatter = DateTimeFormatter.ofPattern("MMM dd")
   val formattedCurrentDate = inputDate.format(dateFormatter)
-  
+
   return formattedCurrentDate.toString()
 }
 
 fun parseDateString(dateString: String): LocalDate {
   return try {
     val formatter = DateTimeFormatter.ofPattern("MMM dd")
-    
+
     LocalDate.parse(dateString, formatter)
   } catch (e: Exception) {
-    
+
     // Handle parsing errors, e.g., log the error or return null
     LocalDate.now()
   }
@@ -40,7 +40,23 @@ fun parseDateForFirestore(dateString: String): Timestamp? {
   }
 }
 
-fun formatTimestamp(timestamp: Timestamp): String {
+fun formatTimestampTillTheDay(timestamp: Timestamp): String {
   val formatter = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault())
   return formatter.format(timestamp.toDate())
 }
+
+fun formatTimestampTillTheSec(timestamp: Timestamp): String {
+  val formatter = SimpleDateFormat("MMMM dd yyyy, H m", Locale.getDefault())
+  return formatter.format(timestamp.toDate())
+}
+
+fun formatStringDateToWeekday(timestamp: Timestamp): String {
+  val dayOfWeekFormatter =
+    DateTimeFormatter.ofPattern("EEEE") // Add day of week formatter
+
+  return timestamp.toLocalDateTime().format(dayOfWeekFormatter)
+}
+
+fun LocalDateTime.toTimestamp() = Timestamp(atZone(ZoneId.systemDefault()).toEpochSecond(), nano)
+fun Timestamp.toLocalDateTime(zone: ZoneId = ZoneId.systemDefault()) =
+  LocalDateTime.ofInstant(Instant.ofEpochMilli(seconds * 1000 + nanoseconds / 1000000), zone)

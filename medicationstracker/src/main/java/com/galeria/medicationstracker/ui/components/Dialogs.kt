@@ -1,47 +1,37 @@
 package com.galeria.medicationstracker.ui.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Medication
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.tooling.preview.*
+import androidx.compose.ui.unit.*
+import androidx.compose.ui.window.*
+import com.galeria.medicationstracker.ui.screens.dashboard.*
+import com.galeria.medicationstracker.ui.theme.*
+import java.time.*
+import java.time.format.*
 
 @Composable
 fun LogMedicationTimeDialog(
-  onDismissRequest: () -> Unit,
-  onConfirmation: () -> Unit,
+    viewModel: DashboardVM,
+    onDismiss: () -> Unit,
+    onConfirmation: () -> Unit,
 ) {
   val currentDate = LocalDateTime.now()
   val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, hh:mm a")
   val formattedCurrentDate = currentDate.format(dateFormatter)
 
-  Dialog(onDismissRequest = { onDismissRequest() }) {
+  Dialog(onDismissRequest = { onDismiss() }) {
     // Draw a rectangle shape with rounded corners inside the dialog
     Card(
       modifier = Modifier
-        .fillMaxWidth()
-        // .height(375.dp)
-        .padding(16.dp),
+          .fillMaxWidth()
+          // .height(375.dp)
+          .padding(16.dp),
       colors = CardDefaults.elevatedCardColors(
         containerColor = MedTrackerTheme.colors.primaryBackgroundGrouped,
         contentColor = MedTrackerTheme.colors.primaryLabel,
@@ -50,8 +40,8 @@ fun LogMedicationTimeDialog(
     ) {
       Column(
         modifier = Modifier
-          .fillMaxWidth()
-          .padding(16.dp),
+            .fillMaxWidth()
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
       ) {
@@ -64,16 +54,16 @@ fun LogMedicationTimeDialog(
         LogDialogMedicationCard(
           // TODO: Add logic for when the user takes the medication.
           onTaken = {
-            onConfirmation()
+            onConfirmation.invoke()
           },
           onSkipped = {
-            onDismissRequest()
+            onDismiss.invoke()
           }
         )
         FlyButton(
           modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp),
+              .fillMaxWidth()
+              .padding(top = 16.dp),
           onClick = onConfirmation,
           // colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)
         ) {
@@ -86,32 +76,30 @@ fun LogMedicationTimeDialog(
 
 @Composable
 fun LogDialogMedicationCard(
-  medicationName: String = "Adderall",
-  form: String = "Tablet",
-  strength: String = "50.0",
-  intakeTime: String = "2:00 PM",
-  onSkipped: () -> Unit = {},
-  onTaken: () -> Unit = {}
+    medicationName: String = "Adderall",
+    form: String = "Tablet",
+    strength: String = "50.0",
+    intakeTime: String = "2:00 PM",
+    onSkipped: () -> Unit = {},
+    onTaken: () -> Unit = {}
 ) {
   Card(
     modifier = Modifier
-      .fillMaxWidth()
-      .padding(horizontal = 8.dp),
+        .fillMaxWidth()
+        .padding(horizontal = 8.dp),
     colors = CardDefaults.elevatedCardColors(
       containerColor = MedTrackerTheme.colors.secondaryBackgroundGrouped,
       contentColor = MedTrackerTheme.colors.primaryLabel,
     )
-    // elevation = 4.dp
   ) {
     Column(
-      // verticalArrangement = Arrangement.Top,
       modifier = Modifier.padding(16.dp)
     ) {
       Row(
         verticalAlignment = Alignment.CenterVertically
       ) {
         Icon(
-          imageVector = Icons.Default.Medication, // Replace with your icon resource
+          imageVector = Icons.Default.Medication,
           contentDescription = "Capsule Icon",
           modifier = Modifier.size(40.dp)
         )
@@ -119,16 +107,12 @@ fun LogDialogMedicationCard(
         Column {
           Text(
             text = medicationName,
-            // style = MaterialTheme.typography.h6
           )
           Text(
             text = "$form, $strength",
-            // style = MaterialTheme.typography.body2
           )
           Text(
             text = "1 capsule at $intakeTime",
-            // style = MaterialTheme.typography.body2,
-            // color = MaterialTheme.colors.primary
           )
         }
       }
@@ -140,19 +124,16 @@ fun LogDialogMedicationCard(
         FlyTonalButton(
           modifier = Modifier.weight(0.5f),
           onClick = onSkipped,
-          // colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)
         ) {
           Text(text = "Skipped")
         }
         FlyTonalButton(
           modifier = Modifier.weight(0.5f),
           onClick = onTaken,
-          // colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)
         ) {
           Text(text = "Taken")
         }
       }
-
     }
   }
 }
@@ -160,8 +141,5 @@ fun LogDialogMedicationCard(
 @Preview
 @Composable
 fun DialogWithImagePreview() {
-  LogMedicationTimeDialog(
-    onDismissRequest = { /*TODO*/ },
-    onConfirmation = { /*TODO*/ }
-  )
+
 }

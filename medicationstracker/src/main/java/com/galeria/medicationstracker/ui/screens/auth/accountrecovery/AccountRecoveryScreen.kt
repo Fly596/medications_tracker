@@ -26,10 +26,10 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun AccountRecoveryScreen(
-  passedEmail: String,
-  navigateHome: () -> Unit,
-  modifier: Modifier = Modifier,
-  viewModel: AccountRecoveryScreenViewModel = viewModel(),
+    passedEmail: String = "",
+    navigateHome: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: AccountRecoveryScreenViewModel = viewModel(),
 ) {
   LaunchedEffect(Unit) { viewModel.updateEmail(passedEmail) }
 
@@ -72,7 +72,11 @@ fun AccountRecoveryScreen(
     }
 
     // Spacer(modifier = Modifier.weight(1f))
-    Spacer(modifier = Modifier.height(40.dp).weight(1f))
+    Spacer(
+      modifier = Modifier
+          .height(40.dp)
+          .weight(1f)
+    )
 
     // endregion
   }

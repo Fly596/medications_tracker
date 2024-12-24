@@ -1,174 +1,189 @@
 package com.galeria.medicationstracker.ui.screens.medications.update
 
-import android.util.*
-import androidx.compose.runtime.*
-import androidx.lifecycle.*
-import com.galeria.medicationstracker.*
-import com.galeria.medicationstracker.data.*
-import com.google.firebase.*
-import com.google.firebase.auth.*
-import com.google.firebase.firestore.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import java.time.*
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import com.galeria.medicationstracker.data.MedicationForms
+import com.galeria.medicationstracker.data.MedicationUnit
+import com.galeria.medicationstracker.data.UserMedication
+import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.toObject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 data class UpdateMedUiState(
-  val medName: String = "",
-  val medForm: MedicationForms = MedicationForms.TABLET,
-  val endDate: Timestamp = Timestamp.now(),
-  val unit: String = "",
-  val startDate: Timestamp = Timestamp.now(),
-  val intakeTime: String = "",
-  val notes: String = "",
-  val strength: String = "",
-  val strengthUnit: String = "", // Add strength unit
-  val selectedDays: MutableList<DayOfWeek> = mutableListOf(),
-  
-  val showDatePicker: Boolean = false,
-  val showTimePicker: Boolean = false
+    val medName: String = "",
+    val medForm: MedicationForms = MedicationForms.TABLET,
+    val endDate: Timestamp = Timestamp.now(),
+    val unit: MedicationUnit = MedicationUnit.MG,
+    val startDate: Timestamp = Timestamp.now(),
+    val intakeTime: String = "",
+    val notes: String = "",
+    val strength: Float = 0.0f,
+    val strengthUnit: MedicationUnit = MedicationUnit.MG, // Add strength unit
+    val selectedDays: List<String> = emptyList(),
+
+    val showDatePicker: Boolean = false,
+    val showTimePicker: Boolean = false
 )
 
 class UpdateMedVM : ViewModel() {
-  
+
   var uiState by mutableStateOf(UpdateMedUiState())
     private set
-  
-  private val user = Firebase.auth.currentUser
-  private val db = Firebase.firestore
-  val userId = user?.uid ?: ""
-  
+
+  val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+  val db = FirestoreService.db
+
   private var _selectedMedication = MutableStateFlow<UserMedication?>(null)
   var selectedMedication = _selectedMedication.asStateFlow()
-  
+
   private var _selectedDocumentId = MutableStateFlow<String?>(null)
   var selectedDocumentId = _selectedDocumentId.asStateFlow()
-  
+
   // для получения выбранного лекарства.
-  fun getMedicationFromFirestore(medName: String) {
-    db.collection("UserMedication")
-      .whereEqualTo("uid", userId)
-      .whereEqualTo("name", medName)
-      .addSnapshotListener { value, error ->
-        if (error != null) {
-          return@addSnapshotListener
-        }
-        
-        if (value != null && value.documents.isNotEmpty()) {
-          val document = value.documents[0]
-          _selectedMedication.value = document.toObject<UserMedication>()
-          _selectedDocumentId.value = document.id // Save the document ID
-          
-          //_selectedMedication.value = value.documents[0].toObject()
-          
-          if (_selectedMedication.value != null) {
-            uiState = uiState.copy(
-              medName = _selectedMedication.value!!.name.toString(),
-            )
+  fun fetchSelectedMedication(medName: String) {
+    val docRef = db.collection("UserMedication")
+
+    docRef
+        .whereEqualTo("uid", currentUserId)
+        .whereEqualTo("name", medName)
+        .addSnapshotListener { value, error ->
+          if (error != null) {
+            return@addSnapshotListener
+          }
+
+          if (value != null && value.documents.isNotEmpty()) {
+            val document = value.documents[0]
+            _selectedMedication.value = document.toObject<UserMedication>()
+            _selectedDocumentId.value = document.id // Save the document ID
+
+            if (_selectedMedication.value != null) {
+              uiState = uiState.copy(
+                medName = _selectedMedication.value!!.name.toString(),
+              )
+            }
           }
         }
+    /*         .get()
+            .addOnSuccessListener { result ->
+              val medications = result.toObjects(UserMedication::class.java)
+
+              if (medications.isNotEmpty()) {
+                _selectedMedication.value = medications.first()
+                //_selectedDocumentId.value = result.documents.first().id
+              } else {
+                _selectedMedication.value = null
+                //_selectedDocumentId.value = null
+              }
+            }
+            .addOnFailureListener {
+              println("Error finding documents: $it")
+            } */
+    /*         .addSnapshotListener { value, error ->
+      if (error != null) {
+        return@addSnapshotListener
       }
+
+      if (value != null && value.documents.isNotEmpty()) {
+        val document = value.documents[0]
+        _selectedMedication.value = document.toObject<UserMedication>()
+        _selectedDocumentId.value = document.id // Save the document ID
+
+        if (_selectedMedication.value != null) {
+          uiState = uiState.copy(
+            medName = _selectedMedication.value!!.name.toString(),
+          )
+        }
+      }
+    } */
   }
-  
+
   fun updateMedicationFromFirestore(
+      context: Context,
   ) {
-    
+
     val newValues: Map<String, Any?> = mapOf(
       "endDate" to uiState.endDate,
       "form" to uiState.medForm.toString(),
-      "frequency" to uiState.selectedDays.toString(),
+      "daysOfWeek" to uiState.selectedDays,
       "intakeTime" to uiState.intakeTime,
       "name" to uiState.medName,
       "notes" to uiState.notes,
-      "strength" to uiState.strength.toFloat(),
+      "strength" to uiState.strength,
       "unit" to uiState.unit.toString(),
       "startDate" to uiState.startDate,
-      "uid" to userId
+      "uid" to currentUserId
     )
-    
+
     val documentId = _selectedDocumentId.value
     if (documentId != null) {
       db.collection("UserMedication").document(documentId)
-        .update(newValues)
-        .addOnSuccessListener {
-          viewModelScope.launch {
-            SnackbarController.sendEvent(event = SnackbarEvent(message = "Medication updated successfully!"))
+          .update(newValues)
+          .addOnSuccessListener {
+            Toast.makeText(
+              context,
+              "Medication updated successfully!",
+              Toast.LENGTH_SHORT
+            ).show()
+            /* viewModelScope.launch {
+              SnackbarController.sendEvent(event = SnackbarEvent(message = "Medication updated successfully!"))
+            } */
+            Log.d("Firestore", "Medication updated successfully!")
           }
-          Log.d("Firestore", "Medication updated successfully!")
-        }
-        .addOnFailureListener { exception ->
-          viewModelScope.launch {
-            SnackbarController.sendEvent(event = SnackbarEvent(message = "Error updating medication, $exception"))
+          .addOnFailureListener { exception ->
+            Toast.makeText(context, "Error updating medication", Toast.LENGTH_SHORT)
+                .show()
+
+            /*         viewModelScope.launch {
+                      SnackbarController.sendEvent(event = SnackbarEvent(message = "Error updating medication, $exception"))
+                    } */
+            Log.e("Firestore", "Error updating medication", exception)
           }
-          Log.e("Firestore", "Error updating medication", exception)
-        }
     } else {
       Log.e("Firestore", "No document ID available. Unable to update medication.")
     }
-    
-    /*     db.collection("UserMedication")
-          .whereEqualTo("uid", userId)
-          .whereEqualTo("name", _selectedMedication.value?.name)
-          .get()
-          .addOnSuccessListener { querySnapshot ->
-            if (!querySnapshot.isEmpty) {
-              val document = querySnapshot.documents[0]
-              val documentRef = document.reference
+  }
 
-              documentRef.update(newValues)
-                .addOnSuccessListener {
-                  Log.d("Firestore", "Medication updated successfully!")
-                }
-                .addOnFailureListener { exception ->
-                  Log.e("Firestore", "Error updating medication", exception)
-                }
-              //_selectedMedication.value = document.toObject()
-            } else {
-              Log.e("Firestore", "No matching medication found")
-            }
-          }
-          .addOnFailureListener { exception ->
-            Log.e("Firestore", "Error querying medication", exception)
-          } */
+  fun updateSelectedDays(input: List<String>) {
+    uiState = uiState.copy(selectedDays = uiState.selectedDays + input)
   }
-  
-  
-  fun updateSelectedDays(input: List<DayOfWeek>) {
-    for (day in input) {
-      uiState.selectedDays.add(day)
-    }
-    // val test:String = uiState.selectedDays.toString()
-    
-  }
-  
+
   fun updateMedName(input: String) {
     uiState = uiState.copy(medName = input)
   }
-  
+
   fun updateMedForm(input: MedicationForms) {
     uiState = uiState.copy(medForm = input)
   }
-  
+
   fun updateEndDate(date: Timestamp?) {
     uiState = uiState.copy(endDate = date ?: Timestamp.now())
   }
-  
+
   fun updateStartDate(date: Timestamp?) {
     uiState = uiState.copy(startDate = date ?: Timestamp.now())
   }
-  
+
   fun updateIntakeTime(time: String) {
     uiState = uiState.copy(intakeTime = time)
   }
-  
+
   fun updateNotes(input: String) {
     uiState = uiState.copy(notes = input)
   }
-  
-  fun updateStrength(input: String) {
+
+  fun updateStrength(input: Float) {
     uiState = uiState.copy(strength = input)
   }
-  
-  fun updateStrengthUnit(input: String) {
+
+  fun updateStrengthUnit(input: MedicationUnit) {
     uiState = uiState.copy(strengthUnit = input)
   }
 }
