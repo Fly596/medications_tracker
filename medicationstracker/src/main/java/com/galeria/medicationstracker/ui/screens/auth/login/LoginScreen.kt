@@ -22,7 +22,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.data.UserType
 import com.galeria.medicationstracker.ui.components.FlyButton
 import com.galeria.medicationstracker.ui.components.FlyTextButton
 import com.galeria.medicationstracker.ui.components.FlyTonalButton
@@ -33,108 +32,118 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    onLoginClick: (userType: UserType) -> Unit = {},
-    onSignupClick: (String) -> Unit = {},
-    onResetPasswordClick: (String) -> Unit = {},
+    onLogin: () -> Unit = {},
+    onRegistration: () -> Unit = {},
+    onResetPassword: () -> Unit = {},
+    // onLoginClick: (userType: UserType) -> Unit = {},
+    // onSignupClick: (String) -> Unit = {},
+    // onResetPasswordClick: (String) -> Unit = {},
     viewModel: LoginScreenViewModel = viewModel(),
 ) {
-  val state = viewModel.loginScreenState
+    val state = viewModel.loginScreenState
 
-  Column(
-    modifier = modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.Top
-  ) {
-    Text(
-      stringResource(R.string.sign_in_screen_title),
-      style = MedTrackerTheme.typography.largeTitleEmphasized,
-    )
-
-    Spacer(modifier = Modifier.weight(1f))
-
-    LazyColumn(
-      verticalArrangement = Arrangement.spacedBy(2.dp),
-      modifier = Modifier
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Top
     ) {
-      item {
-        MyTextField(
-          value = state.email,
-          onValueChange = { viewModel.updateEmail(it) },
-          isError = state.emailError?.isNotEmpty() ?: false,
-          errorMessage = state.emailError,
-          label = "Email",
-          placeholder = "",
-          modifier = Modifier.fillMaxWidth(),
-          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        Text(
+            stringResource(R.string.sign_in_screen_title),
+            style = MedTrackerTheme.typography.largeTitleEmphasized,
         )
-      }
 
-      item {
-        MyTextField(
-          value = state.password,
-          onValueChange = { viewModel.updatePassword(it) },
-          isError = state.passwordError?.isNotEmpty() ?: false,
-          errorMessage = state.passwordError,
-          label = "Password",
-          placeholder = "6 or more characters",
-          // supportingText = "6 or more characters",
-          modifier = Modifier.fillMaxWidth(),
-          visualTransformation =
-            if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        Spacer(modifier = Modifier.weight(1f))
+
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            modifier = Modifier
+        ) {
+            item {
+                MyTextField(
+                    value = state.email,
+                    onValueChange = { viewModel.updateEmail(it) },
+                    isError = state.emailError?.isNotEmpty() ?: false,
+                    errorMessage = state.emailError,
+                    label = "Email",
+                    placeholder = "",
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                )
+            }
+
+            item {
+                MyTextField(
+                    value = state.password,
+                    onValueChange = { viewModel.updatePassword(it) },
+                    isError = state.passwordError?.isNotEmpty() ?: false,
+                    errorMessage = state.passwordError,
+                    label = "Password",
+                    placeholder = "6 or more characters",
+                    // supportingText = "6 or more characters",
+                    modifier = Modifier.fillMaxWidth(),
+                    visualTransformation =
+                        if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                )
+            }
+        }
+
+        // Show password switch.
+        RememberMeSwitch(
+            checked = state.showPassword,
+            onCheckedChange = { viewModel.isShowPasswordChecked(state.showPassword) },
         )
-      }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            val scope = rememberCoroutineScope()
+
+            FlyButton(
+                onClick = {
+                    // Запрос типа пользователя.
+                    viewModel.getUserType()
+
+                    viewModel.onSignInClick(state.email, state.password) { userType ->
+                        onLogin.invoke()
+                        // onLoginClick(userType)
+                    }
+
+                },
+                enabled = true,
+            ) {
+                Text(text = "Sign In")
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            FlyTonalButton(onClick = {
+                onRegistration()
+                // onSignupClick(state.email)
+            }, enabled = true) {
+                Text(text = "Create Account")
+            }
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        FlyTextButton(
+            onClick = {
+                onResetPassword()
+                ///*  */onResetPasswordClick(state.email)
+            },
+            enabled = true
+        ) {
+            Text(text = "Forgot password?")
+        }
     }
-
-    // Show password switch.
-    RememberMeSwitch(
-      checked = state.showPassword,
-      onCheckedChange = { viewModel.isShowPasswordChecked(state.showPassword) },
-    )
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Row(verticalAlignment = Alignment.CenterVertically) {
-      val scope = rememberCoroutineScope()
-
-      FlyButton(
-        onClick = {
-          // Запрос типа пользователя.
-          viewModel.getUserType()
-
-          viewModel.onSignInClick(state.email, state.password) { userType ->
-            onLoginClick(userType)
-          }
-
-        },
-        enabled = true,
-      ) {
-        Text(text = "Sign In")
-      }
-
-      Spacer(modifier = Modifier.weight(1f))
-
-      FlyTonalButton(onClick = { onSignupClick(state.email) }, enabled = true) {
-        Text(text = "Create Account")
-      }
-    }
-
-    Spacer(modifier = Modifier.weight(1f))
-
-    FlyTextButton(
-      onClick = { onResetPasswordClick(state.email) },
-      enabled = true
-    ) {
-      Text(text = "Forgot password?")
-    }
-  }
 }
 
 @Composable
 fun RememberMeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
-  Row(verticalAlignment = Alignment.CenterVertically) {
-    Text("Show password", style = MedTrackerTheme.typography.body)
-    Spacer(modifier = Modifier.width(12.dp))
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text("Show password", style = MedTrackerTheme.typography.body)
+        Spacer(modifier = Modifier.width(12.dp))
 
-    MySwitch(checked = checked, onCheckedChange = onCheckedChange)
-  }
+        MySwitch(checked = checked, onCheckedChange = onCheckedChange)
+    }
 }

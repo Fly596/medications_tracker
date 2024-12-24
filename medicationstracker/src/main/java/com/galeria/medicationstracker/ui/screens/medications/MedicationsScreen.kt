@@ -31,6 +31,7 @@ import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.components.FlyButton
 import com.galeria.medicationstracker.ui.components.FlyTextButton
 import com.galeria.medicationstracker.ui.components.NavigationRow
+import com.galeria.medicationstracker.ui.screens.dashboard.DashboardVM
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,49 +40,57 @@ fun MedicationsScreen(
     modifier: Modifier = Modifier,
     onAddMedClick: () -> Unit = {},
     onViewMedClick: (String) -> Unit = {},
+    dashboardViewModel: DashboardVM = viewModel(),
     medicationsViewModel: MedicationsViewModel = viewModel(),
 ) {
 
-  LaunchedEffect(Unit) { medicationsViewModel.fetchUserMedications() }
+    LaunchedEffect(Unit) { medicationsViewModel.fetchUserMedications() }
 
-  val medications by
-  medicationsViewModel.userMedications.collectAsStateWithLifecycle()
+    val medications by
+    medicationsViewModel.userMedications.collectAsStateWithLifecycle()
 
-  Column(
-    modifier = modifier
-        .fillMaxSize(),
-    verticalArrangement = Arrangement.spacedBy(16.dp)
-  ) {
-    Spacer(modifier = Modifier.padding(vertical = 8.dp))
-
-    LazyColumn(
-      verticalArrangement = Arrangement.spacedBy(16.dp),
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-      items(medications) { med ->
-        FlyElevatedCardMedsList(
-          title = med.name.toString(),
-          dosage = ("${med.strength} ${med.unit.toString().lowercase()}"),
-          info = med.form.toString().lowercase(),
-          onEditClick = { onViewMedClick(med.name.toString()) },
-          onRemoveMedClick = {
-            medicationsViewModel.deleteMedicationFromFirestore(med.name.toString())
-          }
-        )
-      }
-
-      item {
-        // Button to add a new medication.
-        FlyButton(
-          onClick = { onAddMedClick.invoke() },
-          Modifier.fillMaxWidth()
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-          Text("+ Add Medication")
-        }
-      }
-    }
 
-  }
+            items(medications) { med ->
+                FlyElevatedCardMedsList(
+                    title = med.name.toString(),
+                    dosage = ("${med.strength} ${med.unit.toString().lowercase()}"),
+                    info = med.form.toString().lowercase(),
+                    onEditClick = { onViewMedClick(med.name.toString()) },
+                    onRemoveMedClick = {
+                        medicationsViewModel.deleteMedicationFromFirestore(med.name.toString())
+                    }
+                )
+            }
+
+            item {
+                // Button to add a new medication.
+                FlyButton(
+                    onClick = {
+                        onAddMedClick.invoke()
+                        /*                         try {
+                            onAddMedClick.invoke()
+                        } catch (e: Exception) {
+                            println("Error in medication screen: $e")
+                        } */
+                    },
+                    Modifier.fillMaxWidth()
+                ) {
+                    Text("+ Add Medication")
+                }
+            }
+        }
+
+    }
 }
 
 @Composable
@@ -97,62 +106,62 @@ fun FlyElevatedCardMedsList(
     shape: Shape = RoundedCornerShape(8.dp),
     elevation: CardElevation = CardDefaults.elevatedCardElevation(),
 ) {
-  ElevatedCard(
-    modifier = modifier
-        .fillMaxWidth()
-        .height(120.dp),
-    shape = RoundedCornerShape(16.dp),
-    elevation = CardDefaults.elevatedCardElevation(
-      defaultElevation = 1.dp,
-      pressedElevation = 8.dp,
-      focusedElevation = 10.dp,
-    ),
-    colors =
-      CardDefaults.elevatedCardColors(
-        containerColor = MedTrackerTheme.colors.primaryBackground,
-        contentColor = MedTrackerTheme.colors.primaryLabel,
-        disabledContainerColor = MedTrackerTheme.colors.primaryTinted,
-        disabledContentColor = MedTrackerTheme.colors.secondary600
-      )
-  ) {
-    Row(
-      modifier = Modifier
-          .fillMaxSize()
-          .padding(16.dp),
-      verticalAlignment = Alignment.Top,
-      horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ElevatedCard(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(120.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 1.dp,
+            pressedElevation = 8.dp,
+            focusedElevation = 10.dp,
+        ),
+        colors =
+            CardDefaults.elevatedCardColors(
+                containerColor = MedTrackerTheme.colors.primaryBackground,
+                contentColor = MedTrackerTheme.colors.primaryLabel,
+                disabledContainerColor = MedTrackerTheme.colors.primaryTinted,
+                disabledContentColor = MedTrackerTheme.colors.secondary600
+            )
     ) {
-
-      Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.fillMaxHeight(),
-      ) {
-        Text(title, style = MedTrackerTheme.typography.headline)
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Text(dosage, style = MedTrackerTheme.typography.body)
-        Text(info, style = MedTrackerTheme.typography.body)
-      }
-
-      Spacer(modifier = Modifier.weight(1f))
-
-      Column(Modifier.fillMaxHeight(), horizontalAlignment = Alignment.End) {
-        NavigationRow(
-          onClick = onEditClick,
-          label = "Edit",
-        )
-
-        FlyTextButton(
-          errorButton = true,
-          onClick = { onRemoveMedClick.invoke() },
-          textStyle = MedTrackerTheme.typography.body
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-          Text("Delete")
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxHeight(),
+            ) {
+                Text(title, style = MedTrackerTheme.typography.headline)
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Text(dosage, style = MedTrackerTheme.typography.body)
+                Text(info, style = MedTrackerTheme.typography.body)
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Column(Modifier.fillMaxHeight(), horizontalAlignment = Alignment.End) {
+                NavigationRow(
+                    onClick = onEditClick,
+                    label = "Edit",
+                )
+
+                FlyTextButton(
+                    errorButton = true,
+                    onClick = { onRemoveMedClick.invoke() },
+                    textStyle = MedTrackerTheme.typography.body
+                ) {
+                    Text("Delete")
+                }
+
+            }
+
         }
-
-      }
-
     }
-  }
 }
