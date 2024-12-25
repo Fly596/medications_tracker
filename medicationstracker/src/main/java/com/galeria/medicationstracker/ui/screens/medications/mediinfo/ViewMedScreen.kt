@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,7 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.model.formatTimestampTillTheDay
 import com.galeria.medicationstracker.ui.components.FlySimpleCard
-import com.galeria.medicationstracker.ui.components.FlyTextButton
+import com.galeria.medicationstracker.ui.components.FlyTonalButton
 import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.google.firebase.Timestamp
@@ -28,24 +29,12 @@ fun ViewMedicationInfoScreen(
 ) {
     val uiState by medsViewModel.uiState.collectAsStateWithLifecycle()
 
-    Column(modifier = modifier.fillMaxWidth()) {
-        FlyTextButton(
-            onClick = onReturn
-        ) {
-            Text(text = "Return")
-        }
+    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+
         // имя и дни приема.
         MedInfoHeader(
             medName = uiState.selectedMed?.name ?: ""
         )
-
-        /*         FlyTextField(
-                    value = uiState.selectedMed?.name ?: "",
-                    readOnly = True,
-                    onValueChange = {
-                        medsViewModel.getSelectedMed(it).toString()
-                    }
-                ) */
 
         // начальная дата, total taken/skipped.
         MedStatCard(
@@ -53,6 +42,11 @@ fun ViewMedicationInfoScreen(
             totalTaken = uiState.intakesCount,
             totalSkipped = uiState.skipCount
         )
+        FlyTonalButton(
+            onClick = onReturn
+        ) {
+            Text(text = "Return")
+        }
     }
 
 }
@@ -66,12 +60,14 @@ fun MedStatCard(
 ) {
     if (startDate == null) return
     val startDateFormatted = formatTimestampTillTheDay(startDate)
+
     FlySimpleCard(modifier = modifier) {
         // начальная дата.
-        Column() {
-            Text("Start Date")
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text("Start Date", style = MedTrackerTheme.typography.body)
             Text(startDateFormatted, style = MedTrackerTheme.typography.title3Emphasized)
         }
+        HorizontalDivider(color = MedTrackerTheme.colors.opaqueSeparator, thickness = 0.5.dp)
 
         MedStatCardBody(totalTaken, totalSkipped)
 
@@ -84,20 +80,20 @@ fun MedStatCardBody(totalTaken: Int, totalSkipped: Int) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Column {
-            Text("Total Taken")
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Total Taken", style = MedTrackerTheme.typography.body)
             Text(
-                totalTaken.toString(),
-                style = MedTrackerTheme.typography.title2
+                "${totalTaken} times",
+                style = MedTrackerTheme.typography.title2Emphasized
             )
         }
-        Column {
-            Text("Total Skipped")
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Total Skipped", style = MedTrackerTheme.typography.body)
             Text(
-                totalSkipped.toString(),
-                style = MedTrackerTheme.typography.title2
+                "${totalSkipped} times",
+                style = MedTrackerTheme.typography.title2Emphasized
 
             )
         }
@@ -109,8 +105,8 @@ fun MedInfoHeader(
     modifier: Modifier = Modifier,
     medName: String = "Oxycodone"
 ) {
-    Column(modifier.padding(16.dp)) {
-        Text(text = medName, style = MedTrackerTheme.typography.title2Emphasized)
+    Column(modifier.padding(vertical = 16.dp)) {
+        Text(text = medName, style = MedTrackerTheme.typography.title1Emphasized)
     }
 }
 

@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
@@ -15,6 +16,7 @@ import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRec
 import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
 import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
+import com.galeria.medicationstracker.ui.screens.dashboard.record.IntakeRecordsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsViewModel
 import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
@@ -47,7 +49,13 @@ sealed class Routes {
     object UserGraph : Routes()
 
     @Serializable
+    object UserProfileGraph : Routes()
+
+    @Serializable
     data object UserHome : Routes()
+
+    @Serializable
+    object UserDashboardGraph : Routes()
 
     @Serializable
     object UserMedsGraph : Routes()
@@ -66,6 +74,10 @@ sealed class Routes {
 
     @Serializable
     data object UserProfile : Routes()
+
+    @Serializable
+    object OnNavigateToWeightInput : Routes()
+    object OnNavigateToHeightInput : Routes()
 
     @Serializable
     data object LogScreen : Routes()
@@ -152,7 +164,7 @@ sealed class Routes {
 fun ApplicationNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: Routes = Routes.AuthGraph,
+    startDestination: Routes = Routes.UserGraph,
 ) {
     val medsPagesVM: MedsPagesViewModel = viewModel()
     val medicationsViewModel: MedicationsViewModel = viewModel()
@@ -207,20 +219,15 @@ fun NavGraphBuilder.appGraph(
     viewModel: MedicationsViewModel,
     medsPagesVM: MedsPagesViewModel
 ) {
-    navigation<Routes.UserGraph>(startDestination = Routes.UserHome) {
+    navigation<Routes.UserGraph>(startDestination = Routes.UserDashboardGraph) {
 
-        composable<Routes.UserHome> {
-            DashboardScreen(
-                onMedicationLogsClick = {/*TODO: navController.navigate(Routes.LogScreen) */ },
-            )
-        }
+        userDashboardGraph(navController)
 
         // страница с лекарствами.
         userMedsGraph(navController, viewModel, medsPagesVM = medsPagesVM)
 
-        composable<Routes.UserProfile> {
-            ProfileScreen()
-        }
+        userProfileGraph(navController)
+
     }
 }
 
@@ -280,5 +287,42 @@ fun NavGraphBuilder.userMedsGraph(
             )
         }
 
+    }
+}
+
+fun NavGraphBuilder.userDashboardGraph(
+    navController: NavHostController
+) {
+    navigation<Routes.UserDashboardGraph>(startDestination = Routes.UserHome) {
+        composable<Routes.UserHome> {
+            DashboardScreen(
+                onMedicationLogsClick = {
+                    // open logs history screen.
+                    navController.navigate(Routes.LogsScreen)
+                },
+            )
+        }
+        composable<Routes.LogsScreen> {
+            IntakeRecordsScreen(
+                onBackClick = {
+                    // go back to the dashboard.
+                    navController.popBackStack()
+                }
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.userProfileGraph(
+    navController: NavHostController
+) {
+    navigation<Routes.UserProfileGraph>(startDestination = Routes.UserProfile) {
+        composable<Routes.UserProfile> {
+            ProfileScreen()
+        }
+
+        dialog<Routes.OnNavigateToWeightInput> {
+
+        }
     }
 }

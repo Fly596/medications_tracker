@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.Icons.AutoMirrored.Filled
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,12 +25,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.ui.components.FlySimpleCard
 import com.galeria.medicationstracker.ui.components.FlyTextButton
 import com.galeria.medicationstracker.ui.components.HIGListButton
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardVM
@@ -53,7 +60,7 @@ fun ProfileScreen(
     dashboardViewModel: DashboardVM = viewModel(),
     viewModel: ProfileVM = viewModel(),
 ) {
-    val state = viewModel.uiState
+    val state = viewModel.uiState.collectAsStateWithLifecycle()
 
     // Build the screen UI.
     Column(
@@ -67,7 +74,10 @@ fun ProfileScreen(
 
         // Display header with profile picture and name.
         Row(
-            modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.Start,
         ) {
 
@@ -75,23 +85,14 @@ fun ProfileScreen(
             PfpWithName(
                 // TODO: get from firebase.
                 painter = R.drawable.img_1543,
-                userName = "Gerald Earl Gillum",
-                userEmail = "fly.yt.77@gmail.com"
+                userName = state.value.user?.name.toString(),
+                userEmail = state.value.user?.login.toString()
             )
             Spacer(modifier = Modifier.weight(1f))
-            // Edit profile button.
-            /*       IconButton(
-                    onClick = { *//*TODO: open settings*//*  }
-      ) {
-        Icon(
-          modifier = Modifier.size(28.dp),
-          imageVector = Icons.Filled.Edit,
-          contentDescription = "Settings",
-          tint = MedTrackerTheme.colors.secondaryLabel
-        )
-      } */
 
         }
+
+        HealthCardsGrid()
 
         // Profile options section.
         Column(
@@ -114,6 +115,75 @@ fun ProfileScreen(
         // Logout button.
         FlyTextButton(onClick = {}) {
             Text(text = "Log Out")
+        }
+    }
+}
+
+@Composable
+fun HealthCardsGrid() {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        item {
+            HealthCard(
+                headText = "Weight",
+                valueText = "145",
+                unitsText = "lbs",
+            )
+        }
+        item {
+            HealthCard(
+                headText = "Height",
+                valueText = "6.5",
+                unitsText = "ft",
+                textColor = MedTrackerTheme.colors.primary400
+            )
+        }
+    }
+}
+
+@Composable
+fun HealthCard(
+    headText: String = "Blood Pressure",
+    valueText: String = "150/100",
+    unitsText: String = "mmHg",
+    textColor: Color = MedTrackerTheme.colors.sysError,
+) {
+    FlySimpleCard(modifier = Modifier) {
+        Column(
+            modifier = Modifier.padding(bottom = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = headText,
+                    style = MedTrackerTheme.typography.bodyEmphasized,
+                    color = textColor
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(
+                        imageVector = Filled.ArrowForwardIos,
+                        contentDescription = "more",
+                        tint = MedTrackerTheme.colors.secondaryLabel
+                    )
+                }
+            }
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(text = valueText, style = MedTrackerTheme.typography.title1Emphasized)
+                Text(text = unitsText, style = MedTrackerTheme.typography.footnote)
+
+            }
         }
     }
 }
@@ -185,8 +255,12 @@ fun ProfileOptionItem(title: String, onClick: () -> Unit) {
     }
 }
 
-@Preview(name = "ProfileScreen", showSystemUi = true, device = "id:pixel_8")
+// ... other imports
+@Preview
 @Composable
-private fun PreviewProfileScreen() {
-    ProfileScreen()
+fun HealthCardPreview() {
+    MedTrackerTheme {
+        HealthCard()
+    }
+
 }

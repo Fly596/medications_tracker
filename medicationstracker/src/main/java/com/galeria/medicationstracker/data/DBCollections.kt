@@ -29,8 +29,8 @@ data class HospitalDrugs(
 )
 
 data class User(
-    val uid: String,
-    val login: String,
+    val uid: String = "",
+    val login: String = "",
     val type: UserType = UserType.PATIENT,
     val age: Int? = null,
     val name: String? = null,
@@ -45,33 +45,33 @@ data class UserIntake(
 )
 
 enum class UserType {
-  ADMIN,
-  PATIENT,
-  DOCTOR,
+    ADMIN,
+    PATIENT,
+    DOCTOR,
 }
 
 sealed class Frequency {
 
-  data class AtRegularIntervals(val interval: Int = 0) : Frequency()
+    data class AtRegularIntervals(val interval: Int = 0) : Frequency()
 
-  data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek> = DayOfWeek.entries) :
-    Frequency()
+    data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek> = DayOfWeek.entries) :
+        Frequency()
 }
 
 enum class MedicationForms {
-  TABLET,
-  CAPSULE,
-  LIQUID,
-  INJECTION,
-  POWDER
+    TABLET,
+    CAPSULE,
+    LIQUID,
+    INJECTION,
+    POWDER
 }
 
 enum class MedicationUnit {
-  MG,
-  MCG,
-  G,
-  ML,
-  OZ,
+    MG,
+    MCG,
+    G,
+    ML,
+    OZ,
 }
 
 val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
@@ -79,7 +79,7 @@ val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
 /*TODO: Symptoms, mood..*/
 data class MoodLog(
     val date: LocalDateTime = LocalDateTime.now()
-  // TODO
+    // TODO
 )
 
 /* data class Users(

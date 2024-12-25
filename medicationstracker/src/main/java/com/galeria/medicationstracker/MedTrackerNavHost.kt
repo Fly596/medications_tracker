@@ -20,7 +20,6 @@ import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
 import com.galeria.medicationstracker.ui.screens.dashboard.record.IntakeRecordsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
-import com.galeria.medicationstracker.ui.screens.medications.logs.LogScreen
 import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.screens.profile.notifications.NotificationsSettingsScreen
@@ -104,9 +103,9 @@ fun MedTrackerNavHost(
         }
 
 
-        composable<Routes.LogScreen> {
-            LogScreen(
-                onGoBackClick = {
+        composable<Routes.LogsScreen> {
+            IntakeRecordsScreen(
+                onBackClick = {
                     navController.popBackStack()
                 }
             )

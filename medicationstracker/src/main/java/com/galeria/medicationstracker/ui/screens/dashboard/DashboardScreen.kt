@@ -44,32 +44,31 @@ fun DashboardScreen(
     onMedicationLogsClick: () -> Unit = {},
     dashboardViewModel: DashboardVM = viewModel(),
 ) {
-  // список лекарств.
-  val currentMedications by dashboardViewModel.currentTakenMedications.collectAsStateWithLifecycle()
+    // список лекарств.
+    val currentMedications by dashboardViewModel.currentTakenMedications.collectAsStateWithLifecycle()
 
-  Column(
-    modifier = modifier.fillMaxWidth(),
-    verticalArrangement = Arrangement.spacedBy(16.dp),
-  ) {
-
-    // Календарь на неделю.
-    WeeklyCalendarView()
-
-    // логи.
-    FlyButton(
-      onClick = {
-
-        // TODO: add logic to view logs.
-      }
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-      Text("View Logs")
-    }
 
-    // Medication Cards List.
-    MedsByIntakeTimeList(
-      viewModel = dashboardViewModel, medicationsForIntakeTime = currentMedications
-    )
-  }
+        // Календарь на неделю.
+        WeeklyCalendarView()
+
+        // логи.
+        FlyButton(
+            onClick = {
+                onMedicationLogsClick.invoke()
+            }
+        ) {
+            Text("View Logs")
+        }
+
+        // Medication Cards List.
+        MedsByIntakeTimeList(
+            viewModel = dashboardViewModel, medicationsForIntakeTime = currentMedications
+        )
+    }
 }
 
 // Список лекарств по времени приема.
@@ -78,42 +77,43 @@ fun MedsByIntakeTimeList(
     viewModel: DashboardVM, medicationsForIntakeTime: List<UserMedication> = emptyList()
 ) {
 
-  // Группируем лекарства по времени приема.
-  val medicationsByIntakeTime = medicationsForIntakeTime.groupBy { it.intakeTime }
+    // Группируем лекарства по времени приема.
+    val medicationsByIntakeTime = medicationsForIntakeTime.groupBy { it.intakeTime }
 
-  LazyColumn(
-    modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)
-  ) {
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
 
-    medicationsByIntakeTime.forEach { (intakeTime, medications) ->
-      item {
+        medicationsByIntakeTime.forEach { (intakeTime, medications) ->
+            item {
 
-        // Контейнер для каждого времени приема.
-        FLySimpleCardContainer(modifier = Modifier.fillMaxWidth()) {
-          Column(
-            modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
-          ) {
+                // Контейнер для каждого времени приема.
+                FLySimpleCardContainer(modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
 
-            // Время приема.
-            Text(
-              text = intakeTime.toString(),
-              style = typography.headline,
-              modifier = Modifier.padding(0.dp)
-            )
+                        // Время приема.
+                        Text(
+                            text = intakeTime.toString(),
+                            style = typography.headline,
+                            modifier = Modifier.padding(0.dp)
+                        )
 
-            // Лекарства на это время.
-            medications.forEach { medicationsForIntakeTime ->
-              MedicationItem(
-                viewModel = viewModel,
-                medication = medicationsForIntakeTime,
-              )
+                        // Лекарства на это время.
+                        medications.forEach { medicationsForIntakeTime ->
+                            MedicationItem(
+                                viewModel = viewModel,
+                                medication = medicationsForIntakeTime,
+                            )
+                        }
+                    }
+                }
             }
-          }
-        }
-      }
 
+        }
     }
-  }
 }
 
 @Composable
@@ -123,66 +123,69 @@ fun MedicationItem(
     icon: ImageVector = Icons.Filled.Medication
 ) {
 
-  // State to control the visibility of the log medication dialog.
-  val showLogDialog = remember { mutableStateOf(false) }
+    // State to control the visibility of the log medication dialog.
+    val showLogDialog = remember { mutableStateOf(false) }
 
-  Row(
-    modifier = Modifier,
-    verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.spacedBy(8.dp)
-  ) {
-    Icon(
-      imageVector = icon, contentDescription = null, modifier = Modifier.size(32.dp)
-    )
+    Row(
+        modifier = Modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Icon(
+            imageVector = icon, contentDescription = null, modifier = Modifier.size(32.dp)
+        )
 
-    Text(text = medication.name.toString(), style = typography.headline)
+        Text(text = medication.name.toString(), style = typography.headline)
 
-    Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(1f))
 
-    // State to control the check icon.
-    var isChecked by remember { mutableStateOf(false) }
-    LaunchedEffect(medication) {
-      isChecked = viewModel.checkIntake(medication)
-    }
-
-    IconButton(
-      onClick = {
-        // Add logic to log medication here.
-        showLogDialog.value = !showLogDialog.value
-        isChecked = !isChecked
-      }) {
-      Icon(
-        imageVector = if (isChecked) {
-          Icons.Filled.CheckCircle
-        } else {
-          Icons.Outlined.CheckCircle
-        }, contentDescription = null, modifier = Modifier.size(32.dp), tint = if (isChecked) {
-          MedTrackerTheme.colors.primary400
-        } else {
-          MedTrackerTheme.colors.tertiaryLabel
+        // State to control the check icon.
+        var isChecked by remember { mutableStateOf(false) }
+        LaunchedEffect(medication) {
+            isChecked = viewModel.checkIntake(medication)
         }
-      )
-    }
 
-    // Display the dialog when `showLogDialog.value` is true
-    if (showLogDialog.value) {
-      LogMedicationTimeDialog(
-        viewModel,
-        onDismiss = {
-          viewModel.recordMedicationIntake(medication = medication, status = false)
-          showLogDialog.value = false
-        },
-        onConfirmation = {
-          viewModel.recordMedicationIntake(medication = medication, status = true)
-          showLogDialog.value = false
+        IconButton(
+            onClick = {
+                // Add logic to log medication here.
+                showLogDialog.value = !showLogDialog.value
+                isChecked = !isChecked
+            }) {
+            Icon(
+                imageVector = if (isChecked) {
+                    Icons.Filled.CheckCircle
+                } else {
+                    Icons.Outlined.CheckCircle
+                },
+                contentDescription = null,
+                modifier = Modifier.size(32.dp),
+                tint = if (isChecked) {
+                    MedTrackerTheme.colors.primary400
+                } else {
+                    MedTrackerTheme.colors.tertiaryLabel
+                }
+            )
         }
-      )
+
+        // Display the dialog when `showLogDialog.value` is true
+        if (showLogDialog.value) {
+            LogMedicationTimeDialog(
+                viewModel,
+                onDismiss = {
+                    viewModel.recordMedicationIntake(medication = medication, status = false)
+                    showLogDialog.value = false
+                },
+                onConfirmation = {
+                    viewModel.recordMedicationIntake(medication = medication, status = true)
+                    showLogDialog.value = false
+                }
+            )
+        }
     }
-  }
 }
 
 @Preview(name = "StartScreen")
 @Composable
 private fun PreviewStartScreen() {
-  // StartScreen("empty")
+    // StartScreen("empty")
 }

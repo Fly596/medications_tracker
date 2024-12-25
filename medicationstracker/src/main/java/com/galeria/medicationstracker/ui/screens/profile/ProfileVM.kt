@@ -1,32 +1,49 @@
 package com.galeria.medicationstracker.ui.screens.profile
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedUiState
-import com.google.firebase.Firebase
+import androidx.lifecycle.viewModelScope
+import com.galeria.medicationstracker.data.User
+import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.Source
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 data class ProfileScreenUiState(
-    val testData: String = ""
+    val testData: String = "",
+    val user: User? = null,
 )
 
 class ProfileVM : ViewModel() {
 
-    var uiState by mutableStateOf(ProfileScreenUiState())
-        private set
+    private val _uiState = MutableStateFlow(ProfileScreenUiState())
+    val uiState: StateFlow<ProfileScreenUiState> = _uiState
 
+    val db = FirestoreService.db
+    val firebaseAuth = FirebaseAuth.getInstance()
+    val currentUser = firebaseAuth.currentUser
+    val currentUserId = firebaseAuth.currentUser?.uid
 
-    private lateinit var auth: FirebaseAuth
+    init {
+        fetchUserData()
+    }
 
-    private var db = Firebase.firestore
+    private fun fetchUserData() {
+        viewModelScope.launch {
+            val userRef = db.collection("User")
+            val source = Source.CACHE
 
-    // todo
-    fun onLogoutClick() {
-        auth = FirebaseAuth.getInstance()
+            userRef.whereEqualTo("uid", currentUserId)
+                .get(source)
+                .addOnSuccessListener { result ->
+                    val user = result.toObjects(User::class.java).firstOrNull()
+                    _uiState.value = _uiState.value.copy(user = user)
+                }
+                .addOnFailureListener { exp ->
+                    println("Error fetching user data: ${exp.message}")
+                }
+        }
 
-        // auth.signOut()
     }
 }

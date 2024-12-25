@@ -12,7 +12,6 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-
 val systemLightRed = Color(0xFFff3b30)
 val systemLightOrange = Color(0xFFff9500)
 val systemLightYellow = Color(0xFFffcc00)
@@ -48,6 +47,7 @@ val systemDarkGray6 = Color(0xFF1c1c1e)
 val backgroundPrimaryLight = Color(0xFFFFFFFF)
 val backgroundSecondaryLight = Color(0xFFF2F2F7)
 val backgroundTertiaryLight = Color(0xFFFFFFFF)
+
 // Containers.
 val backgroundPrimaryGroupedLight = Color(0xFFf2f2f7)
 val backgroundSecondaryGroupedLight = Color(0xFFffffff)
@@ -63,7 +63,6 @@ val labelSecondary = Color(0x993C3C43)
 val labelTertiary = Color(0x4D3C3C43)
 val labelQuaternary = Color(0x2E3C3C43)
 
-
 @Immutable
 data class AppSystemColors(
     val backgroundPrimary: Color,
@@ -78,6 +77,12 @@ data class AppSystemColors(
     val labelSecondary: Color,
     val labelTertiary: Color,
     val labelQuaternary: Color,
+)
+
+val userProfileGradient = arrayOf(
+    0.0f to Color(0xFFFF9D76),
+    0.5f to Color(0xFFFDF5CB),
+    1.0f to Color(0xFF7EB8F0),
 )
 
 /*val LocalLightRepCustomColors = staticCompositionLocalOf {
