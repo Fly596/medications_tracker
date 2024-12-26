@@ -8,7 +8,7 @@ import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Source
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 data class ProfileScreenUiState(
@@ -20,7 +20,7 @@ data class ProfileScreenUiState(
 class ProfileVM : ViewModel() {
 
   private val _uiState = MutableStateFlow(ProfileScreenUiState())
-  val uiState: StateFlow<ProfileScreenUiState> = _uiState
+  val uiState = _uiState.asStateFlow()
 
   val db = FirestoreService.db
   val firebaseAuth = FirebaseAuth.getInstance()

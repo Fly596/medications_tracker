@@ -41,7 +41,7 @@ fun LoginScreen(
   // onResetPasswordClick: (String) -> Unit = {},
   viewModel: LoginScreenViewModel = viewModel(),
 ) {
-  val state = viewModel.loginScreenState
+  val state = viewModel._loginScreenState
 
   Column(
     modifier = modifier.fillMaxSize(),

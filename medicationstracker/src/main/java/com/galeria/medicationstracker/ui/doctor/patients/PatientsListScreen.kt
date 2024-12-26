@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.Icons.AutoMirrored.Filled
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +22,7 @@ import com.galeria.medicationstracker.ui.screens.profile.MyDoctorsList
 fun PatientsListScreen(
   modifier: Modifier = Modifier,
   viewModel: PatientsListViewModel = viewModel(),
-  onGoBack: () -> Unit
+  onGoBack: () -> Unit = {}
 ) {
   val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -37,7 +37,7 @@ fun PatientsListScreen(
       IconButton(
         onClick = { onGoBack.invoke() }
       ) {
-        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "back")
+        Icon(imageVector = Filled.ArrowBack, contentDescription = "back")
       }
 
       Text(text = "Patients List Screen", style = MaterialTheme.typography.titleMedium)

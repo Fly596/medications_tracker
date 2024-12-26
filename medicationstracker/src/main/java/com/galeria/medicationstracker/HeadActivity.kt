@@ -25,7 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.model.getStringFormattedDate
 import com.galeria.medicationstracker.model.navigation.ApplicationNavHost
-import com.galeria.medicationstracker.model.navigation.Routes.NavigationRoutes
+import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.HeadViewModel
 import com.galeria.medicationstracker.ui.components.FlyTopAppBar
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
@@ -83,28 +83,27 @@ class HeadActivity : ComponentActivity() {
             val currentDestination = navBackStackEntry?.destination?.route
 
             val routeTitles = mapOf(
-              NavigationRoutes.USER_DASHBOARD to {
+              Routes.NavigationRoutes.PATIENT_DASHBOARD to {
                 "Today, ${
                   getStringFormattedDate(
                     LocalDate.now()
                   )
                 }"
               },
-              NavigationRoutes.MEDICATIONS to { "My Meds" },
-              NavigationRoutes.USER_DASHBOARD to { "Dashboard" },
-              NavigationRoutes.PROFILE to { "My Profile" },
-              NavigationRoutes.NEW_MEDICATION to { "Add medication" },
-              NavigationRoutes.APP_SETTINGS to { "App Settings" },
-              NavigationRoutes.NOTIFICATIONS_SETTINGS to { "Notifications Settings" },
-              NavigationRoutes.ADMIN_DASHBOARD to { "Hello, Admin" },
+              Routes.NavigationRoutes.PATIENT_MEDICATIONS to { "My Meds" },
+              Routes.NavigationRoutes.PATIENT_DASHBOARD to { "Dashboard" },
+              Routes.NavigationRoutes.PATIENT_PROFILE to { "My Profile" },
+              Routes.NavigationRoutes.PATIENT_NEW_MEDICATION to { "Add medication" },
+              Routes.NavigationRoutes.PATIENT_SETTINGS to { "App Settings" },
+              Routes.NavigationRoutes.ADMIN_DASHBOARD to { "Hello, Admin" },
             )
 
             val routesWithoutTopBar = listOf(
-              NavigationRoutes.LOGIN,
-              NavigationRoutes.REGISTRATION,
-              NavigationRoutes.PASSWORD_RECOVERY,
-              NavigationRoutes.DOC_DASHBOARD,
-              NavigationRoutes.DOC_PATIENTS_LIST
+              Routes.NavigationRoutes.LOGIN,
+              Routes.NavigationRoutes.REGISTRATION,
+              Routes.NavigationRoutes.PASSWORD_RECOVERY,
+              Routes.NavigationRoutes.DOC_DASHBOARD,
+              Routes.NavigationRoutes.DOC_PATIENTS_LIST
             )
             val title = routeTitles[currentDestination]?.invoke()
 
@@ -117,11 +116,11 @@ class HeadActivity : ComponentActivity() {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination?.route
             val routesWithoutBottomBar = listOf(
-              NavigationRoutes.LOGIN,
-              NavigationRoutes.REGISTRATION,
-              NavigationRoutes.PASSWORD_RECOVERY,
-              NavigationRoutes.DOC_DASHBOARD,
-              NavigationRoutes.DOC_PATIENTS_LIST
+              Routes.NavigationRoutes.LOGIN,
+              Routes.NavigationRoutes.REGISTRATION,
+              Routes.NavigationRoutes.PASSWORD_RECOVERY,
+              Routes.NavigationRoutes.DOC_DASHBOARD,
+              Routes.NavigationRoutes.DOC_PATIENTS_LIST
             )
 
             if (currentDestination !in routesWithoutBottomBar) {

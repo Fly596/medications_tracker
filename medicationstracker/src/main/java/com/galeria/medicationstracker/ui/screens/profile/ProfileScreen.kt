@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,10 +59,12 @@ fun ProfileScreen(
   modifier: Modifier = Modifier,
   onSettingsClick: () -> Unit = {},
   onNotificationsClick: () -> Unit = {},
+  onWeightClick: () -> Unit = {},
+  onHeightClick: () -> Unit = {},
   viewModel: ProfileVM = viewModel(),
 ) {
-  val state = viewModel.uiState.collectAsStateWithLifecycle()
-  val doctorsList = state.value.doctors
+  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+  val doctorsList = uiState.doctors
 
   // Build the screen UI.
   Column(
@@ -84,8 +87,8 @@ fun ProfileScreen(
       PfpWithName(
         // TODO: get from firebase.
         painter = R.drawable.img_1543,
-        userName = state.value.user?.name.toString(),
-        userEmail = state.value.user?.login.toString()
+        userName = uiState.user?.name.toString(),
+        userEmail = uiState.user?.login.toString()
       )
       Spacer(modifier = Modifier.weight(1f))
 

@@ -14,15 +14,16 @@ import com.galeria.medicationstracker.model.FirestoreFunctions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 data class LoginScreenState(
-  val email: String = "docadam@gmail.com",/* "ggsell@gmail.com", *//* "tom@gmail.com" */
+  val email: String = "tom@gmail.com",/* "ggsell@gmail.com", *//* "docadam@gmail.com" */
   val emailError: String? = null,
-  val password: String = "docadam",/*"password" "tomtom" */
+  val password: String = "tomtom",/*"password" "docadam" */
   val passwordError: String? = null,
   val showPassword: Boolean = false,
   val userType: UserType = UserType.PATIENT,
@@ -30,58 +31,51 @@ data class LoginScreenState(
 
 class LoginScreenViewModel : ViewModel() {
 
-  val firebaseAuth = FirebaseAuth.getInstance()
+  private val firebaseAuth = FirebaseAuth.getInstance()
   private val db = FirestoreFunctions.FirestoreService.db
 
-  private var _userType = MutableStateFlow<String?>(null)
-  var userType = _userType.asStateFlow()
+  private var currentUserType = MutableStateFlow<String?>(null)
+  var userType = currentUserType.asStateFlow()
 
-  var loginScreenState by mutableStateOf(LoginScreenState())
+  var _loginScreenState by mutableStateOf(LoginScreenState())
+    private set
 
   // запрашивает тип юзера.
-  fun getUserType(login: String? = null) {
+  fun getUserType() {
+    val userEmail = firebaseAuth.currentUser?.email
+
     viewModelScope.launch {
+      if (userEmail == null) {
+        currentUserType.value = null
+        return@launch
+      }
+
       try {
-        if (login == null) {
-          _userType.value = null
-          return@launch
-        }
 
         val snapshot = db.collection("User")
-          .document(login)
+          .document(userEmail)
           .get()
           .await()
 
-        if (!snapshot.exists()) {
-          _userType.value = snapshot.data?.get("type") as? String
+        if (snapshot.exists()) {
+          currentUserType.value = snapshot.data?.get("type") as? String
         } else {
-          _userType.value = null
+          currentUserType.value = null
         }
+      } catch (exception: FirebaseFirestoreException) {
 
-      } catch (exception: Exception) {
         Log.e(
           "MainViewModel",
           "Error getting user type",
           exception
         )
-        // Handle error
       }
     }
 
-    /*     val collectionRef = db.collection("users")
-        
-        collectionRef.whereEqualTo("login", login)
-          .get()
-          .addOnSuccessListener { docs ->
-            for (doc in docs) {
-              val ttype = doc.get("type")
-              _userType.value = ttype.toString()
-            }
-          } */
   }
 
   private fun validateEmail(): Boolean {
-    val emailInput = loginScreenState.email.trim()
+    val emailInput = _loginScreenState.email.trim()
     var isValid = true
     var errorMessage = ""
 
@@ -95,12 +89,12 @@ class LoginScreenViewModel : ViewModel() {
       isValid = false
     }
 
-    loginScreenState = loginScreenState.copy(emailError = errorMessage)
+    _loginScreenState = _loginScreenState.copy(emailError = errorMessage)
     return isValid
   }
 
   private fun validatePassword(): Boolean {
-    val passwordInput = loginScreenState.password
+    val passwordInput = _loginScreenState.password
     var isValid = true
     var errorMessage = ""
 
@@ -112,7 +106,7 @@ class LoginScreenViewModel : ViewModel() {
       isValid = false
     }
 
-    loginScreenState = loginScreenState.copy(passwordError = errorMessage)
+    _loginScreenState = _loginScreenState.copy(passwordError = errorMessage)
     return isValid
   }
 
@@ -147,8 +141,8 @@ class LoginScreenViewModel : ViewModel() {
                     if (userTypeString != null) {
                       val docUserType =
                         UserType.valueOf(userTypeString.uppercase())
-                      loginScreenState =
-                        loginScreenState.copy(userType = docUserType)
+                      _loginScreenState =
+                        _loginScreenState.copy(userType = docUserType)
                       onLoginClick.invoke(docUserType)
 
                       viewModelScope.launch {
@@ -199,15 +193,15 @@ class LoginScreenViewModel : ViewModel() {
   }
 
   fun updateEmail(input: String) {
-    loginScreenState = loginScreenState.copy(email = input)
+    _loginScreenState = _loginScreenState.copy(email = input)
   }
 
   fun updatePassword(input: String) {
-    loginScreenState = loginScreenState.copy(password = input)
+    _loginScreenState = _loginScreenState.copy(password = input)
   }
 
   fun isShowPasswordChecked(input: Boolean) {
-    loginScreenState = loginScreenState.copy(showPassword = !input)
+    _loginScreenState = _loginScreenState.copy(showPassword = !input)
   }
 
 }
