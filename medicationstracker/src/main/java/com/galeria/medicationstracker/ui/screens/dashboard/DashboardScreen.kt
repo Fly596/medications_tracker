@@ -140,27 +140,40 @@ fun MedicationItem(
         Spacer(modifier = Modifier.weight(1f))
 
         // State to control the check icon.
-        var isChecked by remember { mutableStateOf(false) }
+        var status by remember { mutableStateOf(0) }
         LaunchedEffect(medication) {
-            isChecked = viewModel.checkIntake(medication)
+            status = viewModel.checkIntake(medication)
         }
+
+        Text(
+            text = if (status == 2) "Taken" else if (status == 1) "Skipped" else "",
+            style = typography.caption1,
+            color = MedTrackerTheme.colors.secondaryLabel
+        )
 
         IconButton(
             onClick = {
                 // Add logic to log medication here.
                 showLogDialog.value = !showLogDialog.value
-                isChecked = !isChecked
+
             }) {
             Icon(
-                imageVector = if (isChecked) {
+                imageVector = if (status == 2) {
+                    // taken
+                    Icons.Filled.CheckCircle
+                } else if (status == 1) {
+                    // skipped
                     Icons.Filled.CheckCircle
                 } else {
+                    // nodata
                     Icons.Outlined.CheckCircle
                 },
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
-                tint = if (isChecked) {
-                    MedTrackerTheme.colors.primary400
+                tint = if (status == 2) {
+                    MedTrackerTheme.colors.sysSuccess
+                } else if (status == 1) {
+                    MedTrackerTheme.colors.sysWarning
                 } else {
                     MedTrackerTheme.colors.tertiaryLabel
                 }

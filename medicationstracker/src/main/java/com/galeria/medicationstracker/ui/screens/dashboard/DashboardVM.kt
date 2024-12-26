@@ -6,9 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.UserIntake
 import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
-import com.galeria.medicationstracker.model.formatStringDateToWeekday
+import com.galeria.medicationstracker.model.addOneDayToDate
 import com.galeria.medicationstracker.model.formatTimestampTillTheDay
 import com.galeria.medicationstracker.model.formatTimestampTillTheSec
+import com.galeria.medicationstracker.model.formatTimestampToWeekday
+import com.galeria.medicationstracker.model.getTodaysDateInMMMMddyyyyFormat
+import com.galeria.medicationstracker.model.toTimestamp
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Source
@@ -36,7 +39,7 @@ class DashboardVM() : ViewModel() {
 
     // Фильтрация лекарств, прием которых окончен для использования при выводе на главный экран.
     fun getCurrentMedications() {
-        val todayWeekDay = formatStringDateToWeekday(Timestamp.now()).uppercase()
+        val todayWeekDay = formatTimestampToWeekday(Timestamp.now()).uppercase()
 
         viewModelScope.launch {
             FirestoreService.db.collection("UserMedication")
@@ -95,30 +98,38 @@ class DashboardVM() : ViewModel() {
     }
 
     // Проверка на то, был ли сегодня прием или нет.
-    suspend fun checkIntake(medication: UserMedication): Boolean {
-        var todaysDate = Timestamp.now()
-        var ret = false
-        val source = Source.CACHE
+    // -1: error; 0: noData, 1: skipped, 2: taken
+    suspend fun checkIntake(medication: UserMedication): Int {
+        val today = getTodaysDateInMMMMddyyyyFormat().atStartOfDay()
+        val tomorrow = addOneDayToDate(today.toLocalDate(), 1).atStartOfDay()
+
+        var ret = -1
+        val source = Source.DEFAULT
 
         var takerMeds = MutableStateFlow<List<UserIntake>>(emptyList())
         try {
             val querySnapshot = FirestoreService.db.collection("MedicationIntake")
                 .whereEqualTo("uid", currentUserId)
                 .whereEqualTo("medicationName", medication.name)
-                .limit(1)
+                .whereGreaterThan("dateTime", today.toTimestamp())
+                .whereLessThan("dateTime", tomorrow.toTimestamp())
+                //.limit(1)
                 .get(source)
                 .await()
 
             if (!querySnapshot.isEmpty) {
-                ret = true
+                val intakes = querySnapshot.toObjects(UserIntake::class.java)
+                val status = intakes.get(0).status
+
+                ret = if (status == true) 2 else 1
             } else {
-                ret = false
+                ret = 0
             }
             // ret = querySnapshot.isEmpty
         } catch (e: Exception) {
             Log.e("DashboardVM", "Error fetching current medications: ${e.message}", e)
             println("Error fetching current medications: ${e.message}")
-            ret = false
+            ret = -1
         }
         return ret
 

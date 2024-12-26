@@ -25,13 +25,13 @@ class MedicationsViewModel : ViewModel() {
     var userMedications = _userMedications.asStateFlow()
 
     init {
-        // fetchUserMedications()
+        fetchUserMedications()
     }
 
     // Получение всех пользовательских лекарств.
     fun fetchUserMedications() {
         val docRef = db.collection("UserMedication")
-        val source = Source.CACHE
+        val source = Source.DEFAULT
 
         docRef
             .whereEqualTo("uid", userId)

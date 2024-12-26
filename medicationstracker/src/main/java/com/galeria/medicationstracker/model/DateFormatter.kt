@@ -1,10 +1,13 @@
 package com.galeria.medicationstracker.model
 
-import com.google.firebase.*
-import java.text.*
-import java.time.*
-import java.time.format.*
-import java.util.*
+import com.google.firebase.Timestamp
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 fun getStringFormattedDate(inputDate: LocalDate): String {
   val dateFormatter = DateTimeFormatter.ofPattern("MMM dd")
@@ -50,9 +53,16 @@ fun formatTimestampTillTheSec(timestamp: Timestamp): String {
   return formatter.format(timestamp.toDate())
 }
 
-fun formatStringDateToWeekday(timestamp: Timestamp): String {
+fun formatTimestampToWeekday(timestamp: Timestamp): String {
   val dayOfWeekFormatter =
     DateTimeFormatter.ofPattern("EEEE") // Add day of week formatter
+
+  return timestamp.toLocalDateTime().format(dayOfWeekFormatter)
+}
+
+fun formatTimestampToDay(timestamp: Timestamp): String {
+  val dayOfWeekFormatter =
+    DateTimeFormatter.ofPattern("MMMM dd yyyy") // Add day of week formatter
 
   return timestamp.toLocalDateTime().format(dayOfWeekFormatter)
 }
@@ -60,3 +70,14 @@ fun formatStringDateToWeekday(timestamp: Timestamp): String {
 fun LocalDateTime.toTimestamp() = Timestamp(atZone(ZoneId.systemDefault()).toEpochSecond(), nano)
 fun Timestamp.toLocalDateTime(zone: ZoneId = ZoneId.systemDefault()) =
   LocalDateTime.ofInstant(Instant.ofEpochMilli(seconds * 1000 + nanoseconds / 1000000), zone)
+
+fun getTodaysDateInMMMMddyyyyFormat(): LocalDate {
+  val today = LocalDate.now()
+  val formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.getDefault())
+  return formatter.parse(formatter.format(today), LocalDate::from)
+}
+
+fun addOneDayToDate(date: LocalDate, daysToAdd: Long = 1): LocalDate {
+  val res = date.plusDays(daysToAdd)
+  return res
+}

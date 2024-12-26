@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.UserIntake
 import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.Source
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,9 +33,9 @@ class RecordsVM : ViewModel() {
     private fun fetchUserIntakes() {
         viewModelScope.launch {
             val intakesRef = db.collection("MedicationIntake")
-            val source = Source.CACHE
+            // val source = Source.CACHE
             intakesRef.whereEqualTo("uid", currentUserId).orderBy("dateTime")
-                .get(source)
+                .get()
                 .addOnSuccessListener { result ->
                     val intakes = result.toObjects(UserIntake::class.java)
 
