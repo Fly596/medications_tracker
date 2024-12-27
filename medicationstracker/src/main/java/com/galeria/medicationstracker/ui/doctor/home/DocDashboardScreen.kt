@@ -52,10 +52,10 @@ fun DocDashboardScreen(
 
     AppointmentsView(
       // onSeeAllClick = onPatientsClick,
-      patientsList = uiState.value.patients
+      upcomingAppointments = uiState.value.patients
     )
 
-    // AppointmentsStats()
+    AppointmentsStats()
   }
 
 }
@@ -64,7 +64,7 @@ fun DocDashboardScreen(
 fun AppointmentsView(
   modifier: Modifier = Modifier,
   onSeeAllClick: () -> Unit = {},
-  patientsList: List<User> = emptyList()
+  upcomingAppointments: List<User> = emptyList()
 ) {
   Column(modifier = modifier.fillMaxWidth()) {
 
@@ -94,39 +94,13 @@ fun AppointmentsView(
       modifier = Modifier.fillMaxWidth(),
       horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-      items(patientsList) { patient ->
+      items(upcomingAppointments) { appointment ->
         AppointmentCard(
-          name = patient.name.toString(),
+          name = appointment.name.toString(),
           time = "7:00 pm - 7:30 pm",
-          type = "Online Consultation"
         )
 
       }
-
-      /*       item {
-              AppointmentCard(
-                name = "Courtney Henry",
-                time = "7:00 pm - 7:30 pm",
-                type = "Online Consultation",
-                image = painterResource(id = R.drawable.montana_pfp)
-              )
-            }
-            item {
-              AppointmentCard(
-                name = "Albert Flores",
-                time = "9:00 pm - 9:30 pm",
-                type = "In Person Visit"
-              )
-
-            }
-            item {
-
-              AppointmentCard(
-                name = "Brianna Clark",
-                time = "10:00 pm - 10:30 pm",
-                type = "In Person Visit"
-              )
-            } */
 
     }
 
@@ -137,8 +111,7 @@ fun AppointmentsView(
 fun AppointmentCard(
   name: String,
   time: String,
-  type: String,
-  image: Painter = painterResource(R.drawable.default_pfp)
+  patientProfilePicture: Painter = painterResource(R.drawable.default_pfp)
 ) {
   FlySimpleCard(
     modifier = Modifier
@@ -151,7 +124,7 @@ fun AppointmentCard(
       verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
       Image(
-        painter = image,
+        painter = patientProfilePicture,
         contentDescription = null,
         modifier = Modifier
           .size(36.dp)
@@ -165,10 +138,6 @@ fun AppointmentCard(
         text = time,
         style = MedTrackerTheme.typography.caption2
       )
-      Text(
-        text = type,
-        style = MedTrackerTheme.typography.caption2
-      )
     }
   }
 }
@@ -176,7 +145,7 @@ fun AppointmentCard(
 @Composable
 fun HeaderSection(
   modifier: Modifier = Modifier,
-  image: Painter = painterResource(id = R.drawable.g_eazy_pfp)
+  profileImage: Painter = painterResource(id = R.drawable.g_eazy_pfp)
 ) {
 
   Row(
@@ -184,7 +153,7 @@ fun HeaderSection(
     verticalAlignment = Alignment.CenterVertically
   ) {
     Image(
-      painter = image,
+      painter = profileImage,
       contentDescription = null,
       modifier = Modifier
         .clip(CircleShape)
@@ -276,8 +245,7 @@ fun AppointmentsStats() {
       item {
         StatisticCard(
           label = "Total",
-          value = "760",
-          change = "+22%"
+          value = "760"
         )
 
       }
@@ -285,7 +253,6 @@ fun AppointmentsStats() {
         StatisticCard(
           label = "Online",
           value = "494",
-          change = "-12%"
         )
 
       }
@@ -293,7 +260,6 @@ fun AppointmentsStats() {
         StatisticCard(
           label = "In Person",
           value = "266",
-          change = "+30%"
         )
 
       }
@@ -306,7 +272,6 @@ fun AppointmentsStats() {
 fun StatisticCard(
   label: String,
   value: String,
-  change: String
 ) {
   FlySimpleCard(
     modifier = Modifier
@@ -331,74 +296,8 @@ fun StatisticCard(
           text = value,
           style = MedTrackerTheme.typography.title3Emphasized
         )
-        Text(
-          text = change,
-          style = MedTrackerTheme.typography.caption1
-        )
       }
 
     }
   }
 }
-
-/*
-@Composable
-fun DocDashboardScreen(
-    modifier: Modifier = Modifier,
-    viewModel: DocDashboardVM = viewModel()
-) {
-  val state = viewModel._docDashboardState.collectAsStateWithLifecycle()
-
-  val testValues = state.value.tempList
-  // val patientsList = state.value.patientsList
-  val headerValues = state.value.headerValuesUsers
-
-  Column(modifier = modifier.fillMaxWidth()) {
-
-    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-      // Header Row.
-      item {
-        FlyRow(values = headerValues, isHeader = true)
-      }
-
-      */
-/*       items(patientsList!!.size) { index ->
-              FlyRow(
-                values = listOf<String>(patientsList[index].toString()),
-                isHeader = false
-              )
-
-            } *//*
-
-
-      // Body Rows.
-      items(testValues.size) { index ->
-        FlyRow(values = testValues[index], isHeader = false)
-      }
-
-    }
-  }
-}
-
-@Composable
-fun FlyRow(
-    modifier: Modifier = Modifier,
-    isHeader: Boolean = false,
-    values: List<String>,
-) {
-  LazyRow(
-    modifier = modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.Start,
-  ) {
-    items(values.size) { index ->
-      FlyTableTextField(
-        value = values[index],
-        label = "",
-        isHeader = isHeader,
-        textStyles = MedTrackerTheme.typography.body,
-        onValueChange = {},
-        readOnly = true,
-      )
-    }
-  }
-}*/

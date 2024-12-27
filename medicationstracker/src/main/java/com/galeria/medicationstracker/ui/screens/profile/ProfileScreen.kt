@@ -31,14 +31,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.User
 import com.galeria.medicationstracker.ui.components.FlySimpleCard
-import com.galeria.medicationstracker.ui.components.HIGListButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 /**
@@ -49,309 +46,282 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
  * managing notifications and app settings, as well as a logout button.
  *
  * @param modifier The modifier to be applied to the layout.
- * @param onSettingsClick A callback function that is invoked when the user clicks on the settings option.
+ * @param onDoctorClick A callback function that is invoked when the user clicks on the settings option.
  * @param onNotificationsClick A callback function that is invoked when the user clicks on the notifications option.
  * @param viewModel The ViewModel for this screen. Defaults to a new instance of ProfileVM.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-  modifier: Modifier = Modifier,
-  onSettingsClick: () -> Unit = {},
-  onNotificationsClick: () -> Unit = {},
-  onWeightClick: () -> Unit = {},
-  onHeightClick: () -> Unit = {},
-  viewModel: ProfileVM = viewModel(),
+    modifier: Modifier = Modifier,
+    onDoctorClick: () -> Unit = {},
+    onWeightClick: () -> Unit = {},
+    onHeightClick: () -> Unit = {},
+    viewModel: ProfileVM,
 ) {
-  val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-  val doctorsList = uiState.doctors
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val doctorsList = uiState.doctors
 
-  // Build the screen UI.
-  Column(
-    modifier = modifier
-      .fillMaxWidth()
-      .padding(top = 16.dp),
-    verticalArrangement = Arrangement.spacedBy(16.dp),
-    horizontalAlignment = Alignment.Start
-  ) {
-
-    // Display header with profile picture and name.
-    Row(
-      modifier = Modifier
-        .fillMaxWidth(),
-      verticalAlignment = Alignment.Top,
-      horizontalArrangement = Arrangement.Start,
-    ) {
-
-      // User's profile information.
-      PfpWithName(
-        // TODO: get from firebase.
-        painter = R.drawable.img_1543,
-        userName = uiState.user?.name.toString(),
-        userEmail = uiState.user?.login.toString()
-      )
-      Spacer(modifier = Modifier.weight(1f))
-
-    }
-
-    // HealthCardsGrid()
-
-    // Settings section.
     Column(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalAlignment = Alignment.Start
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.Start
     ) {
 
-      // Notifications settings.
-      HIGListButton(
-        onClick = { onNotificationsClick.invoke() },
-        text = "Notifications Settings"
-      )
+        // Display header with profile picture and name.
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.Start,
+        ) {
 
-      // App settings.
-      HIGListButton(
-        onClick = { onSettingsClick.invoke() },
-        text = "App Settings"
-      )
+            // User's profile information.
+            PfpWithName(
+                // TODO: get from firebase.
+                painter = R.drawable.img_1543,
+                userName = uiState.user?.name.toString(),
+                userEmail = uiState.user?.login.toString()
+            )
+            Spacer(modifier = Modifier.weight(1f))
 
+        }
+
+        // HealthCardsGrid()
+
+        // секция со списком врачей пользователя (или просто всех врачей).
+        MyDoctorsList(
+            listData = doctorsList,
+            onDoctorClick = onDoctorClick,
+            onClick = { viewModel.updateSelectedDoctor(it) }
+        )
     }
-    // секция со списком врачей пользователя (или просто всех врачей).
-    MyDoctorsList(
-      listData = doctorsList
-    )
-  }
 }
 
 @Composable
 fun MyDoctorsList(
-  modifier: Modifier = Modifier,
-  listData: List<User> = listOf()
+    modifier: Modifier = Modifier,
+    listData: List<User> = listOf(),
+    onDoctorClick: () -> Unit = {},
+    onClick: (User?) -> Unit = {}
 ) {
-  Column(modifier = modifier.padding(top = 8.dp)) {
-    Text(
-      text = "My Doctors",
-      style = MedTrackerTheme.typography.title2
-    )
-    FlySimpleCard(
-      modifier = modifier
-        .fillMaxWidth()
-        .padding(top = 16.dp)
-    ) {
-      LazyColumn(modifier = modifier.fillMaxWidth()) {
-        items(listData) { user ->
-          // UserListCard(user.name.toString())
-          UserListCard(
-            name = user.name.toString(),
-            speciality = user.type.toString()
-          )
+    Column(modifier = modifier.padding(top = 8.dp)) {
+        Text(
+            text = "My Doctors",
+            style = MedTrackerTheme.typography.title2
+        )
 
+        LazyColumn(modifier = modifier.fillMaxWidth()) {
+            items(listData) { user ->
+                // UserListCard(user.name.toString())
+                DocListCard(
+                    name = user.name.toString(),
+                    speciality = user.type.toString(),
+                    modifier = Modifier.clickable {
+                        onClick(user)
+                        onDoctorClick.invoke()
+                    },
+                )
+
+            }
         }
-      }
+
     }
-  }
 
 }
 
 @Composable
-fun UserListCard(
-  modifier: Modifier = Modifier,
-  name: String = "James",
-  speciality: String = "Boobs Watcher"
+fun DocListCard(
+    modifier: Modifier = Modifier,
+    name: String = "James",
+    speciality: String = "Boobs Watcher",
 ) {
-  Row(
-    modifier = modifier
-      .fillMaxWidth()
-      .padding(vertical = 8.dp),
-    horizontalArrangement = Arrangement.SpaceBetween,
-    verticalAlignment = Alignment.CenterVertically
-  ) {
-    Image(
-      painter = painterResource(R.drawable.doc_pfp_girl),
-      contentDescription = null,
-      modifier = Modifier
-        .clip(CircleShape)
-        .size(56.dp),
-    )
-
-    Spacer(modifier = Modifier.width(16.dp))
-
-    Column(
-      verticalArrangement = Arrangement.spacedBy(8.dp),
-      modifier = Modifier
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-      Text(
-        text = name,
-        style = MedTrackerTheme.typography.title3
-      )
-      Text(
-        text = speciality,
-        style = MedTrackerTheme.typography.footnote
-      )
+        Image(
+            painter = painterResource(R.drawable.doc_pfp_girl),
+            contentDescription = null,
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(56.dp),
+        )
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+        ) {
+            Text(
+                text = name,
+                style = MedTrackerTheme.typography.title3
+            )
+            Text(
+                text = speciality,
+                style = MedTrackerTheme.typography.footnote
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        IconButton(
+            onClick = {/* show doctor */ }
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                contentDescription = "more",
+                tint = MedTrackerTheme.colors.secondaryLabel
+            )
+        }
     }
-    Spacer(modifier = Modifier.weight(1f))
-    IconButton(
-      onClick = {/* show doctor */ }
-    ) {
-      Icon(
-        imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
-        contentDescription = "more",
-        tint = MedTrackerTheme.colors.secondaryLabel
-      )
-    }
-  }
 }
 
 @Composable
 fun HealthCardsGrid() {
-  LazyVerticalGrid(
-    columns = GridCells.Fixed(2),
-    verticalArrangement = Arrangement.spacedBy(16.dp),
-    horizontalArrangement = Arrangement.spacedBy(16.dp),
-  ) {
-    item {
-      HealthCard(
-        headText = "Weight",
-        valueText = "145",
-        unitsText = "lbs",
-      )
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        item {
+            HealthCard(
+                headText = "Weight",
+                valueText = "145",
+                unitsText = "lbs",
+            )
+        }
+        item {
+            HealthCard(
+                headText = "Height",
+                valueText = "6.5",
+                unitsText = "ft",
+                textColor = MedTrackerTheme.colors.primary400
+            )
+        }
     }
-    item {
-      HealthCard(
-        headText = "Height",
-        valueText = "6.5",
-        unitsText = "ft",
-        textColor = MedTrackerTheme.colors.primary400
-      )
-    }
-  }
 }
 
 @Composable
 fun HealthCard(
-  headText: String = "Blood Pressure",
-  valueText: String = "150/100",
-  unitsText: String = "mmHg",
-  textColor: Color = MedTrackerTheme.colors.sysError,
+    headText: String = "Blood Pressure",
+    valueText: String = "150/100",
+    unitsText: String = "mmHg",
+    textColor: Color = MedTrackerTheme.colors.sysError,
 ) {
-  FlySimpleCard(modifier = Modifier) {
-    Column(
-      modifier = Modifier.padding(bottom = 12.dp),
-      verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-      ) {
-        Text(
-          text = headText,
-          style = MedTrackerTheme.typography.bodyEmphasized,
-          color = textColor
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        IconButton(
-          onClick = { /*TODO*/ }
+    FlySimpleCard(modifier = Modifier) {
+        Column(
+            modifier = Modifier.padding(bottom = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-          Icon(
-            imageVector = Filled.ArrowForwardIos,
-            contentDescription = "more",
-            tint = MedTrackerTheme.colors.secondaryLabel
-          )
-        }
-      }
-      Row(
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-      ) {
-        Text(
-          text = valueText,
-          style = MedTrackerTheme.typography.title1Emphasized
-        )
-        Text(
-          text = unitsText,
-          style = MedTrackerTheme.typography.footnote
-        )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = headText,
+                    style = MedTrackerTheme.typography.bodyEmphasized,
+                    color = textColor
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(
+                        imageVector = Filled.ArrowForwardIos,
+                        contentDescription = "more",
+                        tint = MedTrackerTheme.colors.secondaryLabel
+                    )
+                }
+            }
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = valueText,
+                    style = MedTrackerTheme.typography.title1Emphasized
+                )
+                Text(
+                    text = unitsText,
+                    style = MedTrackerTheme.typography.footnote
+                )
 
-      }
+            }
+        }
     }
-  }
 }
 
 @Composable
 fun PfpWithName(
-  painter: Int,
-  userName: String,
-  userEmail: String,
-  modifier: Modifier = Modifier
+    painter: Int,
+    userName: String,
+    userEmail: String,
+    modifier: Modifier = Modifier
 ) {
 
-  Row(
-    modifier = modifier.fillMaxWidth(),
-    verticalAlignment = Alignment.Top,
-    horizontalArrangement = Arrangement.SpaceBetween,
-  ) {
-    Image(
-      painter = painterResource(painter),
-      contentDescription = "pfp",
-      contentScale = ContentScale.Crop,
-      modifier = modifier
-        .clip(CircleShape)
-        .size(128.dp),
-    )
-
-    // Spacer(modifier = Modifier.width(32.dp)) // add default dp values.
-
-    Column(
-      verticalArrangement = Arrangement.spacedBy(12.dp),
-      modifier = Modifier.padding(top = 8.dp)
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-      Text(
-        text = userName,
-        style = MedTrackerTheme.typography.title2Emphasized,
-        color = MedTrackerTheme.colors.primaryLabel
-      )
-      Text(
-        text = userEmail,
-        style = MedTrackerTheme.typography.headline,
-        color = MedTrackerTheme.colors.tertiaryLabel
-      )
-    }
-    IconButton(
-      onClick = {/*TODO: open settings*/ }
-    ) {
+        Image(
+            painter = painterResource(painter),
+            contentDescription = "pfp",
+            contentScale = ContentScale.Crop,
+            modifier = modifier
+                .clip(CircleShape)
+                .size(128.dp),
+        )
 
-      Icon(
-        modifier = Modifier.size(28.dp),
-        imageVector = Icons.Filled.Edit,
-        contentDescription = "Settings",
-        tint = MedTrackerTheme.colors.secondaryLabel
-      )
+        // Spacer(modifier = Modifier.width(32.dp)) // add default dp values.
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(top = 8.dp)
+        ) {
+            Text(
+                text = userName,
+                style = MedTrackerTheme.typography.title2Emphasized,
+                color = MedTrackerTheme.colors.primaryLabel
+            )
+            Text(
+                text = userEmail,
+                style = MedTrackerTheme.typography.headline,
+                color = MedTrackerTheme.colors.tertiaryLabel
+            )
+        }
+        IconButton(
+            onClick = {/*TODO: open settings*/ }
+        ) {
+
+            Icon(
+                modifier = Modifier.size(28.dp),
+                imageVector = Icons.Filled.Edit,
+                contentDescription = "Settings",
+                tint = MedTrackerTheme.colors.secondaryLabel
+            )
+        }
     }
-  }
 }
 
 @Composable
 fun ProfileOptionItem(
-  title: String,
-  onClick: () -> Unit
+    title: String,
+    onClick: () -> Unit
 ) {
 
-  Row(
-    modifier =
-      Modifier
-        .fillMaxWidth()
-        // .background(color =
-        // MedicationsTrackerAppTheme.systemColors.backgroundLightSecondary)
-        .clickable(onClick = onClick),
-  ) {
-  }
-}
-
-// ... other imports
-@Preview
-@Composable
-fun HealthCardPreview() {
-  MedTrackerTheme {
-    MyDoctorsList()
-  }
-
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                // .background(color =
+                // MedicationsTrackerAppTheme.systemColors.backgroundLightSecondary)
+                .clickable(onClick = onClick),
+    ) {
+    }
 }

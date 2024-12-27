@@ -44,6 +44,13 @@ data class UserIntake(
     val dateTime: Timestamp? = null,
 )
 
+data class Appointment(
+    val date: Timestamp? = null,
+    val time: String? = null,
+    val doctor: String? = null,
+    val patient: String? = null,
+)
+
 enum class UserType {
     ADMIN,
     PATIENT,

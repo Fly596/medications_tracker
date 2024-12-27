@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.UserType
@@ -37,14 +38,14 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun SignupScreen(
-    passedEmail: String = "",
-    navigateHome: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: SignupScreenViewModel = viewModel(),
+  passedEmail: String = "",
+  navigateHome: () -> Unit,
+  modifier: Modifier = Modifier,
+  viewModel: SignupScreenViewModel = viewModel(),
 ) {
   LaunchedEffect(Unit) { viewModel.updateEmail(passedEmail) }
 
-  val state = viewModel.signupScreenState
+  val state = viewModel.signupScreenState.collectAsStateWithLifecycle()
 
   Column(
     modifier = Modifier.fillMaxSize(),
@@ -58,14 +59,14 @@ fun SignupScreen(
     Spacer(modifier = Modifier.weight(1f))
 
     MyTextField(
-      value = state.name,
+      value = state.value.name,
       onValueChange = { viewModel.updateUserName(it) },
       label = "Name",
       placeholder = "Name",
       modifier = Modifier.fillMaxWidth(),
     )
     MyTextField(
-      value = state.age.toString(),
+      value = state.value.age.toString(),
       onValueChange = {
         if (it.isNotEmpty()) {
           viewModel.updateUserAge(it.toInt())
@@ -80,10 +81,10 @@ fun SignupScreen(
     )
 
     MyTextField(
-      value = state.email,
+      value = state.value.email,
       onValueChange = { viewModel.updateEmail(it) },
-      isError = state.emailErrorMessage?.isNotEmpty() ?: false,
-      errorMessage = state.emailErrorMessage,
+      isError = state.value.emailErrorMessage?.isNotEmpty() ?: false,
+      errorMessage = state.value.emailErrorMessage,
       label = "Email",
       placeholder = "",
       modifier = Modifier.fillMaxWidth(),
@@ -91,27 +92,27 @@ fun SignupScreen(
     )
 
     MyTextField(
-      value = state.password,
+      value = state.value.password,
       onValueChange = { viewModel.updatePassword(it) },
-      isError = state.passwordErrorMessage?.isNotEmpty() ?: false,
-      errorMessage = state.passwordErrorMessage,
+      isError = state.value.passwordErrorMessage?.isNotEmpty() ?: false,
+      errorMessage = state.value.passwordErrorMessage,
       label = "Password",
       placeholder = "6 or more characters",
       supportingText = "6 or more characters",
       modifier = Modifier.fillMaxWidth(),
       visualTransformation =
-        if (state.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+        if (state.value.showPassword) VisualTransformation.None else PasswordVisualTransformation(),
       keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
     )
 
     // Show password switch.
     RememberMeSwitch(
-      checked = state.showPassword,
-      onCheckedChange = { viewModel.isShowPasswordChecked(state.showPassword) },
+      checked = state.value.showPassword,
+      onCheckedChange = { viewModel.isShowPasswordChecked(state.value.showPassword) },
     )
 
     // Список типов пользователя.
-    var selectedType by remember { mutableStateOf(state.userType) }
+    var selectedType by remember { mutableStateOf(state.value.userType) }
     val options = UserType.entries.toTypedArray()
 
     FlySimpleCard(
@@ -178,11 +179,11 @@ fun SignupScreen(
  * This function iterates through available user types and renders a radio button for each type.
  * The selected type is tracked and updated based on user interaction.
  *
- * @param viewModel The SignupScreenViewModel instance providing data and state for the signup screen.
+ * @param viewModel The SignupScreenViewModel instance providing data and state.value for the signup screen.
  */
 @Composable
 fun UserTypesSelection(viewModel: SignupScreenViewModel) {
-  var selectedType by remember { mutableStateOf(viewModel.signupScreenState.userType) }
+  var selectedType by remember { mutableStateOf(viewModel.signupScreenState.value.userType) }
   val options = UserType.entries.toTypedArray()
 
   Column(
