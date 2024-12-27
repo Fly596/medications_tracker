@@ -34,9 +34,7 @@ class AddNewMedViewModel : ViewModel() {
 
     var uiState by mutableStateOf(NewMedicationUiState())
         private set
-
     val db = FirestoreService.db
-
     val auth = FirebaseAuth.getInstance()
     val userId = auth.currentUser?.uid
     val userLogin = auth.currentUser?.email
@@ -45,39 +43,69 @@ class AddNewMedViewModel : ViewModel() {
     fun addMedication(
         context: Context,
     ) {
+        // Проверка на пустые значения текстовых полей и нулевое значение medStrength
+        if (uiState.medName.isBlank() ||
+            uiState.medForm.toString().isBlank() ||
+            uiState.medUnit.toString().isBlank() ||
+            uiState.medStrength <= 0 ||
+            uiState.medStartDate.toString().isBlank() ||
+            uiState.medEndDate.toString().isBlank()
+        ) {
+            Toast.makeText(
+                context,
+                "Please fill in all required fields correctly!",
+                Toast.LENGTH_SHORT
+            ).show()
+            Log.w(TAG, "Validation failed: Missing or incorrect input fields.")
+            return
+        }
         val medicationRef = db
             .collection("UserMedication")
+        val documentId = "${userLogin}_${uiState.medName}_${uiState.medStrength}"
+        // Проверка на дубликаты
+        medicationRef.document(documentId).get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    // Документ уже существует
+                    Toast.makeText(
+                        context,
+                        "Medication already exists!",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
-        val newUserMedication =
-            UserMedication(
-                userId,
-                uiState.medName,
-                uiState.medForm.toString(),
-                uiState.medStrength,
-                uiState.medUnit.toString(),
-                uiState.medStartDate,
-                uiState.medEndDate,
-                uiState.intakeDays,
-                uiState.medIntakeTime,
-                uiState.medNotes
-            )
+                    Log.d(TAG, "Medication already exists with ID: $documentId")
+                } else {
+                    // Документ не существует, добавляем новый
+                    val newUserMedication = UserMedication(
+                        userId,
+                        uiState.medName,
+                        uiState.medForm.toString(),
+                        uiState.medStrength,
+                        uiState.medUnit.toString(),
+                        uiState.medStartDate,
+                        uiState.medEndDate,
+                        uiState.intakeDays,
+                        uiState.medIntakeTime,
+                        uiState.medNotes
+                    )
 
-        medicationRef.document("${userLogin}_${uiState.medName}_${uiState.medStrength}")
-            .set(newUserMedication)
-            .addOnSuccessListener {
-                Toast.makeText(
-                    context,
-                    "DocumentSnapshot added successfully!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                    medicationRef.document(documentId)
+                        .set(newUserMedication)
+                        .addOnSuccessListener {
+                            Toast.makeText(
+                                context,
+                                "DocumentSnapshot added successfully!",
+                                Toast.LENGTH_SHORT
+                            ).show()
 
-                Log.d(TAG, "DocumentSnapshot added with ID: ${uiState.medName}")
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(context, "Error adding medication", Toast.LENGTH_SHORT)
-                    .show()
-
-                Log.w(TAG, "Error adding document", e)
+                            Log.d(TAG, "DocumentSnapshot added with ID: $documentId")
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(context, "Error adding medication", Toast.LENGTH_SHORT)
+                                .show()
+                            Log.w(TAG, "Error adding document", e)
+                        }
+                }
             }
     }
 

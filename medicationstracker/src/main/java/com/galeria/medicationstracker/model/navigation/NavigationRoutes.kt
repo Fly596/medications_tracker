@@ -46,7 +46,6 @@ sealed class Routes {
             "com.galeria.medicationstracker.model.navigation.Routes.AuthRoutes.Registration"
         const val PASSWORD_RECOVERY =
             "com.galeria.medicationstracker.model.navigation.Routes.AuthRoutes.PasswordRecovery"
-
         const val PATIENT_DASHBOARD =
             "com.galeria.medicationstracker.model.navigation.Routes.PatientRoutes.PatientTodayMedications"
         const val PATIENT_MEDICATIONS =
@@ -57,7 +56,6 @@ sealed class Routes {
             "com.galeria.medicationstracker.model.navigation.Routes.PatientRoutes.PatientProfile"
         const val PATIENT_SETTINGS =
             "com.galeria.medicationstracker.model.navigation.Routes.PatientRoutes.PatientProfile"
-
         const val DOC_DASHBOARD =
             "com.galeria.medicationstracker.model.navigation.Routes.DoctorRoutes.DocDashboard"
         const val DOC_PATIENTS_LIST =
@@ -201,12 +199,9 @@ fun NavGraphBuilder.docGraph(
     navigation<DoctorRoutes.Doctor>(startDestination = DoctorRoutes.DocHome) {
         docHomeGraph(navController)
 
-
         docPatientsGraph(navController)
         composable<DoctorRoutes.DocPatients> {
-
         }
-
     }
 }
 
@@ -235,7 +230,6 @@ fun NavGraphBuilder.docHomeGraph(
                 }
             )
         }
-
     }
 }
 
@@ -247,9 +241,7 @@ fun NavGraphBuilder.patientGraph(
     profileVM: ProfileVM
 ) {
     navigation<PatientRoutes.Patient>(startDestination = PatientRoutes.PatientHome) {
-
         patientDashboardGraph(navController)
-
         // страница с лекарствами.
         patientMedsGraph(
             navController,
@@ -258,7 +250,6 @@ fun NavGraphBuilder.patientGraph(
         )
 
         patientProfileGraph(navController, viewModel = profileVM)
-
     }
 }
 
@@ -338,7 +329,6 @@ fun NavGraphBuilder.patientMedsGraph(
                 }
             )
         }
-
     }
 }
 
@@ -359,7 +349,6 @@ fun NavGraphBuilder.patientProfileGraph(
                 onDoctorClick = {
                     navController.navigate(PatientRoutes.PatientAppointment)
                 }
-
             )
         }
 
@@ -377,6 +366,5 @@ fun NavGraphBuilder.patientProfileGraph(
         dialog<PatientRoutes.PatientHeightDialog> {
             // TODO: implement height dialog.
         }
-
     }
 }
