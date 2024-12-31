@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.Appointment
 import com.galeria.medicationstracker.data.User
-import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
+import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Source
@@ -26,7 +26,6 @@ class ProfileVM : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileScreenUiState())
     val uiState = _uiState.asStateFlow()
-
     val db = FirestoreService.db
     val firebaseAuth = FirebaseAuth.getInstance()
     val currentUser = firebaseAuth.currentUser
@@ -41,7 +40,7 @@ class ProfileVM : ViewModel() {
         viewModelScope.launch {
             val userRef = db.collection("User")
                 .document(currentUser?.email.toString())
-            val source = Source.CACHE
+            val source = Source.DEFAULT
 
             try {
                 userRef.get(source)
@@ -55,7 +54,6 @@ class ProfileVM : ViewModel() {
             } catch (e: Exception) {
                 println("Error fetching user data: ${e.message}")
             }
-
         }
 
     }
@@ -80,20 +78,17 @@ class ProfileVM : ViewModel() {
                             "ProfileVM",
                             "Error fetching docs data: ${exp.message}"
                         )
-
                     }
             } catch (e: Exception) {
                 println("Error fetching docs data: ${e.message}")
 
             }
-
         }
     }
 
     fun addAppointment() {
         viewModelScope.launch {
             val docRef = db.collection("Appointments")
-
             val appointment = Appointment(
                 date = _uiState.value.selectedDate,
                 time = _uiState.value.selectedTime,

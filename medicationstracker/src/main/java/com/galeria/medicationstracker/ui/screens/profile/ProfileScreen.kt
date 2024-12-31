@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
@@ -18,13 +20,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.AutoMirrored.Filled
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,7 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.User
+import com.galeria.medicationstracker.ui.components.FlyIconButtonWithText
 import com.galeria.medicationstracker.ui.components.FlySimpleCard
+import com.galeria.medicationstracker.ui.components.FlyTextButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 /**
@@ -59,38 +61,107 @@ fun ProfileScreen(
     onHeightClick: () -> Unit = {},
     viewModel: ProfileVM,
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val doctorsList = uiState.doctors
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val doctorsList = uiState.value.doctors
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp),
+            .fillMaxSize()
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
-
         // Display header with profile picture and name.
+        /*         Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.Start,
+                ) {
+
+
+                    // User's profile information.
+                    PfpWithName(
+                        // TODO: get from firebase.
+                        painter = R.drawable.img_1543,
+                        userName = uiState.value.user?.name.toString(),
+                        userEmail = uiState.value.user?.login.toString()
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                } */
+        // HealthCardsGrid()
+        // Section title.
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-
-            // User's profile information.
-            PfpWithName(
-                // TODO: get from firebase.
-                painter = R.drawable.img_1543,
-                userName = uiState.user?.name.toString(),
-                userEmail = uiState.user?.login.toString()
+            // title and "edit" button.
+            Text(
+                text = "Profile",
+                style = MedTrackerTheme.typography.largeTitleEmphasized
             )
-            Spacer(modifier = Modifier.weight(1f))
+            FlyTextButton(
+                onClick = {
+                    /* TODO: open health */
+                },
+            ) {
+                Text(text = "Edit")
+            }
+        }
+        // pfp, name, email.
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Image(
+                painter = painterResource(R.drawable.img_1543),
+                contentDescription = "pfp",
+                contentScale = ContentScale.Crop,
+                modifier = modifier
+                    .clip(CircleShape)
+                    .size(108.dp),
+            )
 
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(start = 16.dp)
+            ) {
+                Text(
+                    text = uiState.value.user?.name.toString(),
+                    style = MedTrackerTheme.typography.title1Emphasized,
+                    color = MedTrackerTheme.colors.primaryLabel
+                )
+                Text(
+                    text = uiState.value.user?.login.toString(),
+                    style = MedTrackerTheme.typography.body,
+                    color = MedTrackerTheme.colors.tertiaryLabel
+                )
+            }
         }
 
-        // HealthCardsGrid()
-
+        LazyRow(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            item {
+                FlyIconButtonWithText(
+                    text = "20 years old"
+                )
+            }
+            item {
+                FlyIconButtonWithText(
+                    text = "150 lbs",
+                    icon = R.drawable.body
+                )
+            }
+            item {
+                FlyIconButtonWithText(
+                    text = "6.5 ft",
+                    icon = R.drawable.body
+                )
+            }
+        }
         // секция со списком врачей пользователя (или просто всех врачей).
         MyDoctorsList(
             listData = doctorsList,
@@ -124,10 +195,8 @@ fun MyDoctorsList(
                         onDoctorClick.invoke()
                     },
                 )
-
             }
         }
-
     }
 
 }
@@ -250,7 +319,6 @@ fun HealthCard(
                     text = unitsText,
                     style = MedTrackerTheme.typography.footnote
                 )
-
             }
         }
     }
@@ -263,11 +331,9 @@ fun PfpWithName(
     userEmail: String,
     modifier: Modifier = Modifier
 ) {
-
     Row(
         modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
             painter = painterResource(painter),
@@ -275,14 +341,12 @@ fun PfpWithName(
             contentScale = ContentScale.Crop,
             modifier = modifier
                 .clip(CircleShape)
-                .size(128.dp),
+                .size(96.dp),
         )
-
-        // Spacer(modifier = Modifier.width(32.dp)) // add default dp values.
-
+        // Name and email.
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.padding(top = 8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            // modifier = Modifier.padding(top = 8.dp)
         ) {
             Text(
                 text = userName,
@@ -295,17 +359,6 @@ fun PfpWithName(
                 color = MedTrackerTheme.colors.tertiaryLabel
             )
         }
-        IconButton(
-            onClick = {/*TODO: open settings*/ }
-        ) {
-
-            Icon(
-                modifier = Modifier.size(28.dp),
-                imageVector = Icons.Filled.Edit,
-                contentDescription = "Settings",
-                tint = MedTrackerTheme.colors.secondaryLabel
-            )
-        }
     }
 }
 
@@ -314,7 +367,6 @@ fun ProfileOptionItem(
     title: String,
     onClick: () -> Unit
 ) {
-
     Row(
         modifier =
             Modifier

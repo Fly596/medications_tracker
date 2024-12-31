@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
 import com.galeria.medicationstracker.data.UserMedication
-import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
+import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.toObject
@@ -28,7 +28,6 @@ data class UpdateMedUiState(
     val strength: Float = 0.0f,
     val strengthUnit: MedicationUnit = MedicationUnit.MG, // Add strength unit
     val selectedDays: List<String> = emptyList(),
-
     val showDatePicker: Boolean = false,
     val showTimePicker: Boolean = false
 )
@@ -37,13 +36,10 @@ class UpdateMedVM : ViewModel() {
 
     var uiState by mutableStateOf(UpdateMedUiState())
         private set
-
     val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
     val db = FirestoreService.db
-
     private var _selectedMedication = MutableStateFlow<UserMedication?>(null)
     var selectedMedication = _selectedMedication.asStateFlow()
-
     private var _selectedDocumentId = MutableStateFlow<String?>(null)
     var selectedDocumentId = _selectedDocumentId.asStateFlow()
 
@@ -63,7 +59,6 @@ class UpdateMedVM : ViewModel() {
                     val document = value.documents[0]
                     _selectedMedication.value = document.toObject<UserMedication>()
                     _selectedDocumentId.value = document.id // Save the document ID
-
                     if (_selectedMedication.value != null) {
                         uiState = uiState.copy(
                             medName = _selectedMedication.value!!.name.toString(),
@@ -109,7 +104,6 @@ class UpdateMedVM : ViewModel() {
     fun updateMedicationFromFirestore(
         context: Context,
     ) {
-
         val newValues: Map<String, Any?> = mapOf(
             "endDate" to uiState.endDate,
             "form" to uiState.medForm.toString(),
@@ -122,7 +116,6 @@ class UpdateMedVM : ViewModel() {
             "startDate" to uiState.startDate,
             "uid" to currentUserId
         )
-
         val documentId = _selectedDocumentId.value
         if (documentId != null) {
             db.collection("UserMedication").document(documentId)

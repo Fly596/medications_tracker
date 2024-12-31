@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.UserMedication
-import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
+import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
 import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.AggregateSource.SERVER
@@ -25,7 +25,6 @@ class MedsPagesViewModel : ViewModel() {
 
     private var _uiState = MutableStateFlow(MedsPagesUiState())
     val uiState: StateFlow<MedsPagesUiState> = _uiState.asStateFlow()
-
     private val db = FirestoreService.db
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val user = firebaseAuth.currentUser
@@ -64,12 +63,10 @@ class MedsPagesViewModel : ViewModel() {
                 .whereEqualTo("status", true)
             val count = docRef.count()
             val source = Source.CACHE
-
             // Получение количества документов в коллекции.
             count.get(SERVER).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val snapshot = task.result
-
                     // Обновление состояния UI с количеством документов.
                     updateIntakesCount(snapshot.count.toInt())
                     Log.d(TAG, "Count: ${snapshot.count}")
@@ -86,14 +83,11 @@ class MedsPagesViewModel : ViewModel() {
             val docRef = db.collection("MedicationIntake")
                 .whereEqualTo("medicationName", uiState.value.selectedMed?.name.toString())
                 .whereEqualTo("status", false)
-
             val count = docRef.count()
-
             // Получение количества документов в коллекции.
             count.get(SERVER).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val snapshot = task.result
-
                     // Обновление состояния UI с количеством документов.
                     updateSkippedIntakesCount(snapshot.count.toInt())
                     Log.d(TAG, "Count: ${snapshot.count}")
@@ -101,7 +95,6 @@ class MedsPagesViewModel : ViewModel() {
                     Log.d(TAG, "Error getting count", task.exception)
                 }
             }
-
         }
 
     }

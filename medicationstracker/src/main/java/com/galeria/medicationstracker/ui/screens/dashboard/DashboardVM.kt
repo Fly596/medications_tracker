@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.UserIntake
 import com.galeria.medicationstracker.data.UserMedication
-import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
-import com.galeria.medicationstracker.model.addOneDayToDate
-import com.galeria.medicationstracker.model.formatTimestampTillTheDay
-import com.galeria.medicationstracker.model.formatTimestampTillTheSec
-import com.galeria.medicationstracker.model.formatTimestampToWeekday
-import com.galeria.medicationstracker.model.getTodaysDateInMMMMddyyyyFormat
-import com.galeria.medicationstracker.model.toTimestamp
+import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
+import com.galeria.medicationstracker.utils.addOneDayToDate
+import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
+import com.galeria.medicationstracker.utils.formatTimestampTillTheSec
+import com.galeria.medicationstracker.utils.formatTimestampToWeekday
+import com.galeria.medicationstracker.utils.getTodaysDateInMMMMddyyyyFormat
+import com.galeria.medicationstracker.utils.toTimestamp
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Source
@@ -23,9 +23,8 @@ import kotlinx.coroutines.tasks.await
 class DashboardVM() : ViewModel() {
 
     // Лекарства, которые нужно принимать.
-    private var _currentTakenMedications = MutableStateFlow<List<UserMedication>>(emptyList())
-    var currentTakenMedications = _currentTakenMedications.asStateFlow()
-
+    private val _currentTakenMedications = MutableStateFlow<List<UserMedication>>(emptyList())
+    val currentTakenMedications = _currentTakenMedications.asStateFlow()
     val db = FirestoreService.db
     val firebaseAuth = FirebaseAuth.getInstance()
     val currentUserId = firebaseAuth.currentUser?.uid
@@ -75,14 +74,12 @@ class DashboardVM() : ViewModel() {
     ) {
         // Проверка на дублирование приема.
         // var cre = checkIntake(medication)
-
         // текущее время до дней.
         var dateday = formatTimestampTillTheDay(intakeTime)
         var datesec = formatTimestampTillTheSec(intakeTime)
         println("Day: $dateday")
         println("Sec: $datesec")
         // println("Is exist?: $cre")
-
         val intake = UserIntake(
             uid = currentUserId.toString(),
             medicationName = medication.name.toString(),
@@ -102,10 +99,8 @@ class DashboardVM() : ViewModel() {
     suspend fun checkIntake(medication: UserMedication): Int {
         val today = getTodaysDateInMMMMddyyyyFormat().atStartOfDay()
         val tomorrow = addOneDayToDate(today.toLocalDate(), 1).atStartOfDay()
-
         var ret = -1
         val source = Source.DEFAULT
-
         var takerMeds = MutableStateFlow<List<UserIntake>>(emptyList())
         try {
             val querySnapshot = FirestoreService.db.collection("MedicationIntake")

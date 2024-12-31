@@ -3,7 +3,7 @@ package com.galeria.medicationstracker.ui.screens.dashboard.record
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.UserIntake
-import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
+import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,11 +18,9 @@ class RecordsVM : ViewModel() {
 
     private val _intakesData = MutableStateFlow<List<UserIntake>>(emptyList())
     val intakesData: StateFlow<List<UserIntake>> = _intakesData.asStateFlow()
-
     val db = FirestoreService.db
     val firebaseAuth = FirebaseAuth.getInstance()
     val currentUserId = firebaseAuth.currentUser?.uid
-
     private val _uiState = MutableStateFlow(RecordsUiState())
     val uiState: StateFlow<RecordsUiState> = _uiState
 

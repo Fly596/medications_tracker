@@ -14,11 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.model.formatTimestampTillTheDay
 import com.galeria.medicationstracker.ui.components.FlySimpleCard
 import com.galeria.medicationstracker.ui.components.FlyTonalButton
 import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
 import com.google.firebase.Timestamp
 
 @Composable
@@ -30,12 +30,10 @@ fun ViewMedicationInfoScreen(
     val uiState by medsViewModel.uiState.collectAsStateWithLifecycle()
 
     Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-
         // имя и дни приема.
         MedInfoHeader(
             medName = uiState.selectedMed?.name ?: ""
         )
-
         // начальная дата, total taken/skipped.
         MedStatCard(
             startDate = uiState.selectedMed?.startDate,
@@ -70,7 +68,6 @@ fun MedStatCard(
         HorizontalDivider(color = MedTrackerTheme.colors.opaqueSeparator, thickness = 0.5.dp)
 
         MedStatCardBody(totalTaken, totalSkipped)
-
     }
 }
 
@@ -94,7 +91,6 @@ fun MedStatCardBody(totalTaken: Int, totalSkipped: Int) {
             Text(
                 "${totalSkipped} times",
                 style = MedTrackerTheme.typography.title2Emphasized
-
             )
         }
     }

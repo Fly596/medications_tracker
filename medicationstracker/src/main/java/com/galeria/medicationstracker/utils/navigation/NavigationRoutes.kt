@@ -1,6 +1,5 @@
-package com.galeria.medicationstracker.model.navigation
+package com.galeria.medicationstracker.utils.navigation
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -13,10 +12,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.galeria.medicationstracker.data.UserType
-import com.galeria.medicationstracker.model.navigation.Routes.AdminRoutes
-import com.galeria.medicationstracker.model.navigation.Routes.AuthRoutes
-import com.galeria.medicationstracker.model.navigation.Routes.DoctorRoutes
-import com.galeria.medicationstracker.model.navigation.Routes.PatientRoutes
 import com.galeria.medicationstracker.ui.doctor.home.DocDashboardScreen
 import com.galeria.medicationstracker.ui.doctor.patients.PatientsListScreen
 import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRecoveryScreen
@@ -33,6 +28,10 @@ import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScr
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileVM
 import com.galeria.medicationstracker.ui.screens.profile.appoinment.AppointmentScreen
+import com.galeria.medicationstracker.utils.navigation.Routes.AdminRoutes
+import com.galeria.medicationstracker.utils.navigation.Routes.AuthRoutes
+import com.galeria.medicationstracker.utils.navigation.Routes.DoctorRoutes
+import com.galeria.medicationstracker.utils.navigation.Routes.PatientRoutes
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -40,28 +39,29 @@ sealed class Routes {
 
     object NavigationRoutes {
 
+        // C:\596programs\ANDROID_DEV\meds_tracker_new\medicationstracker\src\main\java\com\galeria\medicationstracker\utils\navigation\NavigationRoutes.kt
         const val LOGIN =
-            "com.galeria.medicationstracker.model.navigation.Routes.AuthRoutes.Login"
+            "com.galeria.medicationstracker.utils.navigation.Routes.AuthRoutes.Login"
         const val REGISTRATION =
-            "com.galeria.medicationstracker.model.navigation.Routes.AuthRoutes.Registration"
+            "com.galeria.medicationstracker.utils.navigation.Routes.AuthRoutes.Registration"
         const val PASSWORD_RECOVERY =
-            "com.galeria.medicationstracker.model.navigation.Routes.AuthRoutes.PasswordRecovery"
+            "com.galeria.medicationstracker.utils.navigation.Routes.AuthRoutes.PasswordRecovery"
         const val PATIENT_DASHBOARD =
-            "com.galeria.medicationstracker.model.navigation.Routes.PatientRoutes.PatientTodayMedications"
+            "com.galeria.medicationstracker.utils.navigation.Routes.PatientRoutes.PatientTodayMedications"
         const val PATIENT_MEDICATIONS =
-            "com.galeria.medicationstracker.model.navigation.Routes.PatientRoutes.PatientListMedications"
+            "com.galeria.medicationstracker.utils.navigation.Routes.PatientRoutes.PatientListMedications"
         const val PATIENT_NEW_MEDICATION =
-            "com.galeria.medicationstracker.model.navigation.Routes.PatientRoutes.PatientAddMedication"
+            "com.galeria.medicationstracker.utils.navigation.Routes.PatientRoutes.PatientAddMedication"
         const val PATIENT_PROFILE =
-            "com.galeria.medicationstracker.model.navigation.Routes.PatientRoutes.PatientProfile"
+            "com.galeria.medicationstracker.utils.navigation.Routes.PatientRoutes.PatientProfile"
         const val PATIENT_SETTINGS =
-            "com.galeria.medicationstracker.model.navigation.Routes.PatientRoutes.PatientProfile"
+            "com.galeria.medicationstracker.utils.navigation.Routes.PatientRoutes.PatientProfile"
         const val DOC_DASHBOARD =
-            "com.galeria.medicationstracker.model.navigation.Routes.DoctorRoutes.DocDashboard"
+            "com.galeria.medicationstracker.utils.navigation.Routes.DoctorRoutes.DocDashboard"
         const val DOC_PATIENTS_LIST =
-            "com.galeria.medicationstracker.model.navigation.Routes.DoctorRoutes.DocPatientsList"
+            "com.galeria.medicationstracker.utils.navigation.Routes.DoctorRoutes.DocPatientsList"
         const val ADMIN_DASHBOARD =
-            "com.galeria.medicationstracker.model.navigation.Routes.DoctorRoutes.AdminDashboard"
+            "com.galeria.medicationstracker.utils.navigation.Routes.DoctorRoutes.AdminDashboard"
         // ... other routes
     }
 
@@ -75,6 +75,7 @@ sealed class Routes {
         @Serializable data object PasswordRecovery : AuthRoutes()
     }
 
+    // TODO: extract to separate file.
     @Serializable
     sealed class PatientRoutes {
 
@@ -138,7 +139,6 @@ fun ApplicationNavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier
-            .fillMaxSize()
     ) {
         authGraph(navController)
         patientGraph(
@@ -161,9 +161,19 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
             LoginScreen(
                 onLoginClick = { userType ->
                     when (userType) {
-                        UserType.PATIENT -> navController.navigate(PatientRoutes.Patient)
-                        UserType.DOCTOR -> navController.navigate(DoctorRoutes.Doctor)
-                        UserType.ADMIN -> navController.navigate(AdminRoutes.AdminDashboard)
+                        UserType.PATIENT -> navController.navigate(
+                            PatientRoutes.Patient
+                        ) {
+                            popUpTo(AuthRoutes.Login) { inclusive = true }
+                        }
+
+                        UserType.DOCTOR -> navController.navigate(DoctorRoutes.Doctor) {
+                            popUpTo(AuthRoutes.Login) { inclusive = true }
+                        }
+
+                        UserType.ADMIN -> navController.navigate(AdminRoutes.AdminDashboard) {
+                            popUpTo(AuthRoutes.Login) { inclusive = true }
+                        }
                     }
                 },
                 onRegistration = {
@@ -178,7 +188,7 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable<AuthRoutes.Registration> {
             SignupScreen(
                 navigateHome = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 }
             )
         }
@@ -186,7 +196,7 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         composable<AuthRoutes.PasswordRecovery> {
             AccountRecoveryScreen(
                 navigateHome = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 }
             )
         }
@@ -261,7 +271,10 @@ fun NavGraphBuilder.patientDashboardGraph(
             DashboardScreen(
                 onMedicationLogsClick = {
                     // open logs history screen.
-                    navController.navigate(PatientRoutes.PatientLogs)
+                    navController.navigate(PatientRoutes.PatientLogs) {
+                        popUpTo(PatientRoutes.PatientTodayMedications) {
+                        }
+                    }
                 },
             )
         }
@@ -269,7 +282,7 @@ fun NavGraphBuilder.patientDashboardGraph(
             IntakeRecordsScreen(
                 onBackClick = {
                     // go back to the dashboard.
-                    navController.popBackStack()
+                    navController.navigateUp()
                 }
             )
         }
@@ -293,7 +306,11 @@ fun NavGraphBuilder.patientMedsGraph(
                 },
                 onViewMed = {
                     // Просмотр лекарства.
-                    navController.navigate(PatientRoutes.PatientViewMedication)
+                    navController.navigate(PatientRoutes.PatientViewMedication) {
+                        popUpTo(PatientRoutes.PatientListMedications) {
+                            inclusive = true
+                        }
+                    }
                 },
                 onEditMedClick = { name ->
                     // Редактирование лекарства.
@@ -305,7 +322,7 @@ fun NavGraphBuilder.patientMedsGraph(
         composable<PatientRoutes.PatientAddMedication> {
             NewMedicationDataScreen(
                 onConfirmClick = {
-                    navController.navigate(PatientRoutes.PatientMedications)
+                    navController.navigateUp()
                 },
             )
         }
@@ -314,7 +331,7 @@ fun NavGraphBuilder.patientMedsGraph(
             ViewMedicationInfoScreen(
                 medsViewModel = medsPagesVM,
                 onReturn = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 }
             )
         }
@@ -325,7 +342,7 @@ fun NavGraphBuilder.patientMedsGraph(
             UpdateMedScreen(
                 passedMedName = args.medicationName ?: "",
                 onConfirmEdit = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 }
             )
         }

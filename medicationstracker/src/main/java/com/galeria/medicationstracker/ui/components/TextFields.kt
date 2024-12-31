@@ -146,13 +146,13 @@ fun FlyTextField(
 ) {
     BasicTextField(
         modifier = modifier
-          .fillMaxWidth()
-          .padding(0.dp/* top = 1.dp, bottom = 1.dp */)
-          .border(
-            width = 0.25.dp,
-            color = MedTrackerTheme.colors.opaqueSeparator,
-            shape = RectangleShape
-          ),
+            .fillMaxWidth()
+            .padding(0.dp/* top = 1.dp, bottom = 1.dp */)
+            .border(
+                width = 0.25.dp,
+                color = MedTrackerTheme.colors.opaqueSeparator,
+                shape = RectangleShape
+            ),
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
@@ -161,13 +161,13 @@ fun FlyTextField(
         decorationBox = { innerTextField ->
             Box(
                 modifier = Modifier
-                  .fillMaxWidth()
-                  .background(
-                    MedTrackerTheme.colors.primaryBackground,
-                    RoundedCornerShape(6.dp)
-                  )
-                  .height(32.dp)
-                  .padding(horizontal = 4.dp),
+                    .fillMaxWidth()
+                    .background(
+                        MedTrackerTheme.colors.primaryBackground,
+                        RoundedCornerShape(6.dp)
+                    )
+                    .height(32.dp)
+                    .padding(horizontal = 4.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
                 if (value.isEmpty()) {
@@ -175,7 +175,6 @@ fun FlyTextField(
                 }
                 innerTextField()
             }
-
         }
     )
 }
@@ -185,7 +184,7 @@ fun MyTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    isPrimaryColor: Boolean = true,
+    isPrimaryColor: Boolean = false,
     supportingText: String? = null,
     placeholder: String? = null,
     enabled: Boolean = true,
@@ -324,11 +323,11 @@ internal fun CustomTextField(
     var text by rememberSaveable { mutableStateOf("") }
     BasicTextField(
         modifier = modifier
-          .background(
-            MedTrackerTheme.colors.secondaryBackground,
-            MaterialTheme.shapes.small,
-          )
-          .fillMaxWidth(),
+            .background(
+                MedTrackerTheme.colors.secondaryBackground,
+                MaterialTheme.shapes.small,
+            )
+            .fillMaxWidth(),
         value = text,
         onValueChange = {
             text = it
@@ -420,7 +419,6 @@ fun FlyTextFieldPreview() {
               label = "label",
               placeholder = "placeholder",
             ) */
-
         /*     FlyTableTextField(
               value = "",
               onValueChange = {},

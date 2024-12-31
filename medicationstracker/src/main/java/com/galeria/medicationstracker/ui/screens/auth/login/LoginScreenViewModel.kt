@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.SnackbarController
 import com.galeria.medicationstracker.SnackbarEvent
 import com.galeria.medicationstracker.data.UserType
-import com.galeria.medicationstracker.model.FirestoreFunctions
+import com.galeria.medicationstracker.utils.FirestoreFunctions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -111,77 +111,81 @@ class LoginScreenViewModel : ViewModel() {
         password: String,
         onLoginClick: (userType: UserType) -> Unit
     ) {
-        val isEmailValid = validateEmail()
-        val isPasswordValid = validatePassword()
+        viewModelScope.launch {
+            val isEmailValid = validateEmail()
+            val isPasswordValid = validatePassword()
 
-        if (isEmailValid && isPasswordValid) {
-            firebaseAuth.signInWithEmailAndPassword(
-                email,
-                password
-            )
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val userId = task.result?.user?.uid
+            if (isEmailValid && isPasswordValid) {
+                firebaseAuth.signInWithEmailAndPassword(
+                    email,
+                    password
+                )
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val userId = task.result?.user?.uid
 
-                        if (userId != null) {
-                            val dataBase = FirestoreFunctions.FirestoreService.db
+                            if (userId != null) {
+                                val dataBase = FirestoreFunctions.FirestoreService.db
 
-                            dataBase.collection("User")
-                                .document(email)
-                                .get()
-                                .addOnSuccessListener { snapshot ->
-                                    if (snapshot.exists()) {
-                                        val userTypeString = snapshot.getString("type")
+                                dataBase.collection("User")
+                                    .document(email)
+                                    .get()
+                                    .addOnSuccessListener { snapshot ->
+                                        if (snapshot.exists()) {
+                                            val userTypeString = snapshot.getString("type")
 
-                                        if (userTypeString != null) {
-                                            val docUserType =
-                                                UserType.valueOf(userTypeString.uppercase())
-                                            _loginScreenState =
-                                                _loginScreenState.copy(userType = docUserType)
-                                            onLoginClick.invoke(docUserType)
+                                            if (userTypeString != null) {
+                                                val docUserType =
+                                                    UserType.valueOf(userTypeString.uppercase())
+                                                _loginScreenState =
+                                                    _loginScreenState.copy(userType = docUserType)
+                                                onLoginClick.invoke(docUserType)
 
-                                            viewModelScope.launch {
-                                                SnackbarController.sendEvent(SnackbarEvent("Login Successful!"))
-                                            }
-                                        } else {
-                                            viewModelScope.launch {
-                                                SnackbarController.sendEvent(
-                                                    event = SnackbarEvent("User data not found.")
-                                                )
+                                                viewModelScope.launch {
+                                                    SnackbarController.sendEvent(SnackbarEvent("Login Successful!"))
+                                                }
+                                            } else {
+                                                viewModelScope.launch {
+                                                    SnackbarController.sendEvent(
+                                                        event = SnackbarEvent("User data not found.")
+                                                    )
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                .addOnFailureListener { exception ->
-                                    viewModelScope.launch {
-                                        SnackbarController.sendEvent(
-                                            event = SnackbarEvent("Error fetching user data: ${exception.message}")
-                                        )
+                                    .addOnFailureListener { exception ->
+                                        viewModelScope.launch {
+                                            SnackbarController.sendEvent(
+                                                event = SnackbarEvent("Error fetching user data: ${exception.message}")
+                                            )
+                                        }
                                     }
-                                }
 
+                            } else {
+                                viewModelScope.launch {
+                                    SnackbarController.sendEvent(
+                                        event = SnackbarEvent("User ID is null. Login failed.")
+                                    )
+                                }
+                            }
                         } else {
+                            val errorMessage = when (task.exception) {
+                                is FirebaseAuthInvalidUserException -> "Invalid email or password."
+                                is FirebaseAuthInvalidCredentialsException -> "Invalid password."
+                                else -> "Authentication failed: ${task.exception?.message}"
+                            }
+
                             viewModelScope.launch {
-                                SnackbarController.sendEvent(
-                                    event = SnackbarEvent("User ID is null. Login failed.")
-                                )
+                                SnackbarController.sendEvent(event = SnackbarEvent(message = errorMessage))
                             }
                         }
-                    } else {
-                        val errorMessage = when (task.exception) {
-                            is FirebaseAuthInvalidUserException -> "Invalid email or password."
-                            is FirebaseAuthInvalidCredentialsException -> "Invalid password."
-                            else -> "Authentication failed: ${task.exception?.message}"
-                        }
-
-                        viewModelScope.launch {
-                            SnackbarController.sendEvent(event = SnackbarEvent(message = errorMessage))
-                        }
                     }
-                }
-        } else {
-            viewModelScope.launch {
+            } else {
+                /*           viewModelScope.launch {
+                              SnackbarController.sendEvent(event = SnackbarEvent(message = "Invalid email or password."))
+                          } */
                 SnackbarController.sendEvent(event = SnackbarEvent(message = "Invalid email or password."))
+
             }
         }
     }
