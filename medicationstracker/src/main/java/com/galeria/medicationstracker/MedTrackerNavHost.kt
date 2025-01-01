@@ -1,31 +1,6 @@
 package com.galeria.medicationstracker
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeGestures
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import com.galeria.medicationstracker.model.navigation.Routes
-import com.galeria.medicationstracker.ui.doctor.home.DocDashboardScreen
-import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRecoveryScreen
-import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
-import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
-import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
-import com.galeria.medicationstracker.ui.screens.dashboard.record.IntakeRecordsScreen
-import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
-import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
-import com.galeria.medicationstracker.ui.screens.medications.logs.LogScreen
-import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
-import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
-import com.galeria.medicationstracker.ui.screens.profile.notifications.NotificationsSettingsScreen
-import com.galeria.medicationstracker.ui.screens.profile.settings.SettingsScreen
-
+/*
 @Composable
 fun MedTrackerNavHost(
     modifier: Modifier = Modifier,
@@ -43,7 +18,8 @@ fun MedTrackerNavHost(
 
         composable<Routes.Login> {
             LoginScreen(
-                /*                 onLoginClick = { userType ->
+                */
+/*                 onLoginClick = { userType ->
                                     when (userType) {
                                         UserType.PATIENT -> navController.navigate(Routes.UserHome)
                                         UserType.DOCTOR -> navController.navigate(Routes.DocDashboard)
@@ -58,7 +34,8 @@ fun MedTrackerNavHost(
                                 onResetPasswordClick = { email ->
                                     // Navigate to the password recovery screen with email
                                     navController.navigate(Routes.PasswordRecovery(email = email))
-                                } */
+                                } *//*
+
             )
         }
 
@@ -97,24 +74,23 @@ fun MedTrackerNavHost(
 
         composable<Routes.DocDashboard> {
             DocDashboardScreen(
-                /* onLogsClick = {
+                */
+/* onLogsClick = {
                   navController.navigate(Routes.LogScreen)
-                } */
+                } *//*
+
             )
         }
 
 
-        composable<Routes.LogScreen> {
-            LogScreen(
-                onGoBackClick = {
+        composable<Routes.LogsScreen> {
+            IntakeRecordsScreen(
+                onBackClick = {
                     navController.popBackStack()
                 }
             )
         }
 
-        composable<Routes.Calendar> {
-            // TODO: Calendar
-        }
 
         composable<Routes.UserMedications> {
             MedicationsScreen(
@@ -122,7 +98,9 @@ fun MedTrackerNavHost(
                 onEditMedClick = { medName ->
                     navController.navigate(Routes.EditMedication(medicationName = medName))
                 },
-                onViewMed = {/* T */ }
+                onViewMed = {*/
+/* T *//*
+ }
             )
         }
         composable<Routes.NewMedication> {
@@ -154,4 +132,34 @@ fun MedTrackerNavHost(
 
         composable<Routes.NotificationsSettings> { NotificationsSettingsScreen() }
     }
-}
+}*/
+/*
+
+@Composable
+fun ApplicationNavHost(
+  modifier: Modifier = Modifier,
+  navController: NavHostController = rememberNavController(),
+  startDestination: AuthRoutes = AuthRoutes.Auth,
+) {
+  val medsPagesVM: MedsPagesViewModel = viewModel()
+  val medicationsViewModel: MedicationsViewModel = viewModel()
+
+  NavHost(
+    navController = navController,
+    startDestination = AuthRoutes.Auth,
+    modifier = modifier
+      .fillMaxSize()
+  ) {
+    authGraph(navController)
+
+    patientGraph(
+      navController,
+      medicationsViewModel,
+      medsPagesVM
+    )
+    docGraph(
+      navController
+    )
+    // userMedsGraph(navController)
+  }
+}*/

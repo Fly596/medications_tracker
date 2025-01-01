@@ -34,8 +34,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
-import com.galeria.medicationstracker.model.formatTimestampTillTheDay
-import com.galeria.medicationstracker.model.parseDateForFirestore
 import com.galeria.medicationstracker.ui.components.DayOfWeekSelector
 import com.galeria.medicationstracker.ui.components.FlyButton
 import com.galeria.medicationstracker.ui.components.FlySimpleCard
@@ -45,6 +43,8 @@ import com.galeria.medicationstracker.ui.components.MyRadioButton
 import com.galeria.medicationstracker.ui.components.MyTextField
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
+import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
+import com.galeria.medicationstracker.utils.parseDateForFirestore
 import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneId
@@ -67,7 +67,6 @@ fun NewMedicationDataScreen(
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-
         // Name input.
         item {
             Spacer(modifier = Modifier.padding(8.dp))
@@ -78,9 +77,7 @@ fun NewMedicationDataScreen(
                         stringResource(R.string.add_new_med_name_screen_title),
                         style = MedTrackerTheme.typography.title2,
                     )
-
                     // Spacer(modifier = Modifier.padding(8.dp))
-
                     MyTextField(
                         value = state.medName,
                         onValueChange = { viewModel.updateMedName(it) },
@@ -92,9 +89,7 @@ fun NewMedicationDataScreen(
                     )
                 }
             )
-
         }
-
         // Form.
         item {
             var selectedForm by remember { mutableStateOf(state.medForm) }
@@ -119,16 +114,12 @@ fun NewMedicationDataScreen(
                                     caption = form.toString().lowercase()
                                 )
                                 // Text(text = form.toString().lowercase())
-
                             }
                         }
                     }
                 }
-
             )
-
         }
-
         // Strength.
         item {
             var selectedUnit by remember { mutableStateOf(state.medUnit) }
@@ -141,7 +132,6 @@ fun NewMedicationDataScreen(
                         style = MedTrackerTheme.typography.title2,
                     )
                     // Spacer(modifier = Modifier.padding(8.dp))
-
                     MyTextField(
                         value = state.medStrength.toString(),
                         onValueChange = { viewModel.updateMedStrength(it.toFloat()) },
@@ -150,7 +140,6 @@ fun NewMedicationDataScreen(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         modifier = Modifier.fillMaxWidth(),
                     )
-
                     // Units.
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -169,25 +158,20 @@ fun NewMedicationDataScreen(
                             }
                         }
                     }
-
                 }
             )
-
             // Spacer(modifier = Modifier.padding(8.dp))
         }
-
         // Start and end dates + time.
         item {
             // Выбор начала и конца периода приема.
             ModalDatePicker(viewModel)
-
             var showTimePicker by remember { mutableStateOf(false) }
 
             FlyButton(
                 onClick = { showTimePicker = true }) {
                 Text("Set time")
             }
-
             // Время приема.
             if (showTimePicker) {
                 IntakeTimePicker(
@@ -199,10 +183,8 @@ fun NewMedicationDataScreen(
                 )
             }
         }
-
         // Дни недели.
         item {
-
             FlySimpleCard(
                 content = {
                     Column(
@@ -220,7 +202,6 @@ fun NewMedicationDataScreen(
                 }
             )
         }
-
         // button to add medication.
         item {
             val context = LocalContext.current
@@ -233,7 +214,6 @@ fun NewMedicationDataScreen(
                 modifier = Modifier.fillMaxWidth(),
             )
         }
-
     }
 }
 
@@ -248,7 +228,6 @@ fun ModalDatePicker(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-
         MyTextField(
             value = "",
             label = "Start: ${formatTimestampTillTheDay(viewModel.uiState.medStartDate)}\nEnd: ${
@@ -269,16 +248,13 @@ fun ModalDatePicker(
         if (showPicker) {
             DateRangePickerModal(
                 onDateRangeSelected = {
-
                     viewModel.updateStartDate(parseDateForFirestore(convertMillisToDate(it.first)))
                     viewModel.updateEndDate(parseDateForFirestore(convertMillisToDate(it.second)))
                     showPicker = !showPicker
-
                 },
                 onDismiss = { showPicker = !showPicker },
             )
         }
-
     }
 }
 
@@ -328,13 +304,11 @@ fun IntakeTimePicker(
     viewModel: AddNewMedViewModel
 ) {
     val currentTime = Calendar.getInstance()
-
     val timePickerState = rememberTimePickerState(
         initialHour = currentTime.get(Calendar.HOUR_OF_DAY),
         initialMinute = currentTime.get(Calendar.MINUTE),
         is24Hour = false,
     )
-
     val time = LocalTime.of(timePickerState.hour, timePickerState.minute)
     val dtf = DateTimeFormatter.ofPattern("HH:mm")
 
@@ -363,7 +337,6 @@ fun IntakeTimePicker(
         FlyTonalButton(onClick = onDismiss) {
             Text("Dismiss")
         }
-
     }
 
 }
