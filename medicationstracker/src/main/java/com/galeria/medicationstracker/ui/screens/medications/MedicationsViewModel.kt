@@ -2,75 +2,78 @@ package com.galeria.medicationstracker.ui.screens.medications
 
 import androidx.lifecycle.ViewModel
 import com.galeria.medicationstracker.data.UserMedication
-import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
+import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.toObjects
+import com.google.firebase.firestore.Source
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+data class MedicationsUiState(
+    val userMedications: List<UserMedication> = emptyList(),
+)
+
 class MedicationsViewModel : ViewModel() {
 
-  var patient: String = "KT95DFgGbgYt90QtKjIYSApXKqw1"
-  var doctor: String = "suAPx8M00vdYqqpWnahF7Ce6pJl2"
-  var admin: String = "sT3E84Rw8oNiI4hBQwavVo3dhjy1"
+    private val _uiState = MutableStateFlow(MedicationsUiState())
+    val uiState = _uiState.asStateFlow()
+    var patient: String = "KT95DFgGbgYt90QtKjIYSApXKqw1"
+    var doctor: String = "suAPx8M00vdYqqpWnahF7Ce6pJl2"
+    var admin: String = "sT3E84Rw8oNiI4hBQwavVo3dhjy1"
+    private val db = FirestoreService.db
+    val firebaseAuth = FirebaseAuth.getInstance()
+    private val user = firebaseAuth.currentUser
+    val userId = user?.uid
+    private var _userMedications = MutableStateFlow<List<UserMedication>?>(null)
+    var userMedications = _userMedications.asStateFlow()
 
-  private val db = FirestoreService.db
-  val firebaseAuth = FirebaseAuth.getInstance()
-  private val user = firebaseAuth.currentUser
+    init {
+        fetchUserMedications()
+    }
 
-  val userId = user?.uid
+    // Получение всех пользовательских лекарств.
+    fun fetchUserMedications() {
+        val docRef = db.collection("UserMedication")
+        val source = Source.DEFAULT
 
-  private var _userMedications = MutableStateFlow<List<UserMedication>>(emptyList())
-  var userMedications = _userMedications.asStateFlow()
-
-  init {
-    // fetchUserMedications()
-  }
-
-  // Получение всех пользовательских лекарств.
-  fun fetchUserMedications() {
-    val docRef = db.collection("UserMedication")
-
-    docRef
-        .whereEqualTo("uid", userId)
-        .get()
-        .addOnSuccessListener { result ->
-          _userMedications.value = result.toObjects()
-        }
-        .addOnFailureListener { ex ->
-          println("Error finding documents: $ex")
-
-        }
-  }
-
-  // Удаление лекарства из Firestore.
-  fun deleteMedicationFromFirestore(medName: String) {
-    db.collection("UserMedication")
-        .whereEqualTo("name", medName)
-        .get()
-        .addOnSuccessListener { querySnapshot ->
-          if (!querySnapshot.isEmpty) {
-            for (document in querySnapshot.documents) {
-              db.collection("UserMedication")
-                  .document(document.id)
-                  .delete()
-                  .addOnSuccessListener {
-                    println("Document with ID ${document.id} successfully deleted!")
-                  }
-                  .addOnFailureListener { e ->
-                    println("Error deleting document with ID ${document.id}: $e")
-                  }
+        docRef
+            .whereEqualTo("uid", userId)
+            .get(source)
+            .addOnSuccessListener { result ->
+                val medications = result.toObjects(UserMedication::class.java)
+                _uiState.value = _uiState.value.copy(userMedications = medications)
             }
-          } else {
-            println("No document found with the name: ${medName}")
-          }
-        }
-        .addOnFailureListener { e ->
-          println("Error finding documents to delete: $e")
-        }
-  }
-}
+            .addOnFailureListener { ex ->
+                println("Error finding documents: $ex")
+            }
+    }
 
+    // Удаление лекарства из Firestore.
+    fun deleteMedicationFromFirestore(medName: String) {
+        db.collection("UserMedication")
+            .whereEqualTo("name", medName)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    for (document in querySnapshot.documents) {
+                        db.collection("UserMedication")
+                            .document(document.id)
+                            .delete()
+                            .addOnSuccessListener {
+                                println("Document with ID ${document.id} successfully deleted!")
+                            }
+                            .addOnFailureListener { e ->
+                                println("Error deleting document with ID ${document.id}: $e")
+                            }
+                    }
+                } else {
+                    println("No document found with the name: ${medName}")
+                }
+            }
+            .addOnFailureListener { e ->
+                println("Error finding documents to delete: $e")
+            }
+    }
+}
 /*
 data class MedicationsUiState(
   val uid: String = "",
@@ -151,7 +154,6 @@ class MedicationsViewModel : ViewModel() {
 
 
 } */
-
 /*  fun getMedsList() {
 
     // TODO: get meds from firebase.

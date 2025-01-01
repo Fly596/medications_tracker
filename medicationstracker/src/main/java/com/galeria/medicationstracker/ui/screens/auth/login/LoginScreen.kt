@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.data.UserType
 import com.galeria.medicationstracker.ui.components.FlyButton
 import com.galeria.medicationstracker.ui.components.FlyTextButton
 import com.galeria.medicationstracker.ui.components.FlyTonalButton
@@ -35,15 +37,17 @@ fun LoginScreen(
     onLogin: () -> Unit = {},
     onRegistration: () -> Unit = {},
     onResetPassword: () -> Unit = {},
-    // onLoginClick: (userType: UserType) -> Unit = {},
+    onLoginClick: (userType: UserType) -> Unit = {},
     // onSignupClick: (String) -> Unit = {},
     // onResetPasswordClick: (String) -> Unit = {},
     viewModel: LoginScreenViewModel = viewModel(),
 ) {
-    val state = viewModel.loginScreenState
+    val state = viewModel._loginScreenState
 
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.Top
     ) {
         Spacer(modifier = Modifier.height(16.dp))
@@ -88,7 +92,6 @@ fun LoginScreen(
                 )
             }
         }
-
         // Show password switch.
         RememberMeSwitch(
             checked = state.showPassword,
@@ -105,11 +108,13 @@ fun LoginScreen(
                     // Запрос типа пользователя.
                     viewModel.getUserType()
 
-                    viewModel.onSignInClick(state.email, state.password) { userType ->
-                        onLogin.invoke()
-                        // onLoginClick(userType)
+                    viewModel.onSignInClick(
+                        state.email,
+                        state.password
+                    ) { userType ->
+                        // onLogin.invoke()
+                        onLoginClick(userType)
                     }
-
                 },
                 enabled = true,
             ) {
@@ -118,10 +123,13 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            FlyTonalButton(onClick = {
-                onRegistration()
-                // onSignupClick(state.email)
-            }, enabled = true) {
+            FlyTonalButton(
+                onClick = {
+                    onRegistration()
+                    // onSignupClick(state.email)
+                },
+                enabled = true
+            ) {
                 Text(text = "Create Account")
             }
         }
@@ -141,11 +149,20 @@ fun LoginScreen(
 }
 
 @Composable
-fun RememberMeSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+fun RememberMeSwitch(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Show password", style = MedTrackerTheme.typography.body)
+        Text(
+            "Show password",
+            style = MedTrackerTheme.typography.body
+        )
         Spacer(modifier = Modifier.width(12.dp))
 
-        MySwitch(checked = checked, onCheckedChange = onCheckedChange)
+        MySwitch(
+            checked = checked,
+            onCheckedChange = onCheckedChange
+        )
     }
 }

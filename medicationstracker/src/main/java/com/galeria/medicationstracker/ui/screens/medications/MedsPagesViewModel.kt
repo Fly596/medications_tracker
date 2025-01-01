@@ -2,14 +2,17 @@ package com.galeria.medicationstracker.ui.screens.medications
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.UserMedication
-import com.galeria.medicationstracker.model.FirestoreFunctions.FirestoreService
+import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
 import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.AggregateSource.SERVER
+import com.google.firebase.firestore.Source
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 data class MedsPagesUiState(
     val medications: List<UserMedication> = emptyList(),
@@ -22,74 +25,78 @@ class MedsPagesViewModel : ViewModel() {
 
     private var _uiState = MutableStateFlow(MedsPagesUiState())
     val uiState: StateFlow<MedsPagesUiState> = _uiState.asStateFlow()
-
     private val db = FirestoreService.db
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val user = firebaseAuth.currentUser
     private val userId = user?.uid
 
     fun getSelectedMed(medName: String) {
-        // путь к коллекции с лекарствами
-        val docRef = db.collection("UserMedication")
+        viewModelScope.launch {
+            // путь к коллекции с лекарствами
+            val docRef = db.collection("UserMedication")
+            val source = Source.CACHE
 
-        docRef.whereEqualTo("uid", userId).whereEqualTo("name", medName)
-            .get().addOnSuccessListener { docSnapshot ->
-                if (docSnapshot.documents.isNotEmpty()) {
-                    val medications = docSnapshot.toObjects(UserMedication::class.java)
-                    _uiState.value = _uiState.value.copy(selectedMed = medications[0])
-                    getMedicationIntakes()
-                    getSkippedIntakes()
-                    Log.d(TAG, "Success getting document: ")
-                } else {
-                    Log.d(TAG, "No such document")
+            docRef.whereEqualTo("uid", userId).whereEqualTo("name", medName)
+                .get(source).addOnSuccessListener { docSnapshot ->
+                    if (docSnapshot.documents.isNotEmpty()) {
+                        val medications = docSnapshot.toObjects(UserMedication::class.java)
+                        _uiState.value = _uiState.value.copy(selectedMed = medications[0])
+                        getMedicationIntakes()
+                        getSkippedIntakes()
+                        Log.d(TAG, "Success getting document: ")
+                    } else {
+                        Log.d(TAG, "No such document")
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.d(TAG, "Error getting documents: ", exception)
+
+                    println("Error getting documents: $exception")
                 }
-            }.addOnFailureListener { exception ->
-                Log.d(TAG, "Error getting documents: ", exception)
-
-                println("Error getting documents: $exception")
-            }
+        }
 
     }
 
     fun getMedicationIntakes() {
-        val docRef = db.collection("MedicationIntake")
-            .whereEqualTo("medicationName", uiState.value.selectedMed?.name.toString())
-            .whereEqualTo("status", true)
-        val count = docRef.count()
-
-        // Получение количества документов в коллекции.
-        count.get(SERVER).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val snapshot = task.result
-
-                // Обновление состояния UI с количеством документов.
-                updateIntakesCount(snapshot.count.toInt())
-                Log.d(TAG, "Count: ${snapshot.count}")
-            } else {
-                Log.d(TAG, "Error getting count", task.exception)
+        viewModelScope.launch {
+            val docRef = db.collection("MedicationIntake")
+                .whereEqualTo("medicationName", uiState.value.selectedMed?.name.toString())
+                .whereEqualTo("status", true)
+            val count = docRef.count()
+            val source = Source.CACHE
+            // Получение количества документов в коллекции.
+            count.get(SERVER).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val snapshot = task.result
+                    // Обновление состояния UI с количеством документов.
+                    updateIntakesCount(snapshot.count.toInt())
+                    Log.d(TAG, "Count: ${snapshot.count}")
+                } else {
+                    Log.d(TAG, "Error getting count", task.exception)
+                }
             }
         }
+
     }
 
     fun getSkippedIntakes() {
-        val docRef = db.collection("MedicationIntake")
-            .whereEqualTo("medicationName", uiState.value.selectedMed?.name.toString())
-            .whereEqualTo("status", false)
-
-        val count = docRef.count()
-
-        // Получение количества документов в коллекции.
-        count.get(SERVER).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val snapshot = task.result
-
-                // Обновление состояния UI с количеством документов.
-                updateSkippedIntakesCount(snapshot.count.toInt())
-                Log.d(TAG, "Count: ${snapshot.count}")
-            } else {
-                Log.d(TAG, "Error getting count", task.exception)
+        viewModelScope.launch {
+            val docRef = db.collection("MedicationIntake")
+                .whereEqualTo("medicationName", uiState.value.selectedMed?.name.toString())
+                .whereEqualTo("status", false)
+            val count = docRef.count()
+            // Получение количества документов в коллекции.
+            count.get(SERVER).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val snapshot = task.result
+                    // Обновление состояния UI с количеством документов.
+                    updateSkippedIntakesCount(snapshot.count.toInt())
+                    Log.d(TAG, "Count: ${snapshot.count}")
+                } else {
+                    Log.d(TAG, "Error getting count", task.exception)
+                }
             }
         }
+
     }
 
     private fun updateMedications(medications: List<UserMedication>) {

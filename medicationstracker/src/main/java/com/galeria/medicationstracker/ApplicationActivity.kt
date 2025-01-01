@@ -19,9 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
-import com.galeria.medicationstracker.model.navigation.Routes
 import com.galeria.medicationstracker.ui.HeadViewModel
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.galeria.medicationstracker.utils.navigation.Routes
 
 /*
 class ApplicationActivity : ComponentActivity() {
@@ -149,7 +149,7 @@ class ApplicationActivity : ComponentActivity() {
 */
 data class BottomNavItem(
     val title: String,
-    val route: Routes,
+    val route: Routes.PatientRoutes,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
     val hasNews: Boolean = false,
@@ -160,13 +160,13 @@ fun bottomNavItems(): List<BottomNavItem> {
     return listOf(
         BottomNavItem(
             title = "Dashboard",
-            route = Routes.UserHome,
+            route = Routes.PatientRoutes.PatientHome,
             selectedIcon = Icons.Filled.Dashboard,
             unselectedIcon = Icons.Outlined.Dashboard
         ),
         BottomNavItem(
             title = "Medications",
-            route = Routes.UserMedications,
+            route = Routes.PatientRoutes.PatientMedications,
             selectedIcon = Icons.Filled.Medication,
             unselectedIcon = Icons.Outlined.Medication,
             hasNews = false,
@@ -174,7 +174,7 @@ fun bottomNavItems(): List<BottomNavItem> {
         ),
         BottomNavItem(
             title = "Profile",
-            route = Routes.UserProfile,
+            route = Routes.PatientRoutes.PatientProfile,
             selectedIcon = Icons.Filled.AccountCircle,
             unselectedIcon = Icons.Outlined.AccountCircle,
             hasNews = false,
@@ -192,7 +192,6 @@ fun BottomNavBar(
     val currentNavItemIndex = viewModel.selectedItemIndex.collectAsState().value
 
     Column {
-
         NavigationBar(
             // modifier = Modifier.fillMaxWidth(),
             containerColor = MedTrackerTheme.colors.secondaryBackgroundGrouped,
@@ -224,7 +223,6 @@ fun BottomNavBar(
                     },
                 )
             }
-
         }
     }
     // TODO: Change colors
