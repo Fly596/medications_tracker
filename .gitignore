@@ -89,3 +89,15 @@ gradle.properties
 
 .idea/google-java-format.xml
 !/.idea/
+/flyUiLibrary/src/androidTest/java/com/tracker/flyuilibrary/ExampleInstrumentedTest.kt
+/flyUiLibrary/src/main/java/com/tracker/flyuilibrary/ui/components/Button.kt
+/flyUiLibrary/src/main/java/com/tracker/flyuilibrary/ui/theme/Colors.kt
+/flyUiLibrary/src/main/java/com/tracker/flyuilibrary/ui/theme/DesignSystem.kt
+/flyUiLibrary/src/main/java/com/tracker/flyuilibrary/ui/theme/Typography.kt
+/flyUiLibrary/src/main/java/com/tracker/flyuilibrary/util/DateTimeUtils.kt
+/flyUiLibrary/src/main/AndroidManifest.xml
+/flyUiLibrary/src/test/java/com/tracker/flyuilibrary/ExampleUnitTest.kt
+/flyUiLibrary/.gitignore
+/flyUiLibrary/build.gradle.kts
+/flyUiLibrary/consumer-rules.pro
+/flyUiLibrary/proguard-rules.pro
