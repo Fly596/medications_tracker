@@ -34,6 +34,8 @@ data class User(
     val type: UserType = UserType.PATIENT,
     val age: Int? = null,
     val name: String? = null,
+    val weight: Float? = null,
+    val height: Float? = null,
 )
 
 data class UserIntake(
@@ -88,7 +90,6 @@ data class MoodLog(
     val date: LocalDateTime = LocalDateTime.now()
     // TODO
 )
-
 /* data class Users(
   val name: String = "",
   val email: String = "",
@@ -101,7 +102,6 @@ data class NotificationPreferences(
     val sound: Boolean = true,
     val vibration: Boolean = true,
 )
-
 /* data class UserMedication(
   val medication: Medication = Medication(),
   val notes: String = "",
