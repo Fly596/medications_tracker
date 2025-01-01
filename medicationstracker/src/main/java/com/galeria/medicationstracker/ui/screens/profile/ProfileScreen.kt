@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.AutoMirrored.Filled
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
@@ -32,16 +31,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.User
-import com.galeria.medicationstracker.ui.components.FlyButton
 import com.galeria.medicationstracker.ui.components.FlyIconButtonWithText
 import com.galeria.medicationstracker.ui.components.FlySimpleCard
 import com.galeria.medicationstracker.ui.components.FlyTextButton
-import com.galeria.medicationstracker.ui.components.MyTextField
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 /**
@@ -166,60 +162,59 @@ fun ProfileScreen(
                 )
             }
         }
-
-        LazyColumn {
-            item {
-                MyTextField(
-                    value = uiState.value.name,
-                    onValueChange = { viewModel.updateName(it) },
-                    label = "Name"
-                )
-                FlyButton(
-                    onClick = { viewModel.updateNameFirestore() }
-                ) {
-                    Text(text = "Save name")
-                }
-            }
-            item {
-                MyTextField(
-                    value = uiState.value.age.toString(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    onValueChange = { viewModel.updateAge(it.toInt()) },
-                    label = "Age",
-                )
-                FlyButton(
-                    onClick = { viewModel.updateAgeFirestore() }
-                ) {
-                    Text(text = "Save age")
-                }
-            }
-            item {
-                MyTextField(
-                    value = uiState.value.weight.toString(),
-                    onValueChange = { viewModel.updateWeight(it.toFloat()) },
-                    label = "weight",
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-                FlyButton(
-                    onClick = { viewModel.updateWeightFirestore() }
-                ) {
-                    Text(text = "Save weight")
-                }
-            }
-            item {
-                MyTextField(
-                    value = uiState.value.height.toString(),
-                    onValueChange = { viewModel.updateHeight(it.toFloat()) },
-                    label = "Height",
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-                FlyButton(
-                    onClick = { viewModel.updateHeightFirestore() }
-                ) {
-                    Text(text = "Save Height")
-                }
-            }
-        }
+        /*        LazyColumn {
+                   item {
+                       MyTextField(
+                           value = uiState.value.name,
+                           onValueChange = { viewModel.updateName(it) },
+                           label = "Name"
+                       )
+                       FlyButton(
+                           onClick = { viewModel.updateNameFirestore() }
+                       ) {
+                           Text(text = "Save name")
+                       }
+                   }
+                   item {
+                       MyTextField(
+                           value = uiState.value.age.toString(),
+                           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                           onValueChange = { viewModel.updateAge(it.toInt()) },
+                           label = "Age",
+                       )
+                       FlyButton(
+                           onClick = { viewModel.updateAgeFirestore() }
+                       ) {
+                           Text(text = "Save age")
+                       }
+                   }
+                   item {
+                       MyTextField(
+                           value = uiState.value.weight.toString(),
+                           onValueChange = { viewModel.updateWeight(it.toFloat()) },
+                           label = "weight",
+                           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                       )
+                       FlyButton(
+                           onClick = { viewModel.updateWeightFirestore() }
+                       ) {
+                           Text(text = "Save weight")
+                       }
+                   }
+                   item {
+                       MyTextField(
+                           value = uiState.value.height.toString(),
+                           onValueChange = { viewModel.updateHeight(it.toFloat()) },
+                           label = "Height",
+                           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                       )
+                       FlyButton(
+                           onClick = { viewModel.updateHeightFirestore() }
+                       ) {
+                           Text(text = "Save Height")
+                       }
+                   }
+               } */
         // секция со списком врачей пользователя (или просто всех врачей).
         MyDoctorsList(
             listData = doctorsList,
