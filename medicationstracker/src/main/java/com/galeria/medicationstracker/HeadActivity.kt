@@ -68,7 +68,7 @@ class HeadActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                         .windowInsetsPadding(WindowInsets.displayCutout),
-                    containerColor = MedTrackerTheme.colors.primaryBackground,
+                    containerColor = MedTrackerTheme.colors.secondaryBackground,
                     /*                     topBar = {
                                             val navBackStackEntry by navController.currentBackStackEntryAsState()
                                             val currentDestination = navBackStackEntry?.destination?.route
