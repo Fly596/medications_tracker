@@ -194,7 +194,7 @@ fun BottomNavBar(
     Column {
         NavigationBar(
             // modifier = Modifier.fillMaxWidth(),
-            containerColor = MedTrackerTheme.colors.secondaryBackgroundGrouped,
+            containerColor = MedTrackerTheme.colors.secondaryBackground,
             contentColor = MedTrackerTheme.colors.primaryLabel,
         ) {
             navItems.forEachIndexed { navItemIndex, navItem ->

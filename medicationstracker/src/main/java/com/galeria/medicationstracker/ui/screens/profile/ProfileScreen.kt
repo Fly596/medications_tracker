@@ -162,6 +162,59 @@ fun ProfileScreen(
                 )
             }
         }
+        /*        LazyColumn {
+                   item {
+                       MyTextField(
+                           value = uiState.value.name,
+                           onValueChange = { viewModel.updateName(it) },
+                           label = "Name"
+                       )
+                       FlyButton(
+                           onClick = { viewModel.updateNameFirestore() }
+                       ) {
+                           Text(text = "Save name")
+                       }
+                   }
+                   item {
+                       MyTextField(
+                           value = uiState.value.age.toString(),
+                           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                           onValueChange = { viewModel.updateAge(it.toInt()) },
+                           label = "Age",
+                       )
+                       FlyButton(
+                           onClick = { viewModel.updateAgeFirestore() }
+                       ) {
+                           Text(text = "Save age")
+                       }
+                   }
+                   item {
+                       MyTextField(
+                           value = uiState.value.weight.toString(),
+                           onValueChange = { viewModel.updateWeight(it.toFloat()) },
+                           label = "weight",
+                           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                       )
+                       FlyButton(
+                           onClick = { viewModel.updateWeightFirestore() }
+                       ) {
+                           Text(text = "Save weight")
+                       }
+                   }
+                   item {
+                       MyTextField(
+                           value = uiState.value.height.toString(),
+                           onValueChange = { viewModel.updateHeight(it.toFloat()) },
+                           label = "Height",
+                           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                       )
+                       FlyButton(
+                           onClick = { viewModel.updateHeightFirestore() }
+                       ) {
+                           Text(text = "Save Height")
+                       }
+                   }
+               } */
         // секция со списком врачей пользователя (или просто всех врачей).
         MyDoctorsList(
             listData = doctorsList,

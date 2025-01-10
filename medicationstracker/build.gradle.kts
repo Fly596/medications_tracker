@@ -4,6 +4,8 @@ plugins {
     id("com.google.gms.google-services")
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
     // id("kotlin-kapt")
     // id("com.google.dagger.hilt.android.gradle.plugin")
     // alias(libs.plugins.kotlin.compose)
@@ -73,10 +75,11 @@ dependencies {
 
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-
+    implementation(libs.hilt.android.v2511)
+    kapt(libs.hilt.android.compiler.v2511)
     implementation(libs.hilt.android)
     // kapt(libs.hilt.android.compiler)
 }
-/* kapt {
-  correctErrorTypes = true
-} */
+kapt {
+    correctErrorTypes = true
+}
