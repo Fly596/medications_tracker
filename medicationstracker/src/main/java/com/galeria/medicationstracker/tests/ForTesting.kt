@@ -1,7 +1,6 @@
-package com.galeria.medicationstracker.utils
+package com.galeria.medicationstracker.tests
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,13 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,10 +30,14 @@ import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
+// region AddNewMedicationScreen
 @Composable
 fun AddNewMedicationScreen(
     modifier: Modifier = Modifier
 ) {
+    val medicationForms =
+        MedicationForms.entries.map { it.name.lowercase().replaceFirstChar { it.uppercase() } }
+
     Column(modifier = modifier.fillMaxSize()) {
         // Header.
         HeaderWithIconButtonAndTitle(
@@ -48,43 +54,55 @@ fun AddNewMedicationScreen(
                 style = MedTrackerTheme.typography.title3Emphasized,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            LongBasicDropdownMenu(
-                items = MedicationForms.entries.map {
-                    it.name.lowercase().replaceFirstChar { it.uppercase() }
-                },
-                // items = listOf("Tablet", "Capsule", "Syrup", "Injection"),
-            )
+            /*          LargeDropdownMenu(
+                         medicationForms
+                     )
+                     { selectedItem ->
+                         println("Selected: $selectedItem")
+                     } */
 
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LongBasicDropdownMenu(
-    modifier: Modifier = Modifier,
-    items: List<String> = emptyList(),
-    onSelect: (String) -> Unit = {}
-) {
-    var expanded by remember { mutableStateOf(true) }
-    // Placeholder list of 100 strings for demonstration
-    val menuItemData = List(6) { "Option ${it + 1}" }
+fun LargeDropdownMenu(
+    items: List<String>,
+    label: String = "",
+    onItemSelected: (String) -> Unit = {},
 
-    Box(
-        modifier = Modifier
-            .padding(16.dp)
     ) {
-        IconButton(
-            onClick = { expanded = !expanded }) {
-            Icon(Icons.Default.MoreVert, contentDescription = "More options")
-        }
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf("") }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded }
+    ) {
+        // TextField to show the selected item
+        TextField(
+            value = selectedText,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(label) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor() // Ensures alignment with dropdown
+        )
+
+        // Dropdown menu
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            items.forEach { option ->
+            items.forEach { item ->
                 DropdownMenuItem(
-                    text = { Text(option) },
-                    onClick = { /* Do something... */ }
+                    text = { Text(item) },
+                    onClick = {
+                        selectedText = item
+                        expanded = false
+                        onItemSelected(item)
+                    }
                 )
             }
         }
@@ -121,10 +139,13 @@ fun HeaderWithIconButtonAndTitle(
     }
 }
 
+// endregion
+
 @Preview(name = "Fortesting")
 @Composable
 private fun PreviewFortesting() {
     MedTrackerTheme {
+
         AddNewMedicationScreen(
             modifier = Modifier.padding(horizontal = 16.dp)
         )

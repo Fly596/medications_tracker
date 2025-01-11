@@ -35,6 +35,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
+import com.galeria.medicationstracker.tests.LargeDropdownMenu
 import com.galeria.medicationstracker.ui.components.DayOfWeekSelector
 import com.galeria.medicationstracker.ui.components.FlyButton
 import com.galeria.medicationstracker.ui.components.FlySimpleCard
@@ -59,6 +60,7 @@ fun NewMedicationDataScreen(
     onConfirmClick: () -> Unit,
     viewModel: AddNewMedViewModel = viewModel(),
 ) {
+
     val state = viewModel.uiState.collectAsStateWithLifecycle()
 
     LazyColumn(
@@ -91,34 +93,48 @@ fun NewMedicationDataScreen(
             )
         }
         // Form.
-        item {
-            var selectedForm by remember { mutableStateOf(state.value.medForm) }
-            val options = MedicationForms.entries.toTypedArray()
+        /*         item {
+                    var selectedForm by remember { mutableStateOf(state.value.medForm) }
+                    val options = MedicationForms.entries.toTypedArray()
 
-            FlySimpleCard(
-                content = {
-                    Text(
-                        stringResource(R.string.add_new_med_form_screen_title),
-                        style = MedTrackerTheme.typography.title2,
-                    )
+                    FlySimpleCard(
+                        content = {
+                            Text(
+                                stringResource(R.string.add_new_med_form_screen_title),
+                                style = MedTrackerTheme.typography.title2,
+                            )
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        options.forEach { form ->
-                            Column(verticalArrangement = Arrangement.Center) {
-                                MyRadioButton(
-                                    selected = selectedForm == form,
-                                    onClick = { selectedForm = form },
-                                    caption = form.toString().lowercase()
-                                )
-                                // Text(text = form.toString().lowercase())
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                options.forEach { form ->
+                                    Column(verticalArrangement = Arrangement.Center) {
+                                        MyRadioButton(
+                                            selected = selectedForm == form,
+                                            onClick = { selectedForm = form },
+                                            caption = form.toString().lowercase()
+                                        )
+                                        // Text(text = form.toString().lowercase())
+                                    }
+                                }
                             }
                         }
-                    }
-                }
+                    )
+                } */
+        item {
+            var selectedForm = remember { mutableStateOf(state.value.medForm).toString() }
+            val options = MedicationForms.entries.toTypedArray()
+
+            LargeDropdownMenu(
+                items = state.value.medicationForms,
+                label = "Medication Form"
             )
+            { selectedItem ->
+                selectedForm = selectedItem
+                println("Selected: $selectedItem")
+            }
+
         }
         // Strength.
         item {

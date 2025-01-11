@@ -27,6 +27,8 @@ data class NewMedicationUiState(
     val showDatePicker: Boolean = false,
     val showTimePicker: Boolean = false,
     val intakeDays: List<String> = emptyList(),
+    val medicationForms: List<String> =
+        MedicationForms.entries.map { it.name.lowercase().replaceFirstChar { it.uppercase() } }
 )
 
 class AddNewMedViewModel : ViewModel() {
