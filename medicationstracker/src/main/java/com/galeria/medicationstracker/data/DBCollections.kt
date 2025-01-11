@@ -17,6 +17,7 @@ data class UserMedication(
     val daysOfWeek: List<String> = emptyList(),
     val intakeTime: String? = null,
     val notes: String? = null,
+    val chosenStrengths: List<Float> = emptyList(),
 )
 
 data class HospitalDrugs(
@@ -72,7 +73,19 @@ enum class MedicationForms {
     CAPSULE,
     LIQUID,
     INJECTION,
-    POWDER
+    POWDER,
+    TOPICAL,
+    CREAM,
+    DEVICE,
+    DROPS,
+    FOAM,
+    GEL,
+    INHALER,
+    LOTION,
+    OINTMENT,
+    PATCH,
+    SPRAY,
+    SUPPOSITORY
 }
 
 enum class MedicationUnit {

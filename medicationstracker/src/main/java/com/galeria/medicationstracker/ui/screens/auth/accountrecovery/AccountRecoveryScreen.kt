@@ -54,6 +54,7 @@ fun AccountRecoveryScreen(
             value = state.email,
             onValueChange = { viewModel.updateEmail(it) },
             isError = state.emailError?.isNotEmpty() ?: false,
+            isPrimaryColor = true,
             errorMessage = state.emailError,
             label = "Email",
             placeholder = "Email",

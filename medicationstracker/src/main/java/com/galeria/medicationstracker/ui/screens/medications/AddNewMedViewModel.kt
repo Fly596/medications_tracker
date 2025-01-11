@@ -3,9 +3,6 @@ package com.galeria.medicationstracker.ui.screens.medications
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
@@ -14,12 +11,14 @@ import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
 import com.google.firebase.Timestamp
 import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.flow.MutableStateFlow
 
 data class NewMedicationUiState(
     val uid: String = "",
     val medName: String = "",
     var medForm: MedicationForms = MedicationForms.TABLET, // f
     val medStrength: Float = 0.0f,
+    val chosenStrengths: List<Float> = emptyList(),
     val medUnit: MedicationUnit = MedicationUnit.MG, // f
     val medStartDate: Timestamp = Timestamp.now(), // f
     val medEndDate: Timestamp = Timestamp.now(), // f
@@ -32,7 +31,7 @@ data class NewMedicationUiState(
 
 class AddNewMedViewModel : ViewModel() {
 
-    var uiState by mutableStateOf(NewMedicationUiState())
+    var uiState = MutableStateFlow(NewMedicationUiState())
         private set
     val db = FirestoreService.db
     val auth = FirebaseAuth.getInstance()
@@ -44,12 +43,12 @@ class AddNewMedViewModel : ViewModel() {
         context: Context,
     ) {
         // Проверка на пустые значения текстовых полей и нулевое значение medStrength
-        if (uiState.medName.isBlank() ||
-            uiState.medForm.toString().isBlank() ||
-            uiState.medUnit.toString().isBlank() ||
-            uiState.medStrength <= 0 ||
-            uiState.medStartDate.toString().isBlank() ||
-            uiState.medEndDate.toString().isBlank()
+        if (uiState.value.medName.isBlank() ||
+            uiState.value.medForm.toString().isBlank() ||
+            uiState.value.medUnit.toString().isBlank() ||
+            uiState.value.medStrength <= 0 ||
+            uiState.value.medStartDate.toString().isBlank() ||
+            uiState.value.medEndDate.toString().isBlank()
         ) {
             Toast.makeText(
                 context,
@@ -61,7 +60,7 @@ class AddNewMedViewModel : ViewModel() {
         }
         val medicationRef = db
             .collection("UserMedication")
-        val documentId = "${userLogin}_${uiState.medName}_${uiState.medStrength}"
+        val documentId = "${userLogin}_${uiState.value.medName}_${uiState.value.medStrength}"
         // Проверка на дубликаты
         medicationRef.document(documentId).get()
             .addOnSuccessListener { documentSnapshot ->
@@ -78,15 +77,16 @@ class AddNewMedViewModel : ViewModel() {
                     // Документ не существует, добавляем новый
                     val newUserMedication = UserMedication(
                         userId,
-                        uiState.medName,
-                        uiState.medForm.toString(),
-                        uiState.medStrength,
-                        uiState.medUnit.toString(),
-                        uiState.medStartDate,
-                        uiState.medEndDate,
-                        uiState.intakeDays,
-                        uiState.medIntakeTime,
-                        uiState.medNotes
+                        uiState.value.medName,
+                        uiState.value.medForm.toString(),
+                        uiState.value.medStrength,
+                        uiState.value.medUnit.toString(),
+                        uiState.value.medStartDate,
+                        uiState.value.medEndDate,
+                        uiState.value.intakeDays,
+                        uiState.value.medIntakeTime,
+                        uiState.value.medNotes,
+                        uiState.value.chosenStrengths
                     )
 
                     medicationRef.document(documentId)
@@ -110,47 +110,52 @@ class AddNewMedViewModel : ViewModel() {
     }
 
     fun updateStartDate(input: Timestamp?) {
-        uiState = uiState.copy(medStartDate = input ?: Timestamp.now())
+        uiState.value = uiState.value.copy(medStartDate = input ?: Timestamp.now())
     }
 
     fun updateEndDate(input: Timestamp?) {
-        uiState = uiState.copy(medEndDate = input ?: Timestamp.now())
+        uiState.value = uiState.value.copy(medEndDate = input ?: Timestamp.now())
     }
 
     fun updateMedName(newName: String) {
-        uiState = uiState.copy(medName = newName)
+        uiState.value = uiState.value.copy(medName = newName)
     }
 
     fun updateMedForm(newForm: MedicationForms) {
-        uiState = uiState.copy(medForm = newForm)
+        uiState.value = uiState.value.copy(medForm = newForm)
     }
 
     fun updateMedStrength(newStrength: Float) {
-        uiState = uiState.copy(medStrength = newStrength/* .toFloat() */)
+        uiState.value = uiState.value.copy(medStrength = newStrength/* .toFloat() */)
+    }
+
+    fun addStrength(newStrength: Float) {
+        uiState.value =
+            uiState.value.copy(chosenStrengths = uiState.value.chosenStrengths + newStrength)
     }
 
     fun updateMedUnit(newUnit: MedicationUnit) {
-        uiState = uiState.copy(medUnit = newUnit)
+        uiState.value = uiState.value.copy(medUnit = newUnit)
     }
 
     fun updateIntakeTime(newTime: String) {
-        uiState = uiState.copy(medIntakeTime = newTime)
+        uiState.value = uiState.value.copy(medIntakeTime = newTime)
     }
 
     fun updateMedNotes(newNotes: String) {
-        uiState = uiState.copy(medNotes = newNotes)
+        uiState.value = uiState.value.copy(medNotes = newNotes)
     }
 
     fun isShowDateChecked(input: Boolean) {
-        uiState = uiState.copy(showDatePicker = !input)
+        uiState.value = uiState.value.copy(showDatePicker = !input)
     }
 
     fun isShowTimeChecked(input: Boolean) {
-        uiState = uiState.copy(showTimePicker = !input)
+        uiState.value = uiState.value.copy(showTimePicker = !input)
     }
 
     fun updateSelectedDays(input: List<String>) {
-        uiState = uiState.copy(intakeDays = uiState.intakeDays + input)
+        uiState.value = uiState.value.copy(intakeDays = uiState.value.intakeDays + input)
     }
 
 }

@@ -48,8 +48,8 @@ fun SignupScreen(
 
     Column(
         modifier = Modifier
-          .fillMaxSize()
-          .padding(horizontal = 16.dp),
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.Top
     ) {
         Spacer(modifier = Modifier.height(16.dp))
@@ -64,6 +64,7 @@ fun SignupScreen(
         MyTextField(
             value = state.value.name,
             onValueChange = { viewModel.updateUserName(it) },
+            isPrimaryColor = true,
             label = "Name",
             placeholder = "Name",
             modifier = Modifier.fillMaxWidth(),
@@ -77,6 +78,7 @@ fun SignupScreen(
                     viewModel.updateUserAge(0)
                 }
             },
+            isPrimaryColor = true,
             label = "Age",
             placeholder = "Age",
             modifier = Modifier.fillMaxWidth(),
@@ -86,6 +88,7 @@ fun SignupScreen(
         MyTextField(
             value = state.value.email,
             onValueChange = { viewModel.updateEmail(it) },
+            isPrimaryColor = true,
             isError = state.value.emailErrorMessage?.isNotEmpty() ?: false,
             errorMessage = state.value.emailErrorMessage,
             label = "Email",
@@ -97,6 +100,7 @@ fun SignupScreen(
         MyTextField(
             value = state.value.password,
             onValueChange = { viewModel.updatePassword(it) },
+            isPrimaryColor = true,
             isError = state.value.passwordErrorMessage?.isNotEmpty() ?: false,
             errorMessage = state.value.passwordErrorMessage,
             label = "Password",
@@ -119,11 +123,10 @@ fun SignupScreen(
         FlySimpleCard(
             content = {
                 Text(
-                    "Choose Account Type",
+                    "Account Type",
                     style = MedTrackerTheme.typography.title2,
                 )
 
-                Spacer(modifier = Modifier.padding(8.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),

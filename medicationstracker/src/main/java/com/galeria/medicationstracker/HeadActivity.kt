@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.ui.HeadViewModel
@@ -116,16 +117,13 @@ class HeadActivity : ComponentActivity() {
 
                         }
                     },
-                    /* content = {
-                        ApplicationNavHost(
-                            navController = navController
-                        )
-                    } */
-                ) {
+
+                    ) {
                     ApplicationNavHost(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(it),
+                            .padding(it)
+                            .padding(horizontal = 16.dp),
                         navController = navController
                     )
                 }

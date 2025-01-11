@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.MedicationForms
@@ -56,10 +57,9 @@ import java.util.Locale
 @Composable
 fun NewMedicationDataScreen(
     onConfirmClick: () -> Unit,
-    medsViewModel: MedicationsViewModel = viewModel(),
     viewModel: AddNewMedViewModel = viewModel(),
 ) {
-    val state = viewModel.uiState
+    val state = viewModel.uiState.collectAsStateWithLifecycle()
 
     LazyColumn(
         modifier = Modifier
@@ -79,7 +79,7 @@ fun NewMedicationDataScreen(
                     )
                     // Spacer(modifier = Modifier.padding(8.dp))
                     MyTextField(
-                        value = state.medName,
+                        value = state.value.medName,
                         onValueChange = { viewModel.updateMedName(it) },
                         label = "Add Medication name",
                         isPrimaryColor = false,
@@ -92,7 +92,7 @@ fun NewMedicationDataScreen(
         }
         // Form.
         item {
-            var selectedForm by remember { mutableStateOf(state.medForm) }
+            var selectedForm by remember { mutableStateOf(state.value.medForm) }
             val options = MedicationForms.entries.toTypedArray()
 
             FlySimpleCard(
@@ -122,7 +122,7 @@ fun NewMedicationDataScreen(
         }
         // Strength.
         item {
-            var selectedUnit by remember { mutableStateOf(state.medUnit) }
+            var selectedUnit by remember { mutableStateOf(state.value.medUnit) }
             val unitOptions = MedicationUnit.entries.toTypedArray()
 
             FlySimpleCard(
@@ -133,7 +133,7 @@ fun NewMedicationDataScreen(
                     )
                     // Spacer(modifier = Modifier.padding(8.dp))
                     MyTextField(
-                        value = state.medStrength.toString(),
+                        value = state.value.medStrength.toString(),
                         onValueChange = { viewModel.updateMedStrength(it.toFloat()) },
                         label = "Medication Strength",
                         isPrimaryColor = false,
@@ -157,6 +157,19 @@ fun NewMedicationDataScreen(
                                 )
                             }
                         }
+                    }
+
+                    Text(
+                        text = state.value.chosenStrengths.toString()
+                    )
+
+                    FlyButton(
+                        onClick = {
+                            viewModel.addStrength(state.value.medStrength)
+                            /*TODO*/
+                        }
+                    ) {
+                        Text(text = "Add Strength")
                     }
                 }
             )
@@ -222,6 +235,8 @@ fun NewMedicationDataScreen(
 fun ModalDatePicker(
     viewModel: AddNewMedViewModel
 ) {
+    val state = viewModel.uiState.collectAsStateWithLifecycle()
+
     var showPicker by remember { mutableStateOf(false) }
 
     Column(
@@ -230,9 +245,9 @@ fun ModalDatePicker(
     ) {
         MyTextField(
             value = "",
-            label = "Start: ${formatTimestampTillTheDay(viewModel.uiState.medStartDate)}\nEnd: ${
+            label = "Start: ${formatTimestampTillTheDay(state.value.medStartDate)}\nEnd: ${
                 formatTimestampTillTheDay(
-                    viewModel.uiState.medEndDate
+                    state.value.medEndDate
                 )
             }",
             onValueChange = {},

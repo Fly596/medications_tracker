@@ -67,6 +67,7 @@ fun LoginScreen(
                 MyTextField(
                     value = state.email,
                     onValueChange = { viewModel.updateEmail(it) },
+                    isPrimaryColor = true,
                     isError = state.emailError?.isNotEmpty() ?: false,
                     errorMessage = state.emailError,
                     label = "Email",
@@ -80,6 +81,7 @@ fun LoginScreen(
                 MyTextField(
                     value = state.password,
                     onValueChange = { viewModel.updatePassword(it) },
+                    isPrimaryColor = true,
                     isError = state.passwordError?.isNotEmpty() ?: false,
                     errorMessage = state.passwordError,
                     label = "Password",
