@@ -26,6 +26,7 @@ fun UpdateMedScreen(
     passedMedName: String,
     modifier: Modifier = Modifier,
     viewModel: UpdateMedVM = viewModel(),
+    medsPagesVM: MedsPagesViewModel = viewModel(),
     onConfirmEdit: () -> Unit = {},
 ) {
     LaunchedEffect(Unit) { viewModel.fetchSelectedMedication(passedMedName) }
