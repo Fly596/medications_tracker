@@ -49,7 +49,7 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.typography
 @Composable
 fun DashboardScreen(
     modifier: Modifier = Modifier,
-    onMedicationLogsClick: () -> Unit = {},
+    onViewLogsClick: () -> Unit = {},
     dashboardViewModel: DashboardVM = viewModel(),
 ) {
     // список лекарств.
@@ -64,7 +64,7 @@ fun DashboardScreen(
         // логи.
         FlyButton(
             onClick = {
-                onMedicationLogsClick.invoke()
+                onViewLogsClick.invoke()
             }
         ) {
             Text("View Logs")

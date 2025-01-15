@@ -28,6 +28,37 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
+fun ConfirmationDialog(
+    onDismiss: () -> Unit,
+    onConfirmation: () -> Unit,
+    message: String,
+) {
+    Dialog(onDismissRequest = { onDismiss() }) {
+        // Draw a rectangle shape with rounded corners inside the dialog
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .padding(16.dp),
+            colors = CardDefaults.elevatedCardColors(
+                containerColor = MedTrackerTheme.colors.primaryBackgroundGrouped,
+                contentColor = MedTrackerTheme.colors.primaryLabel,
+            ),
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Text(
+                text = message,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                style = MedTrackerTheme.typography.title3
+            )
+        }
+    }
+
+}
+
+@Composable
 fun LogMedicationTimeDialog(
     viewModel: DashboardVM,
     onDismiss: () -> Unit,
@@ -166,4 +197,7 @@ fun LogDialogMedicationCard(
 @Preview
 @Composable
 fun DialogWithImagePreview() {
+    MedTrackerTheme {
+        ConfirmationDialog({}, {}, "Are you sure you want to log this medication?")
+    }
 }

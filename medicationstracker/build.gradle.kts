@@ -4,8 +4,6 @@ plugins {
     id("com.google.gms.google-services")
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
     // id("kotlin-kapt")
     // id("com.google.dagger.hilt.android.gradle.plugin")
     // alias(libs.plugins.kotlin.compose)
@@ -58,13 +56,13 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.google.firebase.storage)
-    implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.room.runtime)
     implementation(libs.coil.compose)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.material.icons.extended.android)
     // implementation(libs.jetbrains.kotlinx.serialization.json)
-    implementation(libs.com.google.dagger.hilt.android.gradle.plugin)
+    // implementation(libs.com.google.dagger.hilt.android.gradle.plugin)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -75,11 +73,9 @@ dependencies {
 
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.hilt.android.v2511)
-    kapt(libs.hilt.android.compiler.v2511)
-    implementation(libs.hilt.android)
     // kapt(libs.hilt.android.compiler)
 }
+/*
 kapt {
     correctErrorTypes = true
-}
+}*/

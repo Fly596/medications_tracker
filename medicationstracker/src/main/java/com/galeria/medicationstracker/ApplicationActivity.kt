@@ -1,13 +1,6 @@
 package com.galeria.medicationstracker
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Dashboard
-import androidx.compose.material.icons.filled.Medication
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Dashboard
-import androidx.compose.material.icons.outlined.Medication
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -17,7 +10,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import com.galeria.medicationstracker.ui.HeadViewModel
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
@@ -150,8 +143,8 @@ class ApplicationActivity : ComponentActivity() {
 data class BottomNavItem(
     val title: String,
     val route: Routes.PatientRoutes,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
+    val selectedIcon: Int,
+    val unselectedIcon: Int,
     val hasNews: Boolean = false,
     val badgeCount: Int? = null
 )
@@ -161,22 +154,22 @@ fun bottomNavItems(): List<BottomNavItem> {
         BottomNavItem(
             title = "Dashboard",
             route = Routes.PatientRoutes.PatientHome,
-            selectedIcon = Icons.Filled.Dashboard,
-            unselectedIcon = Icons.Outlined.Dashboard
+            selectedIcon = R.drawable.home_fill,
+            unselectedIcon = R.drawable.home
         ),
         BottomNavItem(
             title = "Medications",
             route = Routes.PatientRoutes.PatientMedications,
-            selectedIcon = Icons.Filled.Medication,
-            unselectedIcon = Icons.Outlined.Medication,
+            selectedIcon = R.drawable.lab_profile_fill,
+            unselectedIcon = R.drawable.lab_profile,
             hasNews = false,
-            badgeCount = 16,
+            // badgeCount = 16,
         ),
         BottomNavItem(
             title = "Profile",
             route = Routes.PatientRoutes.PatientProfile,
-            selectedIcon = Icons.Filled.AccountCircle,
-            unselectedIcon = Icons.Outlined.AccountCircle,
+            selectedIcon = R.drawable.profile_fill,
+            unselectedIcon = R.drawable.profile,
             hasNews = false,
         ),
         // ... (other items)
@@ -231,7 +224,7 @@ fun BottomNavBar(
 
 @Composable
 fun IconWithBadge(
-    icon: ImageVector,
+    icon: Int,
     badgeCount: Int?,
     showUnreadBadge: Boolean,
     contentDescription: String?,
@@ -244,7 +237,10 @@ fun IconWithBadge(
             }
         }
     ) {
-        Icon(imageVector = icon, contentDescription = contentDescription)
+        Icon(
+            painter = painterResource(id = icon),
+            contentDescription = contentDescription,
+        )
     }
 }
 

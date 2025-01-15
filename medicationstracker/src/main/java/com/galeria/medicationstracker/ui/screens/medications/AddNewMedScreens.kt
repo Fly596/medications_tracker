@@ -35,6 +35,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.MedicationForms
 import com.galeria.medicationstracker.data.MedicationUnit
+import com.galeria.medicationstracker.tests.HeaderWithIconButtonAndTitle
 import com.galeria.medicationstracker.tests.LargeDropdownMenu
 import com.galeria.medicationstracker.ui.components.DayOfWeekSelector
 import com.galeria.medicationstracker.ui.components.FlyButton
@@ -63,187 +64,185 @@ fun NewMedicationDataScreen(
 
     val state = viewModel.uiState.collectAsStateWithLifecycle()
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        // Name input.
-        item {
-            Spacer(modifier = Modifier.padding(8.dp))
+    Column {
+        HeaderWithIconButtonAndTitle(
+            onBackClick = { onConfirmClick.invoke() },
+            title = "New Medication"
+        )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // Name input.
+            item {
+                Spacer(modifier = Modifier.padding(8.dp))
 
-            FlySimpleCard(
-                content = {
-                    Text(
-                        stringResource(R.string.add_new_med_name_screen_title),
-                        style = MedTrackerTheme.typography.title2,
-                    )
-                    // Spacer(modifier = Modifier.padding(8.dp))
-                    MyTextField(
-                        value = state.value.medName,
-                        onValueChange = { viewModel.updateMedName(it) },
-                        label = "Add Medication name",
-                        isPrimaryColor = false,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
-            )
-        }
-        // Form.
-        /*         item {
-                    var selectedForm by remember { mutableStateOf(state.value.medForm) }
-                    val options = MedicationForms.entries.toTypedArray()
+                MyTextField(
+                    value = state.value.medName,
+                    onValueChange = { viewModel.updateMedName(it) },
+                    label = "Name",
+                    isPrimaryColor = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+            // Form.
+            /*         item {
+                        var selectedForm by remember { mutableStateOf(state.value.medForm) }
+                        val options = MedicationForms.entries.toTypedArray()
 
-                    FlySimpleCard(
-                        content = {
-                            Text(
-                                stringResource(R.string.add_new_med_form_screen_title),
-                                style = MedTrackerTheme.typography.title2,
-                            )
+                        FlySimpleCard(
+                            content = {
+                                Text(
+                                    stringResource(R.string.add_new_med_form_screen_title),
+                                    style = MedTrackerTheme.typography.title2,
+                                )
 
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                options.forEach { form ->
-                                    Column(verticalArrangement = Arrangement.Center) {
-                                        MyRadioButton(
-                                            selected = selectedForm == form,
-                                            onClick = { selectedForm = form },
-                                            caption = form.toString().lowercase()
-                                        )
-                                        // Text(text = form.toString().lowercase())
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    options.forEach { form ->
+                                        Column(verticalArrangement = Arrangement.Center) {
+                                            MyRadioButton(
+                                                selected = selectedForm == form,
+                                                onClick = { selectedForm = form },
+                                                caption = form.toString().lowercase()
+                                            )
+                                            // Text(text = form.toString().lowercase())
+                                        }
                                     }
                                 }
                             }
-                        }
-                    )
-                } */
-        item {
-            var selectedForm = remember { mutableStateOf(state.value.medForm).toString() }
-            val options = MedicationForms.entries.toTypedArray()
+                        )
+                    } */
+            item {
+                var selectedForm = remember { mutableStateOf(state.value.medForm).toString() }
+                val options = MedicationForms.entries.toTypedArray()
 
-            LargeDropdownMenu(
-                items = state.value.medicationForms,
-                label = "Medication Form"
-            )
-            { selectedItem ->
-                selectedForm = selectedItem
-                println("Selected: $selectedItem")
+                LargeDropdownMenu(
+                    items = state.value.medicationForms,
+                    label = "Medication Form"
+                )
+                { selectedItem ->
+                    selectedForm = selectedItem
+                    println("Selected: $selectedItem")
+                }
+
             }
+            // Strength.
+            item {
+                var selectedUnit by remember { mutableStateOf(state.value.medUnit) }
+                val unitOptions = MedicationUnit.entries.toTypedArray()
 
-        }
-        // Strength.
-        item {
-            var selectedUnit by remember { mutableStateOf(state.value.medUnit) }
-            val unitOptions = MedicationUnit.entries.toTypedArray()
-
-            FlySimpleCard(
-                content = {
-                    Text(
-                        stringResource(R.string.add_new_med_strength_screen_title),
-                        style = MedTrackerTheme.typography.title2,
-                    )
-                    // Spacer(modifier = Modifier.padding(8.dp))
-                    MyTextField(
-                        value = state.value.medStrength.toString(),
-                        onValueChange = { viewModel.updateMedStrength(it.toFloat()) },
-                        label = "Medication Strength",
-                        isPrimaryColor = false,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                    // Units.
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        unitOptions.forEach { unit ->
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(text = unit.toString().lowercase())
-                                MyRadioButton(
-                                    selected = selectedUnit == unit,
-                                    onClick = {
-                                        viewModel.updateMedUnit(selectedUnit)
-                                        selectedUnit = unit
-                                    }
-                                )
+                FlySimpleCard(
+                    content = {
+                        Text(
+                            stringResource(R.string.add_new_med_strength_screen_title),
+                            style = MedTrackerTheme.typography.title2,
+                        )
+                        // Spacer(modifier = Modifier.padding(8.dp))
+                        MyTextField(
+                            value = state.value.medStrength.toString(),
+                            onValueChange = { viewModel.updateMedStrength(it.toFloat()) },
+                            label = "Medication Strength",
+                            isPrimaryColor = false,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        // Units.
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            unitOptions.forEach { unit ->
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(text = unit.toString().lowercase())
+                                    MyRadioButton(
+                                        selected = selectedUnit == unit,
+                                        onClick = {
+                                            viewModel.updateMedUnit(selectedUnit)
+                                            selectedUnit = unit
+                                        }
+                                    )
+                                }
                             }
                         }
-                    }
 
-                    Text(
-                        text = state.value.chosenStrengths.toString()
-                    )
+                        Text(
+                            text = state.value.chosenStrengths.toString()
+                        )
 
-                    FlyButton(
-                        onClick = {
-                            viewModel.addStrength(state.value.medStrength)
-                            /*TODO*/
+                        FlyButton(
+                            onClick = {
+                                viewModel.addStrength(state.value.medStrength)
+                                /*TODO*/
+                            }
+                        ) {
+                            Text(text = "Add Strength")
                         }
-                    ) {
-                        Text(text = "Add Strength")
                     }
-                }
-            )
-            // Spacer(modifier = Modifier.padding(8.dp))
-        }
-        // Start and end dates + time.
-        item {
-            // Выбор начала и конца периода приема.
-            ModalDatePicker(viewModel)
-            var showTimePicker by remember { mutableStateOf(false) }
-
-            FlyButton(
-                onClick = { showTimePicker = true }) {
-                Text("Set time")
+                )
+                // Spacer(modifier = Modifier.padding(8.dp))
             }
-            // Время приема.
-            if (showTimePicker) {
-                IntakeTimePicker(
-                    onConfirm = {
-                        showTimePicker = false
+            // Start and end dates + time.
+            item {
+                // Выбор начала и конца периода приема.
+                ModalDatePicker(viewModel)
+                var showTimePicker by remember { mutableStateOf(false) }
+
+                FlyButton(
+                    onClick = { showTimePicker = true }) {
+                    Text("Set time")
+                }
+                // Время приема.
+                if (showTimePicker) {
+                    IntakeTimePicker(
+                        onConfirm = {
+                            showTimePicker = false
+                        },
+                        onDismiss = { showTimePicker = false },
+                        viewModel
+                    )
+                }
+            }
+            // Дни недели.
+            item {
+                FlySimpleCard(
+                    content = {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Text(
+                                text = "Choose Days",
+                                style = MedTrackerTheme.typography.title2Emphasized,
+                            )
+                            DayOfWeekSelector(
+                                viewModel = viewModel
+                            )
+                        }
+                    }
+                )
+            }
+            // button to add medication.
+            item {
+                val context = LocalContext.current
+                HIGButton(
+                    text = "Add Medication",
+                    onClick = {
+                        viewModel.addMedication(context)
+                        onConfirmClick.invoke()
                     },
-                    onDismiss = { showTimePicker = false },
-                    viewModel
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
-        // Дни недели.
-        item {
-            FlySimpleCard(
-                content = {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Text(
-                            text = "Choose Days",
-                            style = MedTrackerTheme.typography.title2Emphasized,
-                        )
-                        DayOfWeekSelector(
-                            viewModel = viewModel
-                        )
-                    }
-                }
-            )
-        }
-        // button to add medication.
-        item {
-            val context = LocalContext.current
-            HIGButton(
-                text = "Add Medication",
-                onClick = {
-                    viewModel.addMedication(context)
-                    onConfirmClick.invoke()
-                },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

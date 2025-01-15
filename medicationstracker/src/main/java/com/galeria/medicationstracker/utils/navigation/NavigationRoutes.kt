@@ -40,6 +40,8 @@ sealed class Routes {
     object NavigationRoutes {
 
         // C:\596programs\ANDROID_DEV\meds_tracker_new\medicationstracker\src\main\java\com\galeria\medicationstracker\utils\navigation\NavigationRoutes.kt
+        const val AUTH =
+            "com.galeria.medicationstracker.utils.navigation.Routes.AuthRoutes.Auth"
         const val LOGIN =
             "com.galeria.medicationstracker.utils.navigation.Routes.AuthRoutes.Login"
         const val REGISTRATION =
@@ -47,7 +49,7 @@ sealed class Routes {
         const val PASSWORD_RECOVERY =
             "com.galeria.medicationstracker.utils.navigation.Routes.AuthRoutes.PasswordRecovery"
         const val PATIENT_DASHBOARD =
-            "com.galeria.medicationstracker.utils.navigation.Routes.PatientRoutes.PatientTodayMedications"
+            "com.galeria.medicationstracker.utils.navigation.Routes.PatientRoutes.Patient"
         const val PATIENT_MEDICATIONS =
             "com.galeria.medicationstracker.utils.navigation.Routes.PatientRoutes.PatientListMedications"
         const val PATIENT_NEW_MEDICATION =
@@ -129,7 +131,7 @@ sealed class Routes {
 fun ApplicationNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: AuthRoutes = AuthRoutes.Auth,
+    startDestination: String = Routes.NavigationRoutes.AUTH,
 ) {
     val medsPagesVM: MedsPagesViewModel = viewModel()
     val medicationsViewModel: MedicationsViewModel = viewModel()
@@ -269,7 +271,7 @@ fun NavGraphBuilder.patientDashboardGraph(
     navigation<PatientRoutes.PatientHome>(startDestination = PatientRoutes.PatientTodayMedications) {
         composable<PatientRoutes.PatientTodayMedications> {
             DashboardScreen(
-                onMedicationLogsClick = {
+                onViewLogsClick = {
                     // open logs history screen.
                     navController.navigate(PatientRoutes.PatientLogs) {
                         popUpTo(PatientRoutes.PatientTodayMedications) {

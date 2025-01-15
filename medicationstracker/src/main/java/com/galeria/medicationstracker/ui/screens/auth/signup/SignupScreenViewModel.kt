@@ -74,8 +74,8 @@ class SignupScreenViewModel : ViewModel() {
         if (isEmailValid && isPasswordValid) {
             auth
                 .createUserWithEmailAndPassword(
-                    signupScreenState.value.email,
-                    signupScreenState.value.password
+                    signupScreenState.value.email.trim(),
+                    signupScreenState.value.password.trim()
                 )
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {

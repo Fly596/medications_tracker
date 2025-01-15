@@ -6,11 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.UserIntake
 import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
-import com.galeria.medicationstracker.utils.addOneDayToDate
 import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
 import com.galeria.medicationstracker.utils.formatTimestampTillTheSec
 import com.galeria.medicationstracker.utils.formatTimestampToWeekday
-import com.galeria.medicationstracker.utils.getTodaysDateInMMMMddyyyyFormat
 import com.galeria.medicationstracker.utils.toTimestamp
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -19,6 +17,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 class DashboardVM() : ViewModel() {
 
@@ -36,14 +37,23 @@ class DashboardVM() : ViewModel() {
 
     var showToastCallback: ((String) -> Unit)? = null
 
+    fun localDateTimeToTimestamp(localDateTime: LocalDateTime): Timestamp {
+        val secs = localDateTime.atZone(ZoneId.systemDefault()).toEpochSecond()
+        val nanos = localDateTime.nano
+
+        return Timestamp(secs, nanos)
+    }
+
     // Фильтрация лекарств, прием которых окончен для использования при выводе на главный экран.
     fun getCurrentMedications() {
+        val todayStart = LocalDate.now().atStartOfDay().toTimestamp()
+        val todayEnd = LocalDate.now().plusDays(1).atStartOfDay().toTimestamp()
         val todayWeekDay = formatTimestampToWeekday(Timestamp.now()).uppercase()
 
         viewModelScope.launch {
             FirestoreService.db.collection("UserMedication")
                 .whereEqualTo("uid", currentUserId)
-                .whereGreaterThanOrEqualTo("endDate", Timestamp.now())
+                .whereGreaterThanOrEqualTo("endDate", todayEnd)
                 .whereArrayContains("daysOfWeek", todayWeekDay.toString())
                 .addSnapshotListener { medicationSnapshots, error ->
                     if (error != null) {
@@ -97,17 +107,18 @@ class DashboardVM() : ViewModel() {
     // Проверка на то, был ли сегодня прием или нет.
     // -1: error; 0: noData, 1: skipped, 2: taken
     suspend fun checkIntake(medication: UserMedication): Int {
-        val today = getTodaysDateInMMMMddyyyyFormat().atStartOfDay()
-        val tomorrow = addOneDayToDate(today.toLocalDate(), 1).atStartOfDay()
+        val todayStart = LocalDate.now().atStartOfDay().toTimestamp()
+        val todayEnd = LocalDate.now().plusDays(1).atStartOfDay().toTimestamp()
         var ret = -1
         val source = Source.DEFAULT
         var takerMeds = MutableStateFlow<List<UserIntake>>(emptyList())
+
         try {
             val querySnapshot = FirestoreService.db.collection("MedicationIntake")
                 .whereEqualTo("uid", currentUserId)
                 .whereEqualTo("medicationName", medication.name)
-                .whereGreaterThan("dateTime", today.toTimestamp())
-                .whereLessThan("dateTime", tomorrow.toTimestamp())
+                .whereGreaterThan("dateTime", todayStart)
+                .whereLessThan("dateTime", todayEnd)
                 //.limit(1)
                 .get(source)
                 .await()
