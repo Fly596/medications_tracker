@@ -1,29 +1,18 @@
 package com.galeria.medicationstracker.ui.screens.dashboard.record
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBackIosNew
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.ui.components.FlySimpleCard
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.rounded.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.unit.*
+import androidx.lifecycle.compose.*
+import androidx.lifecycle.viewmodel.compose.*
+import com.galeria.medicationstracker.ui.components.*
+import com.galeria.medicationstracker.ui.theme.*
+import com.galeria.medicationstracker.utils.*
 
 @Composable
 fun IntakeRecordsScreen(
@@ -33,7 +22,7 @@ fun IntakeRecordsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val intakes = uiState.intakes
-
+    
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -41,7 +30,11 @@ fun IntakeRecordsScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // Displays the screen title.
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ) {
             IconButton(
                 onClick = onBackClick
             ) {
@@ -51,16 +44,19 @@ fun IntakeRecordsScreen(
                     tint = MedTrackerTheme.colors.primary400
                 )
             }
+            Spacer(modifier = Modifier.weight(1f))
             Text(
                 "History",
                 style = MedTrackerTheme.typography.largeTitleEmphasized,
                 modifier = Modifier.padding(start = 8.dp)
             )
+            Spacer(modifier = Modifier.weight(1f))
+            
         }
-
-
+        
+        
         Spacer(modifier = Modifier.padding(8.dp))
-
+        
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(intakes) { intake ->
                 val formattedDate = if (intake.dateTime != null) {
