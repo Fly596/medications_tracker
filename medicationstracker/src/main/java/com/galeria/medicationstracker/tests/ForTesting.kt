@@ -1,34 +1,15 @@
 package com.galeria.medicationstracker.tests
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBackIosNew
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.galeria.medicationstracker.data.MedicationForms
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.rounded.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.tooling.preview.*
+import androidx.compose.ui.unit.*
+import com.galeria.medicationstracker.data.*
+import com.galeria.medicationstracker.ui.theme.*
 
 // region AddNewMedicationScreen
 @Composable
@@ -36,17 +17,19 @@ fun AddNewMedicationScreen(
     modifier: Modifier = Modifier
 ) {
     val medicationForms =
-        MedicationForms.entries.map { it.name.lowercase().replaceFirstChar { it.uppercase() } }
-
+        MedicationForms.entries.map {
+            it.name.lowercase().replaceFirstChar { it.uppercase() }
+        }
+    
     Column(modifier = modifier.fillMaxSize()) {
         // Header.
         HeaderWithIconButtonAndTitle(
             {/* TODO: Go Back */ },
             "New Medication"
         )
-
+        
         Spacer(modifier = Modifier.padding(8.dp))
-
+        
         // Type selection.
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
@@ -60,7 +43,7 @@ fun AddNewMedicationScreen(
                      { selectedItem ->
                          println("Selected: $selectedItem")
                      } */
-
+            
         }
     }
 }
@@ -71,11 +54,10 @@ fun LargeDropdownMenu(
     items: List<String>,
     label: String = "",
     onItemSelected: (String) -> Unit = {},
-
-    ) {
+) {
     var expanded by remember { mutableStateOf(false) }
     var selectedText by remember { mutableStateOf("") }
-
+    
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
@@ -89,7 +71,7 @@ fun LargeDropdownMenu(
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor() // Ensures alignment with dropdown
         )
-
+        
         // Dropdown menu
         DropdownMenu(
             expanded = expanded,
@@ -130,7 +112,7 @@ fun HeaderWithIconButtonAndTitle(
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-
+        
         Text(
             title,
             style = MedTrackerTheme.typography.headline
@@ -145,10 +127,10 @@ fun HeaderWithIconButtonAndTitle(
 @Composable
 private fun PreviewFortesting() {
     MedTrackerTheme {
-
+        
         AddNewMedicationScreen(
             modifier = Modifier.padding(horizontal = 16.dp)
         )
     }
-
+    
 }
