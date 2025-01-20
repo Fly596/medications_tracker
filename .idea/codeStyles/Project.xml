@@ -136,7 +136,7 @@
       <option name="LINE_COMMENT_ADD_SPACE" value="true" />
       <option name="BLOCK_COMMENT_ADD_SPACE" value="true" />
       <option name="LINE_COMMENT_ADD_SPACE_ON_REFORMAT" value="true" />
-      <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
+      <option name="KEEP_BLANK_LINES_IN_CODE" value="0" />
       <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1" />
       <option name="PARAMETER_ANNOTATION_WRAP" value="1" />
       <indentOptions>

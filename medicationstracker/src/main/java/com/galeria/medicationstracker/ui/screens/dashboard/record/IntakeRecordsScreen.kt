@@ -10,7 +10,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.compose.*
 import androidx.lifecycle.viewmodel.compose.*
-import com.galeria.medicationstracker.ui.components.*
+import com.galeria.medicationstracker.ui.componentsOld.*
 import com.galeria.medicationstracker.ui.theme.*
 import com.galeria.medicationstracker.utils.*
 

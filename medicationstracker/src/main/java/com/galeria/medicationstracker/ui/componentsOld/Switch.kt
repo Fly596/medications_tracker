@@ -1,12 +1,10 @@
-package com.galeria.medicationstracker.ui.components
+package com.galeria.medicationstracker.ui.componentsOld
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import androidx.compose.foundation.interaction.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import com.galeria.medicationstracker.ui.theme.*
 
 @Composable
 fun MySwitch(

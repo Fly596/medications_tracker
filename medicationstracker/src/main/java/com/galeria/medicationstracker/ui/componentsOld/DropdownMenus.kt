@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.components
+package com.galeria.medicationstracker.ui.componentsOld
 
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.*

@@ -1,13 +1,9 @@
-package com.galeria.medicationstracker.ui.components
+package com.galeria.medicationstracker.ui.componentsOld
 
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import com.galeria.medicationstracker.ui.theme.*
 
 @Composable
 fun MyRadioButton(

@@ -1,25 +1,18 @@
 package com.galeria.medicationstracker.ui.screens.medications.mediinfo
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.ui.components.FlySimpleCard
-import com.galeria.medicationstracker.ui.components.FlyTonalButton
-import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
-import com.google.firebase.Timestamp
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.tooling.preview.*
+import androidx.compose.ui.unit.*
+import androidx.lifecycle.compose.*
+import androidx.lifecycle.viewmodel.compose.*
+import com.galeria.medicationstracker.ui.componentsOld.*
+import com.galeria.medicationstracker.ui.screens.medications.*
+import com.galeria.medicationstracker.ui.theme.*
+import com.galeria.medicationstracker.utils.*
+import com.google.firebase.*
 
 @Composable
 fun ViewMedicationInfoScreen(

@@ -18,7 +18,7 @@ import androidx.lifecycle.compose.*
 import androidx.lifecycle.viewmodel.compose.*
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.*
-import com.galeria.medicationstracker.ui.components.*
+import com.galeria.medicationstracker.ui.componentsOld.*
 import com.galeria.medicationstracker.ui.theme.*
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.typography
 
