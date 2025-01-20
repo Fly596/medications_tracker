@@ -4,8 +4,9 @@ plugins {
     id("com.google.gms.google-services")
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
-    id("kotlin-kapt")
+    // id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -76,10 +77,11 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
     // kapt(libs.hilt.android.compiler)
 }
-
+/*
 kapt {
     correctErrorTypes = true
 }
+*/

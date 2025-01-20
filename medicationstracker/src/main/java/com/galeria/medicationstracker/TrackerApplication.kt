@@ -1,8 +1,8 @@
 package com.galeria.medicationstracker
 
-import android.app.*
-import com.google.firebase.*
-import dagger.hilt.android.*
+import android.app.Application
+import com.google.firebase.FirebaseApp
+import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class TrackerApplication : Application() {
@@ -12,3 +12,4 @@ class TrackerApplication : Application() {
         FirebaseApp.initializeApp(this)
     }
 }
+

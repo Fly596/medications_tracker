@@ -45,34 +45,14 @@ fun ProfileScreen(
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val doctorsList = uiState.value.doctors
-
+    
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+            .padding(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
-        // Display header with profile picture and name.
-        /*         Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.Top,
-                    horizontalArrangement = Arrangement.Start,
-                ) {
-
-
-                    // User's profile information.
-                    PfpWithName(
-                        // TODO: get from firebase.
-                        painter = R.drawable.img_1543,
-                        userName = uiState.value.user?.name.toString(),
-                        userEmail = uiState.value.user?.login.toString()
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                } */
-        // HealthCardsGrid()
-        // Section title.
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -81,7 +61,7 @@ fun ProfileScreen(
             // title and "edit" button.
             Text(
                 text = "Profile",
-                style = MedTrackerTheme.typography.largeTitleEmphasized
+                style = MedTrackerTheme.typography.title1
             )
             FlyTextButton(
                 onClick = {
@@ -91,6 +71,14 @@ fun ProfileScreen(
                 Text(text = "Edit")
             }
         }
+        
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = MedTrackerTheme.colors.separator
+        )
+        
+        Spacer(modifier = Modifier.height(4.dp))
+        
         // pfp, name, email.
         Row(
             modifier = modifier.fillMaxWidth(),
@@ -104,99 +92,71 @@ fun ProfileScreen(
                     .clip(CircleShape)
                     .size(108.dp),
             )
-
+            
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.padding(start = 16.dp)
             ) {
                 Text(
                     text = uiState.value.user?.name.toString(),
-                    style = MedTrackerTheme.typography.title1Emphasized,
+                    style = MedTrackerTheme.typography.title3,
                     color = MedTrackerTheme.colors.primaryLabel
                 )
                 Text(
                     text = uiState.value.user?.login.toString(),
                     style = MedTrackerTheme.typography.body,
-                    color = MedTrackerTheme.colors.tertiaryLabel
+                    color = MedTrackerTheme.colors.secondaryLabel
                 )
             }
         }
-
-        LazyRow(
-            modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(24.dp)
+        
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item {
-                FlyIconButtonWithText(
-                    text = "20 years old"
+                MyTextField(
+                    value = uiState.value.height.toString(),
+                    onValueChange = { viewModel.updateHeight(it.toFloat()) },
+                    label = "Height",
+                    isPrimaryColor = true,
+                    modifier = Modifier.clickable { onHeightClick.invoke() }
                 )
             }
             item {
-                FlyIconButtonWithText(
-                    text = "150 lbs",
-                    icon = R.drawable.body
-                )
-            }
-            item {
-                FlyIconButtonWithText(
-                    text = "6.5 ft",
-                    icon = R.drawable.body
+                MyTextField(
+                    value = uiState.value.weight.toString(),
+                    onValueChange = { viewModel.updateWeight(it.toFloat()) },
+                    label = "Weight",
+                    isPrimaryColor = true,
+                    modifier = Modifier.clickable { onWeightClick.invoke() }
                 )
             }
         }
-        /*        LazyColumn {
-                   item {
-                       MyTextField(
-                           value = uiState.value.name,
-                           onValueChange = { viewModel.updateName(it) },
-                           label = "Name"
-                       )
-                       FlyButton(
-                           onClick = { viewModel.updateNameFirestore() }
-                       ) {
-                           Text(text = "Save name")
-                       }
-                   }
-                   item {
-                       MyTextField(
-                           value = uiState.value.age.toString(),
-                           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                           onValueChange = { viewModel.updateAge(it.toInt()) },
-                           label = "Age",
-                       )
-                       FlyButton(
-                           onClick = { viewModel.updateAgeFirestore() }
-                       ) {
-                           Text(text = "Save age")
-                       }
-                   }
-                   item {
-                       MyTextField(
-                           value = uiState.value.weight.toString(),
-                           onValueChange = { viewModel.updateWeight(it.toFloat()) },
-                           label = "weight",
-                           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                       )
-                       FlyButton(
-                           onClick = { viewModel.updateWeightFirestore() }
-                       ) {
-                           Text(text = "Save weight")
-                       }
-                   }
-                   item {
-                       MyTextField(
-                           value = uiState.value.height.toString(),
-                           onValueChange = { viewModel.updateHeight(it.toFloat()) },
-                           label = "Height",
-                           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                       )
-                       FlyButton(
-                           onClick = { viewModel.updateHeightFirestore() }
-                       ) {
-                           Text(text = "Save Height")
-                       }
-                   }
-               } */
+        /*         LazyRow(
+                    modifier = Modifier,
+                    horizontalArrangement = Arrangement.spacedBy(24.dp)
+                ) {
+                    item {
+                        FlyIconButtonWithText(
+                            text = "20 years old"
+                        )
+                    }
+                    item {
+                        FlyIconButtonWithText(
+                            text = "150 lbs",
+                            icon = R.drawable.body
+                        )
+                    }
+                    item {
+                        FlyIconButtonWithText(
+                            text = "6.5 ft",
+                            icon = R.drawable.body
+                        )
+                    }
+                } */
+
         // секция со списком врачей пользователя (или просто всех врачей).
         MyDoctorsList(
             listData = doctorsList,
@@ -256,9 +216,9 @@ fun DocListCard(
                 .clip(CircleShape)
                 .size(56.dp),
         )
-
+        
         Spacer(modifier = Modifier.width(16.dp))
-
+        
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier

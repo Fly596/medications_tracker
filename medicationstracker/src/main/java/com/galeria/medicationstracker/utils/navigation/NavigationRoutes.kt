@@ -1,28 +1,68 @@
 package com.galeria.medicationstracker.utils.navigation
 
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.lifecycle.viewmodel.compose.*
-import androidx.navigation.*
-import androidx.navigation.compose.*
-import com.galeria.medicationstracker.data.*
-import com.galeria.medicationstracker.ui.doctor.home.*
-import com.galeria.medicationstracker.ui.doctor.patients.*
-import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.*
-import com.galeria.medicationstracker.ui.screens.auth.login.*
-import com.galeria.medicationstracker.ui.screens.auth.signup.*
-import com.galeria.medicationstracker.ui.screens.dashboard.*
-import com.galeria.medicationstracker.ui.screens.dashboard.record.*
-import com.galeria.medicationstracker.ui.screens.medications.*
-import com.galeria.medicationstracker.ui.screens.medications.mediinfo.*
-import com.galeria.medicationstracker.ui.screens.medications.update.*
-import com.galeria.medicationstracker.ui.screens.profile.*
-import com.galeria.medicationstracker.ui.screens.profile.appoinment.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
+import androidx.navigation.toRoute
+import com.galeria.medicationstracker.data.UserType
+import com.galeria.medicationstracker.ui.doctor.home.DocDashboardScreen
+import com.galeria.medicationstracker.ui.doctor.patients.PatientsListScreen
+import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRecoveryScreen
+import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
+import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
+import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
+import com.galeria.medicationstracker.ui.screens.dashboard.record.IntakeRecordsScreen
+import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
+import com.galeria.medicationstracker.ui.screens.medications.MedicationsViewModel
+import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
+import com.galeria.medicationstracker.ui.screens.medications.NewMedicationDataScreen
+import com.galeria.medicationstracker.ui.screens.medications.mediinfo.ViewMedicationInfoScreen
+import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
+import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
+import com.galeria.medicationstracker.ui.screens.profile.ProfileVM
+import com.galeria.medicationstracker.ui.screens.profile.appoinment.AppointmentScreen
 import com.galeria.medicationstracker.utils.navigation.Routes.AdminRoutes
 import com.galeria.medicationstracker.utils.navigation.Routes.AuthRoutes
 import com.galeria.medicationstracker.utils.navigation.Routes.DoctorRoutes
 import com.galeria.medicationstracker.utils.navigation.Routes.PatientRoutes
-import kotlinx.serialization.*
+import kotlinx.serialization.Serializable
+
+
+@Composable
+fun ApplicationNavHost(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
+    startDestination: String = Routes.NavigationRoutes.AUTH,
+) {
+    val medsPagesVM: MedsPagesViewModel = viewModel()
+    val medicationsViewModel: MedicationsViewModel = viewModel()
+    val profileVM: ProfileVM = viewModel()
+    
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        modifier = modifier
+    ) {
+        authGraph(navController)
+        patientGraph(
+            navController,
+            medicationsViewModel,
+            medsPagesVM,
+            profileVM
+        )
+        docGraph(
+            navController
+        )
+        // userMedsGraph(navController)
+    }
+}
 
 @Serializable
 sealed class Routes {
@@ -63,10 +103,13 @@ sealed class Routes {
         // Authentification pages.
         @Serializable
         object Auth : AuthRoutes()
+        
         @Serializable
         data object Login : AuthRoutes()
+        
         @Serializable
         data object Registration : AuthRoutes()
+        
         @Serializable
         data object PasswordRecovery : AuthRoutes()
     }
@@ -81,20 +124,26 @@ sealed class Routes {
         // home screens.
         @Serializable
         object PatientHome : PatientRoutes()
+        
         @Serializable
         data object PatientTodayMedications : PatientRoutes()
+        
         @Serializable
         data object PatientLogs : PatientRoutes()
         
         // medications screens.
         @Serializable
         object PatientMedications : PatientRoutes()
+        
         @Serializable
         data object PatientListMedications : PatientRoutes()
+        
         @Serializable
         data object PatientAddMedication : PatientRoutes()
+        
         @Serializable
         data object PatientViewMedication : PatientRoutes()
+        
         @Serializable
         data class PatientUpdateMedication(val medicationName: String?) :
             PatientRoutes()
@@ -102,14 +151,19 @@ sealed class Routes {
         // profile screen.
         @Serializable
         object PatientInfo : PatientRoutes()
+        
         @Serializable
         data object PatientProfile : PatientRoutes()
+        
         @Serializable
         data object PatientWeightDialog : PatientRoutes() // dialog.
+        
         @Serializable
         data object PatientHeightDialog : PatientRoutes() // dialog.
+        
         @Serializable
         data object PatientSettings : PatientRoutes() // dialog.
+        
         @Serializable
         data object PatientAppointment : PatientRoutes() // dialog.
     }
@@ -123,13 +177,16 @@ sealed class Routes {
         // home screens. Расписание на день.
         @Serializable
         object DocHome : DoctorRoutes()
+        
         @Serializable
         data object DocDashboard : DoctorRoutes()
         
         @Serializable
         object DocPatients : DoctorRoutes()
+        
         @Serializable
         data object DocPatientsList : DoctorRoutes()
+        
         @Serializable
         data object DocPatientInfo : DoctorRoutes()
     }
@@ -141,35 +198,6 @@ sealed class Routes {
         data object AdminDashboard : AdminRoutes()
     }
     
-}
-
-@Composable
-fun ApplicationNavHost(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
-    startDestination: String = Routes.NavigationRoutes.AUTH,
-) {
-    val medsPagesVM: MedsPagesViewModel = viewModel()
-    val medicationsViewModel: MedicationsViewModel = viewModel()
-    val profileVM: ProfileVM = viewModel()
-    
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-        modifier = modifier
-    ) {
-        authGraph(navController)
-        patientGraph(
-            navController,
-            medicationsViewModel,
-            medsPagesVM,
-            profileVM
-        )
-        docGraph(
-            navController
-        )
-        // userMedsGraph(navController)
-    }
 }
 
 // Граф для страниц аутификации.

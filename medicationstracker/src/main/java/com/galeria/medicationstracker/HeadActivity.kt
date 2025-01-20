@@ -1,20 +1,38 @@
 package com.galeria.medicationstracker
 
-import android.os.*
-import androidx.activity.*
-import androidx.activity.compose.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.unit.*
-import androidx.navigation.compose.*
-import com.galeria.medicationstracker.ui.*
-import com.galeria.medicationstracker.ui.theme.*
-import com.galeria.medicationstracker.utils.navigation.*
-import com.google.firebase.auth.*
-import kotlinx.coroutines.*
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.galeria.medicationstracker.ui.HeadViewModel
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.galeria.medicationstracker.utils.navigation.ApplicationNavHost
+import com.galeria.medicationstracker.utils.navigation.Routes
+import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HeadActivity : ComponentActivity() {
 
     private lateinit var auth: FirebaseAuth
@@ -77,7 +95,6 @@ class HeadActivity : ComponentActivity() {
                         )
                     },
                     modifier = Modifier
-                        .fillMaxSize()
                         .windowInsetsPadding(WindowInsets.displayCutout),
                     containerColor = MedTrackerTheme.colors.secondaryBackground,
                     
