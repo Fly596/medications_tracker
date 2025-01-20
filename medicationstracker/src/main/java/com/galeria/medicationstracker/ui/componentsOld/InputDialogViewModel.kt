@@ -1,10 +1,9 @@
-package com.galeria.medicationstracker.ui.components
+package com.galeria.medicationstracker.ui.componentsOld
 
-import androidx.lifecycle.ViewModel
-import com.google.firebase.Timestamp
-import com.google.type.Date
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import androidx.lifecycle.*
+import com.google.firebase.*
+import com.google.type.*
+import kotlinx.coroutines.flow.*
 
 data class InputDialogUiState(
     val dateTimeInput: Timestamp = Timestamp.now(),

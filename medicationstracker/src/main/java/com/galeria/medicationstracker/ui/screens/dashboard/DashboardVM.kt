@@ -1,50 +1,53 @@
 package com.galeria.medicationstracker.ui.screens.dashboard
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.galeria.medicationstracker.data.UserIntake
-import com.galeria.medicationstracker.data.UserMedication
+import android.util.*
+import androidx.lifecycle.*
+import com.galeria.medicationstracker.data.*
+import com.galeria.medicationstracker.utils.*
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
-import com.galeria.medicationstracker.utils.addOneDayToDate
-import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
-import com.galeria.medicationstracker.utils.formatTimestampTillTheSec
-import com.galeria.medicationstracker.utils.formatTimestampToWeekday
-import com.galeria.medicationstracker.utils.getTodaysDateInMMMMddyyyyFormat
-import com.galeria.medicationstracker.utils.toTimestamp
-import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.Source
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
+import com.google.firebase.*
+import com.google.firebase.auth.*
+import com.google.firebase.firestore.*
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.tasks.*
+import java.time.*
 
 class DashboardVM() : ViewModel() {
-
-    // Лекарства, которые нужно принимать.
-    private val _currentTakenMedications = MutableStateFlow<List<UserMedication>>(emptyList())
-    val currentTakenMedications = _currentTakenMedications.asStateFlow()
+    
     val db = FirestoreService.db
+    
+    // Лекарства, которые нужно принимать.
+    private val _currentTakenMedications =
+        MutableStateFlow<List<UserMedication>>(emptyList())
+    val currentTakenMedications = _currentTakenMedications.asStateFlow()
     val firebaseAuth = FirebaseAuth.getInstance()
     val currentUserId = firebaseAuth.currentUser?.uid
-
+    
     init {
         // Получение списка активных лекарств пациента.
         getCurrentMedications()
     }
-
+    
     var showToastCallback: ((String) -> Unit)? = null
-
+    
+    fun localDateTimeToTimestamp(localDateTime: LocalDateTime): Timestamp {
+        val secs = localDateTime.atZone(ZoneId.systemDefault()).toEpochSecond()
+        val nanos = localDateTime.nano
+        
+        return Timestamp(secs, nanos)
+    }
+    
     // Фильтрация лекарств, прием которых окончен для использования при выводе на главный экран.
-    fun getCurrentMedications() {
+    private fun getCurrentMedications() {
+        val todayEnd = LocalDate.now().plusDays(1).atStartOfDay().toTimestamp()
         val todayWeekDay = formatTimestampToWeekday(Timestamp.now()).uppercase()
-
+        
         viewModelScope.launch {
-            FirestoreService.db.collection("UserMedication")
+            db.collection("UserMedication")
                 .whereEqualTo("uid", currentUserId)
-                .whereGreaterThanOrEqualTo("endDate", Timestamp.now())
-                .whereArrayContains("daysOfWeek", todayWeekDay.toString())
+                .whereGreaterThanOrEqualTo("endDate", todayEnd)
+                .whereArrayContains("daysOfWeek", todayWeekDay)
                 .addSnapshotListener { medicationSnapshots, error ->
                     if (error != null) {
                         Log.e(
@@ -55,7 +58,7 @@ class DashboardVM() : ViewModel() {
                         showToastCallback?.invoke("Error loading medications")
                         return@addSnapshotListener
                     }
-
+                    
                     medicationSnapshots?.let {
                         _currentTakenMedications.value =
                             it.toObjects(UserMedication::class.java)
@@ -63,71 +66,61 @@ class DashboardVM() : ViewModel() {
                     }
                 }
         }
-
+        
     }
-
-    // Запись приема в бд.
-    fun recordMedicationIntake(
+    
+    fun addNewIntake(
         intakeTime: Timestamp = Timestamp.now(),
         medication: UserMedication = UserMedication(),
         status: Boolean = true
     ) {
-        // Проверка на дублирование приема.
-        // var cre = checkIntake(medication)
-        // текущее время до дней.
-        var dateday = formatTimestampTillTheDay(intakeTime)
-        var datesec = formatTimestampTillTheSec(intakeTime)
-        println("Day: $dateday")
-        println("Sec: $datesec")
-        // println("Is exist?: $cre")
         val intake = UserIntake(
             uid = currentUserId.toString(),
             medicationName = medication.name.toString(),
             dose = medication.strength.toString(),
             status = status,
-            dateTime = Timestamp.now()
+            dateTime = intakeTime
         )
-
-        FirestoreService.db.collection("MedicationIntake")
-            .document("${FirebaseAuth.getInstance().currentUser?.email}_${medication.name}_${dateday}")
-            .set(intake)
-
+        
+        FirestoreService.db.collection("User")
+            .document("${FirebaseAuth.getInstance().currentUser?.email}")
+            .collection("intakes")
+            .document("${medication.name}_${intakeTime.toLocalDateTime().dayOfYear}")
+            .set(
+                intake
+            )
+        
+        
     }
-
+    
     // Проверка на то, был ли сегодня прием или нет.
     // -1: error; 0: noData, 1: skipped, 2: taken
     suspend fun checkIntake(medication: UserMedication): Int {
-        val today = getTodaysDateInMMMMddyyyyFormat().atStartOfDay()
-        val tomorrow = addOneDayToDate(today.toLocalDate(), 1).atStartOfDay()
+        val todayStart = LocalDate.now().atStartOfDay().toTimestamp()
+        val todayEnd = LocalDate.now().plusDays(1).atStartOfDay().toTimestamp()
         var ret = -1
         val source = Source.DEFAULT
-        var takerMeds = MutableStateFlow<List<UserIntake>>(emptyList())
-        try {
-            val querySnapshot = FirestoreService.db.collection("MedicationIntake")
-                .whereEqualTo("uid", currentUserId)
+        return try {
+            val querySnapshot = db.collection("User")
+                .document("${FirebaseAuth.getInstance().currentUser?.email}")
+                .collection("intakes")
                 .whereEqualTo("medicationName", medication.name)
-                .whereGreaterThan("dateTime", today.toTimestamp())
-                .whereLessThan("dateTime", tomorrow.toTimestamp())
-                //.limit(1)
-                .get(source)
+                .whereGreaterThanOrEqualTo("dateTime", todayStart)
+                .whereLessThan("dateTime", todayEnd)
+                .limit(1)
+                .get(Source.DEFAULT)
                 .await()
-
+            
             if (!querySnapshot.isEmpty) {
-                val intakes = querySnapshot.toObjects(UserIntake::class.java)
-                val status = intakes.get(0).status
-
-                ret = if (status == true) 2 else 1
+                if (querySnapshot.toObjects(UserIntake::class.java)[0].status == true) 2 else 1
             } else {
-                ret = 0
+                0
             }
-            // ret = querySnapshot.isEmpty
         } catch (e: Exception) {
-            Log.e("DashboardVM", "Error fetching current medications: ${e.message}", e)
-            println("Error fetching current medications: ${e.message}")
-            ret = -1
+            Log.e("checkIntake", "Error fetching intake data", e)
+            -1
         }
-        return ret
-
+        
     }
-
+    
 }

@@ -1,10 +1,9 @@
 package com.galeria.medicationstracker.data
 
-import android.icu.text.SimpleDateFormat
-import com.google.firebase.Timestamp
-import java.time.DayOfWeek
-import java.time.LocalDateTime
-import java.util.Locale
+import android.icu.text.*
+import com.google.firebase.*
+import java.time.*
+import java.util.*
 
 data class UserMedication(
     val uid: String? = null,
@@ -17,6 +16,7 @@ data class UserMedication(
     val daysOfWeek: List<String> = emptyList(),
     val intakeTime: String? = null,
     val notes: String? = null,
+    val chosenStrengths: List<Float> = emptyList(),
 )
 
 data class HospitalDrugs(
@@ -72,7 +72,19 @@ enum class MedicationForms {
     CAPSULE,
     LIQUID,
     INJECTION,
-    POWDER
+    POWDER,
+    /*     TOPICAL,
+        CREAM,
+        DEVICE,
+        DROPS,
+        FOAM,
+        GEL,
+        INHALER,
+        LOTION,
+        OINTMENT,
+        PATCH,
+        SPRAY,
+        SUPPOSITORY */
 }
 
 enum class MedicationUnit {

@@ -1,16 +1,13 @@
-package com.galeria.medicationstracker.ui.components
+package com.galeria.medicationstracker.ui.componentsOld
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.tooling.preview.*
+import androidx.lifecycle.compose.*
+import androidx.lifecycle.viewmodel.compose.*
+import com.galeria.medicationstracker.ui.theme.*
 
 @Composable
 fun InputDialog(

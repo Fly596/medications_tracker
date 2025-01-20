@@ -1,12 +1,11 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
-import androidx.lifecycle.ViewModel
-import com.galeria.medicationstracker.data.UserMedication
+import androidx.lifecycle.*
+import com.galeria.medicationstracker.data.*
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.Source
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.google.firebase.auth.*
+import com.google.firebase.firestore.*
+import kotlinx.coroutines.flow.*
 
 data class MedicationsUiState(
     val userMedications: List<UserMedication> = emptyList(),
@@ -31,9 +30,9 @@ class MedicationsViewModel : ViewModel() {
     }
 
     // Получение всех пользовательских лекарств.
-    fun fetchUserMedications() {
+    private fun fetchUserMedications() {
         val docRef = db.collection("UserMedication")
-        val source = Source.DEFAULT
+        val source = Source.CACHE
 
         docRef
             .whereEqualTo("uid", userId)

@@ -1,18 +1,15 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.galeria.medicationstracker.data.UserMedication
+import android.util.*
+import androidx.lifecycle.*
+import com.galeria.medicationstracker.data.*
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
 import com.google.firebase.appcheck.internal.util.Logger.TAG
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.*
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.AggregateSource.SERVER
-import com.google.firebase.firestore.Source
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 data class MedsPagesUiState(
     val medications: List<UserMedication> = emptyList(),
@@ -26,15 +23,14 @@ class MedsPagesViewModel : ViewModel() {
     private var _uiState = MutableStateFlow(MedsPagesUiState())
     val uiState: StateFlow<MedsPagesUiState> = _uiState.asStateFlow()
     private val db = FirestoreService.db
-    private val firebaseAuth = FirebaseAuth.getInstance()
-    private val user = firebaseAuth.currentUser
-    private val userId = user?.uid
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid
+   
 
     fun getSelectedMed(medName: String) {
         viewModelScope.launch {
             // путь к коллекции с лекарствами
             val docRef = db.collection("UserMedication")
-            val source = Source.CACHE
+            val source = Source.DEFAULT
 
             docRef.whereEqualTo("uid", userId).whereEqualTo("name", medName)
                 .get(source).addOnSuccessListener { docSnapshot ->
@@ -55,8 +51,8 @@ class MedsPagesViewModel : ViewModel() {
         }
 
     }
-
-    fun getMedicationIntakes() {
+    
+    private fun getMedicationIntakes() {
         viewModelScope.launch {
             val docRef = db.collection("MedicationIntake")
                 .whereEqualTo("medicationName", uiState.value.selectedMed?.name.toString())

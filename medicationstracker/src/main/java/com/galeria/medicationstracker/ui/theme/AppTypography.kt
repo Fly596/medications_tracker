@@ -1,49 +1,49 @@
 package com.galeria.medicationstracker.ui.theme
 
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.*
+import androidx.compose.ui.text.font.*
+import androidx.compose.ui.unit.*
 
 val AppTypography =
     MedTrackerTypography(
-        largeTitle =
+        largeTitle = // display large
             TextStyle(
-                fontSize = 34.sp,
+                fontSize = 57.sp,
                 fontWeight = FontWeight.Normal,
                 fontFamily = FontFamily.Default,
-                lineHeight = 41.sp,
+                lineHeight = 64.sp,
             ), // Used for titles and headings that need to make a strong visual impact.
         largeTitleEmphasized =
             TextStyle(
-                fontSize = 34.sp,
+                fontSize = 57.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily.Default,
-                lineHeight = 41.sp,
+                lineHeight = 64.sp,
             ), // Used for titles and headings that need to make a strong visual impact.
         title1 =
+            // Display Medium
             TextStyle(
-                fontSize = 28.sp,
+                fontSize = 45.sp,
                 fontWeight = FontWeight.Normal,
                 fontFamily = FontFamily.Default,
-                lineHeight = 34.sp,
+                lineHeight = 52.sp,
                 // color = Color.Black
             ),
         title1Emphasized =
+            // Display Medium
             TextStyle(
-                fontSize = 28.sp,
+                fontSize = 45.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily.Default,
-                lineHeight = 34.sp,
+                lineHeight = 52.sp,
                 // color = Color.Black
             ),
         title2 =
             TextStyle(
-                fontSize = 22.sp,
+                fontSize = 36.sp,
                 fontWeight = FontWeight.Normal,
                 fontFamily = FontFamily.Default,
-                lineHeight = 28.sp,
+                lineHeight = 44.sp,
                 // color = Color.Black
             ),
         title2Emphasized =
@@ -72,19 +72,19 @@ val AppTypography =
             ),
         headline =
             TextStyle(
-                fontSize = 17.sp,
+                fontSize = 28.sp,
                 fontWeight = FontWeight.SemiBold,
                 fontFamily = FontFamily.Default,
-                lineHeight = 22.sp,
+                lineHeight = 36.sp,
                 // color = Color.Black
             ),
         headlineItalic =
             TextStyle(
-                fontSize = 17.sp,
+                fontSize = 28.sp,
                 fontWeight = FontWeight.SemiBold,
                 fontStyle = FontStyle.Italic,
                 fontFamily = FontFamily.Default,
-                lineHeight = 22.sp,
+                lineHeight = 36.sp,
                 // color = Color.Black
             ),
         body =
@@ -183,4 +183,194 @@ val AppTypography =
                 lineHeight = 13.sp,
                 // color = Color.Black
             ),
+    )
+val GTypography =
+    GAppTypography(
+        display1 =
+            TextStyle(
+                fontSize = 57.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 64.sp,
+            ), // Used for titles and headings that need to make a strong visual impact.
+        display1Emphasized =
+            TextStyle(
+                fontSize = 57.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 64.sp,
+            ), // Used for titles and headings that need to make a strong visual impact.
+        display2 =
+            TextStyle(
+                fontSize = 45.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 52.sp,
+                // color = Color.Black
+            ),
+        display2Emphasized =
+            TextStyle(
+                fontSize = 45.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Default,
+                lineHeight = 52.sp,
+                // color = Color.Black
+            ),
+        display3 =
+            TextStyle(
+                fontSize = 36.sp,
+                fontWeight = FontWeight.Normal,
+                fontFamily = FontFamily.Default,
+                lineHeight = 44.sp,
+                // color = Color.Black
+            ),
+        display3Emphasized = TextStyle(
+            fontSize = 36.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            lineHeight = 44.sp,
+            // color = Color.Black
+        ),
+        headline = TextStyle(
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily.Default,
+            lineHeight = 36.sp,
+            // color = Color.Black
+        ),
+        headlineEmphasized = TextStyle(
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            lineHeight = 36.sp,
+            // color = Color.Black
+        ),
+        title1 = TextStyle(
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily.Default,
+            lineHeight = 28.sp,
+            // color = Color.Black
+        ),
+        title1Emphasized = TextStyle(
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            lineHeight = 28.sp,
+            // color = Color.Black
+        ),
+        title2 = TextStyle(
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        title2Emphasized = TextStyle(
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        title3 = TextStyle(
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        title3Emphasized = TextStyle(
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        bodyLarge = TextStyle(
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        bodyLargeEmphasized = TextStyle(
+            fontSize = 16.sp,
+            lineHeight = 24.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        bodyMedium = TextStyle(
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        bodyMediumEmphasized = TextStyle(
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        bodySmall = TextStyle(
+            fontSize = 12.sp,
+            lineHeight = 16.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        bodySmallEmphasized = TextStyle(
+            fontSize = 12.sp,
+            lineHeight = 16.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        labelLarge = TextStyle(
+            // button
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        labelLargeEmphasized = TextStyle(
+            // button
+            fontSize = 14.sp,
+            lineHeight = 20.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        labelMedium = TextStyle(
+            fontSize = 12.sp,
+            lineHeight = 16.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        labelMediumEmphasized = TextStyle(
+            fontSize = 12.sp,
+            lineHeight = 16.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        labelSmall = TextStyle(
+            fontSize = 11.sp,
+            lineHeight = 16.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
+        labelSmallEmphasized = TextStyle(
+            fontSize = 11.sp,
+            lineHeight = 16.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily.Default,
+            // color = Color.Black
+        ),
     )

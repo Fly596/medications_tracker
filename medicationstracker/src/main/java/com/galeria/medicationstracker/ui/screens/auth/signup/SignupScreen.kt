@@ -1,40 +1,21 @@
 package com.galeria.medicationstracker.ui.screens.auth.signup
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.text.input.*
+import androidx.compose.ui.unit.*
+import androidx.lifecycle.compose.*
+import androidx.lifecycle.viewmodel.compose.*
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.data.UserType
-import com.galeria.medicationstracker.ui.components.FlyButton
-import com.galeria.medicationstracker.ui.components.FlySimpleCard
-import com.galeria.medicationstracker.ui.components.FlyTextButton
-import com.galeria.medicationstracker.ui.components.MyRadioButton
-import com.galeria.medicationstracker.ui.components.MyTextField
-import com.galeria.medicationstracker.ui.screens.auth.login.RememberMeSwitch
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.galeria.medicationstracker.data.*
+import com.galeria.medicationstracker.ui.componentsOld.*
+import com.galeria.medicationstracker.ui.screens.auth.login.*
+import com.galeria.medicationstracker.ui.theme.*
 
 @Composable
 fun SignupScreen(
@@ -48,8 +29,8 @@ fun SignupScreen(
 
     Column(
         modifier = Modifier
-          .fillMaxSize()
-          .padding(horizontal = 16.dp),
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.Top
     ) {
         Spacer(modifier = Modifier.height(16.dp))
@@ -64,6 +45,7 @@ fun SignupScreen(
         MyTextField(
             value = state.value.name,
             onValueChange = { viewModel.updateUserName(it) },
+            isPrimaryColor = true,
             label = "Name",
             placeholder = "Name",
             modifier = Modifier.fillMaxWidth(),
@@ -77,6 +59,7 @@ fun SignupScreen(
                     viewModel.updateUserAge(0)
                 }
             },
+            isPrimaryColor = true,
             label = "Age",
             placeholder = "Age",
             modifier = Modifier.fillMaxWidth(),
@@ -86,6 +69,7 @@ fun SignupScreen(
         MyTextField(
             value = state.value.email,
             onValueChange = { viewModel.updateEmail(it) },
+            isPrimaryColor = true,
             isError = state.value.emailErrorMessage?.isNotEmpty() ?: false,
             errorMessage = state.value.emailErrorMessage,
             label = "Email",
@@ -97,6 +81,7 @@ fun SignupScreen(
         MyTextField(
             value = state.value.password,
             onValueChange = { viewModel.updatePassword(it) },
+            isPrimaryColor = true,
             isError = state.value.passwordErrorMessage?.isNotEmpty() ?: false,
             errorMessage = state.value.passwordErrorMessage,
             label = "Password",
@@ -119,11 +104,10 @@ fun SignupScreen(
         FlySimpleCard(
             content = {
                 Text(
-                    "Choose Account Type",
+                    "Account Type",
                     style = MedTrackerTheme.typography.title2,
                 )
 
-                Spacer(modifier = Modifier.padding(8.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),

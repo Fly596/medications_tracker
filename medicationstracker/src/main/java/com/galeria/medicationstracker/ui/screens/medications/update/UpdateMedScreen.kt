@@ -1,47 +1,24 @@
 package com.galeria.medicationstracker.ui.screens.medications.update
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TimePicker
-import androidx.compose.material3.rememberTimePickerState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.data.MedicationForms
-import com.galeria.medicationstracker.ui.components.DayOfWeekSelector
-import com.galeria.medicationstracker.ui.components.FlyButton
-import com.galeria.medicationstracker.ui.components.FlyErrorButton
-import com.galeria.medicationstracker.ui.components.FlySimpleCard
-import com.galeria.medicationstracker.ui.components.FlyTonalButton
-import com.galeria.medicationstracker.ui.components.MyTextField
-import com.galeria.medicationstracker.ui.screens.medications.DateRangePickerModal
-import com.galeria.medicationstracker.ui.screens.medications.convertMillisToDate
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
-import com.galeria.medicationstracker.utils.parseDateForFirestore
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.util.Calendar
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.text.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.platform.*
+import androidx.compose.ui.text.input.*
+import androidx.compose.ui.unit.*
+import androidx.lifecycle.compose.*
+import androidx.lifecycle.viewmodel.compose.*
+import com.galeria.medicationstracker.data.*
+import com.galeria.medicationstracker.ui.componentsOld.*
+import com.galeria.medicationstracker.ui.screens.medications.*
+import com.galeria.medicationstracker.ui.theme.*
+import com.galeria.medicationstracker.utils.*
+import java.time.*
+import java.time.format.*
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,9 +26,11 @@ fun UpdateMedScreen(
     passedMedName: String,
     modifier: Modifier = Modifier,
     viewModel: UpdateMedVM = viewModel(),
+    medsPagesVM: MedsPagesViewModel = viewModel(),
     onConfirmEdit: () -> Unit = {},
 ) {
     LaunchedEffect(Unit) { viewModel.fetchSelectedMedication(passedMedName) }
+    
     val state = viewModel.uiState
     val currentMed by viewModel.selectedMedication.collectAsStateWithLifecycle()
 

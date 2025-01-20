@@ -2,9 +2,6 @@ package com.galeria.medicationstracker.ui.screens.auth.login
 
 import android.util.Log
 import android.util.Patterns
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.SnackbarController
@@ -31,12 +28,13 @@ data class LoginScreenState(
 
 class LoginScreenViewModel : ViewModel() {
 
+    private val _loginScreenState = MutableStateFlow(LoginScreenState())
+    val loginScreenState = _loginScreenState.asStateFlow()
+
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val db = FirestoreFunctions.FirestoreService.db
     private var currentUserType = MutableStateFlow<String?>(null)
     var userType = currentUserType.asStateFlow()
-    var _loginScreenState by mutableStateOf(LoginScreenState())
-        private set
 
     // запрашивает тип юзера.
     fun getUserType() {
@@ -71,7 +69,7 @@ class LoginScreenViewModel : ViewModel() {
     }
 
     private fun validateEmail(): Boolean {
-        val emailInput = _loginScreenState.email.trim()
+        val emailInput = _loginScreenState.value.email.trim()
         var isValid = true
         var errorMessage = ""
 
@@ -85,12 +83,12 @@ class LoginScreenViewModel : ViewModel() {
             isValid = false
         }
 
-        _loginScreenState = _loginScreenState.copy(emailError = errorMessage)
+        _loginScreenState.value = _loginScreenState.value.copy(emailError = errorMessage)
         return isValid
     }
 
     private fun validatePassword(): Boolean {
-        val passwordInput = _loginScreenState.password
+        val passwordInput = _loginScreenState.value.password
         var isValid = true
         var errorMessage = ""
 
@@ -102,7 +100,7 @@ class LoginScreenViewModel : ViewModel() {
             isValid = false
         }
 
-        _loginScreenState = _loginScreenState.copy(passwordError = errorMessage)
+        _loginScreenState.value = _loginScreenState.value.copy(passwordError = errorMessage)
         return isValid
     }
 
@@ -137,8 +135,8 @@ class LoginScreenViewModel : ViewModel() {
                                             if (userTypeString != null) {
                                                 val docUserType =
                                                     UserType.valueOf(userTypeString.uppercase())
-                                                _loginScreenState =
-                                                    _loginScreenState.copy(userType = docUserType)
+                                                _loginScreenState.value =
+                                                    _loginScreenState.value.copy(userType = docUserType)
                                                 onLoginClick.invoke(docUserType)
 
                                                 viewModelScope.launch {
@@ -191,15 +189,15 @@ class LoginScreenViewModel : ViewModel() {
     }
 
     fun updateEmail(input: String) {
-        _loginScreenState = _loginScreenState.copy(email = input)
+        _loginScreenState.value = _loginScreenState.value.copy(email = input)
     }
 
     fun updatePassword(input: String) {
-        _loginScreenState = _loginScreenState.copy(password = input)
+        _loginScreenState.value = _loginScreenState.value.copy(password = input)
     }
 
     fun isShowPasswordChecked(input: Boolean) {
-        _loginScreenState = _loginScreenState.copy(showPassword = !input)
+        _loginScreenState.value = _loginScreenState.value.copy(showPassword = !input)
     }
 
 }
