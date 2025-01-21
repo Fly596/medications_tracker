@@ -9,6 +9,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import com.galeria.medicationstracker.data.*
+import com.galeria.medicationstracker.ui.componentsOld.HeaderWithIconButtonAndTitle
 import com.galeria.medicationstracker.ui.theme.*
 
 // region AddNewMedicationScreen
@@ -91,35 +92,7 @@ fun LargeDropdownMenu(
     }
 }
 
-@Composable
-fun HeaderWithIconButtonAndTitle(
-    onBackClick: () -> Unit,
-    title: String,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            onClick = { onBackClick.invoke() }
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.ArrowBackIosNew,
-                contentDescription = null,
-                tint = MedTrackerTheme.colors.primary400
-            )
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        
-        Text(
-            title,
-            style = MedTrackerTheme.typography.headline
-        )
-        Spacer(modifier = Modifier.weight(1f))
-    }
-}
+
 
 // endregion
 
@@ -128,9 +101,7 @@ fun HeaderWithIconButtonAndTitle(
 private fun PreviewFortesting() {
     MedTrackerTheme {
         
-        AddNewMedicationScreen(
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
+   
     }
     
 }

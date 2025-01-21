@@ -14,6 +14,8 @@ import androidx.lifecycle.viewmodel.compose.*
 import com.galeria.medicationstracker.data.*
 import com.galeria.medicationstracker.ui.componentsOld.*
 import com.galeria.medicationstracker.ui.screens.medications.*
+import com.galeria.medicationstracker.ui.screens.medications.newmed.DateRangePickerModal
+import com.galeria.medicationstracker.ui.screens.medications.newmed.convertMillisToDate
 import com.galeria.medicationstracker.ui.theme.*
 import com.galeria.medicationstracker.utils.*
 import java.time.*
@@ -208,8 +210,12 @@ fun DatePicker(
         if (showPicker) {
             DateRangePickerModal(
                 onDateRangeSelected = {
-                    viewModel.updateStartDate(parseDateForFirestore(convertMillisToDate(it.first)))
-                    viewModel.updateEndDate(parseDateForFirestore(convertMillisToDate(it.second)))
+                    viewModel.updateStartDate(parseDateForFirestore(
+                        convertMillisToDate(it.first)
+                    ))
+                    viewModel.updateEndDate(parseDateForFirestore(
+                        convertMillisToDate(it.second)
+                    ))
                     showPicker = !showPicker
                 },
                 onDismiss = { showPicker = !showPicker },

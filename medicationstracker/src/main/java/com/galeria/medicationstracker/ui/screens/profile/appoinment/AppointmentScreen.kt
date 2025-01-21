@@ -9,7 +9,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.compose.*
 import com.galeria.medicationstracker.ui.componentsOld.*
-import com.galeria.medicationstracker.ui.screens.medications.*
+import com.galeria.medicationstracker.ui.screens.medications.newmed.convertMillisToDate
 import com.galeria.medicationstracker.ui.screens.profile.*
 import com.galeria.medicationstracker.ui.theme.*
 import com.galeria.medicationstracker.utils.*

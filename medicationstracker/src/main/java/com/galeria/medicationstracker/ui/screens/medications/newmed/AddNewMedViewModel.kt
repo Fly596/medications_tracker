@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.medications
+package com.galeria.medicationstracker.ui.screens.medications.newmed
 
 import android.content.Context
 import android.util.Log
@@ -13,7 +13,7 @@ import com.google.firebase.appcheck.internal.util.Logger.TAG
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 
-data class NewMedicationUiState(
+data class NewMedUiState(
     val uid: String = "",
     val medName: String = "",
     var medForm: MedicationForms = MedicationForms.TABLET, // f
@@ -33,7 +33,7 @@ data class NewMedicationUiState(
 
 class AddNewMedViewModel : ViewModel() {
 
-    var uiState = MutableStateFlow(NewMedicationUiState())
+    var uiState = MutableStateFlow(NewMedUiState())
         private set
     val db = FirestoreService.db
     val auth = FirebaseAuth.getInstance()

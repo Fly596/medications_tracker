@@ -10,7 +10,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
-import com.galeria.medicationstracker.ui.screens.medications.*
+import com.galeria.medicationstracker.ui.screens.medications.newmed.AddNewMedViewModel
 import com.galeria.medicationstracker.ui.screens.medications.update.*
 import com.galeria.medicationstracker.ui.theme.*
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors

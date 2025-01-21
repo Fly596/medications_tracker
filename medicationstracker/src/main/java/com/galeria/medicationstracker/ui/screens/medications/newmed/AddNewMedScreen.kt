@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.medications
+package com.galeria.medicationstracker.ui.screens.medications.newmed
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -14,7 +14,6 @@ import androidx.lifecycle.compose.*
 import androidx.lifecycle.viewmodel.compose.*
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.*
-import com.galeria.medicationstracker.tests.*
 import com.galeria.medicationstracker.ui.componentsOld.*
 import com.galeria.medicationstracker.ui.theme.*
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
