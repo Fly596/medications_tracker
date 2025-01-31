@@ -1,11 +1,12 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
-import androidx.lifecycle.*
-import com.galeria.medicationstracker.data.*
+import androidx.lifecycle.ViewModel
+import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
-import com.google.firebase.auth.*
-import com.google.firebase.firestore.*
-import kotlinx.coroutines.flow.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Source
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 data class MedicationsUiState(
     val userMedications: List<UserMedication> = emptyList(),

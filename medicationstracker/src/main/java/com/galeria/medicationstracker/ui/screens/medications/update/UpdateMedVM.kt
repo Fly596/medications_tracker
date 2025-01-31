@@ -1,16 +1,21 @@
 package com.galeria.medicationstracker.ui.screens.medications.update
 
-import android.content.*
-import android.util.*
-import android.widget.*
-import androidx.compose.runtime.*
-import androidx.lifecycle.*
-import com.galeria.medicationstracker.data.*
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import com.galeria.medicationstracker.data.MedicationForm
+import com.galeria.medicationstracker.data.MedicationUnit
+import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
-import com.google.firebase.*
-import com.google.firebase.auth.*
-import com.google.firebase.firestore.*
-import kotlinx.coroutines.flow.*
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.toObject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 data class UpdateMedUiState(
     val medName: String = "",

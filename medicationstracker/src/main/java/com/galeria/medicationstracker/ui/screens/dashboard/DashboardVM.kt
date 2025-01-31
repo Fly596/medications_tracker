@@ -1,17 +1,24 @@
 package com.galeria.medicationstracker.ui.screens.dashboard
 
-import android.util.*
-import androidx.lifecycle.*
-import com.galeria.medicationstracker.data.*
-import com.galeria.medicationstracker.utils.*
+import android.util.Log
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.galeria.medicationstracker.data.UserIntake
+import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
-import com.google.firebase.*
-import com.google.firebase.auth.*
-import com.google.firebase.firestore.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.tasks.*
-import java.time.*
+import com.galeria.medicationstracker.utils.formatTimestampToWeekday
+import com.galeria.medicationstracker.utils.toLocalDateTime
+import com.galeria.medicationstracker.utils.toTimestamp
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Source
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 
 class DashboardVM() : ViewModel() {
     

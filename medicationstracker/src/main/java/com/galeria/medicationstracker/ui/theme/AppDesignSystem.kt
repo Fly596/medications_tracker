@@ -1,10 +1,14 @@
 package com.galeria.medicationstracker.ui.theme
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.shape.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.text.*
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.ZeroCornerSize
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 
 @Immutable
 data class MedTrackerColors(
