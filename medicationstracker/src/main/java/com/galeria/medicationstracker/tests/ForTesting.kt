@@ -1,8 +1,6 @@
 package com.galeria.medicationstracker.tests
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -17,8 +15,8 @@ import com.galeria.medicationstracker.ui.theme.*
 fun AddNewMedicationScreen(
     modifier: Modifier = Modifier
 ) {
-    val medicationForms =
-        MedicationForms.entries.map {
+    val medicationForm =
+        MedicationForm.entries.map {
             it.name.lowercase().replaceFirstChar { it.uppercase() }
         }
     

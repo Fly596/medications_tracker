@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.*
 
 data class UpdateMedUiState(
     val medName: String = "",
-    val medForm: MedicationForms = MedicationForms.TABLET,
+    val medForm: MedicationForm = MedicationForm.TABLET,
     val endDate: Timestamp = Timestamp.now(),
     val unit: MedicationUnit = MedicationUnit.MG,
     val startDate: Timestamp = Timestamp.now(),
@@ -60,7 +60,7 @@ class UpdateMedVM : ViewModel() {
                     if (_selectedMedication.value != null) {
                         uiState = uiState.copy(
                             medName = _selectedMedication.value!!.name.toString(),
-                            medForm = MedicationForms.valueOf(
+                            medForm = MedicationForm.valueOf(
                                 _selectedMedication.value!!.form.toString()
                             ),
                             endDate = _selectedMedication.value!!.endDate!!,
@@ -162,7 +162,7 @@ class UpdateMedVM : ViewModel() {
         uiState = uiState.copy(medName = input)
     }
     
-    fun updateMedForm(input: MedicationForms) {
+    fun updateMedForm(input: MedicationForm) {
         uiState = uiState.copy(medForm = input)
     }
     

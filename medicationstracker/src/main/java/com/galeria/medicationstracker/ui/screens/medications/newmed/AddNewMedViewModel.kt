@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import com.galeria.medicationstracker.data.MedicationForms
+import com.galeria.medicationstracker.data.MedicationForm
 import com.galeria.medicationstracker.data.MedicationUnit
 import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 data class NewMedUiState(
     val uid: String = "",
     val medName: String = "",
-    var medForm: MedicationForms = MedicationForms.TABLET, // f
+    var medForm: MedicationForm = MedicationForm.TABLET, // f
     val medStrength: Float = 0.0f,
     val chosenStrengths: List<Float> = emptyList(),
     val medUnit: MedicationUnit = MedicationUnit.MG, // f
@@ -27,8 +27,8 @@ data class NewMedUiState(
     val showDatePicker: Boolean = false,
     val showTimePicker: Boolean = false,
     val intakeDays: List<String> = emptyList(),
-    val medicationForms: List<String> =
-        MedicationForms.entries.map { it.name.lowercase().replaceFirstChar { it.uppercase() } }
+    val medicationForm: List<String> =
+        MedicationForm.entries.map { it.name.lowercase().replaceFirstChar { it.uppercase() } }
 )
 
 class AddNewMedViewModel : ViewModel() {
@@ -123,7 +123,7 @@ class AddNewMedViewModel : ViewModel() {
         uiState.value = uiState.value.copy(medName = newName)
     }
 
-    fun updateMedForm(newForm: MedicationForms) {
+    fun updateMedForm(newForm: MedicationForm) {
         uiState.value = uiState.value.copy(medForm = newForm)
     }
 

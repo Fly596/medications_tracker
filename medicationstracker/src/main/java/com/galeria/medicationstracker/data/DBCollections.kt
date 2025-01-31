@@ -67,7 +67,7 @@ sealed class Frequency {
         Frequency()
 }
 
-enum class MedicationForms {
+enum class MedicationForm {
     TABLET,
     CAPSULE,
     LIQUID,

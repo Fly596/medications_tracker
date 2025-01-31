@@ -56,7 +56,7 @@ fun NewMedicationDataScreen(
             // Form.
             item {
                 var selectedForm by remember { mutableStateOf(state.value.medForm) }
-                val options = MedicationForms.entries.toTypedArray()
+                val options = MedicationForm.entries.toTypedArray()
                 
                 FlySimpleCard(
                     content = {

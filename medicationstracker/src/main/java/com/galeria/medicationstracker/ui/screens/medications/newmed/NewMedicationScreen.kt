@@ -5,7 +5,8 @@ import androidx.compose.runtime.Composable
 @Composable
 fun NewMedicationScreen(
     viewModel: NewMedicationViewModel,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
+    onNavigateBack: () -> Unit
 ) {
 
 }

@@ -28,7 +28,6 @@ fun MedicationsScreen(
     medsPagesVM: MedsPagesViewModel = viewModel(),
 ) {
     
-    // LaunchedEffect(Unit) { medicationsViewModel.fetchUserMedications() }
     val uiState by medicationsViewModel.uiState.collectAsStateWithLifecycle()
     
     Column(
