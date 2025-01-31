@@ -55,7 +55,7 @@ fun MedStatCard(
     FlySimpleCard(modifier = modifier) {
         // начальная дата.
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text("Start Date", style = MedTrackerTheme.typography.body)
+            Text("Start Date", style = MedTrackerTheme.typography.bodyMedium)
             Text(startDateFormatted, style = MedTrackerTheme.typography.title3Emphasized)
         }
         HorizontalDivider(color = MedTrackerTheme.colors.opaqueSeparator, thickness = 0.5.dp)
@@ -73,14 +73,14 @@ fun MedStatCardBody(totalTaken: Int, totalSkipped: Int) {
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("Total Taken", style = MedTrackerTheme.typography.body)
+            Text("Total Taken", style = MedTrackerTheme.typography.bodyMedium)
             Text(
                 "${totalTaken} times",
                 style = MedTrackerTheme.typography.title2Emphasized
             )
         }
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("Total Skipped", style = MedTrackerTheme.typography.body)
+            Text("Total Skipped", style = MedTrackerTheme.typography.bodyMedium)
             Text(
                 "${totalSkipped} times",
                 style = MedTrackerTheme.typography.title2Emphasized

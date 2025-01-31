@@ -95,8 +95,8 @@ fun FlyElevatedCardDashboard(
                 modifier = Modifier.fillMaxHeight(),
             ) {
                 Text(title, style = MedTrackerTheme.typography.headline)
-                Text(time, style = MedTrackerTheme.typography.body)
-                Text(info, style = MedTrackerTheme.typography.body)
+                Text(time, style = MedTrackerTheme.typography.bodyMedium)
+                Text(info, style = MedTrackerTheme.typography.bodyMedium)
             }
 
             Spacer(modifier = Modifier.weight(1f))

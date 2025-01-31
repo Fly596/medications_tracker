@@ -84,7 +84,7 @@ fun SettingsCardComponent(
             )
           }
 
-          Text(title, style = MedTrackerTheme.typography.body)
+          Text(title, style = MedTrackerTheme.typography.bodyMedium)
 
         }
 

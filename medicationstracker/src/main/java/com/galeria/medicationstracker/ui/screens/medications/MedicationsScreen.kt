@@ -131,8 +131,8 @@ fun FlyElevatedCardMedsList(
                 
                 Spacer(modifier = Modifier.weight(1f))
                 
-                Text(dosage, style = MedTrackerTheme.typography.body)
-                Text(info, style = MedTrackerTheme.typography.body)
+                Text(dosage, style = MedTrackerTheme.typography.bodyMedium)
+                Text(info, style = MedTrackerTheme.typography.bodyMedium)
             }
             
             Spacer(modifier = Modifier.weight(1f))
@@ -146,7 +146,7 @@ fun FlyElevatedCardMedsList(
                 FlyTextButton(
                     errorButton = true,
                     onClick = { onRemoveMedClick.invoke() },
-                    textStyle = MedTrackerTheme.typography.body
+                    textStyle = MedTrackerTheme.typography.labelLargeEmphasized
                 ) {
                     Text("Delete")
                 }

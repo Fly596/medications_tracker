@@ -47,7 +47,7 @@ fun IntakeRecordsScreen(
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 "History",
-                style = MedTrackerTheme.typography.largeTitleEmphasized,
+                style = MedTrackerTheme.typography.display1Emphasized,
                 modifier = Modifier.padding(start = 8.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -90,12 +90,12 @@ fun LogsCard(name: String, status: String, date: String) {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(
                     text = name,
-                    style = MedTrackerTheme.typography.bodyEmphasized,
+                    style = MedTrackerTheme.typography.bodyMediumEmphasized,
                     color = MedTrackerTheme.colors.primaryLabel
                 )
                 Text(
                     text = (if (status == "true") "Taken" else "Not Taken"),
-                    style = MedTrackerTheme.typography.subhead,
+                    style = MedTrackerTheme.typography.title2,
                     color = MedTrackerTheme.colors.secondaryLabel
                 )
             }
@@ -103,7 +103,7 @@ fun LogsCard(name: String, status: String, date: String) {
             Column {
                 Text(
                     text = date,
-                    style = MedTrackerTheme.typography.subhead,
+                    style = MedTrackerTheme.typography.title2,
                     color = MedTrackerTheme.colors.primaryLabel
                 )
             }

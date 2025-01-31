@@ -69,7 +69,7 @@ fun HIGButton(
         modifier = modifier,
         colors = buttonColors,
     ) {
-        Text(text = text, style = MedTrackerTheme.typography.body)
+        Text(text = text, style = MedTrackerTheme.typography.bodyMedium)
     }
 }
 
@@ -79,7 +79,7 @@ fun HIGListButton(
     onClick: () -> Unit,
     enabled: Boolean = true,
     style: HIGButtonStyle = HIGButtonStyle.Bezeled,
-    textStyle: TextStyle = MedTrackerTheme.typography.body,
+    textStyle: TextStyle = MedTrackerTheme.typography.bodyMedium,
     icon: ImageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
     leftIcon: ImageVector? = null,
     rightText: String? = null
@@ -143,7 +143,7 @@ fun HIGListButton(
 
             Text(
                 text = rightText ?: "",
-                style = MedTrackerTheme.typography.body,
+                style = MedTrackerTheme.typography.bodyMedium,
                 modifier = Modifier.padding(vertical = 8.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -163,7 +163,7 @@ fun FlyTextButton(
     onClick: () -> Unit,
     errorButton: Boolean = false,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = MedTrackerTheme.typography.body,
+    textStyle: TextStyle = MedTrackerTheme.typography.labelLargeEmphasized,
     enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -191,7 +191,7 @@ fun FlyElevatedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = MedTrackerTheme.typography.headline,
+    textStyle: TextStyle = MedTrackerTheme.typography.labelLargeEmphasized,
     shape: Shape = ButtonShape,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -217,7 +217,7 @@ fun FlyButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = MedTrackerTheme.typography.body,
+    textStyle: TextStyle = MedTrackerTheme.typography.labelLargeEmphasized,
     shape: Shape = ButtonShape,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -243,7 +243,7 @@ fun FlyErrorButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = MedTrackerTheme.typography.headline,
+    textStyle: TextStyle = MedTrackerTheme.typography.labelLargeEmphasized,
     shape: Shape = ButtonShape,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -269,7 +269,7 @@ fun FlyTonalButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = MedTrackerTheme.typography.headline,
+    textStyle: TextStyle = MedTrackerTheme.typography.labelLargeEmphasized,
     shape: Shape = ButtonShape,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -331,7 +331,7 @@ fun FlyIconButtonWithText(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         FlyIconButton(onClick = onClick, size = size, icon = icon)
-        Text(text = text, style = MedTrackerTheme.typography.body)
+        Text(text = text, style = MedTrackerTheme.typography.labelLargeEmphasized)
     }
 
 }
@@ -357,7 +357,7 @@ fun GSmallButton(
     )
     {
         Text(
-            text = text, style = MedTrackerTheme.typography.bodyEmphasized,
+            text = text, style = MedTrackerTheme.typography.bodyMediumEmphasized,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
         )
     }
@@ -384,7 +384,7 @@ fun GMediumButton(
     )
     {
         Text(
-            text = text, style = MedTrackerTheme.typography.bodyEmphasized,
+            text = text, style = MedTrackerTheme.typography.bodyMediumEmphasized,
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 7.dp)
         )
     }
@@ -411,7 +411,7 @@ fun GLargeButton(
     )
     {
         Text(
-            text = text, style = MedTrackerTheme.typography.bodyEmphasized,
+            text = text, style = MedTrackerTheme.typography.bodyMediumEmphasized,
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp)
         )
     }

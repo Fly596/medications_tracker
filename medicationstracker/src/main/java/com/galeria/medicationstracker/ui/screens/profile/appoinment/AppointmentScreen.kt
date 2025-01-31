@@ -48,7 +48,7 @@ fun AppointmentScreen(
             ) {
                 Text(
                     text = "Date:",
-                    style = MedTrackerTheme.typography.body,
+                    style = MedTrackerTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -108,7 +108,7 @@ fun AppointmentScreen(
                 val timeFormatter = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
                 Text(
                     text = "Time:",
-                    style = MedTrackerTheme.typography.body,
+                    style = MedTrackerTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -140,7 +140,7 @@ fun AppointmentScreen(
                 } else {
                     Text(
                         "No time selected.",
-                        style = MedTrackerTheme.typography.body,
+                        style = MedTrackerTheme.typography.bodyMedium,
                     )
                 }
                 FlyTonalButton(

@@ -104,7 +104,7 @@ fun ProfileScreen(
                 )
                 Text(
                     text = uiState.value.user?.login.toString(),
-                    style = MedTrackerTheme.typography.body,
+                    style = MedTrackerTheme.typography.bodyMedium,
                     color = MedTrackerTheme.colors.secondaryLabel
                 )
             }
@@ -229,7 +229,7 @@ fun DocListCard(
             )
             Text(
                 text = speciality,
-                style = MedTrackerTheme.typography.footnote
+                style = MedTrackerTheme.typography.labelSmall
             )
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -288,7 +288,7 @@ fun HealthCard(
             ) {
                 Text(
                     text = headText,
-                    style = MedTrackerTheme.typography.bodyEmphasized,
+                    style = MedTrackerTheme.typography.bodyMediumEmphasized,
                     color = textColor
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -312,7 +312,7 @@ fun HealthCard(
                 )
                 Text(
                     text = unitsText,
-                    style = MedTrackerTheme.typography.footnote
+                    style = MedTrackerTheme.typography.labelSmall
                 )
             }
         }

@@ -30,14 +30,14 @@ fun NotificationsSettingsScreen(
       onClick = { /* TODO: Navigates to screen. */ },
       text = "Med alarm sound",
       rightText = "Energy",
-      textStyle = MedTrackerTheme.typography.bodyEmphasized
+      textStyle = MedTrackerTheme.typography.bodyMediumEmphasized
     )
 
     HIGListButton(
       onClick = { /* TODO: Navigates to screen. */ },
       text = "Customize notification",
       rightText = "Compact",
-      textStyle = MedTrackerTheme.typography.bodyEmphasized
+      textStyle = MedTrackerTheme.typography.bodyMediumEmphasized
     )
 
   }
@@ -61,7 +61,7 @@ fun NotificationsSettingsCardComponent(
     ) {
 
       Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Text(title, style = MedTrackerTheme.typography.body)
+        Text(title, style = MedTrackerTheme.typography.bodyMedium)
 
         Spacer(modifier.weight(1f))
 

@@ -35,9 +35,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-
             stringResource(R.string.sign_in_screen_title),
-            style = MedTrackerTheme.typography.largeTitleEmphasized,
+            style = MedTrackerTheme.typography.display2Emphasized,
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -134,7 +133,7 @@ fun RememberMeSwitch(
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             "Show password",
-            style = MedTrackerTheme.typography.body
+            style = MedTrackerTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.width(12.dp))
 

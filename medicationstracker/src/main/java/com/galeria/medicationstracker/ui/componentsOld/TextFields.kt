@@ -33,7 +33,7 @@ fun FlyTableTextField(
     singleLine: Boolean = false,
     isPrimaryColor: Boolean = false,
     supportingText: String? = null,
-    textStyles: TextStyle = MedTrackerTheme.typography.body,
+    textStyles: TextStyle = MedTrackerTheme.typography.bodyMedium,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
 ) {
@@ -47,9 +47,9 @@ fun FlyTableTextField(
         readOnly = readOnly,
         isError = isError,
         textStyle = if (isHeader) {
-            MedTrackerTheme.typography.bodyEmphasized
+            MedTrackerTheme.typography.bodyMediumEmphasized
         } else {
-            MedTrackerTheme.typography.caption1
+            MedTrackerTheme.typography.bodySmall
         },
         onValueChange = onValueChange,
         placeholder = { placeholder?.let { Text(it) } },
@@ -61,9 +61,9 @@ fun FlyTableTextField(
                     label
                 },
                 style = if (isHeader) {
-                    MedTrackerTheme.typography.bodyEmphasized
+                    MedTrackerTheme.typography.bodyMediumEmphasized
                 } else {
-                    MedTrackerTheme.typography.caption1
+                    MedTrackerTheme.typography.bodySmall
                 }
             )
         },
@@ -97,7 +97,7 @@ fun FlyTextField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
-    textStyle: TextStyle = MedTrackerTheme.typography.body,
+    textStyle: TextStyle = MedTrackerTheme.typography.bodyMedium,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -172,7 +172,7 @@ fun MyTextField(
         singleLine = true,
         readOnly = readOnly,
         isError = isError,
-        textStyle = MedTrackerTheme.typography.body,
+        textStyle = MedTrackerTheme.typography.bodyMedium,
         onValueChange = onValueChange,
         placeholder = { placeholder?.let { Text(it) } },
         label = {
@@ -290,7 +290,7 @@ internal fun CustomTextField(
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
     placeholderText: String = "Placeholder",
-    fontSize: TextUnit = MedTrackerTheme.typography.body.fontSize
+    fontSize: TextUnit = MedTrackerTheme.typography.bodyMedium.fontSize
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     BasicTextField(

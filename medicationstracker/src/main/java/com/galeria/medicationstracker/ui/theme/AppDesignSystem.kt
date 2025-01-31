@@ -310,12 +310,15 @@ fun MedTrackerTheme(
             sysBlack,
             sysTransparent,
         )
-    val medTrackerTypography = AppTypography
+    //val medTrackerTypography = AppTypography
+    val gAppTypography = GTypography
     
     
     CompositionLocalProvider(
         LocalMedTrackerColors provides medTrackerColors,
-        LocalMedTrackerTypography provides medTrackerTypography,
+        
+        LocalGAppTypography provides gAppTypography,
+        /* LocalMedTrackerTypography provides medTrackerTypography, */
         content = content,
     )
 }
@@ -324,8 +327,10 @@ object MedTrackerTheme {
     
     val colors: MedTrackerColors
         @Composable get() = LocalMedTrackerColors.current
-    val typography: MedTrackerTypography
-        @Composable get() = LocalMedTrackerTypography.current
+    val typography: GAppTypography
+        @Composable get() = LocalGAppTypography.current
+/*     val typography: MedTrackerTypography
+        @Composable get() = LocalMedTrackerTypography.current */
 }
 
 val ButtonShape = RoundedCornerShape(percent = 50)

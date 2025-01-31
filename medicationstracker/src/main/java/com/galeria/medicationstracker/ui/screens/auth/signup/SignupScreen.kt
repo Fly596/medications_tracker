@@ -37,7 +37,7 @@ fun SignupScreen(
 
         Text(
             stringResource(R.string.sign_up_screen_title),
-            style = MedTrackerTheme.typography.largeTitleEmphasized,
+            style = MedTrackerTheme.typography.display2Emphasized,
         )
 
         Spacer(modifier = Modifier.weight(1f))

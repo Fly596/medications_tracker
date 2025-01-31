@@ -75,12 +75,12 @@ fun CalendarDayItem(dayOfWeek: String, date: String, isSelected: Boolean) {
     ) {
       Text(
         text = dayOfWeek,
-        style = MedTrackerTheme.typography.caption1,
+        style = MedTrackerTheme.typography.bodySmall,
         color = textColor
       )
       Text(
         text = date,
-        style = MedTrackerTheme.typography.body,
+        style = MedTrackerTheme.typography.bodyMedium,
         color = textColor
       )
     }

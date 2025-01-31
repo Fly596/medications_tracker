@@ -34,7 +34,7 @@ fun AccountRecoveryScreen(
 
         Text(
             stringResource(R.string.recover_password_screen_title),
-            style = MedTrackerTheme.typography.largeTitleEmphasized,
+            style = MedTrackerTheme.typography.display2Emphasized,
         )
 
         Spacer(modifier = Modifier.weight(1f))

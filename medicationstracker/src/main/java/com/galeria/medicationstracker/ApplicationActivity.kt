@@ -203,7 +203,7 @@ fun BottomNavBar(
                     label = {
                         Text(
                             text = navItem.title,
-                            style = MedTrackerTheme.typography.body
+                            style = MedTrackerTheme.typography.bodyMedium
                         )
                     },
                     icon = {

@@ -189,21 +189,21 @@ val GTypography =
         display1 =
             TextStyle(
                 fontSize = 57.sp,
-                fontWeight = FontWeight.Normal,
+                fontWeight = FontWeight(400),
                 fontFamily = FontFamily.Default,
                 lineHeight = 64.sp,
             ), // Used for titles and headings that need to make a strong visual impact.
         display1Emphasized =
             TextStyle(
                 fontSize = 57.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight(700),
                 fontFamily = FontFamily.Default,
                 lineHeight = 64.sp,
             ), // Used for titles and headings that need to make a strong visual impact.
         display2 =
             TextStyle(
                 fontSize = 45.sp,
-                fontWeight = FontWeight.Normal,
+                fontWeight = FontWeight(400),
                 fontFamily = FontFamily.Default,
                 lineHeight = 52.sp,
                 // color = Color.Black
@@ -211,7 +211,7 @@ val GTypography =
         display2Emphasized =
             TextStyle(
                 fontSize = 45.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight(700),
                 fontFamily = FontFamily.Default,
                 lineHeight = 52.sp,
                 // color = Color.Black
@@ -219,42 +219,42 @@ val GTypography =
         display3 =
             TextStyle(
                 fontSize = 36.sp,
-                fontWeight = FontWeight.Normal,
+                fontWeight = FontWeight(400),
                 fontFamily = FontFamily.Default,
                 lineHeight = 44.sp,
                 // color = Color.Black
             ),
         display3Emphasized = TextStyle(
             fontSize = 36.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight(700),
             fontFamily = FontFamily.Default,
             lineHeight = 44.sp,
             // color = Color.Black
         ),
         headline = TextStyle(
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Normal,
+            fontSize = 32.sp,
+            fontWeight = FontWeight(400),
             fontFamily = FontFamily.Default,
-            lineHeight = 36.sp,
+            lineHeight = 40.sp,
             // color = Color.Black
         ),
         headlineEmphasized = TextStyle(
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
+            fontSize = 32.sp,
+            fontWeight = FontWeight(700),
             fontFamily = FontFamily.Default,
-            lineHeight = 36.sp,
+            lineHeight = 40.sp,
             // color = Color.Black
         ),
         title1 = TextStyle(
             fontSize = 22.sp,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight(400),
             fontFamily = FontFamily.Default,
             lineHeight = 28.sp,
             // color = Color.Black
         ),
         title1Emphasized = TextStyle(
             fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight(700),
             fontFamily = FontFamily.Default,
             lineHeight = 28.sp,
             // color = Color.Black
@@ -262,70 +262,70 @@ val GTypography =
         title2 = TextStyle(
             fontSize = 16.sp,
             lineHeight = 24.sp,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight(400),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         title2Emphasized = TextStyle(
             fontSize = 16.sp,
             lineHeight = 24.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight(700),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         title3 = TextStyle(
             fontSize = 14.sp,
             lineHeight = 20.sp,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight(400),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         title3Emphasized = TextStyle(
             fontSize = 14.sp,
             lineHeight = 20.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight(700),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         bodyLarge = TextStyle(
             fontSize = 16.sp,
             lineHeight = 24.sp,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight(400),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         bodyLargeEmphasized = TextStyle(
             fontSize = 16.sp,
             lineHeight = 24.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight(700),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         bodyMedium = TextStyle(
             fontSize = 14.sp,
             lineHeight = 20.sp,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight(400),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         bodyMediumEmphasized = TextStyle(
             fontSize = 14.sp,
             lineHeight = 20.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight(700),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         bodySmall = TextStyle(
             fontSize = 12.sp,
             lineHeight = 16.sp,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight(400),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         bodySmallEmphasized = TextStyle(
             fontSize = 12.sp,
             lineHeight = 16.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight(700),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
@@ -333,7 +333,7 @@ val GTypography =
             // button
             fontSize = 14.sp,
             lineHeight = 20.sp,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight(400),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
@@ -341,35 +341,35 @@ val GTypography =
             // button
             fontSize = 14.sp,
             lineHeight = 20.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight(700),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         labelMedium = TextStyle(
             fontSize = 12.sp,
             lineHeight = 16.sp,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight(400),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         labelMediumEmphasized = TextStyle(
             fontSize = 12.sp,
             lineHeight = 16.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight(700),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         labelSmall = TextStyle(
             fontSize = 11.sp,
             lineHeight = 16.sp,
-            fontWeight = FontWeight.Normal,
+            fontWeight = FontWeight(400),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),
         labelSmallEmphasized = TextStyle(
             fontSize = 11.sp,
             lineHeight = 16.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight(700),
             fontFamily = FontFamily.Default,
             // color = Color.Black
         ),

@@ -73,7 +73,7 @@ fun AppointmentsView(
             ) {
                 Text(
                     text = "See All",
-                    style = MedTrackerTheme.typography.caption1Emphasized
+                    style = MedTrackerTheme.typography.bodySmallEmphasized
                 )
             }
         }
@@ -118,11 +118,11 @@ fun AppointmentCard(
             )
             Text(
                 text = name,
-                style = MedTrackerTheme.typography.caption1Emphasized
+                style = MedTrackerTheme.typography.bodySmallEmphasized
             )
             Text(
                 text = time,
-                style = MedTrackerTheme.typography.caption2
+                style = MedTrackerTheme.typography.labelMedium
             )
         }
     }
@@ -157,7 +157,7 @@ fun HeaderSection(
         ) {
             Text(
                 text = title,
-                style = MedTrackerTheme.typography.subhead
+                style = MedTrackerTheme.typography.title3
             )
             Text(
                 name,
@@ -216,7 +216,7 @@ fun AppointmentsStats() {
             ) {
                 Text(
                     text = "Last 12 Month",
-                    style = MedTrackerTheme.typography.caption1Emphasized
+                    style = MedTrackerTheme.typography.labelMedium
                 )
             }
         }
@@ -266,7 +266,7 @@ fun StatisticCard(
         ) {
             Text(
                 text = label,
-                style = MedTrackerTheme.typography.body
+                style = MedTrackerTheme.typography.bodyMedium
             )
 
             Row(

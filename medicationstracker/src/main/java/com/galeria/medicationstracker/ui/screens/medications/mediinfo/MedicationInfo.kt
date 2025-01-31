@@ -162,10 +162,10 @@ fun DetailBox(title: String, content: String) {
     ) {
         Text(
             text = title,
-            style = MedTrackerTheme.typography.caption1,
+            style = MedTrackerTheme.typography.labelMedium,
         )
         Text(
-            text = content, style = MedTrackerTheme.typography.bodyEmphasized
+            text = content, style = MedTrackerTheme.typography.bodyMediumEmphasized
         )
     }
 }

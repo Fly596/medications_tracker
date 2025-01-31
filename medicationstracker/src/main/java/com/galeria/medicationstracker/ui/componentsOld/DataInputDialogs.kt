@@ -31,7 +31,7 @@ fun InputDialog(
             ) {
                 Text(
                     text = "Cancel",
-                    style = MedTrackerTheme.typography.body
+                    style = MedTrackerTheme.typography.bodyMedium
                 )
             }
 
@@ -42,7 +42,7 @@ fun InputDialog(
             ) {
                 Text(
                     text = "Add",
-                    style = MedTrackerTheme.typography.bodyEmphasized
+                    style = MedTrackerTheme.typography.bodyMediumEmphasized
                 )
             }
 

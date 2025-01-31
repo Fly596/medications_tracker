@@ -173,7 +173,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = true,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -182,7 +182,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = false,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -193,7 +193,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = true,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -202,7 +202,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = false,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -213,7 +213,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = true,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -222,7 +222,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = false,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -233,7 +233,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = true,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     }
@@ -242,7 +242,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = false,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     }
@@ -253,7 +253,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = true,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     }
@@ -262,7 +262,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = false,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     }

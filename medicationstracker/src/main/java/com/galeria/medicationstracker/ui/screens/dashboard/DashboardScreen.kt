@@ -182,7 +182,7 @@ fun MedicationItem(
         
         Text(
             text = if (status == 2) "Taken" else if (status == 1) "Skipped" else "",
-            style = typography.caption1,
+            style = typography.bodySmall,
             color = MedTrackerTheme.colors.secondaryLabel
         )
         
