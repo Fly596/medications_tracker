@@ -23,6 +23,8 @@ data class NewMedicationState(
 
 class NewMedicationViewModel : ViewModel() {
     
+
+    
     private val _state = MutableStateFlow(NewMedicationState())
     val state = _state.asStateFlow()
     val db = FirestoreService.db

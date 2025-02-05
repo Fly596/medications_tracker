@@ -23,7 +23,7 @@ import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsViewModel
 import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
 import com.galeria.medicationstracker.ui.screens.medications.mediinfo.ViewMedicationInfoScreen
-import com.galeria.medicationstracker.ui.screens.medications.newmed.NewMedicationDataScreen
+import com.galeria.medicationstracker.ui.screens.medications.newmed.NewMedicationScreen
 import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
 import com.galeria.medicationstracker.ui.screens.profile.ProfileVM
@@ -370,11 +370,19 @@ fun NavGraphBuilder.patientMedsGraph(
         }
         
         composable<PatientRoutes.PatientAddMedication> {
-            NewMedicationDataScreen(
+            NewMedicationScreen(
+                onConfirm = {
+                    navController.navigateUp()
+                },
+                onNavigateBack = {
+                    navController.navigateUp()
+                }
+            )
+            /* NewMedicationDataScreen(
                 onConfirmClick = {
                     navController.navigateUp()
                 },
-            )
+            ) */
         }
         
         composable<PatientRoutes.PatientViewMedication> {
