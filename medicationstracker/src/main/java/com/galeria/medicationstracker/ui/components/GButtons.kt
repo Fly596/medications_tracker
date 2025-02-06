@@ -11,6 +11,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,7 +23,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.ui.theme.GAppTheme
-import com.galeria.medicationstracker.ui.theme.GappTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
 
@@ -30,23 +32,21 @@ fun GPrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = GappTheme.typography.labelLarge,
-    contentPaddings: PaddingValues = PaddingValues(
-        horizontal = 24.dp,
-        vertical = 8.dp
-    ),
-    shape: Shape = GappTheme.shapes.small,
+    textStyle: TextStyle = GAppTheme.typography.labelLargeEmphasized,
     content: @Composable RowScope.() -> Unit,
 ) {
     Button(
         onClick,
         modifier,
         enabled,
-        contentPadding = contentPaddings,
-        shape = shape,
+/*         contentPadding = PaddingValues(
+            horizontal = 24.dp,
+            vertical = 8.dp
+        ), */
+        shape = GAppTheme.shapes.small,
         colors =
             ButtonDefaults.buttonColors(
-                containerColor = colors.primary400,
+                containerColor = colors.sysBlack,
                 contentColor = colors.primaryLabelDark,
                 disabledContainerColor = colors.secondaryFill,
                 disabledContentColor = colors.tertiaryLabel,
@@ -60,12 +60,12 @@ fun GSecondaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = GappTheme.typography.labelLarge,
+    textStyle: TextStyle = GAppTheme.typography.labelLarge,
     contentPaddings: PaddingValues = PaddingValues(
         horizontal = 24.dp,
         vertical = 8.dp
     ),
-    shape: Shape = GappTheme.shapes.small,
+    shape: Shape = GAppTheme.shapes.small,
     content: @Composable RowScope.() -> Unit,
 ) {
     Button(
@@ -90,7 +90,7 @@ fun GTextButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = GappTheme.typography.labelLarge,
+    textStyle: TextStyle = GAppTheme.typography.labelLarge,
     contentPaddings: PaddingValues = PaddingValues(
         horizontal = 24.dp,
         vertical = 8.dp
@@ -102,7 +102,7 @@ fun GTextButton(
         modifier,
         enabled,
         contentPadding = contentPaddings,
-        shape = GappTheme.shapes.small,
+        shape = GAppTheme.shapes.small,
         colors =
             ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
@@ -119,12 +119,12 @@ fun GOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = GappTheme.typography.labelLarge,
+    textStyle: TextStyle = GAppTheme.typography.labelLarge,
     contentPaddings: PaddingValues = PaddingValues(
         horizontal = 24.dp,
         vertical = 8.dp
     ),
-    shape: Shape = GappTheme.shapes.small,
+    shape: Shape = GAppTheme.shapes.small,
     content: @Composable RowScope.() -> Unit,
 ) {
     OutlinedButton(
@@ -132,7 +132,7 @@ fun GOutlinedButton(
         modifier,
         enabled,
         contentPadding = contentPaddings,
-        shape = GappTheme.shapes.small,
+        shape = GAppTheme.shapes.small,
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = colors.primaryLabel,
             disabledContentColor = colors.tertiaryLabel,
@@ -150,12 +150,12 @@ fun GTonalButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = GappTheme.typography.labelLarge,
+    textStyle: TextStyle = GAppTheme.typography.labelLarge,
     contentPaddings: PaddingValues = PaddingValues(
         horizontal = 24.dp,
         vertical = 8.dp
     ),
-    shape: Shape = GappTheme.shapes.small,
+    shape: Shape = GAppTheme.shapes.small,
     content: @Composable RowScope.() -> Unit,
 ) {
     FilledTonalButton(
@@ -173,6 +173,35 @@ fun GTonalButton(
             ),
         content = { ProvideTextStyle(value = textStyle) { content() } },
     )
+}
+
+
+@Composable
+fun GRadioButton(
+    modifier: Modifier = Modifier,
+    caption: String? = null,
+    selected: Boolean,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+) {
+    RadioButton(
+        selected = selected,
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        colors =
+            RadioButtonDefaults.colors(
+                selectedColor = colors.sysBlack,
+                unselectedColor = colors.secondaryLabel,
+                disabledSelectedColor = colors.sysBlack.copy(alpha = 0.38f),
+                disabledUnselectedColor = colors.secondaryLabel.copy(alpha = 0.38f),
+            ),
+    )
+    if (caption != null) {
+        Text(
+            text = caption
+        )
+    }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)

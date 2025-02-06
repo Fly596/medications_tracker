@@ -144,9 +144,7 @@ data class MedTrackerTypography(
     TextStyle, // Smaller caption text, used for additional details or metadata related to an image
     // or graphic.
 )
-
 // TODO: shapes
-
 val LocalMedTrackerColors = staticCompositionLocalOf {
     MedTrackerColors(
         primary400 = Color.Unspecified,
@@ -192,7 +190,6 @@ val LocalMedTrackerColors = staticCompositionLocalOf {
         sysTransparent = Color.Unspecified,
     )
 }
-
 val LocalMedTrackerTypography = staticCompositionLocalOf {
     MedTrackerTypography(
         // Used for titles and headings that need to make a strong visual impact.
@@ -314,14 +311,15 @@ fun MedTrackerTheme(
             sysBlack,
             sysTransparent,
         )
-    //val medTrackerTypography = AppTypography
+    // val medTrackerTypography = AppTypography
     val gAppTypography = GTypography
+    val gAppShapes = GShapes
     
     
     CompositionLocalProvider(
         LocalMedTrackerColors provides medTrackerColors,
-        
         LocalGAppTypography provides gAppTypography,
+        LocalGShapes provides gAppShapes,
         /* LocalMedTrackerTypography provides medTrackerTypography, */
         content = content,
     )
@@ -333,8 +331,8 @@ object MedTrackerTheme {
         @Composable get() = LocalMedTrackerColors.current
     val typography: GAppTypography
         @Composable get() = LocalGAppTypography.current
-/*     val typography: MedTrackerTypography
-        @Composable get() = LocalMedTrackerTypography.current */
+    val shapes: GShapesImmut
+        @Composable get() = LocalGShapes.current
 }
 
 val ButtonShape = RoundedCornerShape(percent = 50)
@@ -401,7 +399,7 @@ fun GAppTheme(
     )
 }
 
-object GappTheme {
+object GAppTheme {
     
     val colors: MedTrackerColors
         @Composable get() = LocalMedTrackerColors.current
