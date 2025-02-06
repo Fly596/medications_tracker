@@ -15,22 +15,30 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.data.MedicationUnit
-import com.galeria.medicationstracker.ui.components.GRadioButtonsGroup
+import com.galeria.medicationstracker.ui.componentsOld.MyRadioButton
 import com.galeria.medicationstracker.ui.componentsOld.MyTextField
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 
 @Composable
 fun NewMedicationScreen(
-    // viewModel: NewMedicationViewModel,
+    viewModel: NewMedicationViewModel = viewModel(),
     modifier: Modifier = Modifier,
     onConfirm: () -> Unit = {},
     onNavigateBack: () -> Unit = {},
 ) {
+    val state = viewModel.state.collectAsStateWithLifecycle()
     // TODO: finish this shi.
     Column(modifier = modifier.fillMaxSize()) {
         // Title.
@@ -56,30 +64,41 @@ fun NewMedicationScreen(
         Spacer(Modifier.height(24.dp))
         
         MyTextField(
-            value = "Name",
-            onValueChange = {},
+            value = state.value.medName,
+            onValueChange = { viewModel.updateName(it) },
             label = "Name",
             isPrimaryColor = true,
             modifier = Modifier.fillMaxWidth()
         )
         
         MyTextField(
-            value = "Strength",
-            onValueChange = {},
+            value = state.value.strength,
+            onValueChange = { viewModel.updateStrength(it) },
             label = "Strength",
             isPrimaryColor = true,
             modifier = Modifier.fillMaxWidth()
         )
-        
-        val options = MedicationUnit.entries.toTypedArray()
-        
- /*        val unitOptions: List<String> = listOf("1", "2")
-        
-        enumValues<MedicationUnit>().forEach {
-            unitOptions.plus(it.toString())
-        } */
-        
-        GRadioButtonsGroup(radioOptions = options)
+        // val options = MedicationUnit.entries.toTypedArray()
+        // val (selectedOption, onOptionSelected) = remember { mutableStateOf(options[0]) }
+        var selectedUnit by remember { mutableStateOf(state.value.unit) }
+        val unitOptions = MedicationUnit.entries.toTypedArray()
+        // Units.
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            unitOptions.forEach { unit ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = unit.toString().lowercase())
+                    MyRadioButton(
+                        selected = selectedUnit == unit,
+                        onClick = {
+                            viewModel.updateUnit(selectedUnit)
+                            selectedUnit = unit
+                        })
+                }
+            }
+        }
     }
 }
 
