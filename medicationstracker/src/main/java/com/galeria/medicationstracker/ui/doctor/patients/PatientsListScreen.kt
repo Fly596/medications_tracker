@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.ui.screens.profile.MyDoctorsList
 
 @Composable
 fun PatientsListScreen(
@@ -43,10 +42,7 @@ fun PatientsListScreen(
       Text(text = "Patients List Screen", style = MaterialTheme.typography.titleMedium)
     }
 
-    MyDoctorsList(
-      modifier = Modifier,
-      listData = patientsList
-    )
+
   }
 
 }

@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.galeria.medicationstracker.data.MedicationForm
 import com.galeria.medicationstracker.data.MedicationUnit
 import com.galeria.medicationstracker.ui.components.GPrimaryButton
 import com.galeria.medicationstracker.ui.components.GRadioButton
@@ -83,8 +84,7 @@ fun NewMedicationScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             modifier = Modifier.fillMaxWidth()
         )
-        // val options = MedicationUnit.entries.toTypedArray()
-        // val (selectedOption, onOptionSelected) = remember { mutableStateOf(options[0]) }
+        
         var selectedUnit by remember { mutableStateOf(state.value.unit) }
         val unitOptions = MedicationUnit.entries.toTypedArray()
         // Units.
@@ -104,6 +104,29 @@ fun NewMedicationScreen(
                 }
             }
         }
+        
+        var selectedForm by remember { mutableStateOf(state.value.form) }
+        val formOptions = MedicationForm.entries.toTypedArray()
+        // Form.
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            formOptions.forEach { form ->
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = form.toString().lowercase())
+                    GRadioButton(
+                        selected = selectedForm == form,
+                        onClick = {
+                            viewModel.updateForm(selectedForm)
+                            selectedForm = form
+                        })
+                }
+            }
+        }
+        
+        //todo: dates
+        
         
         GPrimaryButton(onClick = onConfirm, modifier = Modifier.fillMaxWidth()) {
             Text("Add")

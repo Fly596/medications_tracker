@@ -2,15 +2,19 @@ package com.galeria.medicationstracker.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val gprimaryDark = Color(0xFF121523)
-val gprimary = Color(0xFF30385c)
-val gprimaryLight = Color(0xFF4e5b96)
-
+val gprimary = Color(0xFF121523)
 val gbackground = Color(0xffffffff)
 val gbackgroundSecondary = Color(0xfffcfcff)
 val gbackgroundTertiary = Color(0xffe3e3e6)
+// sys
+val gblack = Color(0xff000000)
+val gwhite = Color(0xffffffff)
+val ggray = Color(0xff423f3f)
+val gred = Color(0xfff20505)
+val ggreen = Color(0xff05f299)
+val gyellow = Color(0xfff2bf05)
+val gtransparent = Color(0x00ffffff)
 
-// todo: labels and syscolors
 
 val primary400 = Color(0xFF0A84FF)
 val primary500 = Color(0xFF0772de)

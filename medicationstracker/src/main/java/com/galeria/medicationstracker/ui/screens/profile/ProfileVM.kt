@@ -3,10 +3,8 @@ package com.galeria.medicationstracker.ui.screens.profile
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.galeria.medicationstracker.data.Appointment
 import com.galeria.medicationstracker.data.User
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions.merge
 import com.google.firebase.firestore.Source
@@ -15,12 +13,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 data class ProfileScreenUiState(
-    val testData: String = "",
+    //val testData: String = "",
     val user: User? = null,
-    val doctors: List<User> = listOf(),
-    val selectedDoctor: User? = null,
-    val selectedTime: String = "",
-    val selectedDate: Timestamp = Timestamp.now(),
+    //val doctors: List<User> = listOf(),
+    //val selectedDoctor: User? = null,
+    //val selectedTime: String = "",
+    //val selectedDate: Timestamp = Timestamp.now(),
     val age: Int = 0,
     val weight: Float = 0.0f,
     val height: Float = 0.0f,
@@ -38,7 +36,7 @@ class ProfileVM : ViewModel() {
 
     init {
         fetchUserData()
-        fetchDoctors()
+        //fetchDoctors()
     }
 
     private fun fetchUserData() {
@@ -63,6 +61,7 @@ class ProfileVM : ViewModel() {
 
     }
 
+/*
     private fun fetchDoctors() {
         viewModelScope.launch {
             val userRef = db.collection("User")
@@ -90,8 +89,9 @@ class ProfileVM : ViewModel() {
             }
         }
     }
+*/
 
-    fun addAppointment() {
+/*     fun addAppointment() {
         viewModelScope.launch {
             val docRef = db.collection("Appointments")
             val appointment = Appointment(
@@ -111,7 +111,7 @@ class ProfileVM : ViewModel() {
                 }
         }
 
-    }
+    } */
 
     fun updateAgeFirestore() {
         val userRef = db.collection("User").document(currentUser?.email.toString())
@@ -188,7 +188,7 @@ class ProfileVM : ViewModel() {
         _uiState.value = _uiState.value.copy(height = height)
     }
 
-    fun updateSelectedDoctor(doctor: User? = null) {
+/*     fun updateSelectedDoctor(doctor: User? = null) {
         _uiState.value = _uiState.value.copy(selectedDoctor = doctor)
     }
 
@@ -198,5 +198,5 @@ class ProfileVM : ViewModel() {
 
     fun updateSelectedDate(date: Timestamp?) {
         _uiState.value = _uiState.value.copy(selectedDate = date ?: Timestamp.now())
-    }
+    } */
 }

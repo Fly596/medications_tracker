@@ -1,5 +1,7 @@
 package com.galeria.medicationstracker.ui.components
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -8,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import com.galeria.medicationstracker.ui.theme.GAppTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.typography
@@ -72,4 +76,18 @@ fun GTextField(
                 errorCursorColor = colors.sysError,
             ),
     )
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+fun GTFPreview() {
+    GAppTheme {
+        Column(modifier = Modifier.fillMaxSize()) {
+            GTextField(
+                value = "value",
+                onValueChange = {},
+                label = "label"
+            )
+        }
+    }
 }

@@ -422,9 +422,9 @@ fun NavGraphBuilder.patientProfileGraph(
                 onWeightClick = {
                     navController.navigate(PatientRoutes.PatientWeightDialog)
                 },
-                onDoctorClick = {
+/*                 onDoctorClick = {
                     navController.navigate(PatientRoutes.PatientAppointment)
-                }
+                } */
             )
         }
         

@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 data class NewMedicationState(
     val medName: String = "",
     val strength: String = "",
-    val form: String = MedicationForm.TABLET.toString().replaceFirstChar { it.uppercase() },
+    val form: MedicationForm = MedicationForm.TABLET/* .toString().replaceFirstChar { it.uppercase() } */,
     val unit: MedicationUnit = MedicationUnit.MG/* .toString().replaceFirstChar { it.uppercase() } */,
     val startDate: Timestamp = Timestamp.now(),
     val endDate: Timestamp = Timestamp.now(),
@@ -41,7 +41,7 @@ class NewMedicationViewModel : ViewModel() {
         _state.value = _state.value.copy(strength = input)
     }
     
-    fun updateForm(input: String) {
+    fun updateForm(input: MedicationForm) {
         _state.value = _state.value.copy(form = input)
     }
     

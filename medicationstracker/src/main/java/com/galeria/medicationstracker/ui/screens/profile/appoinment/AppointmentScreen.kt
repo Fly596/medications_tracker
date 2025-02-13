@@ -35,10 +35,8 @@ import com.galeria.medicationstracker.ui.componentsOld.FlyButton
 import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
 import com.galeria.medicationstracker.ui.componentsOld.FlyTextButton
 import com.galeria.medicationstracker.ui.componentsOld.FlyTonalButton
-import com.galeria.medicationstracker.ui.screens.medications.newmed.convertMillisToDate
 import com.galeria.medicationstracker.ui.screens.profile.ProfileVM
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.galeria.medicationstracker.utils.parseDateForFirestore
 import java.util.Date
 import java.util.Locale
 
@@ -98,7 +96,7 @@ fun AppointmentScreen(
                 ) {
                     Text("Select Date")
                 }
-                if (showDatePicker) {
+ /*                if (showDatePicker) {
                     DatePickerModalInput(
                         onDateSelected = {
                             selectedDate = it
@@ -115,7 +113,7 @@ fun AppointmentScreen(
                             showDatePicker = false
                         }
                     )
-                }
+                } */
             }
         }
 
@@ -140,7 +138,7 @@ fun AppointmentScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
 
-                if (showTimePicker) {
+ /*                if (showTimePicker) {
                     InputExample(
                         onDismiss = {
                             showTimePicker = false
@@ -152,7 +150,7 @@ fun AppointmentScreen(
                         }
                     )
                 }
-
+ */
 
                 if (selectedTimeState != null) {
                     val cal = Calendar.getInstance()
@@ -189,7 +187,7 @@ fun AppointmentScreen(
         ) {
             FlyButton(
                 onClick = {
-                    viewModel.addAppointment()
+                    //viewModel.addAppointment()
                     onBackClick.invoke()
                 },
                 shape = MaterialTheme.shapes.small
