@@ -24,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
+import com.galeria.medicationstracker.utils.formatTimestampTillTheHour
 
 @Composable
 fun IntakeRecordsScreen(
@@ -36,8 +37,7 @@ fun IntakeRecordsScreen(
     
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(top = 16.dp),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // Displays the screen title.
@@ -52,21 +52,19 @@ fun IntakeRecordsScreen(
                 Icon(
                     imageVector = Icons.Rounded.ArrowBackIosNew,
                     contentDescription = null,
-                    tint = MedTrackerTheme.colors.primary400
+                    tint = MedTrackerTheme.colors.sysBlack
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
             Text(
                 "History",
-                style = MedTrackerTheme.typography.display1Emphasized,
+                style = MedTrackerTheme.typography.display3Emphasized,
                 modifier = Modifier.padding(start = 8.dp)
             )
-            Spacer(modifier = Modifier.weight(1f))
             
         }
         
         
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(1.dp))
         
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(intakes) { intake ->
@@ -75,10 +73,17 @@ fun IntakeRecordsScreen(
                 } else {
                     ""
                 }
+                val formatedTime = if (intake.dateTime != null) {
+                    formatTimestampTillTheHour(intake.dateTime)
+                } else {
+                    ""
+                }
+                
                 LogsCard(
                     intake.medicationName.toString(),
                     intake.status.toString(),
-                    date = formattedDate
+                    date = formattedDate,
+                    time = formatedTime
                 )
             }
         }
@@ -86,7 +91,7 @@ fun IntakeRecordsScreen(
 }
 
 @Composable
-fun LogsCard(name: String, status: String, date: String) {
+fun LogsCard(name: String, status: String, date: String, time: String) {
     FlySimpleCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -95,13 +100,13 @@ fun LogsCard(name: String, status: String, date: String) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(4.dp),
             verticalAlignment = Alignment.Top
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
                     text = name,
-                    style = MedTrackerTheme.typography.bodyMediumEmphasized,
+                    style = MedTrackerTheme.typography.bodyLargeEmphasized,
                     color = MedTrackerTheme.colors.primaryLabel
                 )
                 Text(
@@ -111,10 +116,18 @@ fun LogsCard(name: String, status: String, date: String) {
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
-            Column {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.End
+            ) {
                 Text(
                     text = date,
                     style = MedTrackerTheme.typography.title2,
+                    color = MedTrackerTheme.colors.primaryLabel
+                )
+                Text(
+                    text = time,
+                    style = MedTrackerTheme.typography.title2Emphasized,
                     color = MedTrackerTheme.colors.primaryLabel
                 )
             }

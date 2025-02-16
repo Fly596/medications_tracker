@@ -50,7 +50,7 @@ val AppTypography =
             ),
         title2Emphasized =
             TextStyle(
-                fontSize = 22.sp,
+                fontSize = 36.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = FontFamily.Default,
                 lineHeight = 28.sp,

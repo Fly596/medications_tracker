@@ -13,6 +13,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Source
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -30,6 +31,9 @@ class DashboardVM() : ViewModel() {
     val currentTakenMedications = _currentTakenMedications.asStateFlow()
     val firebaseAuth = FirebaseAuth.getInstance()
     val currentUserId = firebaseAuth.currentUser?.uid
+    private val _intakeStatus = MutableStateFlow(0)
+    val intakeStatus: StateFlow<Int> = _intakeStatus.asStateFlow()
+    
     
     init {
         // Получение списка активных лекарств пациента.
@@ -102,7 +106,37 @@ class DashboardVM() : ViewModel() {
     
     // Проверка на то, был ли сегодня прием или нет.
     // -1: error; 0: noData, 1: skipped, 2: taken
-    suspend fun checkIntake(medication: UserMedication): Int {
+    fun checkIntake(medication: UserMedication) {
+        viewModelScope.launch {
+            val status = fetchIntakeStatus(medication)
+            _intakeStatus.value = status
+        }
+    }
+    /*     private suspend fun fetchIntakeStatus(medication: UserMedication): Int {
+            val todayStart = LocalDate.now().atStartOfDay().toTimestamp()
+            val todayEnd = LocalDate.now().plusDays(1).atStartOfDay().toTimestamp()
+            return try {
+                val querySnapshot = db.collection("User")
+                    .document("${FirebaseAuth.getInstance().currentUser?.email}")
+                    .collection("intakes")
+                    .whereEqualTo("medicationName", medication.name)
+                    .whereGreaterThanOrEqualTo("dateTime", todayStart)
+                    .whereLessThan("dateTime", todayEnd)
+                    .limit(1)
+                    .get(Source.SERVER)
+                    .await()
+                
+                if (!querySnapshot.isEmpty) {
+                    if (querySnapshot.toObjects(UserIntake::class.java)[0].status == true) 2 else 1
+                } else {
+                    0
+                }
+            } catch (e: Exception) {
+                Log.e("checkIntake", "Error fetching intake data", e)
+                -1
+            }
+        } */
+    suspend fun fetchIntakeStatus(medication: UserMedication): Int {
         val todayStart = LocalDate.now().atStartOfDay().toTimestamp()
         val todayEnd = LocalDate.now().plusDays(1).atStartOfDay().toTimestamp()
         var ret = -1
@@ -115,7 +149,7 @@ class DashboardVM() : ViewModel() {
                 .whereGreaterThanOrEqualTo("dateTime", todayStart)
                 .whereLessThan("dateTime", todayEnd)
                 .limit(1)
-                .get(Source.DEFAULT)
+                .get(Source.SERVER)
                 .await()
             
             if (!querySnapshot.isEmpty) {

@@ -9,6 +9,11 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+fun getTodaysDate(): LocalDate {
+    // Gets the current date using the system's default time zone.
+    return LocalDate.now(ZoneId.systemDefault())
+}
+
 fun getStringFormattedDate(inputDate: LocalDate): String {
     val dateFormatter = DateTimeFormatter.ofPattern("MMM dd")
     val formattedCurrentDate = inputDate.format(dateFormatter)
@@ -44,6 +49,11 @@ fun parseDateForFirestore(dateString: String): Timestamp? {
 
 fun formatTimestampTillTheDay(timestamp: Timestamp): String {
     val formatter = SimpleDateFormat("MMMM dd yyyy", Locale.getDefault())
+    return formatter.format(timestamp.toDate())
+}
+
+fun formatTimestampTillTheHour(timestamp: Timestamp): String {
+    val formatter = SimpleDateFormat("K:m a", Locale.getDefault())
     return formatter.format(timestamp.toDate())
 }
 

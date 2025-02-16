@@ -1,22 +1,17 @@
 package com.galeria.medicationstracker.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,19 +19,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.componentsOld.FLySimpleCardContainer
 import com.galeria.medicationstracker.ui.componentsOld.FlyButton
@@ -44,6 +38,8 @@ import com.galeria.medicationstracker.ui.componentsOld.LogMedicationTimeDialog
 import com.galeria.medicationstracker.ui.componentsOld.WeeklyCalendarView
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.typography
+import com.galeria.medicationstracker.utils.getTodaysDate
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,6 +55,11 @@ fun DashboardScreen(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        // today's date.
+        Text(
+            text = getTodaysDate().format(DateTimeFormatter.ofPattern("MMM d")),
+            style = MedTrackerTheme.typography.display3
+        )
         // Календарь на неделю.
         WeeklyCalendarView()
         // логи.
@@ -70,66 +71,12 @@ fun DashboardScreen(
         ) {
             Text("View Logs")
         }
-        
-        ServicesElements()
         // Medication Cards List.
         MedsByIntakeTimeList(
             viewModel = dashboardViewModel,
             medicationsForIntakeTime = currentMedications
         )
     }
-}
-
-@Composable
-fun ServicesElements() {
-    Column(modifier = Modifier) {
-        Text(
-            text = "Services",
-            style = MedTrackerTheme.typography.title2Emphasized,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            ServiceCard(
-                painterResource(R.drawable.doctor_logo)
-            )
-            ServiceCard(
-                painterResource(R.drawable.pill_logo)
-            )
-            ServiceCard(
-                painterResource(R.drawable.schedule_icon)
-            )
-        }
-    }
-    
-}
-
-@Composable
-fun ServiceCard(icon: Painter) {
-    Card(
-        modifier = Modifier
-            .size(76.dp),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MedTrackerTheme.colors.primaryTinted,
-            contentColor = MedTrackerTheme.colors.primaryLabel
-        )
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                modifier = Modifier.size(44.dp),
-                painter = icon,
-                contentDescription = null,
-                tint = MedTrackerTheme.colors.secondary600,
-            )
-        }
-    }
-    
 }
 
 // Список лекарств по времени приема.
@@ -157,7 +104,7 @@ fun MedsByIntakeTimeList(
                         // Время приема.
                         Text(
                             text = intakeTime.toString(),
-                            style = typography.headline,
+                            style = typography.title1,
                             modifier = Modifier.padding(0.dp)
                         )
                         // Лекарства на это время.
@@ -180,8 +127,12 @@ fun MedicationItem(
     medication: UserMedication,
     icon: ImageVector = Icons.Filled.Medication
 ) {
-    // State to control the visibility of the log medication dialog.
-    val showLogDialog = remember { mutableStateOf(false) }
+    val showLogDialog = rememberSaveable { mutableStateOf(false) }
+    /*     val intakeStatus by viewModel.intakeStatus.collectAsState()
+        
+        LaunchedEffect(medication) {
+            viewModel.checkIntake(medication)
+        } */
     
     Row(
         modifier = Modifier,
@@ -194,17 +145,21 @@ fun MedicationItem(
             modifier = Modifier.size(32.dp)
         )
         
-        Text(text = medication.name.toString(), style = typography.headline)
+        Text(text = medication.name.toString(), style = typography.bodyLarge)
         
         Spacer(modifier = Modifier.weight(1f))
         // State to control the check icon.
-        var status by remember { mutableStateOf(0) }
+        var status by remember { mutableIntStateOf(0) }
         LaunchedEffect(medication) {
-            status = viewModel.checkIntake(medication)
+            status = viewModel.fetchIntakeStatus(medication)
         }
         
         Text(
-            text = if (status == 2) "Taken" else if (status == 1) "Skipped" else "",
+            text = when (status) {
+                2 -> "Taken"
+                1 -> "Skipped"
+                else -> ""
+            },
             style = typography.bodySmall,
             color = MedTrackerTheme.colors.secondaryLabel
         )
@@ -215,24 +170,17 @@ fun MedicationItem(
                 showLogDialog.value = !showLogDialog.value
             }) {
             Icon(
-                imageVector = if (status == 2) {
-                    // taken
-                    Icons.Filled.CheckCircle
-                } else if (status == 1) {
-                    // skipped
-                    Icons.Filled.CheckCircle
-                } else {
-                    // nodata
-                    Icons.Outlined.CheckCircle
+                imageVector = when (status) {
+                    2 -> Icons.Filled.CheckCircle
+                    1 -> Icons.Filled.CheckCircle
+                    else -> Icons.Outlined.CheckCircle
                 },
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
-                tint = if (status == 2) {
-                    MedTrackerTheme.colors.sysSuccess
-                } else if (status == 1) {
-                    MedTrackerTheme.colors.sysWarning
-                } else {
-                    MedTrackerTheme.colors.tertiaryLabel
+                tint = when (status) {
+                    2 -> MedTrackerTheme.colors.sysSuccess
+                    1 -> MedTrackerTheme.colors.sysWarning
+                    else -> MedTrackerTheme.colors.tertiaryLabel
                 }
             )
         }

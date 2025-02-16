@@ -120,7 +120,7 @@ class HeadActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(it)
-                            .padding(horizontal = 16.dp),
+                            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                         navController = navController,
                         startDestination = currentDestination
                     )

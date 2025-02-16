@@ -32,7 +32,7 @@ class RecordsVM : ViewModel() {
     
     private fun fetchUserIntakes() {
         viewModelScope.launch {
-            val intakesRef = db.collection("User")
+            db.collection("User")
                 .document("${FirebaseAuth.getInstance().currentUser?.email}")
                 .collection("intakes")
                 .orderBy("dateTime", Query.Direction.DESCENDING)
