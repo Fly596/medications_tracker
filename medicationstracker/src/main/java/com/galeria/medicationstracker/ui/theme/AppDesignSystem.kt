@@ -11,6 +11,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 
 @Immutable
+data class GMedTrackerColors(
+    val gPrimary: Color,
+    val gPrimarybackground: Color,
+    val gSecondarybackground: Color,
+    val gSurface: Color,
+    val gPrimarytext: Color,
+    val gSecondarytext: Color,
+    val gDisabledtext: Color,
+    val gSeparator: Color,
+    val gOpaqueSeparator: Color,
+    val systemBlack: Color,
+    val systemWhite: Color,
+    val systemRed: Color,
+    val systemGreen: Color,
+    val systemYellow: Color,
+    val systemTransparent: Color,
+)
+
+@Immutable
 data class MedTrackerColors(
     val primary400: Color,
     val primary500: Color,
@@ -144,6 +163,7 @@ data class MedTrackerTypography(
     TextStyle, // Smaller caption text, used for additional details or metadata related to an image
     // or graphic.
 )
+
 // TODO: shapes
 val LocalMedTrackerColors = staticCompositionLocalOf {
     MedTrackerColors(
@@ -219,6 +239,8 @@ val LocalMedTrackerTypography = staticCompositionLocalOf {
         caption2Emphasized = TextStyle.Default,
     )
 }
+
+// region G
 val LocalGAppTypography = staticCompositionLocalOf {
     GAppTypography(
         display1 = TextStyle.Default,
@@ -261,7 +283,27 @@ val LocalGShapes = staticCompositionLocalOf {
         rectangle = RoundedCornerShape(ZeroCornerSize),
     )
 }
+val LocalGColors = staticCompositionLocalOf {
+    GMedTrackerColors(
+        gPrimary = Color.Unspecified,
+        gPrimarybackground = Color.Unspecified,
+        gSecondarybackground = Color.Unspecified,
+        gSurface = Color.Unspecified,
+        gPrimarytext = Color.Unspecified,
+        gSecondarytext = Color.Unspecified,
+        gDisabledtext = Color.Unspecified,
+        gSeparator = Color.Unspecified,
+        gOpaqueSeparator = Color.Unspecified,
+        systemBlack = Color.Unspecified,
+        systemWhite = Color.Unspecified,
+        systemRed = Color.Unspecified,
+        systemGreen = Color.Unspecified,
+        systemYellow = Color.Unspecified,
+        systemTransparent = Color.Unspecified,
+    )
+}
 
+// endregion
 @Composable
 fun MedTrackerTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -345,54 +387,30 @@ fun GAppTheme(
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {
-    val gAppColors =
-        MedTrackerColors(
-            primary400,
-            primary500,
-            primary600,
-            primaryLight,
-            primaryTinted,
-            secondary400,
-            secondary500,
-            secondary600,
-            secondaryLight,
-            secondaryTinted,
-            primaryFill,
-            secondaryFill,
-            tertiaryFill,
-            primaryBackground,
-            secondaryBackground,
-            tertiaryBackground,
-            primaryBackgroundGrouped,
-            secondaryBackgroundGrouped,
-            tertiaryBackgroundGrouped,
-            primaryBackgroundDark,
-            secondaryBackgroundDark,
-            tertiaryBackgroundDark,
-            primaryGroupedBackgroundDark,
-            secondaryGroupedBackgroundDark,
-            tertiaryGroupedBackgroundDark,
-            primaryLabel,
-            secondaryLabel,
-            tertiaryLabel,
-            primaryLabelDark,
-            secondaryLabelDark,
-            tertiaryLabelDark,
-            separator,
-            opaqueSeparator,
-            sysError,
-            sysWarning,
-            sysSuccess,
-            sysWhite,
-            sysBlack,
-            sysTransparent,
+    val gMedTrackerColors =
+        GMedTrackerColors(
+            gPrimary,
+            gPrimarybackground,
+            gSecondarybackground,
+            gSurface,
+            gPrimarytext,
+            gSecondarytext,
+            gDisabledtext,
+            gSeparator,
+            gOpaqueSeparator,
+            gblack,
+            gwhite,
+            gred,
+            ggreen,
+            gyellow,
+            gtransparent,
         )
     val gAppTypography = GTypography
     val gAppShapes = GShapes
     
     
     CompositionLocalProvider(
-        LocalMedTrackerColors provides gAppColors,
+        LocalGColors provides gMedTrackerColors,
         LocalGAppTypography provides gAppTypography,
         LocalGShapes provides gAppShapes,
         content = content,
@@ -401,8 +419,8 @@ fun GAppTheme(
 
 object GAppTheme {
     
-    val colors: MedTrackerColors
-        @Composable get() = LocalMedTrackerColors.current
+    val colors: GMedTrackerColors
+        @Composable get() = LocalGColors.current
     val typography: GAppTypography
         @Composable get() = LocalGAppTypography.current
     val shapes: GShapesImmut

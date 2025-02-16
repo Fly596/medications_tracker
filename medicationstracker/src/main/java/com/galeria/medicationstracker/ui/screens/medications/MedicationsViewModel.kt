@@ -16,15 +16,11 @@ class MedicationsViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(MedicationsUiState())
     val uiState = _uiState.asStateFlow()
-    var patient: String = "KT95DFgGbgYt90QtKjIYSApXKqw1"
-    var doctor: String = "suAPx8M00vdYqqpWnahF7Ce6pJl2"
-    var admin: String = "sT3E84Rw8oNiI4hBQwavVo3dhjy1"
     private val db = FirestoreService.db
     val firebaseAuth = FirebaseAuth.getInstance()
     private val user = firebaseAuth.currentUser
     val userId = user?.uid
     private var _userMedications = MutableStateFlow<List<UserMedication>?>(null)
-    var userMedications = _userMedications.asStateFlow()
 
     init {
         fetchUserMedications()

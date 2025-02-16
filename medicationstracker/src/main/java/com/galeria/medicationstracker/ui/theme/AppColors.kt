@@ -2,14 +2,19 @@ package com.galeria.medicationstracker.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val gprimary = Color(0xFF121523)
-val gbackground = Color(0xffffffff)
-val gbackgroundSecondary = Color(0xfffcfcff)
-val gbackgroundTertiary = Color(0xffe3e3e6)
-// sys
+val gPrimary = Color(0xFF0772de)
+val gPrimarybackground = Color(0xffffffff)
+val gSecondarybackground = Color(0xffF0F0F2)
+val gSurface = Color(0xffF0F0F2)
+val gPrimarytext = Color(0xff000000)
+val gSecondarytext = Color(0xff787880)
+val gDisabledtext = Color(0xFFBDBDBF)
+val gSeparator = Color(0x56545456)
+val gOpaqueSeparator = Color(0xFFC6C6C8)
+
+// system
 val gblack = Color(0xff000000)
 val gwhite = Color(0xffffffff)
-val ggray = Color(0xff423f3f)
 val gred = Color(0xfff20505)
 val ggreen = Color(0xff05f299)
 val gyellow = Color(0xfff2bf05)
