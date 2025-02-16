@@ -39,10 +39,10 @@ fun GPrimaryButton(
         onClick,
         modifier,
         enabled,
-/*         contentPadding = PaddingValues(
-            horizontal = 24.dp,
-            vertical = 8.dp
-        ), */
+        /*         contentPadding = PaddingValues(
+                    horizontal = 24.dp,
+                    vertical = 8.dp
+                ), */
         shape = GAppTheme.shapes.small,
         colors =
             ButtonDefaults.buttonColors(
@@ -89,6 +89,7 @@ fun GSecondaryButton(
 fun GTextButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    errorButton: Boolean = false,
     enabled: Boolean = true,
     textStyle: TextStyle = GAppTheme.typography.labelLarge,
     contentPaddings: PaddingValues = PaddingValues(
@@ -103,13 +104,19 @@ fun GTextButton(
         enabled,
         contentPadding = contentPaddings,
         shape = GAppTheme.shapes.small,
-        colors =
-            ButtonDefaults.buttonColors(
+        colors = if (errorButton) {
+            ButtonDefaults.textButtonColors(
+                contentColor = colors.sysError,
+                containerColor = colors.sysTransparent,
+            )
+        } else {
+            ButtonDefaults.textButtonColors(
                 containerColor = Color.Transparent,
                 contentColor = colors.primary400,
                 disabledContainerColor = Color.Transparent,
                 disabledContentColor = colors.tertiaryLabel,
-            ),
+            )
+        },
         content = { ProvideTextStyle(value = textStyle) { content() } },
     )
 }
@@ -174,7 +181,6 @@ fun GTonalButton(
         content = { ProvideTextStyle(value = textStyle) { content() } },
     )
 }
-
 
 @Composable
 fun GRadioButton(

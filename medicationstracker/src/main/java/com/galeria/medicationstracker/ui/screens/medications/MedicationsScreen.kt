@@ -28,9 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.data.UserMedication
-import com.galeria.medicationstracker.ui.componentsOld.FlyButton
-import com.galeria.medicationstracker.ui.componentsOld.FlyTextButton
-import com.galeria.medicationstracker.ui.componentsOld.NavigationRow
+import com.galeria.medicationstracker.ui.components.GPrimaryButton
+import com.galeria.medicationstracker.ui.components.GTextButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +42,6 @@ fun MedicationsScreen(
     medicationsViewModel: MedicationsViewModel = viewModel(),
     medsPagesVM: MedsPagesViewModel = viewModel(),
 ) {
-    
     val uiState by medicationsViewModel.uiState.collectAsStateWithLifecycle()
     
     Column(
@@ -52,18 +50,18 @@ fun MedicationsScreen(
             .padding(top = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            
             items(uiState.userMedications) { med ->
                 FlyElevatedCardMedsList(
                     title = med.name.toString(),
                     dosage = ("${med.strength} ${
-                        med.unit.toString().lowercase()
+                        med.unit.toString()
+                            .lowercase()
                     }"),
-                    info = med.form.toString().lowercase(),
+                    info = med.form.toString()
+                        .lowercase(),
                     onEditClick = { onEditMedClick(med.name.toString()) },
                     onRemoveMedClick = {
                         medicationsViewModel.deleteMedicationFromFirestore(med.name.toString())
@@ -77,7 +75,7 @@ fun MedicationsScreen(
             
             item {
                 // Button to add a new medication.
-                FlyButton(
+                GPrimaryButton(
                     onClick = {
                         onAddMedClick.invoke()
                         /*                         try {
@@ -92,7 +90,6 @@ fun MedicationsScreen(
                 }
             }
         }
-        
     }
 }
 
@@ -137,7 +134,6 @@ fun FlyElevatedCardMedsList(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxHeight(),
@@ -153,21 +149,21 @@ fun FlyElevatedCardMedsList(
             Spacer(modifier = Modifier.weight(1f))
             
             Column(Modifier, horizontalAlignment = Alignment.End) {
-                NavigationRow(
-                    onClick = onEditClick,
-                    label = "Edit",
-                )
+                GTextButton(
+                    onEditClick
+                ) {
+                    Text("Edit")
+                }
                 
-                FlyTextButton(
+                
+                GTextButton(
                     errorButton = true,
                     onClick = { onRemoveMedClick.invoke() },
                     textStyle = MedTrackerTheme.typography.labelLargeEmphasized
                 ) {
                     Text("Delete")
                 }
-                
             }
-            
         }
     }
 }
@@ -187,6 +183,5 @@ fun FlyElevatedCardMedsListPreview() {
                 onViewMed = { /*TODO*/ }
             )
         }
-        
     }
 }

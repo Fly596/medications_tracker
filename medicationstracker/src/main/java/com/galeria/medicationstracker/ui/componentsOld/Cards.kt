@@ -182,12 +182,6 @@ fun NavigationRow(onClick: () -> Unit, label: String? = null) {
             if (label != null) {
                 Text(label)
             }
-            /*       Icon(
-                    imageVector = Icons.Filled.Edit,
-                    contentDescription = null,
-                    tint = MedTrackerTheme.colors.secondary400,
-                    modifier = Modifier.padding(start = 8.dp),
-                  ) */
         }
     }
 }

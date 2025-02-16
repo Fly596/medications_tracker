@@ -4,8 +4,8 @@ plugins {
     id("com.google.gms.google-services")
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -75,5 +75,7 @@ dependencies {
     
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    // Hilt
+    implementation(libs.androidx.hilt.navigation.compose)
 }
 

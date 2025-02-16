@@ -112,30 +112,7 @@ class DashboardVM() : ViewModel() {
             _intakeStatus.value = status
         }
     }
-    /*     private suspend fun fetchIntakeStatus(medication: UserMedication): Int {
-            val todayStart = LocalDate.now().atStartOfDay().toTimestamp()
-            val todayEnd = LocalDate.now().plusDays(1).atStartOfDay().toTimestamp()
-            return try {
-                val querySnapshot = db.collection("User")
-                    .document("${FirebaseAuth.getInstance().currentUser?.email}")
-                    .collection("intakes")
-                    .whereEqualTo("medicationName", medication.name)
-                    .whereGreaterThanOrEqualTo("dateTime", todayStart)
-                    .whereLessThan("dateTime", todayEnd)
-                    .limit(1)
-                    .get(Source.SERVER)
-                    .await()
-                
-                if (!querySnapshot.isEmpty) {
-                    if (querySnapshot.toObjects(UserIntake::class.java)[0].status == true) 2 else 1
-                } else {
-                    0
-                }
-            } catch (e: Exception) {
-                Log.e("checkIntake", "Error fetching intake data", e)
-                -1
-            }
-        } */
+    
     suspend fun fetchIntakeStatus(medication: UserMedication): Int {
         val todayStart = LocalDate.now().atStartOfDay().toTimestamp()
         val todayEnd = LocalDate.now().plusDays(1).atStartOfDay().toTimestamp()
