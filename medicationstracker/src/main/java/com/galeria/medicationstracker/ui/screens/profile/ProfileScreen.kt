@@ -13,8 +13,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.ui.componentsOld.FlyTextButton
+import com.galeria.medicationstracker.ui.components.GTextButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 
@@ -40,8 +38,7 @@ fun ProfileScreen(
     
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(top = 16.dp),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
@@ -53,17 +50,17 @@ fun ProfileScreen(
         ) {
             Text(
                 text = "Profile",
-                style = MedTrackerTheme.typography.title1
+                style = MedTrackerTheme.typography.display3
             )
-            FlyTextButton(
+            GTextButton(
                 onClick = {
                     /* TODO: open health */
                 },
+                textStyle = MedTrackerTheme.typography.bodyLarge,
             ) {
                 Text(text = "Edit")
             }
         }
-        
         HorizontalDivider(
             thickness = 1.dp,
             color = MedTrackerTheme.colors.separator,
@@ -89,33 +86,30 @@ fun ProfileScreen(
             ) {
                 Text(
                     text = uiState.value.user?.name.toString(),
-                    style = MedTrackerTheme.typography.title3,
+                    style = MedTrackerTheme.typography.title1,
                     color = MedTrackerTheme.colors.primaryLabel
                 )
                 Text(
                     text = uiState.value.user?.login.toString(),
-                    style = MedTrackerTheme.typography.bodyMedium,
-                    color = MedTrackerTheme.colors.secondaryLabel
+                    style = MedTrackerTheme.typography.title3,
+                    color = MedTrackerTheme.colors.primaryLabel
                 )
                 // age, weight, height.
-                Row(modifier = Modifier) {
-                    TextField(
-                        value = uiState.value.age.toString(),
-                        onValueChange = { viewModel.updateAge(it.toInt()) },
-                        readOnly = true,
-                        singleLine = true,
+                Column(modifier = Modifier) {
+                    Text(
+                        text = "${uiState.value.age} yr",
+                        style = MedTrackerTheme.typography.bodyMediumEmphasized,
+                        color = MedTrackerTheme.colors.secondaryLabel
                     )
-                    TextField(
-                        value = uiState.value.height.toString(),
-                        onValueChange = { viewModel.updateHeight(it.toFloat()) },
-                        readOnly = true,
-                        singleLine = true,
+                    Text(
+                        text = "${uiState.value.height} cm",
+                        style = MedTrackerTheme.typography.bodyMediumEmphasized,
+                        color = MedTrackerTheme.colors.secondaryLabel
                     )
-                    TextField(
-                        value = uiState.value.weight.toString(),
-                        onValueChange = { viewModel.updateWeight(it.toFloat()) },
-                        readOnly = true,
-                        singleLine = true,
+                    Text(
+                        text = "${uiState.value.weight} kg",
+                        style = MedTrackerTheme.typography.bodyMediumEmphasized,
+                        color = MedTrackerTheme.colors.secondaryLabel
                     )
                 }
             }
@@ -125,7 +119,7 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             item {
-                TextButton(
+                GTextButton(
                     modifier = Modifier,
                     onClick = {
                         // TODO: history page
@@ -138,7 +132,7 @@ fun ProfileScreen(
                 }
             }
             item {
-                TextButton(
+                GTextButton(
                     modifier = Modifier,
                     onClick = {
                         // TODO: medications page
@@ -151,7 +145,6 @@ fun ProfileScreen(
                 }
             }
         }
-        
         // TODO: pages.
     }
 }

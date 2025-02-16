@@ -91,7 +91,7 @@ fun GTextButton(
     modifier: Modifier = Modifier,
     errorButton: Boolean = false,
     enabled: Boolean = true,
-    textStyle: TextStyle = GAppTheme.typography.labelLarge,
+    textStyle: TextStyle = GAppTheme.typography.bodyMedium,
     contentPaddings: PaddingValues = PaddingValues(
         horizontal = 24.dp,
         vertical = 8.dp

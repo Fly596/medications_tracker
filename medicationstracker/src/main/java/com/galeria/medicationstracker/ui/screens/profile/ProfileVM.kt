@@ -4,13 +4,16 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.User
+import com.galeria.medicationstracker.data.UserRepository
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions.merge
 import com.google.firebase.firestore.Source
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class ProfileScreenUiState(
     //val testData: String = "",
@@ -25,7 +28,10 @@ data class ProfileScreenUiState(
     val name: String = "",
 )
 
-class ProfileVM : ViewModel() {
+@HiltViewModel
+class ProfileVM @Inject constructor(
+    private val repository: UserRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -35,7 +41,11 @@ class ProfileVM : ViewModel() {
     private val currentUserId = firebaseAuth.currentUser?.uid
 
     init {
-        fetchUserData()
+        viewModelScope.launch {
+            val user = repository.getUserData(currentUserId.toString())
+            _uiState.value = _uiState.value.copy(user = user)
+        }
+        // fetchUserData()
         //fetchDoctors()
     }
 

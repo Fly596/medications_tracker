@@ -2,7 +2,7 @@ package com.galeria.medicationstracker.ui.screens.medications
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.galeria.medicationstracker.data.FirebaseRepository
+import com.galeria.medicationstracker.data.MedicationsRepository
 import com.galeria.medicationstracker.data.UserMedication
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,10 +17,9 @@ data class MedicationsUiState(
 
 @HiltViewModel
 class MedicationsViewModel @Inject constructor(
-    private val repository: FirebaseRepository
+    private val repository: MedicationsRepository
 ) : ViewModel() {
     
-    // private val repository = FirebaseRepositoryImpl()
     private val _uiState = MutableStateFlow(MedicationsUiState())
     val uiState = _uiState.asStateFlow()
     private val userId = FirebaseAuth.getInstance().currentUser?.uid

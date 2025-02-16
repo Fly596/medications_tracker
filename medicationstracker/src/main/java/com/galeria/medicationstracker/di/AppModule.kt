@@ -1,13 +1,16 @@
 package com.galeria.medicationstracker.di
 
-import com.galeria.medicationstracker.data.FirebaseRepository
-import com.galeria.medicationstracker.data.FirebaseRepositoryImpl
+import com.galeria.medicationstracker.data.MedicationsRepository
+import com.galeria.medicationstracker.data.MedicationsRepositoryImpl
+import com.galeria.medicationstracker.data.UserRepository
+import com.galeria.medicationstracker.data.UserRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 
 @Module
@@ -21,10 +24,19 @@ object AppModule {
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
     
     @Provides
+    @Singleton
     fun provideFirestoreRepository(
         firestore: FirebaseFirestore
-    ): FirebaseRepository {
-        return FirebaseRepositoryImpl(firestore)
+    ): MedicationsRepository {
+        return MedicationsRepositoryImpl(firestore)
     }
     
+    @Provides
+    @Singleton
+    fun provideUserRepository(
+        firestore: FirebaseFirestore,
+        auth: FirebaseAuth
+    ): UserRepository {
+        return UserRepositoryImpl(firestore, auth)
+    }
 }

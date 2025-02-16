@@ -39,7 +39,7 @@ fun MedicationsScreen(
     onAddMedClick: () -> Unit = {},
     onViewMed: () -> Unit,
     onEditMedClick: (String) -> Unit = {},
-    medicationsViewModel: MedicationsViewModel = viewModel(),
+    medicationsViewModel: MedicationsViewModel,
     medsPagesVM: MedsPagesViewModel = viewModel(),
 ) {
     val uiState by medicationsViewModel.uiState.collectAsStateWithLifecycle()

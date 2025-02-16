@@ -4,13 +4,12 @@ import com.galeria.medicationstracker.utils.FirestoreFunctions
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService.db
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
-import jakarta.inject.Inject
-import jakarta.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-interface FirebaseRepository {
+interface MedicationsRepository {
     
     suspend fun getDrug(): UserMedication
     suspend fun getDrugs(uid: String): List<UserMedication>
@@ -35,10 +34,9 @@ interface FirebaseRepository {
     
 }
 
-@Singleton
-class FirebaseRepositoryImpl @Inject constructor(
+class MedicationsRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
-) : FirebaseRepository {
+) : MedicationsRepository {
     
     private val medicationsCollection = firestore.collection("UserMedication")
     

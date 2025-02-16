@@ -41,7 +41,6 @@ class HeadActivity : ComponentActivity() {
         Routes.NavigationRoutes.PATIENT_DASHBOARD,
     )
     private var currentDestination: String = startDestinations.get(0)
-    
     private val headViewModel: HeadViewModel by viewModels()
     
     override fun onStart() {
@@ -62,7 +61,6 @@ class HeadActivity : ComponentActivity() {
         
         setContent {
             enableEdgeToEdge()
-            
             val navController = rememberNavController()
             MedTrackerTheme {
                 val snackbarHostState = remember {
@@ -97,7 +95,6 @@ class HeadActivity : ComponentActivity() {
                     modifier = Modifier
                         .windowInsetsPadding(WindowInsets.displayCutout),
                     containerColor = MedTrackerTheme.colors.secondaryBackground,
-                    
                     bottomBar = {
                         val navBackStackEntry by navController.currentBackStackEntryAsState()
                         val currentDestination =
@@ -114,7 +111,6 @@ class HeadActivity : ComponentActivity() {
                             BottomNavBar(items, navController, headViewModel)
                         }
                     },
-                    
                     ) {
                     ApplicationNavHost(
                         modifier = Modifier
