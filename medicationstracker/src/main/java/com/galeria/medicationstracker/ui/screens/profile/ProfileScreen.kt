@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -22,8 +23,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,9 +42,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
+import com.galeria.medicationstracker.data.UserIntake
+import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.components.GPrimaryButton
 import com.galeria.medicationstracker.ui.components.GTextButton
 import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
+import com.galeria.medicationstracker.ui.screens.dashboard.record.LogsCard
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 
@@ -181,6 +191,8 @@ fun AccountScreenHead(
     onHeightClick: () -> Unit = {},
     viewModel: ProfileVM = viewModel(),
 ) {
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    
     Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         // title and "edit" button.
         Row(modifier = modifier.fillMaxWidth()) {
@@ -268,25 +280,69 @@ fun AccountScreenHead(
             }
         }
         
-        UserMedications()
+        TabsRow(
+            tabs = listOf("Medications", "History"),
+            medications = uiState.value.medications,
+            intakes = uiState.value.intakes
+        )
     }
     
 }
 
 @Composable
-fun UserMedications() {
-    LazyColumn {
-        item {
-            MedicationCard()
+fun TabsRow(
+    tabs: List<String>,
+    medications: List<UserMedication> = emptyList(),
+    intakes: List<UserIntake> = emptyList()
+) {
+    var selectedTabIndex by remember { mutableStateOf(0) }
+    
+    Column {
+        TabRow(selectedTabIndex = selectedTabIndex) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    selected = selectedTabIndex == index,
+                    onClick = { selectedTabIndex = index },
+                    text = { Text(title) }
+                )
+            }
         }
-        item {
-            MedicationCard()
+        
+        when (selectedTabIndex) {
+            0 -> UserMedications(medications)
+            1 -> UserHistory(intakes)
         }
     }
 }
 
 @Composable
-fun MedicationCard() {
+fun UserMedications(mediations: List<UserMedication> = emptyList()) {
+    LazyColumn() {
+        items(mediations) { medication ->
+            MedicationCard(medication = medication)
+        }
+    }
+}
+
+@Composable
+fun UserHistory(intakes: List<UserIntake> = emptyList()) {
+    LazyColumn {
+        items(intakes) { intake ->
+            LogsCard(
+                name = intake.medicationName.toString(),
+                status = intake.status.toString(),
+                date = intake.dateTime.toString(),
+                time = intake.dateTime.toString()
+            )
+        }
+    }
+}
+
+@Composable
+fun MedicationCard(
+    modifier: Modifier = Modifier,
+    medication: UserMedication? = null
+) {
     FlySimpleCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -304,17 +360,17 @@ fun MedicationCard() {
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
-                    text = "Adderall xr",
+                    text = medication?.name.toString(),
                     style = MedTrackerTheme.typography.bodyLargeEmphasized,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "As needed",
+                    text = medication?.daysOfWeek.toString(),
                     style = MedTrackerTheme.typography.bodyMedium,
                 )
                 Text(
-                    text = "Total 100mg",
+                    text = medication?.strength.toString(),
                     style = MedTrackerTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
