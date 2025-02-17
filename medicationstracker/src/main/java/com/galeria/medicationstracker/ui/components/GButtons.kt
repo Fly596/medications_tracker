@@ -93,8 +93,6 @@ fun GTextButton(
     enabled: Boolean = true,
     textStyle: TextStyle = GAppTheme.typography.bodyMedium,
     contentPaddings: PaddingValues = PaddingValues(
-        horizontal = 24.dp,
-        vertical = 8.dp
     ),
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -112,7 +110,7 @@ fun GTextButton(
         } else {
             ButtonDefaults.textButtonColors(
                 containerColor = Color.Transparent,
-                contentColor = colors.primary400,
+                contentColor = colors.primaryLabel,
                 disabledContainerColor = Color.Transparent,
                 disabledContentColor = colors.tertiaryLabel,
             )

@@ -25,7 +25,7 @@ import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
 import com.galeria.medicationstracker.ui.screens.medications.mediinfo.ViewMedicationInfoScreen
 import com.galeria.medicationstracker.ui.screens.medications.newmed.NewMedicationScreen
 import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
-import com.galeria.medicationstracker.ui.screens.profile.ProfileScreen
+import com.galeria.medicationstracker.ui.screens.profile.AccountScreenHead
 import com.galeria.medicationstracker.ui.screens.profile.ProfileVM
 import com.galeria.medicationstracker.ui.screens.profile.appoinment.AppointmentScreen
 import com.galeria.medicationstracker.utils.navigation.Routes.AdminRoutes
@@ -414,7 +414,7 @@ fun NavGraphBuilder.patientProfileGraph(
 ) {
     navigation<PatientRoutes.PatientInfo>(startDestination = PatientRoutes.PatientProfile) {
         composable<PatientRoutes.PatientProfile> {
-            ProfileScreen(
+            AccountScreenHead(
                 viewModel = viewModel,
                 onHeightClick = {
                     navController.navigate(PatientRoutes.PatientHeightDialog)
