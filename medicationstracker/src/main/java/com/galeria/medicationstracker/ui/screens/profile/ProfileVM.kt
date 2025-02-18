@@ -10,7 +10,6 @@ import com.galeria.medicationstracker.data.UserRepository
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions.merge
-import com.google.firebase.firestore.Source
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -58,27 +57,27 @@ class ProfileVM @Inject constructor(
         }
     }
     
-    private fun fetchUserData() {
-        viewModelScope.launch {
-            val userRef = db.collection("User")
-                .document(currentUser?.email.toString())
-            val source = Source.DEFAULT
-            
-            try {
-                userRef.get(source)
-                    .addOnSuccessListener { result ->
-                        val user = result.toObject(User::class.java)
-                        _uiState.value = _uiState.value.copy(user = user)
-                    }
-                    .addOnFailureListener { exp ->
-                        println("Error fetching user data: ${exp.message}")
-                    }
-            } catch (e: Exception) {
-                println("Error fetching user data: ${e.message}")
+    /*     private fun fetchUserData() {
+            viewModelScope.launch {
+                val userRef = db.collection("User")
+                    .document(currentUser?.email.toString())
+                val source = Source.DEFAULT
+                
+                try {
+                    userRef.get(source)
+                        .addOnSuccessListener { result ->
+                            val user = result.toObject(User::class.java)
+                            _uiState.value = _uiState.value.copy(user = user)
+                        }
+                        .addOnFailureListener { exp ->
+                            println("Error fetching user data: ${exp.message}")
+                        }
+                } catch (e: Exception) {
+                    println("Error fetching user data: ${e.message}")
+                }
             }
-        }
-        
-    }
+            
+        } */
     
     
     fun updateAgeFirestore() {

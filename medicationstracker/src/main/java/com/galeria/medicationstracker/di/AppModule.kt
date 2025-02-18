@@ -26,7 +26,6 @@ object AppModule {
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
     
     @Provides
-    @Singleton
     fun provideFirestoreRepository(
         firestore: FirebaseFirestore
     ): MedicationsRepository {
