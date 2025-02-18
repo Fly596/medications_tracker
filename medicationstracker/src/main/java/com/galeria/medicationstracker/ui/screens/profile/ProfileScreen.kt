@@ -13,16 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Book
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.LocalPharmacy
-import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -51,8 +46,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.UserIntake
 import com.galeria.medicationstracker.data.UserMedication
-import com.galeria.medicationstracker.ui.components.GOutlinedButton
 import com.galeria.medicationstracker.ui.components.GPrimaryButton
+import com.galeria.medicationstracker.ui.components.GSecondaryButton
 import com.galeria.medicationstracker.ui.components.GTextButton
 import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
 import com.galeria.medicationstracker.ui.screens.dashboard.record.LogsCard
@@ -239,73 +234,81 @@ fun AccountScreenHead(
             ) {
                 Text(text = "Edit Profile")
             }
+            GSecondaryButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    // Todo: open notifications screen
+                }
+            ) {
+                Text(text = "Notes")
+            }
         }
         
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.padding(top = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            
-            ) {
-            item {
-                GOutlinedButton(
-                    onClick = {
-                        // TODO: open health page
-                    },
-                ) {
-                    
-                    Icon(
-                        imageVector = Icons.Default.Medication,
-                        contentDescription = "meds",
-                        tint = colors.primaryLabel
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Medications")
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-            }
-            item {
-                GOutlinedButton(
-                    onClick = {
-                        // TODO: open health page
-                    },
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.History,
-                        contentDescription = "history",
-                        tint = colors.primaryLabel
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "History")
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-            }
-            item {
-                GOutlinedButton(
-                    onClick = {
-                        // TODO: open health page
-                    },
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Book,
-                        contentDescription = "notes",
-                        tint = colors.primaryLabel
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Notes")
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-            }
-            
-        }
+        /*        LazyVerticalGrid(
+                   columns = GridCells.Fixed(2),
+                   modifier = Modifier.padding(top = 16.dp),
+                   horizontalArrangement = Arrangement.spacedBy(16.dp),
+                   verticalArrangement = Arrangement.spacedBy(8.dp),
+                   
+                   ) {
+                   item {
+                       GOutlinedButton(
+                           onClick = {
+                               // TODO: open health page
+                           },
+                       ) {
+                           
+                           Icon(
+                               imageVector = Icons.Default.Medication,
+                               contentDescription = "meds",
+                               tint = colors.primaryLabel
+                           )
+                           Spacer(modifier = Modifier.width(8.dp))
+                           Text(text = "Medications")
+                           Spacer(modifier = Modifier.weight(1f))
+                       }
+                   }
+                   item {
+                       GOutlinedButton(
+                           onClick = {
+                               // TODO: open health page
+                           },
+                       ) {
+                           Icon(
+                               imageVector = Icons.Default.History,
+                               contentDescription = "history",
+                               tint = colors.primaryLabel
+                           )
+                           Spacer(modifier = Modifier.width(8.dp))
+                           Text(text = "History")
+                           Spacer(modifier = Modifier.weight(1f))
+                       }
+                   }
+                   item {
+                       GOutlinedButton(
+                           onClick = {
+                               // TODO: open health page
+                           },
+                       ) {
+                           Icon(
+                               imageVector = Icons.Default.Book,
+                               contentDescription = "notes",
+                               tint = colors.primaryLabel
+                           )
+                           Spacer(modifier = Modifier.width(8.dp))
+                           Text(text = "Notes")
+                           Spacer(modifier = Modifier.weight(1f))
+                       }
+                   }
+                   
+               } */
         // menu items.
-        /*         TabsRow(
+        TabsRow(
                     modifier = Modifier.padding(top = 16.dp, bottom = 12.dp),
                     tabs = listOf("Medications", "History"),
                     medications = uiState.value.medications,
                     intakes = uiState.value.intakes
-                ) */
+        )
     }
     
 }
