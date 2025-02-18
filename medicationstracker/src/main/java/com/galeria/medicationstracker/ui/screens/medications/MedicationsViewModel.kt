@@ -25,13 +25,15 @@ class MedicationsViewModel @Inject constructor(
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
     
     init {
-        // Получение всех пользовательских лекарств.
-        viewModelScope.launch {
-            // TODO: change to flowdata
-            val medications = repository.getDrugs(userId.toString())
-            _uiState.value = _uiState.value.copy(userMedications = medications)
+        // Fetch user medications and collect the flow
+        userId?.let { uid ->
+            viewModelScope.launch {
+                repository.getDrugsStream(uid)
+                    .collect { medications ->
+                        _uiState.value = _uiState.value.copy(userMedications = medications)
+                    }
+            }
         }
-        // fetchUserMedications()
     }
     
     // Удаление лекарства из Firestore.

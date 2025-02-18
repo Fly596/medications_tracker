@@ -4,8 +4,9 @@ import com.galeria.medicationstracker.utils.FirestoreFunctions
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService.db
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -42,22 +43,25 @@ class MedicationsRepositoryImpl @Inject constructor(
     
     
     override fun getDrugsStream(uid: String): Flow<List<UserMedication>> {
-        val userMedicationsFlow =
-            MutableStateFlow<List<UserMedication>>(emptyList())
-        
-        medicationsCollection
-            .whereEqualTo("uid", uid)
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    return@addSnapshotListener
+        return callbackFlow {
+            val listenerRegistration = medicationsCollection
+                .whereEqualTo("uid", uid)
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        // Handle error
+                        return@addSnapshotListener
+                    }
+                    
+                    if (value != null) {
+                        val medsList = value.toObjects(UserMedication::class.java)
+                        trySend(medsList)
+                    }
                 }
-                if (value != null) {
-                    val medsList = value.toObjects(UserMedication::class.java)
-                    userMedicationsFlow.value = medsList
-                }
+            // Clean up the listener when the flow is cancelled
+            awaitClose {
+                listenerRegistration.remove()
             }
-        
-        return userMedicationsFlow
+        }
     }
     
     override suspend fun getDrug(): UserMedication {

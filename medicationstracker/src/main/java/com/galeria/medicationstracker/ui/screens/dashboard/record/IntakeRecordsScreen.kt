@@ -95,7 +95,7 @@ fun LogsCard(name: String, status: String, date: String, time: String) {
     FlySimpleCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = 6.dp)
     ) {
         Row(
             modifier = Modifier
