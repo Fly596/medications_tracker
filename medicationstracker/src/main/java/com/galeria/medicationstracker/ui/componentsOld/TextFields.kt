@@ -191,6 +191,7 @@ fun MyTextField(
     isError: Boolean = false,
     errorMessage: String? = null,
     readOnly: Boolean = false,
+    maxLines: Int = 100,
     modifier: Modifier = Modifier,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -203,6 +204,7 @@ fun MyTextField(
         textStyle = MedTrackerTheme.typography.bodyMedium,
         onValueChange = onValueChange,
         placeholder = { placeholder?.let { Text(it) } },
+        maxLines = maxLines,
         label = {
             Text(
                 if (isError) {

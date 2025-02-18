@@ -5,26 +5,36 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.galeria.medicationstracker.ui.components.GTextButton
+import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
+import com.galeria.medicationstracker.ui.componentsOld.MyTextField
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun NotesScreen(
     modifier: Modifier = Modifier,
-    viewModel: NotesScreenViewModel = hiltViewModel(),
+    // viewModel: NotesScreenViewModel = hiltViewModel(),
 ) {
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-    
+    // val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     Column(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
@@ -35,17 +45,58 @@ fun NotesScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Profile",
-                style = MedTrackerTheme.typography.display3
+                text = "Notes",
+                style = MedTrackerTheme.typography.display3Emphasized
             )
-            GTextButton(
-                onClick = {
-                    /* TODO: open health */
-                },
-                textStyle = MedTrackerTheme.typography.bodyLarge,
+            IconButton(
+                modifier = Modifier,
+                onClick = {}
             ) {
-                Text(text = "Edit")
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "new note",
+                    tint = MedTrackerTheme.colors.primaryLabel,
+                    modifier = Modifier.size(36.dp)
+                )
             }
+        }
+        
+        LazyColumn() {
+            items(4) {
+                UserNoteCard()
+            }
+        }
+    }
+}
+
+@Composable
+fun UserNoteCard() {
+    var tfVal by remember { mutableStateOf("content") }
+    
+    FlySimpleCard {
+        // date title.
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(text = "Feb 18, 2025", style = MedTrackerTheme.typography.title3)
+            Text(text = "NoteTitle", style = MedTrackerTheme.typography.title1Emphasized)
+            
+            MyTextField(
+                modifier = Modifier.fillMaxWidth().height(100.dp),
+                value = tfVal,
+                onValueChange = {tfVal = it},
+                label = "Label",
+                maxLines = 3
+            )
+        }
+ 
+    }
+}
+
+@Composable
+@Preview(showSystemUi = false, showBackground = true, device = "id:pixel_8")
+fun NotesScreenPreview() {
+    MedTrackerTheme {
+        Column(modifier = Modifier.fillMaxSize()) {
+            NotesScreen()
         }
     }
 }
