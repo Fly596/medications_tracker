@@ -20,13 +20,11 @@ import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
 import com.galeria.medicationstracker.ui.screens.dashboard.record.IntakeRecordsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
-import com.galeria.medicationstracker.ui.screens.medications.MedicationsViewModel
 import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
 import com.galeria.medicationstracker.ui.screens.medications.mediinfo.ViewMedicationInfoScreen
 import com.galeria.medicationstracker.ui.screens.medications.newmed.NewMedicationDataScreen
 import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
 import com.galeria.medicationstracker.ui.screens.profile.AccountScreenHead
-import com.galeria.medicationstracker.ui.screens.profile.ProfileVM
 import com.galeria.medicationstracker.ui.screens.profile.appoinment.AppointmentScreen
 import com.galeria.medicationstracker.utils.navigation.Routes.AdminRoutes
 import com.galeria.medicationstracker.utils.navigation.Routes.AuthRoutes
@@ -42,8 +40,6 @@ fun ApplicationNavHost(
     startDestination: String = Routes.NavigationRoutes.AUTH,
 ) {
     val medsPagesVM: MedsPagesViewModel = viewModel()
-    val medicationsViewModel: MedicationsViewModel = viewModel()
-    val profileVM: ProfileVM = viewModel()
     
     NavHost(
         navController = navController,
@@ -53,9 +49,7 @@ fun ApplicationNavHost(
         authGraph(navController)
         patientGraph(
             navController,
-            medicationsViewModel,
             medsPagesVM,
-            profileVM
         )
         docGraph(
             navController
@@ -146,7 +140,7 @@ sealed class Routes {
         
         @Serializable
         data class PatientUpdateMedication(val medicationName: String?) :
-            PatientRoutes()
+                PatientRoutes()
         
         // profile screen.
         @Serializable
@@ -292,20 +286,17 @@ fun NavGraphBuilder.docHomeGraph(
 // Граф для страниц приложения.
 fun NavGraphBuilder.patientGraph(
     navController: NavHostController,
-    viewModel: MedicationsViewModel,
     medsPagesVM: MedsPagesViewModel,
-    profileVM: ProfileVM
 ) {
     navigation<PatientRoutes.Patient>(startDestination = PatientRoutes.PatientHome) {
         patientDashboardGraph(navController)
         // страница с лекарствами.
         patientMedsGraph(
             navController,
-            viewModel,
             medsPagesVM = medsPagesVM
         )
         
-        patientProfileGraph(navController, viewModel = profileVM)
+        patientProfileGraph(navController)
     }
 }
 
@@ -322,6 +313,13 @@ fun NavGraphBuilder.patientDashboardGraph(
                         }
                     }
                 },
+                onAddMedClick = {
+                    // open medications screen.
+                    navController.navigate(PatientRoutes.PatientMedications) {
+                        popUpTo(PatientRoutes.PatientTodayMedications) {
+                        }
+                    }
+                }
             )
         }
         composable<PatientRoutes.PatientLogs> {
@@ -338,13 +336,11 @@ fun NavGraphBuilder.patientDashboardGraph(
 // Граф для страницы с лекарствами.
 fun NavGraphBuilder.patientMedsGraph(
     navController: NavHostController,
-    viewModel: MedicationsViewModel,
     medsPagesVM: MedsPagesViewModel
 ) {
     navigation<PatientRoutes.PatientMedications>(startDestination = PatientRoutes.PatientListMedications) {
         composable<PatientRoutes.PatientListMedications> {
             MedicationsScreen(
-                medicationsViewModel = viewModel,
                 medsPagesVM = medsPagesVM,
                 onAddMedClick = {
                     // Добавление лекарства.
@@ -410,27 +406,24 @@ fun NavGraphBuilder.patientMedsGraph(
 
 fun NavGraphBuilder.patientProfileGraph(
     navController: NavHostController,
-    viewModel: ProfileVM
 ) {
     navigation<PatientRoutes.PatientInfo>(startDestination = PatientRoutes.PatientProfile) {
         composable<PatientRoutes.PatientProfile> {
             AccountScreenHead(
-                viewModel = viewModel,
                 onHeightClick = {
                     navController.navigate(PatientRoutes.PatientHeightDialog)
                 },
                 onWeightClick = {
                     navController.navigate(PatientRoutes.PatientWeightDialog)
                 },
-/*                 onDoctorClick = {
-                    navController.navigate(PatientRoutes.PatientAppointment)
-                } */
+                /*                 onDoctorClick = {
+                                    navController.navigate(PatientRoutes.PatientAppointment)
+                                } */
             )
         }
         
         composable<PatientRoutes.PatientAppointment> {
             AppointmentScreen(
-                viewModel = viewModel,
                 onBackClick = {
                     navController.navigate(PatientRoutes.PatientProfile)
                 }

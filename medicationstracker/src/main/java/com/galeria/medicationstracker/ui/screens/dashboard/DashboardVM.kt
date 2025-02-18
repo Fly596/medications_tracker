@@ -5,13 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.data.UserIntake
 import com.galeria.medicationstracker.data.UserMedication
+import com.galeria.medicationstracker.data.UserRepository
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
 import com.galeria.medicationstracker.utils.formatTimestampToWeekday
-import com.galeria.medicationstracker.utils.toLocalDateTime
 import com.galeria.medicationstracker.utils.toTimestamp
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Source
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,19 +21,27 @@ import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
+import javax.inject.Inject
 
-class DashboardVM() : ViewModel() {
+data class DashboardUiState(
+    val currentTakenMedications: List<UserMedication> = emptyList(),
+)
+
+@HiltViewModel
+class DashboardVM @Inject constructor(
+    private val repository: UserRepository
+) : ViewModel() {
     
     val db = FirestoreService.db
+    private val _uiState = MutableStateFlow(DashboardUiState())
+    val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
     
     // Лекарства, которые нужно принимать.
-    private val _currentTakenMedications =
-        MutableStateFlow<List<UserMedication>>(emptyList())
-    val currentTakenMedications = _currentTakenMedications.asStateFlow()
+    /*     private val _currentTakenMedications =
+            MutableStateFlow<List<UserMedication>>(emptyList())
+        val currentTakenMedications = _currentTakenMedications.asStateFlow() */
     val firebaseAuth = FirebaseAuth.getInstance()
     val currentUserId = firebaseAuth.currentUser?.uid
-    private val _intakeStatus = MutableStateFlow(0)
-    val intakeStatus: StateFlow<Int> = _intakeStatus.asStateFlow()
     
     
     init {
@@ -43,7 +52,8 @@ class DashboardVM() : ViewModel() {
     var showToastCallback: ((String) -> Unit)? = null
     
     fun localDateTimeToTimestamp(localDateTime: LocalDateTime): Timestamp {
-        val secs = localDateTime.atZone(ZoneId.systemDefault()).toEpochSecond()
+        val secs = localDateTime.atZone(ZoneId.systemDefault())
+            .toEpochSecond()
         val nanos = localDateTime.nano
         
         return Timestamp(secs, nanos)
@@ -51,7 +61,10 @@ class DashboardVM() : ViewModel() {
     
     // Фильтрация лекарств, прием которых окончен для использования при выводе на главный экран.
     private fun getCurrentMedications() {
-        val todayEnd = LocalDate.now().plusDays(1).atStartOfDay().toTimestamp()
+        val todayEnd = LocalDate.now()
+            .plusDays(1)
+            .atStartOfDay()
+            .toTimestamp()
         val todayWeekDay = formatTimestampToWeekday(Timestamp.now()).uppercase()
         
         viewModelScope.launch {
@@ -71,8 +84,10 @@ class DashboardVM() : ViewModel() {
                     }
                     
                     medicationSnapshots?.let {
-                        _currentTakenMedications.value =
-                            it.toObjects(UserMedication::class.java)
+                        _uiState.value = _uiState.value.copy(
+                            currentTakenMedications = it.toObjects(UserMedication::class.java)
+                        )
+                        
                         showToastCallback?.invoke("Medications loaded successfully")
                     }
                 }
@@ -85,37 +100,41 @@ class DashboardVM() : ViewModel() {
         medication: UserMedication = UserMedication(),
         status: Boolean = true
     ) {
-        val intake = UserIntake(
-            uid = currentUserId.toString(),
-            medicationName = medication.name.toString(),
-            dose = medication.strength.toString(),
-            status = status,
-            dateTime = intakeTime
-        )
-        
-        FirestoreService.db.collection("User")
-            .document("${FirebaseAuth.getInstance().currentUser?.email}")
-            .collection("intakes")
-            .document("${medication.name}_${intakeTime.toLocalDateTime().dayOfYear}")
-            .set(
-                intake
+        viewModelScope.launch {
+            val intake = UserIntake(
+                uid = currentUserId.toString(),
+                medicationName = medication.name.toString(),
+                dose = medication.strength.toString(),
+                status = status,
+                dateTime = intakeTime
             )
-        
+            repository.addIntake(intake)
+        }
+        /*         FirestoreService.db.collection("User")
+                    .document("${FirebaseAuth.getInstance().currentUser?.email}")
+                    .collection("intakes")
+                    .document("${medication.name}_${intakeTime.toLocalDateTime().dayOfYear}")
+                    .set(
+                        intake
+                    ) */
         
     }
-    
     // Проверка на то, был ли сегодня прием или нет.
     // -1: error; 0: noData, 1: skipped, 2: taken
-    fun checkIntake(medication: UserMedication) {
-        viewModelScope.launch {
-            val status = fetchIntakeStatus(medication)
-            _intakeStatus.value = status
-        }
-    }
-    
+    /*     fun checkIntake(medication: UserMedication) {
+            viewModelScope.launch {
+                val status = fetchIntakeStatus(medication)
+                _intakeStatus.value = status
+            }
+        } */
     suspend fun fetchIntakeStatus(medication: UserMedication): Int {
-        val todayStart = LocalDate.now().atStartOfDay().toTimestamp()
-        val todayEnd = LocalDate.now().plusDays(1).atStartOfDay().toTimestamp()
+        val todayStart = LocalDate.now()
+            .atStartOfDay()
+            .toTimestamp()
+        val todayEnd = LocalDate.now()
+            .plusDays(1)
+            .atStartOfDay()
+            .toTimestamp()
         var ret = -1
         val source = Source.DEFAULT
         return try {

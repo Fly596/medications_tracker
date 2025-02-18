@@ -47,10 +47,14 @@ class ProfileVM @Inject constructor(
     init {
         viewModelScope.launch {
             val user = repository.getUserData(currentUserId.toString())
-            val intakes = repository.getUserIntakes(currentUserId.toString())
             val medications = repository.getUserDrugs(currentUserId.toString())
             _uiState.value =
-                _uiState.value.copy(user = user, intakes = intakes, medications = medications)
+                _uiState.value.copy(user = user, medications = medications)
+            
+            repository.getUserIntakesFlow((currentUserId.toString()))
+                .collect { intakes ->
+                    _uiState.value = _uiState.value.copy(intakes = intakes)
+                }
         }
     }
     
@@ -76,56 +80,7 @@ class ProfileVM @Inject constructor(
         
     }
     
-    /*
-        private fun fetchDoctors() {
-            viewModelScope.launch {
-                val userRef = db.collection("User")
     
-                try {
-                    userRef.whereEqualTo(
-                        "type",
-                        "DOCTOR"
-                    )
-                        .get()
-                        .addOnSuccessListener { docs ->
-                            val doctors = docs.toObjects(User::class.java)
-    
-                            _uiState.value = _uiState.value.copy(doctors = doctors)
-                        }
-                        .addOnFailureListener { exp ->
-                            Log.d(
-                                "ProfileVM",
-                                "Error fetching docs data: ${exp.message}"
-                            )
-                        }
-                } catch (e: Exception) {
-                    println("Error fetching docs data: ${e.message}")
-    
-                }
-            }
-        }
-    */
-    /*     fun addAppointment() {
-            viewModelScope.launch {
-                val docRef = db.collection("Appointments")
-                val appointment = Appointment(
-                    date = _uiState.value.selectedDate,
-                    time = _uiState.value.selectedTime,
-                    doctor = _uiState.value.selectedDoctor?.uid,
-                    patient = currentUserId,
-                )
-    
-                docRef.document("${currentUser?.email}${_uiState.value.selectedDoctor?.name}${_uiState.value.selectedDate}")
-                    .set(appointment)
-                    .addOnSuccessListener {
-                        Log.d("ProfileVM", "DocumentSnapshot added successfully!")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w("ProfileVM", "Error adding document", e)
-                    }
-            }
-    
-        } */
     fun updateAgeFirestore() {
         val userRef = db.collection("User")
             .document(currentUser?.email.toString())
@@ -204,15 +159,4 @@ class ProfileVM @Inject constructor(
     fun updateHeight(height: Float) {
         _uiState.value = _uiState.value.copy(height = height)
     }
-    /*     fun updateSelectedDoctor(doctor: User? = null) {
-            _uiState.value = _uiState.value.copy(selectedDoctor = doctor)
-        }
-    
-        fun updateSelectedTime(time: String) {
-            _uiState.value = _uiState.value.copy(selectedTime = time)
-        }
-    
-        fun updateSelectedDate(date: Timestamp?) {
-            _uiState.value = _uiState.value.copy(selectedDate = date ?: Timestamp.now())
-        } */
 }

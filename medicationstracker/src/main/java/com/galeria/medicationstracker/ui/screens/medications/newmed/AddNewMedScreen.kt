@@ -29,8 +29,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.MedicationForm
 import com.galeria.medicationstracker.data.MedicationUnit
@@ -57,7 +57,7 @@ import java.util.Locale
 @Composable
 fun NewMedicationDataScreen(
     onConfirmClick: () -> Unit,
-    viewModel: AddNewMedViewModel = viewModel(),
+    viewModel: AddNewMedViewModel = hiltViewModel(),
 ) {
     
     val state = viewModel.uiState.collectAsStateWithLifecycle()

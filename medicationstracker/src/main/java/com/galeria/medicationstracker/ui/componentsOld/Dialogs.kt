@@ -22,7 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.galeria.medicationstracker.ui.screens.dashboard.DashboardVM
+import com.galeria.medicationstracker.ui.components.GOutlinedButton
+import com.galeria.medicationstracker.ui.components.GPrimaryButton
+import com.galeria.medicationstracker.ui.components.GTonalButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -55,19 +57,19 @@ fun ConfirmationDialog(
             )
         }
     }
-
+    
 }
 
 @Composable
 fun LogMedicationTimeDialog(
-    viewModel: DashboardVM,
-    onDismiss: () -> Unit,
-    onConfirmation: () -> Unit,
+    onDismiss: () -> Unit = {},
+    onConfirmation: () -> Unit = {},
+    onAddNotes: () -> Unit = {},
 ) {
     val currentDate = LocalDateTime.now()
     val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, hh:mm a")
     val formattedCurrentDate = currentDate.format(dateFormatter)
-
+    
     Dialog(onDismissRequest = { onDismiss() }) {
         // Draw a rectangle shape with rounded corners inside the dialog
         Card(
@@ -92,7 +94,7 @@ fun LogMedicationTimeDialog(
                     modifier = Modifier.padding(16.dp),
                     style = MedTrackerTheme.typography.title2Emphasized
                 )
-
+                
                 LogDialogMedicationCard(
                     // TODO: Add logic for when the user takes the medication.
                     onTaken = {
@@ -102,14 +104,20 @@ fun LogMedicationTimeDialog(
                         onDismiss.invoke()
                     }
                 )
-                FlyButton(
+                GOutlinedButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp),
-                    onClick = onConfirmation,
-                    // colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray)
+                    onClick = onAddNotes,
                 ) {
-                    Text("Done")
+                    Text(text = "Add notes")
+                }
+                GPrimaryButton(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    onClick = onConfirmation,
+                ) {
+                    Text("Confirm")
                 }
             }
         }
@@ -125,12 +133,10 @@ fun LogDialogMedicationCard(
     onSkipped: () -> Unit = {},
     onTaken: () -> Unit = {},
     dosageValues: List<Float> = emptyList(),
-
-    ) {
+) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
+            .fillMaxWidth(),
         colors = CardDefaults.elevatedCardColors(
             containerColor = MedTrackerTheme.colors.secondaryBackgroundGrouped,
             contentColor = MedTrackerTheme.colors.primaryLabel,
@@ -161,29 +167,21 @@ fun LogDialogMedicationCard(
                     )
                 }
             }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-
-            }
-
+            
+            
             Spacer(modifier = Modifier.height(16.dp))
-
             // Buttons.
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                FlyTonalButton(
+                GTonalButton(
                     modifier = Modifier.weight(0.5f),
                     onClick = onSkipped,
                 ) {
                     Text(text = "Skipped")
                 }
-                FlyTonalButton(
+                GTonalButton(
                     modifier = Modifier.weight(0.5f),
                     onClick = onTaken,
                 ) {
@@ -198,6 +196,6 @@ fun LogDialogMedicationCard(
 @Composable
 fun DialogWithImagePreview() {
     MedTrackerTheme {
-        ConfirmationDialog({}, {}, "Are you sure you want to log this medication?")
+        LogMedicationTimeDialog({}, {})
     }
 }

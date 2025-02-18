@@ -1,8 +1,12 @@
 package com.galeria.medicationstracker.data
 
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService.db
+import com.galeria.medicationstracker.utils.toLocalDateTime
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -10,10 +14,12 @@ interface UserRepository {
     
     suspend fun addUser()
     suspend fun deleteUser()
+    suspend fun addIntake(intake: UserIntake)
     suspend fun getUserData(uid: String): User
     suspend fun updateUserData(user: User)
     suspend fun getUserDrugs(uid: String): List<UserMedication>
     suspend fun getUserIntakes(uid: String): List<UserIntake>
+    fun getUserIntakesFlow(uid: String): Flow<List<UserIntake>>
     
 }
 
@@ -21,6 +27,16 @@ class UserRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth,
 ) : UserRepository {
+    
+    override suspend fun addIntake(intake: UserIntake) {
+        firestore.collection("User")
+            .document("${auth.currentUser?.email}")
+            .collection("intakes")
+            .document("${intake.medicationName}_${intake.dateTime?.toLocalDateTime()?.dayOfYear}")
+            .set(
+                intake
+            )
+    }
     
     override suspend fun addUser() {
         TODO("Not yet implemented")
@@ -57,6 +73,30 @@ class UserRepositoryImpl @Inject constructor(
             userRef.toObjects(UserIntake::class.java)
         } catch (e: Exception) {
             emptyList()
+        }
+    }
+    
+    override fun getUserIntakesFlow(uid: String): Flow<List<UserIntake>> {
+        return callbackFlow {
+            val listenerRegistration = firestore.collection("User")
+                .document(auth.currentUser?.email.toString())
+                .collection("intakes")
+                .whereEqualTo("uid", uid)
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        // Handle error
+                        return@addSnapshotListener
+                    }
+                    
+                    if (value != null) {
+                        val userIntakes = value.toObjects(UserIntake::class.java)
+                        trySend(userIntakes)
+                    }
+                }
+            // Clean up the listener when the flow is cancelled
+            awaitClose {
+                listenerRegistration.remove()
+            }
         }
     }
     

@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.ui.componentsOld.FlyButton
 import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
 import com.galeria.medicationstracker.ui.componentsOld.FlyTextButton
@@ -44,7 +45,7 @@ import java.util.Locale
 @Composable
 fun AppointmentScreen(
     modifier: Modifier = Modifier,
-    viewModel: ProfileVM,
+    viewModel: ProfileVM = viewModel(),
     onBackClick: () -> Unit = {}
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()

@@ -29,8 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.componentsOld.FLySimpleCardContainer
 import com.galeria.medicationstracker.ui.componentsOld.FlyButton
@@ -46,10 +46,10 @@ import java.time.format.DateTimeFormatter
 fun DashboardScreen(
     modifier: Modifier = Modifier,
     onViewLogsClick: () -> Unit = {},
-    dashboardViewModel: DashboardVM = viewModel(),
+    onAddMedClick: () -> Unit,
+    dashboardViewModel: DashboardVM = hiltViewModel(),
 ) {
-    // список лекарств.
-    val currentMedications by dashboardViewModel.currentTakenMedications.collectAsStateWithLifecycle()
+    val uiState = dashboardViewModel.uiState.collectAsStateWithLifecycle()
     
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -58,12 +58,12 @@ fun DashboardScreen(
         // today's date.
         Text(
             text = getTodaysDate().format(DateTimeFormatter.ofPattern("MMM d")),
-            style = MedTrackerTheme.typography.display3
+            style = typography.display3
         )
         // Календарь на неделю.
         WeeklyCalendarView()
-        // логи.
-        // TODO: ОБНОВИТЬ ПУТЬ К ЛОГАМ.
+        
+        // logs.
         FlyButton(
             onClick = {
                 onViewLogsClick.invoke()
@@ -71,10 +71,14 @@ fun DashboardScreen(
         ) {
             Text("View Logs")
         }
+        
         // Medication Cards List.
         MedsByIntakeTimeList(
             viewModel = dashboardViewModel,
-            medicationsForIntakeTime = currentMedications
+            onAddNoteClick = {
+                onAddMedClick
+            },
+            medicationsForIntakeTime = uiState.value.currentTakenMedications
         )
     }
 }
@@ -83,6 +87,7 @@ fun DashboardScreen(
 @Composable
 fun MedsByIntakeTimeList(
     viewModel: DashboardVM,
+    onAddNoteClick: () -> Unit = {},
     medicationsForIntakeTime: List<UserMedication> = emptyList()
 ) {
     // Группируем лекарства по времени приема.
@@ -112,6 +117,7 @@ fun MedsByIntakeTimeList(
                             MedicationItem(
                                 viewModel = viewModel,
                                 medication = medicationsForIntakeTime,
+                                onAddNoteClick = { onAddNoteClick.invoke() }
                             )
                         }
                     }
@@ -125,14 +131,10 @@ fun MedsByIntakeTimeList(
 fun MedicationItem(
     viewModel: DashboardVM,
     medication: UserMedication,
-    icon: ImageVector = Icons.Filled.Medication
+    icon: ImageVector = Icons.Filled.Medication,
+    onAddNoteClick: () -> Unit = {},
 ) {
     val showLogDialog = rememberSaveable { mutableStateOf(false) }
-    /*     val intakeStatus by viewModel.intakeStatus.collectAsState()
-        
-        LaunchedEffect(medication) {
-            viewModel.checkIntake(medication)
-        } */
     
     Row(
         modifier = Modifier,
@@ -187,7 +189,6 @@ fun MedicationItem(
         // Display the dialog when `showLogDialog.value` is true
         if (showLogDialog.value) {
             LogMedicationTimeDialog(
-                viewModel,
                 onDismiss = {
                     viewModel.addNewIntake(
                         medication = medication,
@@ -201,7 +202,11 @@ fun MedicationItem(
                         status = true
                     )
                     showLogDialog.value = false
-                }
+                },
+                onAddNotes = {
+                    onAddNoteClick
+                    showLogDialog.value = false
+                },
             )
         }
     }

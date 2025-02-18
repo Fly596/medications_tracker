@@ -171,7 +171,7 @@ fun GTonalButton(
         shape = shape,
         colors =
             ButtonDefaults.filledTonalButtonColors(
-                containerColor = colors.primaryTinted,
+                containerColor = colors.separator,
                 contentColor = colors.primary600,
                 disabledContainerColor = colors.secondaryFill,
                 disabledContentColor = colors.tertiaryLabel,
