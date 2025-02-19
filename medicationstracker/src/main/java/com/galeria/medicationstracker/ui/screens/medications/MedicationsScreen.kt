@@ -1,21 +1,37 @@
 package com.galeria.medicationstracker.ui.screens.medications
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
-import androidx.compose.foundation.shape.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.vector.*
-import androidx.compose.ui.tooling.preview.*
-import androidx.compose.ui.unit.*
-import androidx.lifecycle.compose.*
-import androidx.lifecycle.viewmodel.compose.*
-import com.galeria.medicationstracker.data.*
-import com.galeria.medicationstracker.ui.componentsOld.*
-import com.galeria.medicationstracker.ui.theme.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.galeria.medicationstracker.data.UserMedication
+import com.galeria.medicationstracker.ui.components.GPrimaryButton
+import com.galeria.medicationstracker.ui.components.GTextButton
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,11 +40,9 @@ fun MedicationsScreen(
     onAddMedClick: () -> Unit = {},
     onViewMed: () -> Unit,
     onEditMedClick: (String) -> Unit = {},
-    medicationsViewModel: MedicationsViewModel = viewModel(),
+    medicationsViewModel: MedicationsViewModel = hiltViewModel(),
     medsPagesVM: MedsPagesViewModel = viewModel(),
 ) {
-    
-    // LaunchedEffect(Unit) { medicationsViewModel.fetchUserMedications() }
     val uiState by medicationsViewModel.uiState.collectAsStateWithLifecycle()
     
     Column(
@@ -37,18 +51,18 @@ fun MedicationsScreen(
             .padding(top = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            
             items(uiState.userMedications) { med ->
                 FlyElevatedCardMedsList(
                     title = med.name.toString(),
                     dosage = ("${med.strength} ${
-                        med.unit.toString().lowercase()
+                        med.unit.toString()
+                            .lowercase()
                     }"),
-                    info = med.form.toString().lowercase(),
+                    info = med.form.toString()
+                        .lowercase(),
                     onEditClick = { onEditMedClick(med.name.toString()) },
                     onRemoveMedClick = {
                         medicationsViewModel.deleteMedicationFromFirestore(med.name.toString())
@@ -62,7 +76,7 @@ fun MedicationsScreen(
             
             item {
                 // Button to add a new medication.
-                FlyButton(
+                GPrimaryButton(
                     onClick = {
                         onAddMedClick.invoke()
                         /*                         try {
@@ -77,7 +91,6 @@ fun MedicationsScreen(
                 }
             }
         }
-        
     }
 }
 
@@ -122,7 +135,6 @@ fun FlyElevatedCardMedsList(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxHeight(),
@@ -131,28 +143,28 @@ fun FlyElevatedCardMedsList(
                 
                 Spacer(modifier = Modifier.weight(1f))
                 
-                Text(dosage, style = MedTrackerTheme.typography.body)
-                Text(info, style = MedTrackerTheme.typography.body)
+                Text(dosage, style = MedTrackerTheme.typography.bodyMedium)
+                Text(info, style = MedTrackerTheme.typography.bodyMedium)
             }
             
             Spacer(modifier = Modifier.weight(1f))
             
             Column(Modifier, horizontalAlignment = Alignment.End) {
-                NavigationRow(
-                    onClick = onEditClick,
-                    label = "Edit",
-                )
+                GTextButton(
+                    onEditClick
+                ) {
+                    Text("Edit")
+                }
                 
-                FlyTextButton(
+                
+                GTextButton(
                     errorButton = true,
                     onClick = { onRemoveMedClick.invoke() },
-                    textStyle = MedTrackerTheme.typography.body
+                    textStyle = MedTrackerTheme.typography.labelLargeEmphasized
                 ) {
                     Text("Delete")
                 }
-                
             }
-            
         }
     }
 }
@@ -172,6 +184,5 @@ fun FlyElevatedCardMedsListPreview() {
                 onViewMed = { /*TODO*/ }
             )
         }
-        
     }
 }

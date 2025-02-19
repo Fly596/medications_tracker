@@ -33,7 +33,7 @@ fun TestProfile(
     ) {
         FlyIconButton(size = 20.dp)
 
-        Text(text = "Test", style = MedTrackerTheme.typography.body)
+        Text(text = "Test", style = MedTrackerTheme.typography.bodyMedium)
     }
 
 }
@@ -80,7 +80,7 @@ private fun FlyIconButtonWithText(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         FlyIconButton(onClick = onClick, size = size, icon = icon)
-        Text(text = text, style = MedTrackerTheme.typography.body)
+        Text(text = text, style = MedTrackerTheme.typography.bodyMedium)
     }
 
 }

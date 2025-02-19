@@ -1,9 +1,10 @@
 package com.galeria.medicationstracker.data
 
-import android.icu.text.*
-import com.google.firebase.*
-import java.time.*
-import java.util.*
+import android.icu.text.SimpleDateFormat
+import com.google.firebase.Timestamp
+import java.time.DayOfWeek
+import java.time.LocalDateTime
+import java.util.Locale
 
 data class UserMedication(
     val uid: String? = null,
@@ -67,7 +68,7 @@ sealed class Frequency {
         Frequency()
 }
 
-enum class MedicationForms {
+enum class MedicationForm {
     TABLET,
     CAPSULE,
     LIQUID,

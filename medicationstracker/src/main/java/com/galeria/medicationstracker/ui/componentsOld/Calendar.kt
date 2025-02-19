@@ -1,22 +1,36 @@
 package com.galeria.medicationstracker.ui.componentsOld
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
-import androidx.compose.foundation.shape.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.draw.*
-import androidx.compose.ui.tooling.preview.*
-import androidx.compose.ui.unit.*
-import com.galeria.medicationstracker.ui.screens.medications.*
-import com.galeria.medicationstracker.ui.screens.medications.update.*
-import com.galeria.medicationstracker.ui.theme.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.galeria.medicationstracker.ui.screens.medications.newmed.AddNewMedViewModel
+import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedVM
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
-import java.time.*
-import java.time.format.*
-import java.time.temporal.*
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 @Composable
 fun WeeklyCalendarView(modifier: Modifier = Modifier) {
@@ -65,8 +79,8 @@ fun CalendarDayItem(dayOfWeek: String, date: String, isSelected: Boolean) {
 
   Box(
     modifier = Modifier
-        .background(backgroundColor, shape = RoundedCornerShape(4.dp))
-        .padding(12.dp),
+      .background(backgroundColor, shape = RoundedCornerShape(4.dp))
+      .padding(12.dp),
     contentAlignment = Alignment.Center
   ) {
     Column(
@@ -75,12 +89,12 @@ fun CalendarDayItem(dayOfWeek: String, date: String, isSelected: Boolean) {
     ) {
       Text(
         text = dayOfWeek,
-        style = MedTrackerTheme.typography.caption1,
+        style = MedTrackerTheme.typography.bodySmall,
         color = textColor
       )
       Text(
         text = date,
-        style = MedTrackerTheme.typography.body,
+        style = MedTrackerTheme.typography.bodyMedium,
         color = textColor
       )
     }
@@ -144,10 +158,10 @@ fun DayItem(
 
   Box(
     modifier = Modifier
-        .size(40.dp)
-        .clip(RoundedCornerShape(8.dp))
-        .background(backgroundColor)
-        .clickable { onClick() },
+      .size(40.dp)
+      .clip(RoundedCornerShape(8.dp))
+      .background(backgroundColor)
+      .clickable { onClick() },
     contentAlignment = Alignment.Center
   ) {
     Text(
@@ -166,18 +180,19 @@ fun DayItem(
 fun DayItemSelectedPreview() {
   MedTrackerTheme {
     Column(modifier = Modifier.fillMaxSize()) {
-      DayOfWeekSelector()
-
-      DayItem(
-        dayOfWeek = DayOfWeek.MONDAY,
-        isSelected = false,
-        onClick = { }
-      )
-      DayItem(
-        dayOfWeek = DayOfWeek.MONDAY,
-        isSelected = true,
-        onClick = { }
-      )
+      WeeklyCalendarView()
+      /*       DayOfWeekSelector()
+      
+            DayItem(
+              dayOfWeek = DayOfWeek.MONDAY,
+              isSelected = false,
+              onClick = { }
+            )
+            DayItem(
+              dayOfWeek = DayOfWeek.MONDAY,
+              isSelected = true,
+              onClick = { }
+            ) */
     }
 
   }

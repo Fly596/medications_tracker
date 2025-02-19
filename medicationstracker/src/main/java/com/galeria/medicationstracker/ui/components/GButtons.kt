@@ -1,15 +1,29 @@
 package com.galeria.medicationstracker.ui.components
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.text.*
-import androidx.compose.ui.tooling.preview.*
-import androidx.compose.ui.unit.*
-import com.galeria.medicationstracker.ui.theme.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.galeria.medicationstracker.ui.theme.GAppTheme
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
 
 
@@ -18,27 +32,37 @@ fun GPrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = GappTheme.typography.labelLarge,
-    contentPaddings: PaddingValues = PaddingValues(
-        horizontal = 24.dp,
-        vertical = 8.dp
-    ),
-    shape: Shape = GappTheme.shapes.small,
+    textStyle: TextStyle = GAppTheme.typography.labelLargeEmphasized,
+    isError: Boolean = false,
     content: @Composable RowScope.() -> Unit,
 ) {
+    val buttonColors =
+        when (isError) {
+            true -> {
+                ButtonDefaults.buttonColors(
+                    containerColor = colors.sysError,
+                    contentColor = colors.primaryLabelDark,
+                    disabledContainerColor = colors.secondaryFill,
+                    disabledContentColor = colors.tertiaryLabel,
+                )
+            }
+            
+            false -> {
+                ButtonDefaults.buttonColors(
+                    containerColor = colors.sysBlack,
+                    contentColor = colors.primaryLabelDark,
+                    disabledContainerColor = colors.secondaryFill,
+                    disabledContentColor = colors.tertiaryLabel,
+                )
+            }
+        }
     Button(
         onClick,
         modifier,
         enabled,
-        contentPadding = contentPaddings,
-        shape = shape,
-        colors =
-            ButtonDefaults.buttonColors(
-                containerColor = colors.primary400,
-                contentColor = colors.primaryLabelDark,
-                disabledContainerColor = colors.secondaryFill,
-                disabledContentColor = colors.tertiaryLabel,
-            ),
+        shape = GAppTheme.shapes.small,
+        colors = buttonColors,
+        
         content = { ProvideTextStyle(value = textStyle) { content() } },
     )
 }
@@ -48,12 +72,12 @@ fun GSecondaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = GappTheme.typography.labelLarge,
+    textStyle: TextStyle = GAppTheme.typography.labelLarge,
     contentPaddings: PaddingValues = PaddingValues(
         horizontal = 24.dp,
         vertical = 8.dp
     ),
-    shape: Shape = GappTheme.shapes.small,
+    shape: Shape = GAppTheme.shapes.small,
     content: @Composable RowScope.() -> Unit,
 ) {
     Button(
@@ -77,11 +101,10 @@ fun GSecondaryButton(
 fun GTextButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    errorButton: Boolean = false,
     enabled: Boolean = true,
-    textStyle: TextStyle = GappTheme.typography.labelLarge,
+    textStyle: TextStyle = GAppTheme.typography.bodyMedium,
     contentPaddings: PaddingValues = PaddingValues(
-        horizontal = 24.dp,
-        vertical = 8.dp
     ),
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -90,14 +113,20 @@ fun GTextButton(
         modifier,
         enabled,
         contentPadding = contentPaddings,
-        shape = GappTheme.shapes.small,
-        colors =
-            ButtonDefaults.buttonColors(
+        shape = GAppTheme.shapes.small,
+        colors = if (errorButton) {
+            ButtonDefaults.textButtonColors(
+                contentColor = colors.sysError,
+                containerColor = colors.sysTransparent,
+            )
+        } else {
+            ButtonDefaults.textButtonColors(
                 containerColor = Color.Transparent,
-                contentColor = colors.primary400,
+                contentColor = colors.primaryLabel,
                 disabledContainerColor = Color.Transparent,
                 disabledContentColor = colors.tertiaryLabel,
-            ),
+            )
+        },
         content = { ProvideTextStyle(value = textStyle) { content() } },
     )
 }
@@ -107,20 +136,39 @@ fun GOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = GappTheme.typography.labelLarge,
+    textStyle: TextStyle = GAppTheme.typography.labelLarge,
+    isError: Boolean = false,
     contentPaddings: PaddingValues = PaddingValues(
         horizontal = 24.dp,
         vertical = 8.dp
     ),
-    shape: Shape = GappTheme.shapes.small,
+    shape: Shape = GAppTheme.shapes.small,
     content: @Composable RowScope.() -> Unit,
 ) {
+    val buttonColors =
+        when (isError) {
+            true -> {
+                ButtonDefaults.outlinedButtonColors(
+                    contentColor = colors.sysError,
+                    containerColor = colors.sysError,
+                    disabledContentColor = colors.tertiaryLabel,
+                )
+            }
+            
+            false -> {
+                ButtonDefaults.outlinedButtonColors(
+                    contentColor = colors.primaryLabel,
+                    disabledContentColor = colors.tertiaryLabel,
+                )
+            }
+        }
+    
     OutlinedButton(
         onClick,
         modifier,
         enabled,
         contentPadding = contentPaddings,
-        shape = GappTheme.shapes.small,
+        shape = GAppTheme.shapes.small,
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = colors.primaryLabel,
             disabledContentColor = colors.tertiaryLabel,
@@ -138,12 +186,12 @@ fun GTonalButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = GappTheme.typography.labelLarge,
+    textStyle: TextStyle = GAppTheme.typography.labelLarge,
     contentPaddings: PaddingValues = PaddingValues(
         horizontal = 24.dp,
         vertical = 8.dp
     ),
-    shape: Shape = GappTheme.shapes.small,
+    shape: Shape = GAppTheme.shapes.small,
     content: @Composable RowScope.() -> Unit,
 ) {
     FilledTonalButton(
@@ -154,13 +202,41 @@ fun GTonalButton(
         shape = shape,
         colors =
             ButtonDefaults.filledTonalButtonColors(
-                containerColor = colors.primaryTinted,
+                containerColor = colors.separator,
                 contentColor = colors.primary600,
                 disabledContainerColor = colors.secondaryFill,
                 disabledContentColor = colors.tertiaryLabel,
             ),
         content = { ProvideTextStyle(value = textStyle) { content() } },
     )
+}
+
+@Composable
+fun GRadioButton(
+    modifier: Modifier = Modifier,
+    caption: String? = null,
+    selected: Boolean,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+) {
+    RadioButton(
+        selected = selected,
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        colors =
+            RadioButtonDefaults.colors(
+                selectedColor = colors.sysBlack,
+                unselectedColor = colors.secondaryLabel,
+                disabledSelectedColor = colors.sysBlack.copy(alpha = 0.38f),
+                disabledUnselectedColor = colors.secondaryLabel.copy(alpha = 0.38f),
+            ),
+    )
+    if (caption != null) {
+        Text(
+            text = caption
+        )
+    }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
@@ -173,7 +249,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = true,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -182,7 +258,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = false,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -193,7 +269,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = true,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -202,7 +278,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = false,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -213,7 +289,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = true,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -222,7 +298,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = false,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     },
@@ -233,7 +309,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = true,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     }
@@ -242,7 +318,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = false,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     }
@@ -253,7 +329,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = true,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     }
@@ -262,7 +338,7 @@ fun GPrimaryButtonPreview() {
                     onClick = { /*TODO*/ },
                     modifier = Modifier.padding(16.dp),
                     enabled = false,
-                    textStyle = MedTrackerTheme.typography.body,
+                    textStyle = MedTrackerTheme.typography.bodyMedium,
                     content = {
                         androidx.compose.material3.Text("Button Text")
                     }

@@ -1,20 +1,48 @@
 package com.galeria.medicationstracker.ui.componentsOld
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.interaction.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.*
-import androidx.compose.foundation.text.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.*
-import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.text.*
-import androidx.compose.ui.text.input.*
-import androidx.compose.ui.tooling.preview.*
-import androidx.compose.ui.unit.*
-import com.galeria.medicationstracker.ui.theme.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun FlyTableTextField(
@@ -33,7 +61,7 @@ fun FlyTableTextField(
     singleLine: Boolean = false,
     isPrimaryColor: Boolean = false,
     supportingText: String? = null,
-    textStyles: TextStyle = MedTrackerTheme.typography.body,
+    textStyles: TextStyle = MedTrackerTheme.typography.bodyMedium,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
 ) {
@@ -47,9 +75,9 @@ fun FlyTableTextField(
         readOnly = readOnly,
         isError = isError,
         textStyle = if (isHeader) {
-            MedTrackerTheme.typography.bodyEmphasized
+            MedTrackerTheme.typography.bodyMediumEmphasized
         } else {
-            MedTrackerTheme.typography.caption1
+            MedTrackerTheme.typography.bodySmall
         },
         onValueChange = onValueChange,
         placeholder = { placeholder?.let { Text(it) } },
@@ -61,9 +89,9 @@ fun FlyTableTextField(
                     label
                 },
                 style = if (isHeader) {
-                    MedTrackerTheme.typography.bodyEmphasized
+                    MedTrackerTheme.typography.bodyMediumEmphasized
                 } else {
-                    MedTrackerTheme.typography.caption1
+                    MedTrackerTheme.typography.bodySmall
                 }
             )
         },
@@ -97,7 +125,7 @@ fun FlyTextField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
-    textStyle: TextStyle = MedTrackerTheme.typography.body,
+    textStyle: TextStyle = MedTrackerTheme.typography.bodyMedium,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -163,6 +191,7 @@ fun MyTextField(
     isError: Boolean = false,
     errorMessage: String? = null,
     readOnly: Boolean = false,
+    maxLines: Int = 100,
     modifier: Modifier = Modifier,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -172,9 +201,10 @@ fun MyTextField(
         singleLine = true,
         readOnly = readOnly,
         isError = isError,
-        textStyle = MedTrackerTheme.typography.body,
+        textStyle = MedTrackerTheme.typography.bodyMedium,
         onValueChange = onValueChange,
         placeholder = { placeholder?.let { Text(it) } },
+        maxLines = maxLines,
         label = {
             Text(
                 if (isError) {
@@ -290,7 +320,7 @@ internal fun CustomTextField(
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
     placeholderText: String = "Placeholder",
-    fontSize: TextUnit = MedTrackerTheme.typography.body.fontSize
+    fontSize: TextUnit = MedTrackerTheme.typography.bodyMedium.fontSize
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     BasicTextField(

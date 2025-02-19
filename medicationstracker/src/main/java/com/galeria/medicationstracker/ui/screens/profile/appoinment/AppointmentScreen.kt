@@ -1,25 +1,51 @@
 package com.galeria.medicationstracker.ui.screens.profile.appoinment
 
-import android.icu.text.*
+import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.unit.*
-import androidx.lifecycle.compose.*
-import com.galeria.medicationstracker.ui.componentsOld.*
-import com.galeria.medicationstracker.ui.screens.medications.*
-import com.galeria.medicationstracker.ui.screens.profile.*
-import com.galeria.medicationstracker.ui.theme.*
-import com.galeria.medicationstracker.utils.*
-import java.util.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DisplayMode
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TimeInput
+import androidx.compose.material3.TimePickerState
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberTimePickerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.galeria.medicationstracker.ui.componentsOld.FlyButton
+import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
+import com.galeria.medicationstracker.ui.componentsOld.FlyTextButton
+import com.galeria.medicationstracker.ui.componentsOld.FlyTonalButton
+import com.galeria.medicationstracker.ui.screens.profile.ProfileVM
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppointmentScreen(
     modifier: Modifier = Modifier,
-    viewModel: ProfileVM,
+    viewModel: ProfileVM = viewModel(),
     onBackClick: () -> Unit = {}
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -48,7 +74,7 @@ fun AppointmentScreen(
             ) {
                 Text(
                     text = "Date:",
-                    style = MedTrackerTheme.typography.body,
+                    style = MedTrackerTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -71,7 +97,7 @@ fun AppointmentScreen(
                 ) {
                     Text("Select Date")
                 }
-                if (showDatePicker) {
+ /*                if (showDatePicker) {
                     DatePickerModalInput(
                         onDateSelected = {
                             selectedDate = it
@@ -88,7 +114,7 @@ fun AppointmentScreen(
                             showDatePicker = false
                         }
                     )
-                }
+                } */
             }
         }
 
@@ -108,12 +134,12 @@ fun AppointmentScreen(
                 val timeFormatter = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
                 Text(
                     text = "Time:",
-                    style = MedTrackerTheme.typography.body,
+                    style = MedTrackerTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
 
-                if (showTimePicker) {
+ /*                if (showTimePicker) {
                     InputExample(
                         onDismiss = {
                             showTimePicker = false
@@ -125,7 +151,7 @@ fun AppointmentScreen(
                         }
                     )
                 }
-
+ */
 
                 if (selectedTimeState != null) {
                     val cal = Calendar.getInstance()
@@ -140,7 +166,7 @@ fun AppointmentScreen(
                 } else {
                     Text(
                         "No time selected.",
-                        style = MedTrackerTheme.typography.body,
+                        style = MedTrackerTheme.typography.bodyMedium,
                     )
                 }
                 FlyTonalButton(
@@ -162,7 +188,7 @@ fun AppointmentScreen(
         ) {
             FlyButton(
                 onClick = {
-                    viewModel.addAppointment()
+                    //viewModel.addAppointment()
                     onBackClick.invoke()
                 },
                 shape = MaterialTheme.shapes.small

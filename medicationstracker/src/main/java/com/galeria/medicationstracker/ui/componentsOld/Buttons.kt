@@ -1,23 +1,46 @@
 package com.galeria.medicationstracker.ui.componentsOld
 
-import androidx.annotation.*
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.*
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.automirrored.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.draw.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.vector.*
-import androidx.compose.ui.res.*
-import androidx.compose.ui.text.*
-import androidx.compose.ui.tooling.preview.*
-import androidx.compose.ui.unit.*
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ProvideTextStyle
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.ui.theme.*
+import com.galeria.medicationstracker.ui.theme.ButtonShape
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
 
 enum class HIGButtonStyle {
@@ -69,7 +92,7 @@ fun HIGButton(
         modifier = modifier,
         colors = buttonColors,
     ) {
-        Text(text = text, style = MedTrackerTheme.typography.body)
+        Text(text = text, style = MedTrackerTheme.typography.bodyMedium)
     }
 }
 
@@ -79,7 +102,7 @@ fun HIGListButton(
     onClick: () -> Unit,
     enabled: Boolean = true,
     style: HIGButtonStyle = HIGButtonStyle.Bezeled,
-    textStyle: TextStyle = MedTrackerTheme.typography.body,
+    textStyle: TextStyle = MedTrackerTheme.typography.bodyMedium,
     icon: ImageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
     leftIcon: ImageVector? = null,
     rightText: String? = null
@@ -143,7 +166,7 @@ fun HIGListButton(
 
             Text(
                 text = rightText ?: "",
-                style = MedTrackerTheme.typography.body,
+                style = MedTrackerTheme.typography.bodyMedium,
                 modifier = Modifier.padding(vertical = 8.dp),
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -163,7 +186,7 @@ fun FlyTextButton(
     onClick: () -> Unit,
     errorButton: Boolean = false,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = MedTrackerTheme.typography.body,
+    textStyle: TextStyle = MedTrackerTheme.typography.labelLargeEmphasized,
     enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -191,7 +214,7 @@ fun FlyElevatedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = MedTrackerTheme.typography.headline,
+    textStyle: TextStyle = MedTrackerTheme.typography.labelLargeEmphasized,
     shape: Shape = ButtonShape,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -217,7 +240,7 @@ fun FlyButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = MedTrackerTheme.typography.body,
+    textStyle: TextStyle = MedTrackerTheme.typography.labelLargeEmphasized,
     shape: Shape = ButtonShape,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -243,7 +266,7 @@ fun FlyErrorButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = MedTrackerTheme.typography.headline,
+    textStyle: TextStyle = MedTrackerTheme.typography.labelLargeEmphasized,
     shape: Shape = ButtonShape,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -269,7 +292,7 @@ fun FlyTonalButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = MedTrackerTheme.typography.headline,
+    textStyle: TextStyle = MedTrackerTheme.typography.labelLargeEmphasized,
     shape: Shape = ButtonShape,
     content: @Composable RowScope.() -> Unit,
 ) {
@@ -331,7 +354,7 @@ fun FlyIconButtonWithText(
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         FlyIconButton(onClick = onClick, size = size, icon = icon)
-        Text(text = text, style = MedTrackerTheme.typography.body)
+        Text(text = text, style = MedTrackerTheme.typography.labelLargeEmphasized)
     }
 
 }
@@ -357,7 +380,7 @@ fun GSmallButton(
     )
     {
         Text(
-            text = text, style = MedTrackerTheme.typography.bodyEmphasized,
+            text = text, style = MedTrackerTheme.typography.bodyMediumEmphasized,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
         )
     }
@@ -384,7 +407,7 @@ fun GMediumButton(
     )
     {
         Text(
-            text = text, style = MedTrackerTheme.typography.bodyEmphasized,
+            text = text, style = MedTrackerTheme.typography.bodyMediumEmphasized,
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 7.dp)
         )
     }
@@ -411,7 +434,7 @@ fun GLargeButton(
     )
     {
         Text(
-            text = text, style = MedTrackerTheme.typography.bodyEmphasized,
+            text = text, style = MedTrackerTheme.typography.bodyMediumEmphasized,
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp)
         )
     }

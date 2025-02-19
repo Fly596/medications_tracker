@@ -200,11 +200,12 @@ fun BottomNavBar(
                         viewModel.updateSelectedItemIndex(navItemIndex)
                         navController.navigate(navItem.route)
                     },
+                    
                     label = {
-                        Text(
-                            text = navItem.title,
-                            style = MedTrackerTheme.typography.body
-                        )
+                                            Text(
+                                                text = navItem.title,
+                                                style = MedTrackerTheme.typography.bodyMedium
+                                            )
                     },
                     icon = {
                         IconWithBadge(

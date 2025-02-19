@@ -4,8 +4,8 @@ plugins {
     id("com.google.gms.google-services")
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -62,8 +62,6 @@ dependencies {
     implementation(libs.androidx.material.icons.extended.android)
     implementation(libs.com.google.dagger.hilt.android.gradle.plugin)
     implementation(libs.androidx.appcompat)
-    // implementation(libs.jetbrains.kotlinx.serialization.json)
-    // implementation(libs.com.google.dagger.hilt.android.gradle.plugin)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -76,10 +74,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    // kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
+    // Hilt
+    implementation(libs.androidx.hilt.navigation.compose)
 }
 
-kapt {
-    correctErrorTypes = true
-}

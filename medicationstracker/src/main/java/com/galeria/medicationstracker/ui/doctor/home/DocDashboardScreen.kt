@@ -1,27 +1,40 @@
 package com.galeria.medicationstracker.ui.doctor.home
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
-import androidx.compose.foundation.shape.*
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.automirrored.outlined.*
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.draw.*
-import androidx.compose.ui.graphics.painter.*
-import androidx.compose.ui.res.*
-import androidx.compose.ui.tooling.preview.*
-import androidx.compose.ui.unit.*
-import androidx.lifecycle.compose.*
-import androidx.lifecycle.viewmodel.compose.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Message
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.R
-import com.galeria.medicationstracker.data.*
-import com.galeria.medicationstracker.ui.componentsOld.*
-import com.galeria.medicationstracker.ui.doctor.patients.*
-import com.galeria.medicationstracker.ui.theme.*
+import com.galeria.medicationstracker.data.Appointment
+import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
+import com.galeria.medicationstracker.ui.componentsOld.FlyTextButton
+import com.galeria.medicationstracker.ui.doctor.patients.PatientsListViewModel
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun DocDashboardScreen(
@@ -73,7 +86,7 @@ fun AppointmentsView(
             ) {
                 Text(
                     text = "See All",
-                    style = MedTrackerTheme.typography.caption1Emphasized
+                    style = MedTrackerTheme.typography.bodySmallEmphasized
                 )
             }
         }
@@ -118,11 +131,11 @@ fun AppointmentCard(
             )
             Text(
                 text = name,
-                style = MedTrackerTheme.typography.caption1Emphasized
+                style = MedTrackerTheme.typography.bodySmallEmphasized
             )
             Text(
                 text = time,
-                style = MedTrackerTheme.typography.caption2
+                style = MedTrackerTheme.typography.labelMedium
             )
         }
     }
@@ -157,7 +170,7 @@ fun HeaderSection(
         ) {
             Text(
                 text = title,
-                style = MedTrackerTheme.typography.subhead
+                style = MedTrackerTheme.typography.title3
             )
             Text(
                 name,
@@ -216,7 +229,7 @@ fun AppointmentsStats() {
             ) {
                 Text(
                     text = "Last 12 Month",
-                    style = MedTrackerTheme.typography.caption1Emphasized
+                    style = MedTrackerTheme.typography.labelMedium
                 )
             }
         }
@@ -266,7 +279,7 @@ fun StatisticCard(
         ) {
             Text(
                 text = label,
-                style = MedTrackerTheme.typography.body
+                style = MedTrackerTheme.typography.bodyMedium
             )
 
             Row(

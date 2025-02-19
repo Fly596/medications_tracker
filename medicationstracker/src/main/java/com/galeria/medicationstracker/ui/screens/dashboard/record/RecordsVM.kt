@@ -1,12 +1,15 @@
 package com.galeria.medicationstracker.ui.screens.dashboard.record
 
-import androidx.lifecycle.*
-import com.galeria.medicationstracker.data.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.galeria.medicationstracker.data.UserIntake
 import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService
-import com.google.firebase.auth.*
-import com.google.firebase.firestore.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Query
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 data class RecordsUiState(
     val intakes: List<UserIntake> = emptyList()
@@ -29,7 +32,7 @@ class RecordsVM : ViewModel() {
     
     private fun fetchUserIntakes() {
         viewModelScope.launch {
-            val intakesRef = db.collection("User")
+            db.collection("User")
                 .document("${FirebaseAuth.getInstance().currentUser?.email}")
                 .collection("intakes")
                 .orderBy("dateTime", Query.Direction.DESCENDING)
