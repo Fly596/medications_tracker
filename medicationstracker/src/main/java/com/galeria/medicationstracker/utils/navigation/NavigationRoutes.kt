@@ -17,7 +17,7 @@ import com.galeria.medicationstracker.ui.doctor.patients.PatientsListScreen
 import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRecoveryScreen
 import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
 import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
-import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
+import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreenNew
 import com.galeria.medicationstracker.ui.screens.dashboard.record.IntakeRecordsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
@@ -26,6 +26,7 @@ import com.galeria.medicationstracker.ui.screens.medications.newmed.NewMedicatio
 import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
 import com.galeria.medicationstracker.ui.screens.profile.AccountScreenHead
 import com.galeria.medicationstracker.ui.screens.profile.appoinment.AppointmentScreen
+import com.galeria.medicationstracker.ui.screens.profile.notes.NotesScreen
 import com.galeria.medicationstracker.utils.navigation.Routes.AdminRoutes
 import com.galeria.medicationstracker.utils.navigation.Routes.AuthRoutes
 import com.galeria.medicationstracker.utils.navigation.Routes.DoctorRoutes
@@ -148,6 +149,9 @@ sealed class Routes {
         
         @Serializable
         data object PatientProfile : PatientRoutes()
+        
+        @Serializable
+        data object PatientNotes : PatientRoutes()
         
         @Serializable
         data object PatientWeightDialog : PatientRoutes() // dialog.
@@ -305,22 +309,24 @@ fun NavGraphBuilder.patientDashboardGraph(
 ) {
     navigation<PatientRoutes.PatientHome>(startDestination = PatientRoutes.PatientTodayMedications) {
         composable<PatientRoutes.PatientTodayMedications> {
-            DashboardScreen(
-                onViewLogsClick = {
-                    // open logs history screen.
-                    navController.navigate(PatientRoutes.PatientLogs) {
-                        popUpTo(PatientRoutes.PatientTodayMedications) {
-                        }
-                    }
-                },
-                onAddMedClick = {
-                    // open medications screen.
-                    navController.navigate(PatientRoutes.PatientMedications) {
-                        popUpTo(PatientRoutes.PatientTodayMedications) {
-                        }
-                    }
-                }
+            DashboardScreenNew(
             )
+            /*             DashboardScreen(
+                            onViewLogsClick = {
+                                // open logs history screen.
+                                navController.navigate(PatientRoutes.PatientLogs) {
+                                    popUpTo(PatientRoutes.PatientTodayMedications) {
+                                    }
+                                }
+                            },
+                            onAddMedClick = {
+                                // open medications screen.
+                                navController.navigate(PatientRoutes.PatientMedications) {
+                                    popUpTo(PatientRoutes.PatientTodayMedications) {
+                                    }
+                                }
+                            }
+                        ) */
         }
         composable<PatientRoutes.PatientLogs> {
             IntakeRecordsScreen(
@@ -416,6 +422,9 @@ fun NavGraphBuilder.patientProfileGraph(
                 onWeightClick = {
                     navController.navigate(PatientRoutes.PatientWeightDialog)
                 },
+                onNotesClick = {
+                    navController.navigate(PatientRoutes.PatientNotes)
+                },
                 /*                 onDoctorClick = {
                                     navController.navigate(PatientRoutes.PatientAppointment)
                                 } */
@@ -429,6 +438,16 @@ fun NavGraphBuilder.patientProfileGraph(
                 }
             )
         }
+        
+        composable<PatientRoutes.PatientNotes> {
+            NotesScreen(
+                onBackClick = {
+                    navController.navigate(PatientRoutes.PatientProfile)
+                }
+            )
+            /* TODO: patient notes */
+        }
+        
         dialog<PatientRoutes.PatientWeightDialog> {
             // TODO: implement weight dialog.
         }

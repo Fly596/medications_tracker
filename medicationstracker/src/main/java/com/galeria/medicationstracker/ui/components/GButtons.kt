@@ -33,24 +33,36 @@ fun GPrimaryButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     textStyle: TextStyle = GAppTheme.typography.labelLargeEmphasized,
+    isError: Boolean = false,
     content: @Composable RowScope.() -> Unit,
 ) {
+    val buttonColors =
+        when (isError) {
+            true -> {
+                ButtonDefaults.buttonColors(
+                    containerColor = colors.sysError,
+                    contentColor = colors.primaryLabelDark,
+                    disabledContainerColor = colors.secondaryFill,
+                    disabledContentColor = colors.tertiaryLabel,
+                )
+            }
+            
+            false -> {
+                ButtonDefaults.buttonColors(
+                    containerColor = colors.sysBlack,
+                    contentColor = colors.primaryLabelDark,
+                    disabledContainerColor = colors.secondaryFill,
+                    disabledContentColor = colors.tertiaryLabel,
+                )
+            }
+        }
     Button(
         onClick,
         modifier,
         enabled,
-        /*         contentPadding = PaddingValues(
-                    horizontal = 24.dp,
-                    vertical = 8.dp
-                ), */
         shape = GAppTheme.shapes.small,
-        colors =
-            ButtonDefaults.buttonColors(
-                containerColor = colors.sysBlack,
-                contentColor = colors.primaryLabelDark,
-                disabledContainerColor = colors.secondaryFill,
-                disabledContentColor = colors.tertiaryLabel,
-            ),
+        colors = buttonColors,
+        
         content = { ProvideTextStyle(value = textStyle) { content() } },
     )
 }

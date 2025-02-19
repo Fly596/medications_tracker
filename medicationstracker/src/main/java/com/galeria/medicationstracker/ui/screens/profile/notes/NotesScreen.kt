@@ -3,9 +3,11 @@ package com.galeria.medicationstracker.ui.screens.profile.notes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -22,6 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
 import com.galeria.medicationstracker.ui.componentsOld.MyTextField
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
@@ -29,13 +33,14 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 @Composable
 fun NotesScreen(
     modifier: Modifier = Modifier,
-    // viewModel: NotesScreenViewModel = hiltViewModel(),
+    onBackClick: () -> Unit = {},
+    viewModel: NotesScreenViewModel = hiltViewModel(),
 ) {
-    // val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     Column(
         modifier = modifier
             .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.Start
     ) {
         // title and "edit" button.
@@ -61,7 +66,8 @@ fun NotesScreen(
             }
         }
         
-        LazyColumn() {
+        LazyColumn(
+        ) {
             items(4) {
                 UserNoteCard()
             }
@@ -72,23 +78,28 @@ fun NotesScreen(
 @Composable
 fun UserNoteCard() {
     var tfVal by remember { mutableStateOf("content") }
-    
-    FlySimpleCard {
-        // date title.
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    FlySimpleCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier
+        ) {
             Text(text = "Feb 18, 2025", style = MedTrackerTheme.typography.title3)
             Text(text = "NoteTitle", style = MedTrackerTheme.typography.title1Emphasized)
-            
+            Spacer(modifier = Modifier.height(4.dp))
             MyTextField(
-                modifier = Modifier.fillMaxWidth().height(100.dp),
+                modifier = Modifier.fillMaxWidth(),
                 value = tfVal,
-                onValueChange = {tfVal = it},
+                onValueChange = { tfVal = it },
                 label = "Label",
                 maxLines = 3
             )
         }
- 
     }
+    
 }
 
 @Composable

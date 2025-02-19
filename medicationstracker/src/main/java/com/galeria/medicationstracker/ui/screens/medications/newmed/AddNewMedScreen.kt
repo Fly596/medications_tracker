@@ -105,7 +105,8 @@ fun NewMedicationDataScreen(
                                     MyRadioButton(
                                         selected = selectedForm == form,
                                         onClick = { selectedForm = form },
-                                        caption = form.toString().lowercase()
+                                        caption = form.toString()
+                                            .lowercase()
                                     )
                                     // Text(text = form.toString().lowercase())
                                 }
@@ -155,7 +156,10 @@ fun NewMedicationDataScreen(
                         ) {
                             unitOptions.forEach { unit ->
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(text = unit.toString().lowercase())
+                                    Text(
+                                        text = unit.toString()
+                                            .lowercase()
+                                    )
                                     MyRadioButton(
                                         selected = selectedUnit == unit,
                                         onClick = {

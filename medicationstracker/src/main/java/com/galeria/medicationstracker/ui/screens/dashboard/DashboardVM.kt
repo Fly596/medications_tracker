@@ -110,15 +110,9 @@ class DashboardVM @Inject constructor(
             )
             repository.addIntake(intake)
         }
-        /*         FirestoreService.db.collection("User")
-                    .document("${FirebaseAuth.getInstance().currentUser?.email}")
-                    .collection("intakes")
-                    .document("${medication.name}_${intakeTime.toLocalDateTime().dayOfYear}")
-                    .set(
-                        intake
-                    ) */
         
     }
+    
     // Проверка на то, был ли сегодня прием или нет.
     // -1: error; 0: noData, 1: skipped, 2: taken
     /*     fun checkIntake(medication: UserMedication) {

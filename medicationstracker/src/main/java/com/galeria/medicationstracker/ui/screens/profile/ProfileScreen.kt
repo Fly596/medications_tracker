@@ -185,6 +185,7 @@ fun AccountScreenHead(
     modifier: Modifier = Modifier,
     onWeightClick: () -> Unit = {},
     onHeightClick: () -> Unit = {},
+    onNotesClick: () -> Unit = {},
     viewModel: ProfileVM = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -237,7 +238,7 @@ fun AccountScreenHead(
             GSecondaryButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    // Todo: open notifications screen
+                    onNotesClick.invoke()
                 }
             ) {
                 Text(text = "Notes")
@@ -304,10 +305,10 @@ fun AccountScreenHead(
                } */
         // menu items.
         TabsRow(
-                    modifier = Modifier.padding(top = 16.dp, bottom = 12.dp),
-                    tabs = listOf("Medications", "History"),
-                    medications = uiState.value.medications,
-                    intakes = uiState.value.intakes
+            modifier = Modifier.padding(top = 16.dp, bottom = 12.dp),
+            tabs = listOf("Medications", "History"),
+            medications = uiState.value.medications,
+            intakes = uiState.value.intakes
         )
     }
     

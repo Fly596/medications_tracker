@@ -33,7 +33,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.componentsOld.FLySimpleCardContainer
-import com.galeria.medicationstracker.ui.componentsOld.FlyButton
 import com.galeria.medicationstracker.ui.componentsOld.LogMedicationTimeDialog
 import com.galeria.medicationstracker.ui.componentsOld.WeeklyCalendarView
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
@@ -62,16 +61,14 @@ fun DashboardScreen(
         )
         // Календарь на неделю.
         WeeklyCalendarView()
-        
         // logs.
-        FlyButton(
-            onClick = {
-                onViewLogsClick.invoke()
-            }
-        ) {
-            Text("View Logs")
-        }
-        
+        /*         FlyButton(
+                    onClick = {
+                        onViewLogsClick.invoke()
+                    }
+                ) {
+                    Text("View Logs")
+                } */
         // Medication Cards List.
         MedsByIntakeTimeList(
             viewModel = dashboardViewModel,

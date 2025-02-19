@@ -79,8 +79,8 @@ fun CalendarDayItem(dayOfWeek: String, date: String, isSelected: Boolean) {
 
   Box(
     modifier = Modifier
-        .background(backgroundColor, shape = RoundedCornerShape(4.dp))
-        .padding(12.dp),
+      .background(backgroundColor, shape = RoundedCornerShape(4.dp))
+      .padding(12.dp),
     contentAlignment = Alignment.Center
   ) {
     Column(
@@ -158,10 +158,10 @@ fun DayItem(
 
   Box(
     modifier = Modifier
-        .size(40.dp)
-        .clip(RoundedCornerShape(8.dp))
-        .background(backgroundColor)
-        .clickable { onClick() },
+      .size(40.dp)
+      .clip(RoundedCornerShape(8.dp))
+      .background(backgroundColor)
+      .clickable { onClick() },
     contentAlignment = Alignment.Center
   ) {
     Text(
@@ -180,18 +180,19 @@ fun DayItem(
 fun DayItemSelectedPreview() {
   MedTrackerTheme {
     Column(modifier = Modifier.fillMaxSize()) {
-      DayOfWeekSelector()
-
-      DayItem(
-        dayOfWeek = DayOfWeek.MONDAY,
-        isSelected = false,
-        onClick = { }
-      )
-      DayItem(
-        dayOfWeek = DayOfWeek.MONDAY,
-        isSelected = true,
-        onClick = { }
-      )
+      WeeklyCalendarView()
+      /*       DayOfWeekSelector()
+      
+            DayItem(
+              dayOfWeek = DayOfWeek.MONDAY,
+              isSelected = false,
+              onClick = { }
+            )
+            DayItem(
+              dayOfWeek = DayOfWeek.MONDAY,
+              isSelected = true,
+              onClick = { }
+            ) */
     }
 
   }

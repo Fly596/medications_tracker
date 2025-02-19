@@ -14,16 +14,25 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Medication
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TimeInput
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.galeria.medicationstracker.ui.components.GOutlinedButton
 import com.galeria.medicationstracker.ui.components.GPrimaryButton
+import com.galeria.medicationstracker.ui.components.GSecondaryButton
 import com.galeria.medicationstracker.ui.components.GTonalButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import java.time.LocalDateTime
@@ -60,15 +69,21 @@ fun ConfirmationDialog(
     
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LogMedicationTimeDialog(
     onDismiss: () -> Unit = {},
-    onConfirmation: () -> Unit = {},
+    onConfirmation: (String) -> Unit = {},
     onAddNotes: () -> Unit = {},
 ) {
     val currentDate = LocalDateTime.now()
     val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, hh:mm a")
     val formattedCurrentDate = currentDate.format(dateFormatter)
+    val timeState = rememberTimePickerState(
+        is24Hour = false
+    )
+    var timeSelected by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
     
     Dialog(onDismissRequest = { onDismiss() }) {
         // Draw a rectangle shape with rounded corners inside the dialog
@@ -98,24 +113,61 @@ fun LogMedicationTimeDialog(
                 LogDialogMedicationCard(
                     // TODO: Add logic for when the user takes the medication.
                     onTaken = {
-                        onConfirmation.invoke()
+                        onConfirmation.invoke(timeSelected)
                     },
                     onSkipped = {
                         onDismiss.invoke()
                     }
                 )
+                Spacer(modifier = Modifier.height(16.dp))
                 GOutlinedButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    onClick = onAddNotes,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        showDialog = true
+                    }
                 ) {
-                    Text(text = "Add notes")
+                    Text(
+                        modifier = Modifier,
+                        text = if (timeSelected.isEmpty()) "Select time" else timeSelected,
+                        textAlign = TextAlign.Center,
+                        style = MedTrackerTheme.typography.labelLarge
+                    )
                 }
+                
+                
+                if (showDialog) {
+                    TimeInput(
+                        state = timeState,
+                    )
+                    GPrimaryButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                        onClick = {
+                            showDialog = false
+                        },
+                        isError = true
+                    ) {
+                        Text("Cancel")
+                    }
+                    GSecondaryButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        onClick = {
+                            timeSelected =
+                                timeState.hour.toString() + ":" + timeState.minute.toString()
+                            showDialog = false
+                        }
+                    ) {
+                        Text("Confirm Time")
+                    }
+                    
+                }
+                
                 GPrimaryButton(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    onClick = onConfirmation,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { onConfirmation.invoke(timeSelected) }, // Pass the selected time
                 ) {
                     Text("Confirm")
                 }
