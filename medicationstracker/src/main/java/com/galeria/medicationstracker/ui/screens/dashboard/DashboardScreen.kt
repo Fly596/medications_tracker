@@ -57,18 +57,11 @@ fun DashboardScreen(
         // today's date.
         Text(
             text = getTodaysDate().format(DateTimeFormatter.ofPattern("MMM d")),
-            style = typography.display3
+            style = typography.display3Emphasized
         )
         // Календарь на неделю.
         WeeklyCalendarView()
-        // logs.
-        /*         FlyButton(
-                    onClick = {
-                        onViewLogsClick.invoke()
-                    }
-                ) {
-                    Text("View Logs")
-                } */
+
         // Medication Cards List.
         MedsByIntakeTimeList(
             viewModel = dashboardViewModel,
@@ -106,7 +99,7 @@ fun MedsByIntakeTimeList(
                         // Время приема.
                         Text(
                             text = intakeTime.toString(),
-                            style = typography.title1,
+                            style = typography.title1Emphasized,
                             modifier = Modifier.padding(0.dp)
                         )
                         // Лекарства на это время.

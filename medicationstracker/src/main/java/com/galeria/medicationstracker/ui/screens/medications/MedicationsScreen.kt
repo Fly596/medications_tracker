@@ -5,13 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedCard
@@ -32,6 +30,7 @@ import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.components.GPrimaryButton
 import com.galeria.medicationstracker.ui.components.GTextButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,6 +50,11 @@ fun MedicationsScreen(
             .padding(top = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        Text(
+            text = "Medications",
+            style = typography.display3Emphasized
+        )
+        
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
@@ -105,7 +109,7 @@ fun FlyElevatedCardMedsList(
     onRemoveMedClick: () -> Unit,
     onViewMed: () -> Unit,
     medication: UserMedication? = null,
-    shape: Shape = RoundedCornerShape(8.dp),
+    shape: Shape = MedTrackerTheme.shapes.medium,
     elevation: CardElevation = CardDefaults.elevatedCardElevation(),
 ) {
     ElevatedCard(
@@ -114,7 +118,7 @@ fun FlyElevatedCardMedsList(
             .clickable {
                 onViewMed.invoke()
             },
-        shape = RoundedCornerShape(16.dp),
+        shape = shape,
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 0.dp,
             pressedElevation = 8.dp,
@@ -133,11 +137,10 @@ fun FlyElevatedCardMedsList(
                 .fillMaxSize()
                 .padding(16.dp),
             verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxHeight(),
+                modifier = Modifier,
             ) {
                 Text(title, style = MedTrackerTheme.typography.headline)
                 

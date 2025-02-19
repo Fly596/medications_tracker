@@ -1,6 +1,7 @@
 package com.galeria.medicationstracker.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -62,7 +63,6 @@ fun GPrimaryButton(
         enabled,
         shape = GAppTheme.shapes.small,
         colors = buttonColors,
-        
         content = { ProvideTextStyle(value = textStyle) { content() } },
     )
 }
@@ -219,24 +219,30 @@ fun GRadioButton(
     onClick: () -> Unit,
     enabled: Boolean = true,
 ) {
-    RadioButton(
-        selected = selected,
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
-        colors =
-            RadioButtonDefaults.colors(
-                selectedColor = colors.sysBlack,
-                unselectedColor = colors.secondaryLabel,
-                disabledSelectedColor = colors.sysBlack.copy(alpha = 0.38f),
-                disabledUnselectedColor = colors.secondaryLabel.copy(alpha = 0.38f),
-            ),
-    )
-    if (caption != null) {
-        Text(
-            text = caption
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+    ) {
+        RadioButton(
+            selected = selected,
+            onClick = onClick,
+            modifier = modifier,
+            enabled = enabled,
+            colors =
+                RadioButtonDefaults.colors(
+                    selectedColor = colors.sysBlack,
+                    unselectedColor = colors.secondaryLabel,
+                    disabledSelectedColor = colors.sysBlack.copy(alpha = 0.38f),
+                    disabledUnselectedColor = colors.secondaryLabel.copy(alpha = 0.38f),
+                ),
         )
+        if (caption != null) {
+            Text(
+                text = caption
+            )
+        }
     }
+    
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)

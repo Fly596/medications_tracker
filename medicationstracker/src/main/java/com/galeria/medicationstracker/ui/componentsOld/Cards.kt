@@ -152,11 +152,12 @@ fun FlyElevatedCardDashboard(
 @Composable
 fun FLySimpleCardContainer(
     modifier: Modifier = Modifier,
+    shape: Shape = MedTrackerTheme.shapes.medium,
     content: @Composable () -> Unit
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
+        shape = shape,
         colors =
             CardDefaults.elevatedCardColors(
                 containerColor = MedTrackerTheme.colors.secondaryBackgroundGrouped,

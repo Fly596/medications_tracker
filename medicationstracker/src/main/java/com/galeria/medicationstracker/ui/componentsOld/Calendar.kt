@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.galeria.medicationstracker.ui.components.GOutlinedButton
 import com.galeria.medicationstracker.ui.screens.medications.newmed.AddNewMedViewModel
 import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedVM
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
@@ -130,8 +131,8 @@ fun DayOfWeekSelector(
     }
 
     Spacer(modifier = Modifier.height(16.dp))
-
-    FlyTonalButton(
+    
+    GOutlinedButton(
       onClick = {
         if (viewModel != null) {
           viewModel.updateSelectedDays(selectedDays.toList())
@@ -152,7 +153,7 @@ fun DayItem(
     onClick: () -> Unit
 ) {
   val backgroundColor =
-    if (isSelected) colors.primary400 else colors.secondaryBackground
+    if (isSelected) colors.sysBlack else colors.primaryBackground
   val textColor =
     if (isSelected) colors.sysWhite else colors.primaryLabel
 

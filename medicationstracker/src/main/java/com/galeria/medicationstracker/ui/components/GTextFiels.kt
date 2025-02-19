@@ -8,13 +8,13 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.galeria.medicationstracker.ui.theme.GAppTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.typography
 
 @Composable
 fun GTextField(
@@ -25,19 +25,23 @@ fun GTextField(
     isPrimaryColor: Boolean = false,
     supportingText: String? = null,
     placeholder: String? = null,
+    singleLine: Boolean = false,
     enabled: Boolean = true,
+    textStyle: TextStyle = MedTrackerTheme.typography.bodyMedium,
     isError: Boolean = false,
     errorMessage: String? = null,
     readOnly: Boolean = false,
+    minLines: Int = 1,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
 ) {
     TextField(
         value = value,
-        singleLine = true,
+        minLines = minLines,
+        singleLine = singleLine,
         readOnly = readOnly,
         isError = isError,
-        textStyle = typography.bodyMedium,
+        textStyle = textStyle,
         onValueChange = onValueChange,
         placeholder = { placeholder?.let { Text(it) } },
         label = {
@@ -70,7 +74,7 @@ fun GTextField(
                 focusedContainerColor = colors.primaryBackground,
                 errorIndicatorColor = colors.sysError,
                 focusedLabelColor = colors.sysBlack,
-                unfocusedLabelColor = colors.secondaryLabel,
+                unfocusedLabelColor = colors.primaryLabel,
                 errorLabelColor = colors.sysError,
                 errorSupportingTextColor = colors.sysError,
                 errorCursorColor = colors.sysError,
