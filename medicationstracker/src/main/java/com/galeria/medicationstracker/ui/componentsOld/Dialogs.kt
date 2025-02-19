@@ -115,23 +115,12 @@ fun LogMedicationTimeDialog(
                 )
                 
                 LogDialogMedicationCard(
-                    onTaken = {
-                        val timeStamp =
-                            timeToFirestoreTimestamp(
-                                timeState.hour,
-                                timeState.minute
-                            )
-                        onConfirmation.invoke(timeSelected)
-                    },
-                    onSkipped = {
-                        onDismiss.invoke()
-                    }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 GOutlinedButton(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        showDialog = true
+                        showDialog = !showDialog
                     }
                 ) {
                     Text(
@@ -152,6 +141,7 @@ fun LogMedicationTimeDialog(
                             .padding(top = 16.dp),
                         onClick = {
                             showDialog = false
+                            onDismiss.invoke()
                         },
                         isError = true
                     ) {
@@ -167,10 +157,10 @@ fun LogMedicationTimeDialog(
                                     timeState.hour,
                                     timeState.minute
                                 )
-                            timeSelected =
-                                timeState.hour.toString() + ":" + timeState.minute.toString()
+                            
                             onConfirmTime(timeStamp)
                             showDialog = false
+                            onDismiss.invoke()
                         }
                     ) {
                         Text("Confirm")

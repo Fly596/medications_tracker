@@ -2,15 +2,20 @@ package com.galeria.medicationstracker.ui.screens.medications.newmed
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
@@ -28,6 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.R
@@ -39,12 +45,9 @@ import com.galeria.medicationstracker.ui.components.GRadioButton
 import com.galeria.medicationstracker.ui.components.GSecondaryButton
 import com.galeria.medicationstracker.ui.components.GTextField
 import com.galeria.medicationstracker.ui.componentsOld.DayOfWeekSelector
-import com.galeria.medicationstracker.ui.componentsOld.FlyButton
 import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
-import com.galeria.medicationstracker.ui.componentsOld.FlyTonalButton
 import com.galeria.medicationstracker.ui.componentsOld.HeaderWithIconButtonAndTitle
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
 import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
 import com.galeria.medicationstracker.utils.parseDateForFirestore
 import java.time.Instant
@@ -77,7 +80,7 @@ fun NewMedicationDataScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 // Name input.
                 item {
@@ -173,6 +176,10 @@ fun NewMedicationDataScreen(
                 // Start and end dates + time.
                 item {
                     // Выбор начала и конца периода приема.
+                    Text(
+                        text = "Set Medication Period",
+                        style = MedTrackerTheme.typography.title2Emphasized,
+                    )
                     ModalDatePicker(viewModel)
                     var showTimePicker by remember { mutableStateOf(false) }
                     
@@ -338,40 +345,111 @@ fun DateRangePickerModal(
 fun IntakeTimePicker(
     onConfirm: () -> Unit, onDismiss: () -> Unit, viewModel: AddNewMedViewModel
 ) {
-    val currentTime = Calendar.getInstance()
-    val timePickerState = rememberTimePickerState(
-        initialHour = currentTime.get(Calendar.HOUR_OF_DAY),
-        initialMinute = currentTime.get(Calendar.MINUTE),
-        is24Hour = false,
-    )
-    val time = LocalTime.of(timePickerState.hour, timePickerState.minute)
-    val dtf = DateTimeFormatter.ofPattern("HH:mm")
-    
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        TimePicker(
-            state = timePickerState, colors = TimePickerDefaults.colors(
-                clockDialColor = colors.tertiaryBackground,
-                clockDialSelectedContentColor = colors.primaryLabel,
-                clockDialUnselectedContentColor = colors.primaryLabel,
-                selectorColor = colors.primary400,
-                periodSelectorBorderColor = colors.opaqueSeparator,
-                periodSelectorSelectedContentColor = colors.primaryLabel,
-                periodSelectorUnselectedContentColor = colors.primaryLabel,
-                periodSelectorSelectedContainerColor = colors.primaryTinted,
-                timeSelectorSelectedContainerColor = colors.primaryTinted,
-                timeSelectorUnselectedContainerColor = colors.primaryLight
-            )
-        )
-        FlyButton(onClick = {
-            viewModel.updateIntakeTime(time.format(dtf))
-            onDismiss.invoke();
-        }) {
-            Text("Confirm Time")
-        }
-        FlyTonalButton(onClick = onDismiss) {
-            Text("Dismiss")
+    Dialog(
+        onDismissRequest = onDismiss
+    ) {
+        androidx.compose.material3.Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surface
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(24.dp)
+                    .width(IntrinsicSize.Max),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Select Intake Time",
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                val currentTime = Calendar.getInstance()
+                val timePickerState = rememberTimePickerState(
+                    initialHour = currentTime.get(Calendar.HOUR_OF_DAY),
+                    initialMinute = currentTime.get(Calendar.MINUTE),
+                    is24Hour = false,
+                )
+                val time =
+                    LocalTime.of(timePickerState.hour, timePickerState.minute)
+                val dtf = DateTimeFormatter.ofPattern("HH:mm")
+                
+                TimePicker(
+                    state = timePickerState,
+                    colors = TimePickerDefaults.colors(
+                        clockDialColor = MaterialTheme.colorScheme.surfaceVariant,
+                        clockDialSelectedContentColor = MaterialTheme.colorScheme.onSurface,
+                        clockDialUnselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        selectorColor = MaterialTheme.colorScheme.primary,
+                        periodSelectorBorderColor = MaterialTheme.colorScheme.outline,
+                        periodSelectorSelectedContentColor = MaterialTheme.colorScheme.onSurface,
+                        periodSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        periodSelectorSelectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                        timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                        timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                )
+                
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 24.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    TextButton(
+                        onClick = onDismiss,
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = MaterialTheme.colorScheme.error
+                        )
+                    ) {
+                        Text("Cancel")
+                    }
+                    
+                    GPrimaryButton(
+                        onClick = {
+                            viewModel.updateIntakeTime(time.format(dtf))
+                            onConfirm()
+                        },
+                    ) {
+                        Text("Confirm", color = MedTrackerTheme.colors.sysWhite)
+                    }
+                }
+            }
         }
     }
+    /*     val currentTime = Calendar.getInstance()
+        val timePickerState = rememberTimePickerState(
+            initialHour = currentTime.get(Calendar.HOUR_OF_DAY),
+            initialMinute = currentTime.get(Calendar.MINUTE),
+            is24Hour = false,
+        )
+        val time = LocalTime.of(timePickerState.hour, timePickerState.minute)
+        val dtf = DateTimeFormatter.ofPattern("HH:mm")
+        
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            TimePicker(
+                state = timePickerState, colors = TimePickerDefaults.colors(
+                    clockDialColor = colors.tertiaryBackground,
+                    clockDialSelectedContentColor = colors.primaryLabel,
+                    clockDialUnselectedContentColor = colors.primaryLabel,
+                    selectorColor = colors.primary400,
+                    periodSelectorBorderColor = colors.opaqueSeparator,
+                    periodSelectorSelectedContentColor = colors.primaryLabel,
+                    periodSelectorUnselectedContentColor = colors.primaryLabel,
+                    periodSelectorSelectedContainerColor = colors.primaryTinted,
+                    timeSelectorSelectedContainerColor = colors.primaryTinted,
+                    timeSelectorUnselectedContainerColor = colors.primaryLight
+                )
+            )
+            FlyButton(onClick = {
+                viewModel.updateIntakeTime(time.format(dtf))
+                onDismiss.invoke();
+            }) {
+                Text("Confirm Time")
+            }
+            FlyTonalButton(onClick = onDismiss) {
+                Text("Dismiss")
+            }
+        } */
     
 }
 

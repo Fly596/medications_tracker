@@ -180,10 +180,10 @@ fun MedicationItem(
         if (showLogDialog.value) {
             LogMedicationTimeDialog(
                 onDismiss = {
-                    viewModel.addNewIntake(
-                        medication = medication,
-                        status = false
-                    )
+                    /*             viewModel.addNewIntake(
+                                    medication = medication,
+                                    status = false
+                                ) */
                     showLogDialog.value = false
                 },
                 onConfirmation = {
