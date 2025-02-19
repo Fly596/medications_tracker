@@ -20,11 +20,14 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 
 @Composable
-fun DropdownMenuExample() {
-    var expanded by remember { mutableStateOf(true) }
-    var selectedItem by remember { mutableStateOf("Item 1") }
-    val items = listOf("Item 1", "Item 2", "Item 3")
-    
+fun DropdownMenuExample(items: List<String>, onItemSelected: (String) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedItem by remember {
+        mutableStateOf(
+            items.firstOrNull() ?: "No Items"
+        )
+    }
+    // val items = listOf("Item 1", "Item 2", "Item 3")
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -50,6 +53,8 @@ fun DropdownMenuExample() {
                         onClick = {
                             selectedItem = item
                             expanded = false
+                            onItemSelected(item) // Call back with the selected item
+                            
                         },
                         colors = MenuItemColors(
                             textColor = MedTrackerTheme.colors.sysBlack,
@@ -72,7 +77,7 @@ fun DropdownMenuExample() {
 fun DropdownMenuExamplePreview() {
     MedTrackerTheme {
         Column(modifier = Modifier.fillMaxSize()) {
-            DropdownMenuExample()
+            // DropdownMenuExample()
         }
     }
 }

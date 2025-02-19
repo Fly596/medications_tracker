@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 data class NewMedUiState(
     val uid: String = "",
     val medName: String = "",
-    var medForm: MedicationForm = MedicationForm.TABLET, // f
+    var medForm: String = MedicationForm.TABLET.toString(), // f
     val medStrength: Float = 0.0f,
     val chosenStrengths: List<Float> = emptyList(),
     val medUnit: MedicationUnit = MedicationUnit.MG, // f
@@ -122,8 +122,8 @@ class AddNewMedViewModel : ViewModel() {
     fun updateMedName(newName: String) {
         uiState.value = uiState.value.copy(medName = newName)
     }
-
-    fun updateMedForm(newForm: MedicationForm) {
+    
+    fun updateMedForm(newForm: String) {
         uiState.value = uiState.value.copy(medForm = newForm)
     }
 

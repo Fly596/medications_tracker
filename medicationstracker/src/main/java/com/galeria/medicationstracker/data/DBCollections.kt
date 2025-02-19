@@ -2,7 +2,6 @@ package com.galeria.medicationstracker.data
 
 import android.icu.text.SimpleDateFormat
 import com.google.firebase.Timestamp
-import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.util.Locale
 
@@ -60,13 +59,7 @@ enum class UserType {
     DOCTOR,
 }
 
-sealed class Frequency {
 
-    data class AtRegularIntervals(val interval: Int = 0) : Frequency()
-
-    data class OnSpecificDaysOfTheWeek(val days: List<DayOfWeek> = DayOfWeek.entries) :
-        Frequency()
-}
 
 enum class MedicationForm {
     TABLET,

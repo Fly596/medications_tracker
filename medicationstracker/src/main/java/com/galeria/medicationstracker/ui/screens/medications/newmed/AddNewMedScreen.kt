@@ -39,6 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.data.MedicationForm
 import com.galeria.medicationstracker.data.MedicationUnit
+import com.galeria.medicationstracker.ui.components.DropdownMenuExample
 import com.galeria.medicationstracker.ui.components.GOutlinedButton
 import com.galeria.medicationstracker.ui.components.GPrimaryButton
 import com.galeria.medicationstracker.ui.components.GRadioButton
@@ -96,27 +97,37 @@ fun NewMedicationDataScreen(
                 // Form.
                 item {
                     var selectedForm by remember { mutableStateOf(state.value.medForm) }
-                    val options = MedicationForm.entries.toTypedArray()
-                    
+                    val optionsArray: Array<MedicationForm> =
+                        MedicationForm.entries.toTypedArray()
+                    val opList: List<String> =
+                        optionsArray.map { it.toString() }
+                    // val options = MedicationForm.entries
+                    // items = listOf("Item 1", "Item 2", "Item 3")
+                    DropdownMenuExample(items = opList) { selected ->
+                        viewModel.updateMedForm(selected)
+                        // selectedForm = selected
+                    }
+                    /*             DropdownMenuExample(items = opList) { selected ->
+                                    selectedForm = selected
+                                } */
                     
                     Text(
                         stringResource(R.string.add_new_med_form_screen_title),
                         style = MedTrackerTheme.typography.title2,
                     )
-                    
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        options.forEach { form ->
-                            GRadioButton(
-                                selected = selectedForm == form,
-                                onClick = { selectedForm = form },
-                                caption = form.toString()
-                                    .lowercase()
-                            )
-                        }
-                    }
+                    /*               Row(
+                                      modifier = Modifier.fillMaxWidth(),
+                                      horizontalArrangement = Arrangement.SpaceBetween
+                                  ) {
+                                      options.forEach { form ->
+                                          GRadioButton(
+                                              selected = selectedForm == form,
+                                              onClick = { selectedForm = form },
+                                              caption = form.toString()
+                                                  .lowercase()
+                                          )
+                                      }
+                                  } */
                 }
                 /*             item {
                                 var selectedForm =
