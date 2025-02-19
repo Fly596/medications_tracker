@@ -17,7 +17,7 @@ import com.galeria.medicationstracker.ui.doctor.patients.PatientsListScreen
 import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRecoveryScreen
 import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
 import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
-import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreenNew
+import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
 import com.galeria.medicationstracker.ui.screens.dashboard.record.IntakeRecordsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
@@ -309,24 +309,24 @@ fun NavGraphBuilder.patientDashboardGraph(
 ) {
     navigation<PatientRoutes.PatientHome>(startDestination = PatientRoutes.PatientTodayMedications) {
         composable<PatientRoutes.PatientTodayMedications> {
-            DashboardScreenNew(
+            /*  DashboardScreenNew(
+             ) */
+            DashboardScreen(
+                onViewLogsClick = {
+                    // open logs history screen.
+                    navController.navigate(PatientRoutes.PatientLogs) {
+                        popUpTo(PatientRoutes.PatientTodayMedications) {
+                        }
+                    }
+                },
+                onAddMedClick = {
+                    // open medications screen.
+                    navController.navigate(PatientRoutes.PatientMedications) {
+                        popUpTo(PatientRoutes.PatientTodayMedications) {
+                        }
+                    }
+                }
             )
-            /*             DashboardScreen(
-                            onViewLogsClick = {
-                                // open logs history screen.
-                                navController.navigate(PatientRoutes.PatientLogs) {
-                                    popUpTo(PatientRoutes.PatientTodayMedications) {
-                                    }
-                                }
-                            },
-                            onAddMedClick = {
-                                // open medications screen.
-                                navController.navigate(PatientRoutes.PatientMedications) {
-                                    popUpTo(PatientRoutes.PatientTodayMedications) {
-                                    }
-                                }
-                            }
-                        ) */
         }
         composable<PatientRoutes.PatientLogs> {
             IntakeRecordsScreen(

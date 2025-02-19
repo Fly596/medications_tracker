@@ -137,6 +137,7 @@ fun GOutlinedButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     textStyle: TextStyle = GAppTheme.typography.labelLarge,
+    isError: Boolean = false,
     contentPaddings: PaddingValues = PaddingValues(
         horizontal = 24.dp,
         vertical = 8.dp
@@ -144,6 +145,24 @@ fun GOutlinedButton(
     shape: Shape = GAppTheme.shapes.small,
     content: @Composable RowScope.() -> Unit,
 ) {
+    val buttonColors =
+        when (isError) {
+            true -> {
+                ButtonDefaults.outlinedButtonColors(
+                    contentColor = colors.sysError,
+                    containerColor = colors.sysError,
+                    disabledContentColor = colors.tertiaryLabel,
+                )
+            }
+            
+            false -> {
+                ButtonDefaults.outlinedButtonColors(
+                    contentColor = colors.primaryLabel,
+                    disabledContentColor = colors.tertiaryLabel,
+                )
+            }
+        }
+    
     OutlinedButton(
         onClick,
         modifier,

@@ -204,6 +204,12 @@ fun MedicationItem(
                     onAddNoteClick
                     showLogDialog.value = false
                 },
+                onConfirmTime = { time ->
+                    viewModel.addNewIntake(
+                        intakeTime = time,
+                        medication = medication
+                    )
+                }
             )
         }
     }

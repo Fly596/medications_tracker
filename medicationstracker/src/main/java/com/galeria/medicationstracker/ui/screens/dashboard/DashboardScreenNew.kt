@@ -39,6 +39,7 @@ import com.galeria.medicationstracker.ui.componentsOld.WeeklyCalendarView
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.typography
 import com.galeria.medicationstracker.utils.getTodaysDate
+import com.galeria.medicationstracker.utils.timeToFirestoreTimestamp
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
@@ -91,7 +92,7 @@ fun DashboardScreenNew(
                                         onConfirm = { time ->
                                             selectedTime = time
                                             val timeStamp =
-                                                dashboardViewModel.timeToFirestoreTimestamp(
+                                                timeToFirestoreTimestamp(
                                                     time.hour,
                                                     time.minute
                                                 )

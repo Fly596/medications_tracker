@@ -4,6 +4,7 @@ import com.galeria.medicationstracker.utils.FirestoreFunctions.FirestoreService.
 import com.galeria.medicationstracker.utils.toLocalDateTime
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -81,6 +82,7 @@ class UserRepositoryImpl @Inject constructor(
             val listenerRegistration = firestore.collection("User")
                 .document(auth.currentUser?.email.toString())
                 .collection("intakes")
+                .orderBy("dateTime", Query.Direction.DESCENDING)
                 .whereEqualTo("uid", uid)
                 .addSnapshotListener { value, error ->
                     if (error != null) {

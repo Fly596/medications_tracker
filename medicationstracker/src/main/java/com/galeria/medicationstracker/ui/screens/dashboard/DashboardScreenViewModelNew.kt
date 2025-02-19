@@ -17,9 +17,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZoneId
 import javax.inject.Inject
 
 data class DashboardScreenUiState(
@@ -58,7 +55,7 @@ class DashboardScreenViewModelNew @Inject constructor(
                 medicationName = medication.name.toString(),
                 dose = medication.strength.toString(),
                 status = status,
-                dateTime = intakeTime
+                dateTime = _uiState.value.time
             )
             repository.addIntake(intake)
         }
@@ -126,14 +123,13 @@ class DashboardScreenViewModelNew @Inject constructor(
         }
         
     }
-    
-    fun timeToFirestoreTimestamp(hour: Int, minute: Int): Timestamp {
-        val now = LocalDate.now() // Get current date
-        val localDateTime = LocalDateTime.of(now, LocalTime.of(hour, minute))
-        return Timestamp(
-            localDateTime.atZone(ZoneId.systemDefault())
-                .toEpochSecond(), 0
-        )
-    }
+    /*     fun timeToFirestoreTimestamp(hour: Int, minute: Int): Timestamp {
+            val now = LocalDate.now() // Get current date
+            val localDateTime = LocalDateTime.of(now, LocalTime.of(hour, minute))
+            return Timestamp(
+                localDateTime.atZone(ZoneId.systemDefault())
+                    .toEpochSecond(), 0
+            )
+        } */
     
 }

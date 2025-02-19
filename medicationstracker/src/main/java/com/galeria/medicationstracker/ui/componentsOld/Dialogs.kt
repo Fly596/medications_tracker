@@ -18,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimeInput
+import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,9 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.galeria.medicationstracker.ui.components.GOutlinedButton
 import com.galeria.medicationstracker.ui.components.GPrimaryButton
-import com.galeria.medicationstracker.ui.components.GSecondaryButton
-import com.galeria.medicationstracker.ui.components.GTonalButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.galeria.medicationstracker.utils.timeToFirestoreTimestamp
+import com.google.firebase.Timestamp
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -74,6 +75,7 @@ fun ConfirmationDialog(
 fun LogMedicationTimeDialog(
     onDismiss: () -> Unit = {},
     onConfirmation: (String) -> Unit = {},
+    onConfirmTime: (Timestamp) -> Unit = {},
     onAddNotes: () -> Unit = {},
 ) {
     val currentDate = LocalDateTime.now()
@@ -82,6 +84,8 @@ fun LogMedicationTimeDialog(
     val timeState = rememberTimePickerState(
         is24Hour = false
     )
+    var selectedTime: TimePickerState? by remember { mutableStateOf(null) }
+    
     var timeSelected by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     
@@ -111,8 +115,12 @@ fun LogMedicationTimeDialog(
                 )
                 
                 LogDialogMedicationCard(
-                    // TODO: Add logic for when the user takes the medication.
                     onTaken = {
+                        val timeStamp =
+                            timeToFirestoreTimestamp(
+                                timeState.hour,
+                                timeState.minute
+                            )
                         onConfirmation.invoke(timeSelected)
                     },
                     onSkipped = {
@@ -134,12 +142,11 @@ fun LogMedicationTimeDialog(
                     )
                 }
                 
-                
                 if (showDialog) {
                     TimeInput(
                         state = timeState,
                     )
-                    GPrimaryButton(
+                    GOutlinedButton(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp),
@@ -150,27 +157,32 @@ fun LogMedicationTimeDialog(
                     ) {
                         Text("Cancel")
                     }
-                    GSecondaryButton(
+                    GPrimaryButton(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 16.dp),
                         onClick = {
+                            val timeStamp =
+                                timeToFirestoreTimestamp(
+                                    timeState.hour,
+                                    timeState.minute
+                                )
                             timeSelected =
                                 timeState.hour.toString() + ":" + timeState.minute.toString()
+                            onConfirmTime(timeStamp)
                             showDialog = false
                         }
                     ) {
-                        Text("Confirm Time")
+                        Text("Confirm")
                     }
                     
                 }
-                
-                GPrimaryButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = { onConfirmation.invoke(timeSelected) }, // Pass the selected time
-                ) {
-                    Text("Confirm")
-                }
+                /*                 GPrimaryButton(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    onClick = { onConfirmation.invoke(timeSelected) }, // Pass the selected time
+                                ) {
+                                    Text("Confirm")
+                                } */
             }
         }
     }
@@ -219,27 +231,25 @@ fun LogDialogMedicationCard(
                     )
                 }
             }
-            
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            // Buttons.
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                GTonalButton(
-                    modifier = Modifier.weight(0.5f),
-                    onClick = onSkipped,
-                ) {
-                    Text(text = "Skipped")
-                }
-                GTonalButton(
-                    modifier = Modifier.weight(0.5f),
-                    onClick = onTaken,
-                ) {
-                    Text(text = "Taken")
-                }
-            }
+            /*        Spacer(modifier = Modifier.height(16.dp))
+                   // Buttons.
+                   Row(
+                       horizontalArrangement = Arrangement.spacedBy(12.dp),
+                       modifier = Modifier.fillMaxWidth()
+                   ) {
+                       GTonalButton(
+                           modifier = Modifier.weight(0.5f),
+                           onClick = onSkipped,
+                       ) {
+                           Text(text = "Skipped")
+                       }
+                       GTonalButton(
+                           modifier = Modifier.weight(0.5f),
+                           onClick = onTaken,
+                       ) {
+                           Text(text = "Taken")
+                       }
+                   } */
         }
     }
 }
