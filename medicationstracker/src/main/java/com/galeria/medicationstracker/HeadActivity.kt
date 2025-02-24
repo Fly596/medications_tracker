@@ -111,7 +111,7 @@ class HeadActivity : ComponentActivity() {
                             BottomNavBar(items, navController, headViewModel)
                         }
                     },
-                    ) {
+                ) {
                     ApplicationNavHost(
                         modifier = Modifier
                             .fillMaxSize()

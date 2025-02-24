@@ -102,14 +102,20 @@ fun ScheduleSection() {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Box(
                 modifier = Modifier
-                    .background(Color.LightGray, shape = RoundedCornerShape(8.dp))
+                    .background(
+                        Color.LightGray,
+                        shape = RoundedCornerShape(8.dp)
+                    )
                     .padding(8.dp)
             ) {
                 Text(text = "07:00-09:00")
             }
             Box(
                 modifier = Modifier
-                    .background(Color.LightGray, shape = RoundedCornerShape(8.dp))
+                    .background(
+                        Color.LightGray,
+                        shape = RoundedCornerShape(8.dp)
+                    )
                     .padding(8.dp)
             ) {
                 Text(text = "18:00-20:00")
@@ -228,7 +234,7 @@ fun ProgressSection() {
 @Composable
 private fun PreviewMedicationInfo() {
     MedTrackerTheme {
-        MedicationScreen()
+        // MedicationScreen()
     }
     // MedicationInfo()
 }
