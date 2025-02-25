@@ -20,7 +20,10 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 
 @Composable
-fun DropdownMenuExample(items: List<String>, onItemSelected: (String) -> Unit) {
+fun GDropdownList(
+    modifier: Modifier = Modifier,
+    items: List<String>, onItemSelected: (String) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
     var selectedItem by remember {
         mutableStateOf(
@@ -29,7 +32,7 @@ fun DropdownMenuExample(items: List<String>, onItemSelected: (String) -> Unit) {
     }
     // val items = listOf("Item 1", "Item 2", "Item 3")
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier/* .fillMaxSize() */,
         contentAlignment = Alignment.Center
     ) {
         Column {
@@ -54,7 +57,6 @@ fun DropdownMenuExample(items: List<String>, onItemSelected: (String) -> Unit) {
                             selectedItem = item
                             expanded = false
                             onItemSelected(item) // Call back with the selected item
-                            
                         },
                         colors = MenuItemColors(
                             textColor = MedTrackerTheme.colors.sysBlack,

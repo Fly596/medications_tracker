@@ -50,7 +50,9 @@ class AddNewMedViewModel : ViewModel() {
             uiState.value.medUnit.toString().isBlank() ||
             uiState.value.medStrength <= 0 ||
             uiState.value.medStartDate.toString().isBlank() ||
-            uiState.value.medEndDate.toString().isBlank()
+            uiState.value.medEndDate.toString().isBlank() ||
+            uiState.value.medIntakeTime.isBlank() ||
+            uiState.value.intakeDays.isEmpty()
         ) {
             Toast.makeText(
                 context,
