@@ -18,7 +18,6 @@ import com.galeria.medicationstracker.ui.screens.auth.accountrecovery.AccountRec
 import com.galeria.medicationstracker.ui.screens.auth.login.LoginScreen
 import com.galeria.medicationstracker.ui.screens.auth.signup.SignupScreen
 import com.galeria.medicationstracker.ui.screens.dashboard.DashboardScreen
-import com.galeria.medicationstracker.ui.screens.dashboard.record.IntakeRecordsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedicationsScreen
 import com.galeria.medicationstracker.ui.screens.medications.MedsPagesViewModel
 import com.galeria.medicationstracker.ui.screens.medications.mediinfo.ViewMedicationInfoScreen
@@ -27,12 +26,12 @@ import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScr
 import com.galeria.medicationstracker.ui.screens.profile.AccountScreenHead
 import com.galeria.medicationstracker.ui.screens.profile.appoinment.AppointmentScreen
 import com.galeria.medicationstracker.ui.screens.profile.notes.NotesScreen
+import com.galeria.medicationstracker.ui.screens.profile.profiledetails.ProfileDetailsScreen
 import com.galeria.medicationstracker.utils.navigation.Routes.AdminRoutes
 import com.galeria.medicationstracker.utils.navigation.Routes.AuthRoutes
 import com.galeria.medicationstracker.utils.navigation.Routes.DoctorRoutes
 import com.galeria.medicationstracker.utils.navigation.Routes.PatientRoutes
 import kotlinx.serialization.Serializable
-
 
 @Composable
 fun ApplicationNavHost(
@@ -149,7 +148,10 @@ sealed class Routes {
         
         @Serializable
         data object PatientProfile : PatientRoutes()
-        
+
+        @Serializable
+        data object PatientProfileOverview : PatientRoutes()
+
         @Serializable
         data object PatientNotes : PatientRoutes()
         
@@ -328,14 +330,14 @@ fun NavGraphBuilder.patientDashboardGraph(
                 }
             )
         }
-        composable<PatientRoutes.PatientLogs> {
-            IntakeRecordsScreen(
-                onBackClick = {
-                    // go back to the dashboard.
-                    navController.navigateUp()
-                }
-            )
-        }
+        /*         composable<PatientRoutes.PatientLogs> {
+                    IntakeRecordsScreen(
+                        onBackClick = {
+                            // go back to the dashboard.
+                            navController.navigateUp()
+                        }
+                    )
+                } */
     }
 }
 
@@ -425,20 +427,16 @@ fun NavGraphBuilder.patientProfileGraph(
                 onNotesClick = {
                     navController.navigate(PatientRoutes.PatientNotes)
                 },
+                onProfileClick = {
+                    navController.navigate(PatientRoutes.PatientProfileOverview)
+                }
                 /*                 onDoctorClick = {
                                     navController.navigate(PatientRoutes.PatientAppointment)
                                 } */
             )
         }
-        
-        composable<PatientRoutes.PatientAppointment> {
-            AppointmentScreen(
-                onBackClick = {
-                    navController.navigate(PatientRoutes.PatientProfile)
-                }
-            )
-        }
-        
+
+
         composable<PatientRoutes.PatientNotes> {
             NotesScreen(
                 onBackClick = {
@@ -447,6 +445,24 @@ fun NavGraphBuilder.patientProfileGraph(
             )
             /* TODO: patient notes */
         }
+
+        composable<PatientRoutes.PatientProfileOverview> {
+            ProfileDetailsScreen(
+                onBackClick = {
+                    navController.navigateUp()
+                }
+            )
+            /* TODO: patient profile overview */
+        }
+
+        composable<PatientRoutes.PatientAppointment> {
+            AppointmentScreen(
+                onBackClick = {
+                    navController.navigate(PatientRoutes.PatientProfile)
+                }
+            )
+        }
+        composable<PatientRoutes.PatientSettings> {}
         
         dialog<PatientRoutes.PatientWeightDialog> {
             // TODO: implement weight dialog.

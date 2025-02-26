@@ -38,9 +38,9 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
 @Composable
 fun SignupScreen(
+    modifier: Modifier = Modifier,
     passedEmail: String = "",
     navigateHome: () -> Unit,
-    modifier: Modifier = Modifier,
     viewModel: SignupScreenViewModel = viewModel(),
 ) {
     LaunchedEffect(Unit) { viewModel.updateEmail(passedEmail) }
@@ -62,7 +62,7 @@ fun SignupScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         MyTextField(
-            value = state.value.name,
+            value = state.value.firstName,
             onValueChange = { viewModel.updateUserName(it) },
             isPrimaryColor = true,
             label = "Name",

@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.galeria.medicationstracker.SnackbarController
 import com.galeria.medicationstracker.SnackbarEvent
-import com.galeria.medicationstracker.data.User
+import com.galeria.medicationstracker.data.BloodType
+import com.galeria.medicationstracker.data.UserProfile
 import com.galeria.medicationstracker.data.UserType
 import com.galeria.medicationstracker.utils.FirestoreFunctions
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -16,7 +18,13 @@ import kotlinx.coroutines.launch
 data class SignupScreenState(
     val uid: String = "",
     val age: Int = 18,
-    val name: String = "",
+    val firstName: String = "",
+    val lastName: String = "",
+    val dateOfBirth: Timestamp = Timestamp.now(),
+    val sex: String = "",
+    val bloodType: BloodType = BloodType.UNKNOWN,
+    val weight: Float = 0.0f,
+    val height: Float = 0.0f,
     val email: String = "",
     val emailErrorMessage: String? = null,
     val password: String = "",
@@ -105,14 +113,19 @@ class SignupScreenViewModel : ViewModel() {
     }
 
     fun addUserData() {
-        val newUser = User(
+        val newUser = UserProfile(
             signupScreenState.value.uid,
+            signupScreenState.value.firstName,
+            signupScreenState.value.lastName,
+            signupScreenState.value.weight,
+            signupScreenState.value.height,
             signupScreenState.value.email,
-            signupScreenState.value.userType,
-            signupScreenState.value.age,
-            signupScreenState.value.name
+            signupScreenState.value.dateOfBirth,
+            signupScreenState.value.bloodType,
+            signupScreenState.value.sex
+
         )
-        db.collection("User").document(newUser.login).set(newUser)
+        db.collection("User").document(newUser.email.toString()).set(newUser)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     viewModelScope.launch {
@@ -145,7 +158,7 @@ class SignupScreenViewModel : ViewModel() {
     }
 
     fun updateUserName(input: String) {
-        signupScreenState.value = signupScreenState.value.copy(name = input)
+        signupScreenState.value = signupScreenState.value.copy(firstName = input)
     }
 
     fun updateUserType(input: UserType) {

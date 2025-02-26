@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.profile.settings.profiledetails
+package com.galeria.medicationstracker.ui.screens.profile.profiledetails
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -19,10 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,60 +29,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.components.GBasicTextField
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.galeria.medicationstracker.utils.parseDateForFirestore
+import com.google.firebase.Timestamp
 
-/* @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileDetailsScreen(modifier: Modifier = Modifier) {
-    Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Health Details") }, actions = {
-                Text(
-                    text = "Edit",
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .clickable {  *//* Handle Edit Click *//*  }
-                )
-            })
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(20.dp))
-            Image(
-                painter = painterResource(R.drawable.img_1543), // Replace with actual image resource
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            HealthDetailItem2(label = "First Name", value = "Eugen")
-            HealthDetailItem2(label = "Last Name", value = "Krylov")
-            HealthDetailItem2(label = "Date of Birth", value = "Not Set")
-            HealthDetailItem2(label = "Sex", value = "Not Set")
-            HealthDetailItem2(label = "Blood Type", value = "Not Set")
-            HealthDetailItem2(label = "Fitzpatrick Skin Type", value = "Not Set")
-            HealthDetailItem2(label = "Wheelchair", value = "Not Set")
-        }
-    }
-} */
-@Composable
-fun HealthDetailsScreen() {
-    var firstName by remember { mutableStateOf("Eugen") }
-    var lastName by remember { mutableStateOf("Krylov") }
-    var dateOfBirth by remember { mutableStateOf("Not Set") }
-    var sex by remember { mutableStateOf("Not Set") }
-    var bloodType by remember { mutableStateOf("Not Set") }
-    var fitzpatrickSkinType by remember { mutableStateOf("Not Set") }
-    var wheelchair by remember { mutableStateOf("Not Set") }
+fun ProfileDetailsScreen(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit = {},
+    viewModel: ProfileDetailsViewModel = hiltViewModel()
+) {
+    val state = viewModel.state.collectAsStateWithLifecycle()
+    /*     var firstName by remember { mutableStateOf("Eugen") }
+        var lastName by remember { mutableStateOf("Krylov") }
+        var dateOfBirth by remember { mutableStateOf("Not Set") }
+        var sex by remember { mutableStateOf("Not Set") }
+        var bloodType by remember { mutableStateOf("Not Set") }
+        var fitzpatrickSkinType by remember { mutableStateOf("Not Set") }
+        var wheelchair by remember { mutableStateOf("Not Set") } */
 
     Column(
         modifier = Modifier
@@ -126,13 +91,34 @@ fun HealthDetailsScreen() {
                 .size(108.dp),
         )
 
-        HealthDetailItem("First Name", firstName)
-        HealthDetailItem("Last Name", lastName)
-        HealthDetailItem("Date of Birth", dateOfBirth)
-        HealthDetailItem("Sex", sex)
-        HealthDetailItem("Blood Type", bloodType)
-        HealthDetailItem("Fitzpatrick Skin Type", fitzpatrickSkinType)
-        HealthDetailItem("Wheelchair", wheelchair)
+        HealthDetailItem("First Name", state.value.firstName ?: "") {
+            viewModel.updateFirstName(it)
+        }
+        HealthDetailItem("Last Name", state.value.lastName ?: "") {
+            viewModel.updateLastName(it)
+        }
+        HealthDetailItem("Email", state.value.email ?: "") {
+            viewModel.updateEmail(it)
+        }
+
+
+        HealthDetailItem("Date of Birth", state.value.dateOfBirth ?: Timestamp.now()) {
+            viewModel.updateDateOfBirth(
+                parseDateForFirestore(it)
+            )
+        }
+        HealthDetailItem("Sex", state.value.sex?.toString() ?: "") {
+            viewModel.updateSex(it)
+        }
+        /*        HealthDetailItem("Blood Type", state.value.bloodType?.toString() ?: ""){
+                   viewModel.updateBloodType(it)
+               } */
+        HealthDetailItem("Weight", state.value.weight?.toString() ?: "") {
+            viewModel.updateWeight(it.toFloat())
+        }
+        HealthDetailItem("Height", state.value.height?.toString() ?: "") {
+            viewModel.updateHeight(it.toFloat())
+        }
 
         Text(
             text = "Track pushes instead of steps on Apple Watch in the Activity app, and in wheelchair workouts in the Workout app, and record them to Health. When this setting is on, your...",
@@ -145,7 +131,7 @@ fun HealthDetailsScreen() {
 }
 
 @Composable
-fun HealthDetailItem(label: String, value: String) {
+fun HealthDetailItem(label: String, value: Any, onValueChange: (String) -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -155,8 +141,8 @@ fun HealthDetailItem(label: String, value: String) {
     ) {
         val interactionSource = remember { MutableInteractionSource() }
         GBasicTextField(
-            value = value,
-            onValueChange = { /* Handle value change */ },
+            value = value.toString(),
+            onValueChange = { onValueChange(value.toString()) },
             modifier = Modifier.fillMaxWidth(),
             interactionSource = interactionSource,
             prefix = label,
@@ -170,7 +156,7 @@ fun HealthDetailItem(label: String, value: String) {
 @Composable
 fun ProfileDetailsScreenPreview() {
     MedTrackerTheme {
-        HealthDetailsScreen()
+        ProfileDetailsScreen()
     }
 }
 /*

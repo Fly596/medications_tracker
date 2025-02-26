@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.galeria.medicationstracker.ui.HeadViewModel
+import com.galeria.medicationstracker.ui.componentsOld.BottomNavBar
+import com.galeria.medicationstracker.ui.componentsOld.bottomNavItems
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.utils.navigation.ApplicationNavHost
 import com.galeria.medicationstracker.utils.navigation.Routes
@@ -42,10 +44,10 @@ class HeadActivity : ComponentActivity() {
     )
     private var currentDestination: String = startDestinations.get(0)
     private val headViewModel: HeadViewModel by viewModels()
-    
+
     override fun onStart() {
         super.onStart()
-        
+
         auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         if (currentUser != null) {
@@ -54,11 +56,11 @@ class HeadActivity : ComponentActivity() {
             currentDestination = startDestinations.get(0)
         }
     }
-    
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         setContent {
             enableEdgeToEdge()
             val navController = rememberNavController()
@@ -78,14 +80,14 @@ class HeadActivity : ComponentActivity() {
                             actionLabel = event.action?.name,
                             duration = SnackbarDuration.Short,
                         )
-                        
+
                         if (result == SnackbarResult.ActionPerformed) {
                             event.action?.action?.invoke()
                         }
                     }
                 }
                 val items = bottomNavItems()
-                
+
                 Scaffold(
                     snackbarHost = {
                         SnackbarHost(
@@ -106,7 +108,7 @@ class HeadActivity : ComponentActivity() {
                             Routes.NavigationRoutes.DOC_DASHBOARD,
                             Routes.NavigationRoutes.DOC_PATIENTS_LIST
                         )
-                        
+
                         if (currentDestination !in routesWithoutBottomBar) {
                             BottomNavBar(items, navController, headViewModel)
                         }
@@ -124,7 +126,7 @@ class HeadActivity : ComponentActivity() {
             }
         }
     }
-    
+
 }
 
 @Composable
@@ -142,7 +144,7 @@ fun SnackbarHandler(snackbarHostState: SnackbarHostState) {
                     actionLabel = event.action?.name,
                     duration = SnackbarDuration.Short,
                 )
-            
+
             if (result == SnackbarResult.ActionPerformed) {
                 event.action?.action?.invoke()
             }

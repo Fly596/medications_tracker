@@ -1,4 +1,4 @@
-package com.galeria.medicationstracker.ui.screens.profile.settings
+package com.galeria.medicationstracker.ui.screens.setting.appsettings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

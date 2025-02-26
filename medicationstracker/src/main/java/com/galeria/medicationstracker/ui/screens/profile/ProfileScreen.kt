@@ -56,6 +56,7 @@ fun AccountScreenHead(
     modifier: Modifier = Modifier,
     onWeightClick: () -> Unit = {},
     onHeightClick: () -> Unit = {},
+    onProfileClick: () -> Unit = {},
     onNotesClick: () -> Unit = {},
     viewModel: ProfileVM = hiltViewModel(),
 ) {
@@ -116,6 +117,7 @@ fun AccountScreenHead(
             GPrimaryButton(
                 modifier = Modifier.fillMaxWidth()/* .padding(horizontal = 24.dp) */,
                 onClick = {
+                    onProfileClick.invoke()
                     // Todo: open edit profile screen
                 }
             ) {

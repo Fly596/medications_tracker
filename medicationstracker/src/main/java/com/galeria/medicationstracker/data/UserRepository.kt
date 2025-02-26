@@ -12,23 +12,23 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 interface UserRepository {
-    
+
     suspend fun addUser()
     suspend fun deleteUser()
     suspend fun addIntake(intake: UserIntake)
-    suspend fun getUserData(uid: String): User
-    suspend fun updateUserData(user: User)
+    suspend fun getUserData(): User
+    suspend fun updateUserData(user: UserProfile)
     suspend fun getUserDrugs(uid: String): List<UserMedication>
     suspend fun getUserIntakes(uid: String): List<UserIntake>
     fun getUserIntakesFlow(uid: String): Flow<List<UserIntake>>
-    
+
 }
 
 class UserRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth,
 ) : UserRepository {
-    
+
     override suspend fun addIntake(intake: UserIntake) {
         firestore.collection("User")
             .document("${auth.currentUser?.email}")
@@ -38,16 +38,16 @@ class UserRepositoryImpl @Inject constructor(
                 intake
             )
     }
-    
+
     override suspend fun addUser() {
         TODO("Not yet implemented")
     }
-    
+
     override suspend fun deleteUser() {
         TODO("Not yet implemented")
     }
-    
-    override suspend fun getUserData(uid: String): User {
+
+    override suspend fun getUserData(): User {
         return try {
             val userRef = firestore.collection("User")
                 .document(auth.currentUser?.email.toString())
@@ -57,13 +57,16 @@ class UserRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             User()
         }
-        
     }
-    
-    override suspend fun updateUserData(user: User) {
+
+    override suspend fun updateUserData(user: UserProfile) {
+        firestore.collection("User").document(auth.currentUser?.email.toString())
+            .set(user)
+
+
         TODO("Not yet implemented")
     }
-    
+
     override suspend fun getUserIntakes(uid: String): List<UserIntake> {
         return try {
             val userRef = firestore.collection("User")
@@ -76,7 +79,7 @@ class UserRepositoryImpl @Inject constructor(
             emptyList()
         }
     }
-    
+
     override fun getUserIntakesFlow(uid: String): Flow<List<UserIntake>> {
         return callbackFlow {
             val listenerRegistration = firestore.collection("User")
@@ -89,7 +92,7 @@ class UserRepositoryImpl @Inject constructor(
                         // Handle error
                         return@addSnapshotListener
                     }
-                    
+
                     if (value != null) {
                         val userIntakes = value.toObjects(UserIntake::class.java)
                         trySend(userIntakes)
@@ -101,7 +104,7 @@ class UserRepositoryImpl @Inject constructor(
             }
         }
     }
-    
+
     override suspend fun getUserDrugs(uid: String): List<UserMedication> {
         return try {
             val querySnapshot = db.collection("UserMedication")
@@ -112,6 +115,6 @@ class UserRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             emptyList()
         }
-        
+
     }
 }

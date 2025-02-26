@@ -38,6 +38,18 @@ data class User(
     val height: Float? = null,
 )
 
+data class UserProfile(
+    val uid: String = "",
+    val firstName: String,
+    val lastName: String,
+    val weight: Float,
+    val height: Float,
+    val email: String,
+    val dateOfBirth: Timestamp,
+    val bloodType: BloodType,
+    val sex: String,
+)
+
 data class UserIntake(
     val uid: String? = null,
     val medicationName: String? = null,
@@ -87,6 +99,18 @@ enum class MedicationUnit {
     G,
     ML,
     OZ,
+}
+
+enum class BloodType {
+    A_POSITIVE,
+    A_NEGATIVE,
+    B_POSITIVE,
+    B_NEGATIVE,
+    AB_POSITIVE,
+    AB_NEGATIVE,
+    O_POSITIVE,
+    O_NEGATIVE,
+    UNKNOWN
 }
 
 val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
