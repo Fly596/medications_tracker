@@ -21,8 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.ui.componentsOld.HIGListButton
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 
@@ -30,7 +30,7 @@ import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 @Composable
 fun SettingsScreen(
   modifier: Modifier = Modifier,
-  viewModel: SettingsViewModel = viewModel()
+  // viewModel: SettingsViewModel = viewModel()
 ) {
   Column(
     modifier = modifier
@@ -66,6 +66,15 @@ fun SettingsScreen(
 
   }
 
+}
+
+@Preview
+@Composable
+fun SettingsScreenPreview() {
+  /*   SettingsScreen(
+      modifier = Modifier
+        .fillMaxSize()
+    ) */
 }
 
 @Composable

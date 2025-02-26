@@ -12,15 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocalPharmacy
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Tab
@@ -48,137 +44,12 @@ import com.galeria.medicationstracker.data.UserIntake
 import com.galeria.medicationstracker.data.UserMedication
 import com.galeria.medicationstracker.ui.components.GPrimaryButton
 import com.galeria.medicationstracker.ui.components.GSecondaryButton
-import com.galeria.medicationstracker.ui.components.GTextButton
 import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
 import com.galeria.medicationstracker.ui.screens.dashboard.record.LogsCard
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
 import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
 import com.galeria.medicationstracker.utils.formatTimestampTillTheHour
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ProfileScreen(
-    modifier: Modifier = Modifier,
-    onWeightClick: () -> Unit = {},
-    onHeightClick: () -> Unit = {},
-    viewModel: ProfileVM,
-) {
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-    
-    Column(
-        modifier = modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.Start
-    ) {
-        // title and "edit" button.
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "Profile",
-                style = MedTrackerTheme.typography.display3
-            )
-            GTextButton(
-                onClick = {
-                    /* TODO: open health */
-                },
-                textStyle = MedTrackerTheme.typography.bodyLarge,
-            ) {
-                Text(text = "Edit")
-            }
-        }
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = MedTrackerTheme.colors.separator,
-            modifier = Modifier.padding(vertical = 4.dp)
-        )
-        // pfp, name, email.
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Image(
-                painter = painterResource(R.drawable.img_1543),
-                contentDescription = "pfp",
-                contentScale = ContentScale.Crop,
-                modifier = modifier
-                    .clip(CircleShape)
-                    .size(108.dp),
-            )
-            // name, login.
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(start = 16.dp)
-            ) {
-                Text(
-                    text = uiState.value.user?.name.toString(),
-                    style = MedTrackerTheme.typography.title1,
-                    color = MedTrackerTheme.colors.primaryLabel
-                )
-                Text(
-                    text = uiState.value.user?.login.toString(),
-                    style = MedTrackerTheme.typography.title3,
-                    color = MedTrackerTheme.colors.primaryLabel
-                )
-                // age, weight, height.
-                Column(modifier = Modifier) {
-                    Text(
-                        text = "${uiState.value.age} yr",
-                        style = MedTrackerTheme.typography.bodyMediumEmphasized,
-                        color = MedTrackerTheme.colors.secondaryLabel
-                    )
-                    Text(
-                        text = "${uiState.value.height} cm",
-                        style = MedTrackerTheme.typography.bodyMediumEmphasized,
-                        color = MedTrackerTheme.colors.secondaryLabel
-                    )
-                    Text(
-                        text = "${uiState.value.weight} kg",
-                        style = MedTrackerTheme.typography.bodyMediumEmphasized,
-                        color = MedTrackerTheme.colors.secondaryLabel
-                    )
-                }
-            }
-        }
-        // menu items.
-        LazyRow(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            item {
-                GTextButton(
-                    modifier = Modifier,
-                    onClick = {
-                        // TODO: history page
-                    }
-                ) {
-                    Text(
-                        text = "History",
-                        style = MedTrackerTheme.typography.bodyLargeEmphasized
-                    )
-                }
-            }
-            item {
-                GTextButton(
-                    modifier = Modifier,
-                    onClick = {
-                        // TODO: medications page
-                    }
-                ) {
-                    Text(
-                        text = "Medications",
-                        style = MedTrackerTheme.typography.bodyLargeEmphasized
-                    )
-                }
-            }
-        }
-        // TODO: pages.
-    }
-}
 
 @Composable
 fun AccountScreenHead(
@@ -189,10 +60,9 @@ fun AccountScreenHead(
     viewModel: ProfileVM = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-    
-    Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        
-        // title and "edit" button.
+
+    Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
+/*         // title and "edit" button.
         Row(modifier = modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.weight(1f))
             
@@ -205,28 +75,44 @@ fun AccountScreenHead(
                     tint = MedTrackerTheme.colors.primaryLabel
                 )
             }
-        }
-        
+        } */
         // pfp, name, email.
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(
-                painter = painterResource(R.drawable.img_1543),
-                contentDescription = "pfp",
-                contentScale = ContentScale.Crop,
-                modifier = modifier
-                    .clip(CircleShape)
-                    .size(108.dp),
-            )
-            Text(
-                text = uiState.value.user?.name.toString(),
-                style = MedTrackerTheme.typography.display3Emphasized,
-                color = colors.primaryLabel
-            )
-            Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
-                LabeledStat(uiState.value.user?.age.toString(), "Age")
-                LabeledStat(uiState.value.user?.height.toString(), "Heigth")
-                LabeledStat(uiState.value.user?.weight.toString(), "Weight")
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // pfp, name, email.
+            Row(
+                modifier = Modifier.padding(bottom = 24.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.img_1543),
+                    contentDescription = "pfp",
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier
+                        .clip(CircleShape)
+                        .size(108.dp),
+                )
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = uiState.value.user?.name.toString(),
+                        style = MedTrackerTheme.typography.display3Emphasized,
+                        color = colors.primaryLabel
+                    )
+                    Row(
+                        modifier = Modifier,
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.spacedBy(24.dp)
+                    ) {
+                        LabeledStat(uiState.value.user?.age.toString(), "Age")
+                        LabeledStat(uiState.value.user?.height.toString(), "Heigth")
+                        LabeledStat(uiState.value.user?.weight.toString(), "Weight")
+                    }
+                }
             }
+
             GPrimaryButton(
                 modifier = Modifier.fillMaxWidth()/* .padding(horizontal = 24.dp) */,
                 onClick = {
@@ -244,7 +130,6 @@ fun AccountScreenHead(
                 Text(text = "Notes")
             }
         }
-        
         /*        LazyVerticalGrid(
                    columns = GridCells.Fixed(2),
                    modifier = Modifier.padding(top = 16.dp),
@@ -311,7 +196,7 @@ fun AccountScreenHead(
             intakes = uiState.value.intakes
         )
     }
-    
+
 }
 
 @Composable
@@ -322,7 +207,7 @@ fun TabsRow(
     intakes: List<UserIntake> = emptyList()
 ) {
     var selectedTabIndex by remember { mutableStateOf(0) }
-    
+
     Column(
         modifier = modifier
     ) {
@@ -347,7 +232,7 @@ fun TabsRow(
                 )
             }
         }
-        
+
         when (selectedTabIndex) {
             0 -> UserMedications(medications)
             1 -> UserHistory(intakes)
@@ -426,7 +311,7 @@ fun MedicationCard(
                     text = medication?.intakeTime.toString(),
                     style = MedTrackerTheme.typography.bodyLarge,
                 )
-                
+
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     modifier = Modifier.width(250.dp),
@@ -454,7 +339,7 @@ fun MedicationCard(
 @Composable
 fun LabeledStat(count: String, label: String) {
     Column(
-        modifier = Modifier.padding(24.dp),
+        modifier = Modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
