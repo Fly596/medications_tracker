@@ -42,7 +42,7 @@ class HeadActivity : ComponentActivity() {
         Routes.NavigationRoutes.AUTH,
         Routes.NavigationRoutes.PATIENT_DASHBOARD,
     )
-    private var currentDestination: String = startDestinations.get(0)
+    private var currentDestination: String = startDestinations[0]
     private val headViewModel: HeadViewModel by viewModels()
 
     override fun onStart() {
@@ -51,9 +51,9 @@ class HeadActivity : ComponentActivity() {
         auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            currentDestination = startDestinations.get(1)
+            currentDestination = startDestinations[1]
         } else {
-            currentDestination = startDestinations.get(0)
+            currentDestination = startDestinations[0]
         }
     }
 

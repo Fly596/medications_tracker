@@ -1,5 +1,6 @@
 package com.galeria.medicationstracker.ui.screens.profile.notes
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,14 +27,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.galeria.medicationstracker.ui.components.GTextField
 import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
-import com.galeria.medicationstracker.ui.componentsOld.MyTextField
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
+import com.galeria.medicationstracker.utils.formatTimestampToMinutemmmmddyyyyhm
 
 @Composable
 fun NotesScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
+    onNewNoteClick: () -> Unit = {},
     viewModel: NotesScreenViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -55,7 +58,9 @@ fun NotesScreen(
             )
             IconButton(
                 modifier = Modifier,
-                onClick = {}
+                onClick = {
+                    onNewNoteClick.invoke()
+                }
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -65,19 +70,39 @@ fun NotesScreen(
                 )
             }
         }
-        
+
         LazyColumn(
         ) {
-            items(4) {
-                UserNoteCard()
+            items(uiState.value.notes.size) { note ->
+                UserNoteCard(
+                    title = uiState.value.notes[note].title.toString(),
+                    content = uiState.value.notes[note].content.toString(),
+                    date = formatTimestampToMinutemmmmddyyyyhm(uiState.value.notes[note].date),
+                    tags = uiState.value.notes[note].tags,
+                    medication = uiState.value.notes[note].medication,
+
+                    )
             }
+            /* items(4) {
+                UserNoteCard()
+            } */
         }
     }
 }
 
 @Composable
-fun UserNoteCard() {
+fun UserNoteCard(
+    modifier: Modifier = Modifier,
+    title: String = "Title",
+    content: String = "Content",
+    date: String = "Date",
+    tags: List<String> = emptyList(),
+    medication: List<String> = emptyList(),
+    onContentValueChange: (String) -> Unit = {},
+    onTitleValueChange: (String) -> Unit = {},
+) {
     var tfVal by remember { mutableStateOf("content") }
+    val interactionSource = remember { MutableInteractionSource() }
     FlySimpleCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -87,19 +112,27 @@ fun UserNoteCard() {
             verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier
         ) {
-            Text(text = "Feb 18, 2025", style = MedTrackerTheme.typography.title3)
-            Text(text = "NoteTitle", style = MedTrackerTheme.typography.title1Emphasized)
+            Text(text = date, style = MedTrackerTheme.typography.title3)
+            Text(text = title, style = MedTrackerTheme.typography.title1Emphasized)
+
             Spacer(modifier = Modifier.height(4.dp))
-            MyTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = tfVal,
-                onValueChange = { tfVal = it },
-                label = "Label",
-                maxLines = 3
+            GTextField(
+                value = content,
+                onValueChange = { onContentValueChange(it) },
+                label = "Content",
+                modifier = Modifier.fillMaxWidth()
             )
+            /*       GBasicTextField(
+                      modifier = Modifier.fillMaxWidth(),
+                      value = content,
+                      onValueChange = { onContentValueChange(it) },
+                      interactionSource = interactionSource,
+                      readOnly = true,
+                      alignEnd = false
+                  ) */
         }
     }
-    
+
 }
 
 @Composable

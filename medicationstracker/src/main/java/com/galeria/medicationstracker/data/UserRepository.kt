@@ -18,8 +18,10 @@ interface UserRepository {
     suspend fun addIntake(intake: UserIntake)
     suspend fun getUserData(): User
     suspend fun updateUserData(user: UserProfile)
-    suspend fun getUserDrugs(uid: String): List<UserMedication>
+    suspend fun getUserDrugs(): List<UserMedication>
     suspend fun getUserIntakes(uid: String): List<UserIntake>
+    suspend fun saveNote(note: Note)
+    suspend fun getNotes(): List<Note>
     fun getUserIntakesFlow(uid: String): Flow<List<UserIntake>>
 
 }
@@ -28,6 +30,29 @@ class UserRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth,
 ) : UserRepository {
+
+    override suspend fun saveNote(note: Note) {
+        firestore.collection("User")
+            .document("${auth.currentUser?.email}")
+            .collection("notes")
+            .document("${note.title}_${note.date?.toLocalDateTime()?.dayOfYear}")
+            .set(
+                note
+            )
+    }
+
+    override suspend fun getNotes(): List<Note> {
+        return try {
+            val userRef = firestore.collection("User")
+                .document(auth.currentUser?.email.toString())
+                .collection("notes")
+                .get()
+                .await()
+            userRef.toObjects(Note::class.java)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
 
     override suspend fun addIntake(intake: UserIntake) {
         firestore.collection("User")
@@ -105,10 +130,10 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserDrugs(uid: String): List<UserMedication> {
+    override suspend fun getUserDrugs(): List<UserMedication> {
         return try {
             val querySnapshot = db.collection("UserMedication")
-                .whereEqualTo("uid", uid)
+                .whereEqualTo("uid", auth.currentUser?.uid)
                 .get()
                 .await()
             querySnapshot.toObjects(UserMedication::class.java)

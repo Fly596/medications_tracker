@@ -46,7 +46,7 @@ class ProfileVM @Inject constructor(
     init {
         viewModelScope.launch {
             val user = repository.getUserData()
-            val medications = repository.getUserDrugs(currentUserId.toString())
+            val medications = repository.getUserDrugs()
             /*             _uiState.value =
                             _uiState.value.copy(user = user, medications = medications) */
             

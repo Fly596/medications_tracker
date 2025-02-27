@@ -25,6 +25,7 @@ import com.galeria.medicationstracker.ui.screens.medications.newmed.NewMedicatio
 import com.galeria.medicationstracker.ui.screens.medications.update.UpdateMedScreen
 import com.galeria.medicationstracker.ui.screens.profile.AccountScreenHead
 import com.galeria.medicationstracker.ui.screens.profile.appoinment.AppointmentScreen
+import com.galeria.medicationstracker.ui.screens.profile.notes.NewNoteScreen
 import com.galeria.medicationstracker.ui.screens.profile.notes.NotesScreen
 import com.galeria.medicationstracker.ui.screens.profile.profiledetails.ProfileDetailsScreen
 import com.galeria.medicationstracker.utils.navigation.Routes.AdminRoutes
@@ -154,6 +155,9 @@ sealed class Routes {
 
         @Serializable
         data object PatientNotes : PatientRoutes()
+
+        @Serializable
+        data object PatientNewNote : PatientRoutes()
         
         @Serializable
         data object PatientWeightDialog : PatientRoutes() // dialog.
@@ -441,9 +445,20 @@ fun NavGraphBuilder.patientProfileGraph(
             NotesScreen(
                 onBackClick = {
                     navController.navigate(PatientRoutes.PatientProfile)
+                },
+                onNewNoteClick = {
+                    navController.navigate(PatientRoutes.PatientNewNote)
                 }
             )
             /* TODO: patient notes */
+        }
+
+        composable<PatientRoutes.PatientNewNote> {
+            NewNoteScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable<PatientRoutes.PatientProfileOverview> {

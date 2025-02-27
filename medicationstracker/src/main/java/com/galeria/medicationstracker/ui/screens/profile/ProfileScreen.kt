@@ -63,20 +63,6 @@ fun AccountScreenHead(
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
-/*         // title and "edit" button.
-        Row(modifier = modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.weight(1f))
-            
-            IconButton(
-                onClick = {}
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = "edit",
-                    tint = MedTrackerTheme.colors.primaryLabel
-                )
-            }
-        } */
         // pfp, name, email.
         Column(
             horizontalAlignment = Alignment.Start,

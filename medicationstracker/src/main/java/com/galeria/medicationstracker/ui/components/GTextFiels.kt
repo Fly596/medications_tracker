@@ -117,6 +117,7 @@ fun GBasicTextField(
     suffixStyle: TextStyle = typography.bodyMedium,
     isError: Boolean = false,
     errorMessage: String? = null,
+    alignEnd: Boolean = true,
     readOnly: Boolean = false,
     minLines: Int = 1,
     prefix: String? = null,
@@ -138,7 +139,11 @@ fun GBasicTextField(
         keyboardOptions = keyboardOptions,
         readOnly = readOnly,
         textStyle = textStyle.copy(
-            textAlign = TextAlign.End
+            textAlign = if (alignEnd) {
+                TextAlign.End
+            } else {
+                TextAlign.Start
+            }
         ),
         minLines = minLines,
     ) { innerTextField ->

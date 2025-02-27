@@ -96,7 +96,7 @@ fun formatTimestampTillTheHour(timestamp: Timestamp): String {
 }
 
 fun formatTimestampToMinutemmmmddyyyyhm(timestamp: Timestamp): String {
-    val formatter = SimpleDateFormat("MMMM dd yyyy, H m", Locale.getDefault())
+    val formatter = SimpleDateFormat("MMMM dd yyyy, K:mm a", Locale.getDefault())
     return formatter.format(timestamp.toDate())
 }
 

@@ -38,6 +38,14 @@ data class User(
     val height: Float? = null,
 )
 
+data class Note(
+    val title: String = "",
+    val content: String = "",
+    val date: Timestamp = Timestamp.now(),
+    val tags: List<String> = emptyList(),
+    val medication: List<String> = emptyList(),
+)
+
 data class UserProfile(
     val uid: String = "",
     val firstName: String,
