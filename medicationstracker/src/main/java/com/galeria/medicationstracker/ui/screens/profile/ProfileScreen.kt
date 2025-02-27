@@ -48,7 +48,7 @@ import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
 import com.galeria.medicationstracker.ui.screens.dashboard.record.LogsCard
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme.colors
-import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
+import com.galeria.medicationstracker.utils.formatTimestampTillTheDayMMMMddyyyy
 import com.galeria.medicationstracker.utils.formatTimestampTillTheHour
 
 @Composable
@@ -256,7 +256,7 @@ fun UserHistory(intakes: List<UserIntake> = emptyList()) {
     LazyColumn {
         items(intakes) { intake ->
             val formattedDate = if (intake.dateTime != null) {
-                formatTimestampTillTheDay(intake.dateTime)
+                formatTimestampTillTheDayMMMMddyyyy(intake.dateTime)
             } else {
                 ""
             }

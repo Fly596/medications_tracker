@@ -48,14 +48,13 @@ import com.galeria.medicationstracker.ui.componentsOld.DayOfWeekSelector
 import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
 import com.galeria.medicationstracker.ui.componentsOld.HeaderWithIconButtonAndTitle
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
-import com.galeria.medicationstracker.utils.parseDateForFirestore
-import java.time.Instant
+import com.galeria.medicationstracker.utils.convertMillisToDate
+import com.galeria.medicationstracker.utils.formatDateStringToTimestampMMMMddyyyy
+import com.galeria.medicationstracker.utils.formatTimestampTillTheDayMMMMddyyyy
 import java.time.LocalTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Locale
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +63,7 @@ fun NewMedicationDataScreen(
     viewModel: AddNewMedViewModel = hiltViewModel(),
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle()
-    
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,7 +72,7 @@ fun NewMedicationDataScreen(
             onBackClick = { onConfirmClick.invoke() }, title = "New Medication",
             modifier = Modifier.padding(bottom = 16.dp)
         )
-        
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -122,7 +121,7 @@ fun NewMedicationDataScreen(
             item {
                 var selectedUnit by remember { mutableStateOf(state.value.medUnit) }
                 val unitOptions = MedicationUnit.entries.toTypedArray()
-                
+
                 FlySimpleCard(
                     isPrimaryBackground = true,
                     modifier = Modifier.fillMaxWidth(),
@@ -172,7 +171,7 @@ fun NewMedicationDataScreen(
                 ModalDatePicker(viewModel)
                 var showTimePicker by remember { mutableStateOf(false) }
                 Spacer(modifier = Modifier.padding(4.dp))
-                
+
                 GSecondaryButton(
                     shape = MedTrackerTheme.shapes.extraLarge,
                     onClick = { showTimePicker = true }) {
@@ -222,7 +221,7 @@ fun NewMedicationDataScreen(
             }
         }
     }
-    
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -234,23 +233,23 @@ fun ModalDatePicker(
     var showPicker by remember { mutableStateOf(false) }
     val label = when {
         state.value.medStartDate != null && state.value.medEndDate != null -> "Start: ${
-            formatTimestampTillTheDay(
+            formatTimestampTillTheDayMMMMddyyyy(
                 state.value.medStartDate!!
             )
-        }\nEnd: ${formatTimestampTillTheDay(state.value.medEndDate!!)}"
-        
+        }\nEnd: ${formatTimestampTillTheDayMMMMddyyyy(state.value.medEndDate!!)}"
+
         state.value.medStartDate != null -> "Start: ${
-            formatTimestampTillTheDay(
+            formatTimestampTillTheDayMMMMddyyyy(
                 state.value.medStartDate!!
             )
         }"
-        
+
         state.value.medEndDate != null -> "End: ${
-            formatTimestampTillTheDay(
+            formatTimestampTillTheDayMMMMddyyyy(
                 state.value.medEndDate!!
             )
         }"
-        
+
         else -> ""
     }
     Column(
@@ -270,18 +269,18 @@ fun ModalDatePicker(
             onClick = { showPicker = !showPicker }) {
             Text(text = "Select start and end dates")
         }
-        
-        
+
+
         if (showPicker) {
             DateRangePickerModal(
                 onDateRangeSelected = {
                     viewModel.updateStartDate(
-                        parseDateForFirestore(
+                        formatDateStringToTimestampMMMMddyyyy(
                             convertMillisToDate(it.first)
                         )
                     )
                     viewModel.updateEndDate(
-                        parseDateForFirestore(
+                        formatDateStringToTimestampMMMMddyyyy(
                             convertMillisToDate(it.second)
                         )
                     )
@@ -291,7 +290,7 @@ fun ModalDatePicker(
             )
         }
     }
-    
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -300,7 +299,7 @@ fun DateRangePickerModal(
     onDateRangeSelected: (Pair<Long?, Long?>) -> Unit, onDismiss: () -> Unit
 ) {
     val dateRangePickerState = rememberDateRangePickerState()
-    
+
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
@@ -333,7 +332,8 @@ fun DateRangePickerModal(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IntakeTimePicker(
-    onConfirm: () -> Unit, onDismiss: () -> Unit, viewModel: AddNewMedViewModel
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit, viewModel: AddNewMedViewModel
 ) {
     Dialog(
         onDismissRequest = onDismiss
@@ -362,7 +362,7 @@ fun IntakeTimePicker(
                 val time =
                     LocalTime.of(timePickerState.hour, timePickerState.minute)
                 val dtf = DateTimeFormatter.ofPattern("HH:mm")
-                
+
                 TimePicker(
                     state = timePickerState,
                     colors = TimePickerDefaults.colors(
@@ -378,7 +378,7 @@ fun IntakeTimePicker(
                         timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.surfaceVariant
                     )
                 )
-                
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -393,7 +393,7 @@ fun IntakeTimePicker(
                     ) {
                         Text("Cancel")
                     }
-                    
+
                     GPrimaryButton(
                         onClick = {
                             viewModel.updateIntakeTime(time.format(dtf))
@@ -440,17 +440,10 @@ fun IntakeTimePicker(
                 Text("Dismiss")
             }
         } */
-    
+
 }
 
-fun convertMillisToDate(timeInMillis: Long?): String {
-    val formatter =
-        DateTimeFormatter.ofPattern("MMMM dd yyyy", Locale.getDefault())
-            .withZone(ZoneId.systemDefault())
-    
-    return timeInMillis?.let { formatter.format(Instant.ofEpochMilli(it)) }
-        ?: "N/A"
-}/*
+/*
 fun convertMillisToDate(timeInMillis: Long?): String {
   val formatter = SimpleDateFormat("MMMM dd yyyy", Locale.US)
   

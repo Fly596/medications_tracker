@@ -23,7 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.galeria.medicationstracker.ui.componentsOld.FlySimpleCard
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.galeria.medicationstracker.utils.formatTimestampTillTheDay
+import com.galeria.medicationstracker.utils.formatTimestampTillTheDayMMMMddyyyy
 import com.galeria.medicationstracker.utils.formatTimestampTillTheHour
 
 @Composable
@@ -69,7 +69,7 @@ fun IntakeRecordsScreen(
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(intakes) { intake ->
                 val formattedDate = if (intake.dateTime != null) {
-                    formatTimestampTillTheDay(intake.dateTime)
+                    formatTimestampTillTheDayMMMMddyyyy(intake.dateTime)
                 } else {
                     ""
                 }

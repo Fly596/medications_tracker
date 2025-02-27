@@ -34,7 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.galeria.medicationstracker.R
 import com.galeria.medicationstracker.ui.components.GBasicTextField
 import com.galeria.medicationstracker.ui.theme.MedTrackerTheme
-import com.galeria.medicationstracker.utils.parseDateForFirestore
+import com.galeria.medicationstracker.utils.formatDateStringToTimestampMMMMddyyyy
 import com.google.firebase.Timestamp
 
 @Composable
@@ -104,7 +104,7 @@ fun ProfileDetailsScreen(
 
         HealthDetailItem("Date of Birth", state.value.dateOfBirth ?: Timestamp.now()) {
             viewModel.updateDateOfBirth(
-                parseDateForFirestore(it)
+                formatDateStringToTimestampMMMMddyyyy(it)
             )
         }
         HealthDetailItem("Sex", state.value.sex?.toString() ?: "") {
